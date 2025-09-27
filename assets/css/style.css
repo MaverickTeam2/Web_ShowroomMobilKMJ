@@ -1,0 +1,48 @@
+/* Background hero */
+.hero-bg {
+  background-image: linear-gradient(
+      rgba(0, 202, 234, 0.3), 
+      rgba(255, 255, 255, 0.6)
+    ),
+    url("../assets/img/sport\ car.png"); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Ukuran Gambar */
+.car-img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Tabs mobil */
+/* Delete style default Bulma */
+.custom-tabs ul {
+  border-bottom: none; 
+}
+
+.custom-tabs ul li a {
+  color: black;
+  font-weight: 400;
+  border: none;
+  padding: 0.5rem 1rem;
+  transition: color 0.2s;
+}
+
+.custom-tabs ul li.is-active a {
+  color: #3273dc; /* biru Bulma */
+  font-weight: 600;
+  position: relative;
+}
+
+.custom-tabs ul li.is-active a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;   /* jarak garis bawah */
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 2px;
+  background-color: #3273dc; /* biru */
+}

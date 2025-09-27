@@ -8,7 +8,7 @@
     <!--Import Font Awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <!--Import Custom CSS-->
-    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../assets/img/Logo_KMJ_YB2.ico ">
@@ -64,17 +64,104 @@
       </div>
     </nav>
     <!-- Search Bar -->
-    <input class="input is-rounded my-4 mx-1" type="text" placeholder="Ingin Mencari Mobil Apa?"/>
+    <input class="input is-rounded my-4 mx-1 " type="text" placeholder="Ingin Mencari Mobil Apa?"/>
     
 
-    <!-- Container Hero Section -->
-    <section class="hero is-white is-fullheight-with-navbar">
-      <div class="hero-body">
-        <div class="container has-text-centered">
-          <h1 class="title">Welcome to KMJ Showroom</h1>
-          <h2 class="subtitle">Your trusted car dealership</h2>
+    <!-- Container Hero Section-->
+<section class="hero is-fullheight-with-navbar p-4 m">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-vcentered">
+        
+        <!-- Kolom teks -->
+        <div class="column is-half">
+          <h1 class="title is-size-1 has-text-black">
+            FIND YOUR DREAM CAR
+          </h1>
+          <p class="subtitle has-text-black">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+          <a class="button is-link is-rounded">Learn more</a>
+        </div>
+
+        <!-- Kolom gambar -->
+        <div class="column is-half has-text-centered">
+          <a href="../templates/catalog.html" class=" is-rounded">
+            <img src="../assets/img/sport car.png" alt="Car" class="car-img" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+    <!-- End Container Hero Section -->
+
+    <!-- Popular Cars Section -->
+     <section class="section">
+      <div class="container">
+        <h2 class="title has-text-centered ">Mobil Terbaru</h2>
+        <!-- Tabs -->
+          <div class="tabs is-centered custom-tabs">
+            <ul>
+              <li class="is-active"><a>Viewed</a></li>
+              <li><a>Searched</a></li>
+              <li><a>You might like</a></li>
+            </ul>
+          </div>    
+        <div class="columns is-multiline">
+          <div class="column is-one-third">
+            <div class="card car-card">
+              <div class="card-image">
+                <figure class="image">
+                  <img src="https://images-porsche.imgix.net/-/media/6BF9339BD82C46719C7623C3BE74A47A_81BB939B72E7497A98A271568E884169_taycan?w=1759&q=85&auto=format" alt="Car 1" />
+                </figure>
+              </div>
+              <div class="card-content">
+                <p class="title is-5">Phorce Taycan</p>
+                <p class="subtitle is-6">Rp 7.200.000.000</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="column is-one-third">
+            <div class="card car-card">
+              <div class="card-image">
+                <figure class="image">
+                  <img src="https://hips.hearstapps.com/hmg-prod/images/koenigsegg-regera-mmp-1-1591115837.jpg?crop=0.779xw:0.660xh;0.0945xw,0.230xh&resize=1200:*" alt="Car 2" />
+                </figure>
+              </div>
+              <div class="card-content">
+                <p class="title is-5">Koenigsegg Regera</p>
+                <p class="subtitle is-6">Rp 103.450.000.000</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="column is-one-third">
+            <div class="card car-card">
+              <div class="card-image">
+                <figure class="image">
+                  <img src="https://www.topgear.com/sites/default/files/cars-car/image/2016/08/rh_huayrabc-67.jpg" alt="Car 3" />
+                </figure>
+              </div>
+              <div class="card-content">
+                <p class="title is-5">Pagani Huayra</p>
+                <p class="subtitle is-6">Rp 120.600.000.000</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
+    <!-- End Popular Cars Section -->
+
+    <!-- Footer -->
+    <footer class="footer has-background-grey-lighter py-4">
+      <div class="content has-text-centered">
+        <p>
+          <strong>KMJ Showroom</strong> by <a href="#">Your Company</a>. All rights reserved.
+        </p>
+      </div>
   </body>
 </html>
