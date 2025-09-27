@@ -1,0 +1,7 @@
+.search-field {
+    border: 10px solid green !important;
+    background-color: orange !important;
+    border-radius: 65px !important;
+    padding: 2rem !important;
+    font-size: 2rem !important;
+}
