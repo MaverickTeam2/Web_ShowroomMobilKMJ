@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <!--Import Custom CSS-->
     <link rel="stylesheet" href="../assets/css/style.css" />
+    <!--Import Navbar Burger Script-->
+    <script src="../assets/js/navbar_burger.js" defer></script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../assets/img/Logo_KMJ_YB2.ico ">
@@ -36,7 +38,7 @@
           <a class="navbar-item" href="../templates/jual_mobil.html">Jual Mobil</a>
           <a class="navbar-item" href="../templates/pembiayaan.html">Pembiayaan</a>
           <!--dropdown more-->
-          <div class="navbar-item has-dropdown is-hoverable">
+          <div class="navbar-item has-dropdown" id="moreDropdown">
             <a class="navbar-link">More</a>
                 <div class="navbar-dropdown">
                     <a class="navbar-item" href="../templates/FAQ&Support.html">FAQ & Support</a>
@@ -56,7 +58,7 @@
                 <span class="icon"><i class="fa-solid fa-heart"></i></span>
                 <span>Favorite</span>
             </a>
-            <div class="navbar-item has-dropdown is-hoverable">
+            <div class="navbar-item has-dropdown" id="accountDropdown">
             <a class="navbar-link">
               <span class="icon"><i class="fa-solid fa-user"></i></span>
               <span>Account</span>
