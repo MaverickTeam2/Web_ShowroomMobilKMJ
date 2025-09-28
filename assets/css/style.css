@@ -1,4 +1,4 @@
-/* Background hero */
+/* Background hero gradient*/
 .hero-bg {
   background-image: linear-gradient(
       rgba(0, 202, 234, 0.3), 
@@ -10,11 +10,12 @@
   background-repeat: no-repeat;
 }
 
-/* Ukuran Gambar */
+/* Ukuran Gambar hero image*/
 .car-img {
   max-width: 100%;
   height: auto;
 }
+
 
 /* Tabs mobil */
 /* Delete style default Bulma */
@@ -22,30 +23,6 @@
   border-bottom: none; 
 }
 
-.custom-tabs ul li a {
-  color: black;
-  font-weight: 400;
-  border: none;
-  padding: 0.5rem 1rem;
-  transition: color 0.2s;
-}
-
-.custom-tabs ul li.is-active a {
-  color: #3273dc; /* biru Bulma */
-  font-weight: 600;
-  position: relative;
-}
-
-.custom-tabs ul li.is-active a::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;   /* jarak garis bawah */
-  left: 0;
-  right: 0;
-  height: 3px;
-  border-radius: 2px;
-  background-color: #3273dc; /* biru */
-}
 /*Border Radius Custom*/
 .custom-rounded-customer {
   border-radius: 45px; /* Sesuaikan nilai ini untuk mengubah tingkat kelengkungan */
@@ -85,4 +62,35 @@
 }
 .tiktok-icon:hover {
   color: #333333;
+}
+
+/* Footer */
+.footer{
+  padding-bottom: 0px; /* jarak antara kolom footer dan bawah layar */
+}
+
+/* Jarak antar tulisan di kolom footer (Shop, Sell, Finance, About) */
+.footer .column ul li a {
+  display: inline-block;
+  margin: 3px 0;   /* jarak atas-bawah antar tulisan */
+  padding: 2px 0;  
+}
+
+/* Tambahan biar lebih rapi */
+.footer .column {
+  display: block;
+  margin-bottom: 10px; /* jarak antara judul (Shop, Sell, dsb) dan item */
+}
+
+/* copyright footer */
+/* Atur jarak antar kolom footer */
+.footer .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+.footer .content{
+  margin-top: 20px; /* jarak antara kolom footer dan copyright */
+  padding-bottom: 20px; /* jarak antara kolom footer dan bawah layar */
 }
