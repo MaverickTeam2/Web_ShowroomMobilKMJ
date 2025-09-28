@@ -46,6 +46,12 @@
   border-radius: 2px;
   background-color: #3273dc; /* biru */
 }
+/*Border Radius Custom*/
+.custom-rounded-customer {
+  border-radius: 45px; /* Sesuaikan nilai ini untuk mengubah tingkat kelengkungan */
+  max-width: 100%;
+  height: auto;
+}
 
 /* Social Media Icons */
 /* Warna ikon sesuai brand */
