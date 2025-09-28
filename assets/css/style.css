@@ -46,3 +46,37 @@
   border-radius: 2px;
   background-color: #3273dc; /* biru */
 }
+
+/* Social Media Icons */
+/* Warna ikon sesuai brand */
+.youtube-icon {
+  color: #FF0000;
+}
+.instagram-icon {
+  color: #C13584;
+}
+.facebook-icon {
+  color: #3b5998;
+}
+.whatsapp-icon {
+  color: #25D366;
+}
+.tiktok-icon {
+  color: #000000;
+}
+/* Hover effect for social media icons */
+.youtube-icon:hover {
+  color: #cc0000;
+}
+.instagram-icon:hover {
+  color: #a52a6a;
+}
+.facebook-icon:hover {
+  color: #2d4373;
+}
+.whatsapp-icon:hover {
+  color: #1ebe5d;
+}
+.tiktok-icon:hover {
+  color: #333333;
+}
