@@ -1,0 +1,23 @@
+.card {
+  width: 300px;
+}
+.card-image {
+  position: relative; /* penting untuk parent */
+}
+
+.card-image .img_main {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.card-image .icon-fovorite{
+  position: absolute;
+  top: 10px;
+  margin-left: 260px;
+  width: 120px;  /* atur ukuran logo */
+  color: #FF0000;
+}
+.odometer {
+    font-size: 15px;
+}

@@ -1,46 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--Import Bulma CSS-->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
-    />
-    <!--Import Font Awesome-->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
-    <!--Import Custom CSS-->
-    <link rel="stylesheet" href="../assets/css/style.css" />
-    <!--Import Navbar Burger Script-->
-    <script src="../assets/js/navbar_burger.js" defer></script>
+<HEAD>
 
-    <!-- Favicon -->
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="../assets/img/Logo_KMJ_YB2.ico "
-    />
-    <title>KMJ</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--Import Bulma CSS-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
+  <!--Import Font Awesome-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!--Import Custom CSS-->
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/favorite.css" />
+  
 
-  <body>
-    <!-- Navbar -->
-    <script src="../assets/js/navbar.js"></script>
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../assets/img/Logo_KMJ_YB2.ico ">
+  <title>KMJ</title>
+</head>
 
-    <section class="hero is-white is-fullheight-with-navbar">
-      <div class="hero-body">
-        <div class="container has-text-centered">
-          <h1 class="title">Favorite</h1>
-          <h2 class="subtitle">Your trusted car dealership</h2>
+<body>
+  <!-- Navbar -->
+   <script src="../assets/js/navbar.js"></script>
+
+  <section>
+    <div class="columns is-multiline">
+      <div class="column is-one-third">
+        <div class="card car-card mx-5">
+          <div class="card-image">
+            <figure class="image">
+              <img
+                src="https://images-porsche.imgix.net/-/media/6BF9339BD82C46719C7623C3BE74A47A_81BB939B72E7497A98A271568E884169_taycan?w=1759&q=85&auto=format"
+                class="img_main" alt="Car 1" />
+              <span class="icon-fovorite"><i class="fa-solid fa-heart"></i></span>
+            </figure>
+          </div>
+          <div class="card-content">
+            <p class="title is-5">Phorce Taycan</p>
+            <p class="ansguran">Rp 7.000.000 x 60</p>
+            <p class="uang_dp">15.000.000</p>
+            
+            <hr class="garis pemisah">
+            <span class="odometer"><i class="fa-solid fa-gauge-high"> 900000 km</i></span>
+          </div>
         </div>
       </div>
-    </section>
 
-    <!-- Footer -->
-    <script src="../assets/js/footer.js"></script>
-  </body>
+  </section>
+
+  <!-- Footer -->
+   <script src="../assets/js/footer.js"></script>
+  
+</body>  
 </html>
