@@ -1,0 +1,139 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-color: #f9f9f9;
+}
+
+/* Navbar link */
+.navbar-item,
+.navbar-link {
+  text-decoration: none !important;
+}
+
+/* Footer link */
+.footer a {
+  text-decoration: none !important;
+}
+.card {
+  border-radius: 12px;
+}
+
+.card img {
+  height: 180px;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+.filter-header {
+  display: flex;
+  justify-content: space-between; /* kiri - kanan */
+  align-items: center; /* biar rata tengah secara vertikal */
+}
+
+.filter-header .hapus {
+  cursor: pointer;
+  color: red; /* contoh styling */
+  font-size: 14px;
+}
+p {
+  color: #8b8b8b;
+  text-align: center;
+}
+.button-simpan {
+  text-align: center;
+}
+.totalMobil h5 {
+  color: #727272;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+/* Tombol favorite & titik tiga */
+.card .btn-light {
+  background: rgba(255, 255, 255, 0.9); /* putih transparan */
+  border: none;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease-in-out;
+}
+
+.card .btn-light:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+.card .btn-light i {
+  font-size: 18px;
+  color: #333;
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+  font-size: 14px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-menu .dropdown-item i {
+  font-size: 16px;
+  color: #555;
+}
+h4 {
+  color: #0568da;
+}
+.dropdown {
+  position: absolute;
+  top: 55%; /* vertikal tengah */
+  right: 0; /* di kanan */
+  transform: translateY(-50%);
+}
+.container {
+  display: flex; /* pastikan flex horizontal */
+  flex-direction: row; /* default, horizontal */
+  gap: 20px; /* jarak antar elemen */
+  align-items: center; /* rata vertikal */
+}
+.container h4 {
+  margin: 0; /* hilangkan margin default h4 */
+}
+.info {
+  display: flex;          /* semua anak berbaris horizontal */
+  align-items: center;    /* rata tengah vertikal */
+  gap: 5px;              /* jarak antar elemen */
+}
+.info img {
+  width: 35px;
+  height: 35px;
+}
+
+.form-check-input{
+  margin-top: 8px;
+}
+.form-check-label{
+  color: #8B8B8B;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.hr-custom {
+  border: 0;
+  border-top: 4px solid #aaa;
+  margin: 1rem 0;
+}
+.alert{
+  width: 120px;
+  height: 50px;
+   text-align: center;
+  align-items: center;
+
+}
+.button-aturUlang{
+  text-align: center;
+}
+
+

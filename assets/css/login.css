@@ -1,0 +1,166 @@
+.bg-image-vertical {
+  position: relative;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: auto 100%;
+}
+
+@media (min-width: 1025px) {
+  .h-custom-2 {
+    height: 100%;
+  }
+}
+.login-container {
+  min-height: 100vh;
+  display: flex;
+}
+.left-side {
+  background: url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80") no-repeat center center;
+  background-size: cover;
+  flex: 1;
+}
+.right-side {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.login-box {
+  width: 100%;
+  max-width: 380px;
+}
+.form-control {
+  border-radius: 50px;
+  padding: 10px 20px;
+}
+.btn-login {
+  background-color: #002147;
+  color: #fff;
+  border-radius: 50px;
+  padding: 10px;
+  font-weight: 500;
+}
+.btn-login:hover {
+  background-color: #00152e;
+}
+.btn-social {
+  border-radius: 50px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  
+}
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+.divider:not(:empty)::before {
+  margin-right: 0.75em;
+}
+.divider:not(:empty)::after {
+  margin-left: 0.75em;
+}
+.logo img {
+  width: 400px;
+  height: 120px;
+  text-align: center;
+  margin-bottom: 90px;
+  max-height: 60px;   /* biar logo nggak kegedean */
+  margin-bottom: 5px; /* jarak logo ke tulisan LOGIN */
+}
+.logo h2 {
+  text-align: center;
+  margin-top: 20px;          /* hapus jarak default h3 */
+  font-weight: bold;
+}
+.logo {
+  text-align: center;
+  margin-bottom: 15px; /* jarak logo ke form */
+}
+.login-box {
+  max-width: 400px;   /* panjangin form (default biasanya 320px) */
+  width: 100%;
+  margin: auto;
+}
+
+.login-box .form-control {
+  margin-top: 20px;
+  height: 25px;   
+  width: 400px;     /* biar input lebih tinggi */
+  border-radius: 25px; /* biar melengkung */
+  margin-bottom: 20px; /* kasih jarak antar input */
+  padding-left: 15px;
+}
+
+.btn-login {
+  background-color: #0d6efd; /* biru bootstrap */
+  color: white;
+  border-radius: 25px;
+  height: 45px;
+  font-weight: 600;
+}
+.login-box a {
+  text-decoration: none;   /* hilangin garis bawah */
+  color: #0d6efd;          /* warna biru bootstrap */
+  font-size: 14px;
+}
+
+.login-box a:hover {
+  text-decoration: underline; /* opsional: garis bawah pas hover */
+}
+
+.login-box small {
+  display: block;
+  text-align: right;
+  margin-left: 10px;  /* geser dikit ke kanan */
+}
+.btn-login {
+  background-color: #001333; /* biru bootstrap */
+  color: #fff;
+  font-weight: bold;
+  width: 440px;
+  padding: 10px;
+  margin-top: 15px;   /* kasih jarak ke atas */
+}
+.divider{
+  text-align: center;
+  margin-left: 50px;
+}
+.social-buttons {
+  max-width: 300px;     /* taruh ke tengah */
+  transform: translateX(10px); /* geser bareng ke kanan */
+  margin-left: -10px;
+}
+
+.btn-social {
+  width: 440px;
+  padding: 10px;
+  font-weight: 500;
+}
+.btn-social img {
+  height: 20px;
+}
+.register-text {
+  font-size: 14px;   /* mirip small */
+  margin: 0;
+  margin-left: 160px;
+  margin-top: 10px;
+}
+.register-text a {
+  text-decoration: none; /* hilangin garis bawah */
+  font-weight: 500;
+  
+}
+
+
+

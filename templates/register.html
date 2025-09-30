@@ -1,14 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../assets/css/register.css" />
+  <title>REGISTER</title>
 </head>
 <body>
-    <div class="has-text-centered">
-        <h1 class="title">Register Page</h1>
-        <h2 class="subtitle">Your trusted car dealership</h2>
+  <div class="register-container">
+    <!-- Left Side Form -->
+    <div class="left-side">
+      <div class="register-box">
+        <!-- Logo -->
+        <div class="logo">
+          <img src="../assets/img/Logo_KMJ_YB.png" alt="Logo" class="img-fluid mb-2" />
+          <h2 class="fw-bold">REGISTER</h2>
+        </div>
+
+        <!-- Form -->
+        <form>
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Full Name" />
+          </div>
+          <div class="mb-3">
+            <input type="email" class="form-control" placeholder="Email" />
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control" placeholder="Password" />
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control" placeholder="Confirm Password" />
+          </div>
+          <button type="submit" class="btn btn-register w-100">REGISTER</button>
+        </form>
+
+        <!-- Divider -->
+        <div class="divider">OR</div>
+
+        <!-- Social Register -->
+        <div class="social-login text-center mt-3">
+          <div class="social-buttons">
+            <button class="btn btn-light btn-social d-flex align-items-center justify-content-center mb-2">
+              <img src="https://img.icons8.com/color/20/000000/google-logo.png" class="me-2" />
+              <span>Register with Google</span>
+            </button>
+            <button class="btn btn-light btn-social d-flex align-items-center justify-content-center">
+              <img src="https://img.icons8.com/ios-filled/20/000000/mac-os.png" class="me-2" />
+              <span>Register with Apple</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Login Redirect -->
+        <div class="text-center mt-3">
+          <p class="login-text">Sudah punya akun? <a href="#">Login</a></p>
+        </div>
+      </div>
     </div>
+
+    <!-- Right Side Image -->
+    <div class="right-side d-none d-md-block"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
