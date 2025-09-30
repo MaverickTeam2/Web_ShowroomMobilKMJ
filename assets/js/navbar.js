@@ -1,5 +1,5 @@
 //import navbar dari file navbar.html dan masukkan ke dalam body
-fetch("navbar.html")
+fetch("../templates/navbar_footer/navbar.html")
   .then((response) => response.text())
   .then((data) => {
     document.body.insertAdjacentHTML("afterbegin", data);
