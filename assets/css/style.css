@@ -1,20 +1,31 @@
-/* Background hero */
+/* Sembunyikan dropdown default */
+.navbar-item.has-dropdown .navbar-dropdown {
+  display: none;
+}
+
+/* Tampilkan dropdown saat .is-active */
+.navbar-item.has-dropdown.is-active .navbar-dropdown {
+  display: block;
+}
+
+/* Background hero gradient*/
 .hero-bg {
   background-image: linear-gradient(
       rgba(0, 202, 234, 0.3), 
       rgba(255, 255, 255, 0.6)
     ),
-    url("../assets/img/sport\ car.png"); 
+    url("../assets/img/sport/car.png"); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-/* Ukuran Gambar */
+/* Ukuran Gambar hero image*/
 .car-img {
   max-width: 100%;
   height: auto;
 }
+
 
 /* Tabs mobil */
 /* Delete style default Bulma */
@@ -22,29 +33,76 @@
   border-bottom: none; 
 }
 
-.custom-tabs ul li a {
-  color: black;
-  font-weight: 400;
-  border: none;
-  padding: 0.5rem 1rem;
-  transition: color 0.2s;
+/*Border Radius Custom*/
+.custom-rounded-customer {
+  border-radius: 45px; /* Sesuaikan nilai ini untuk mengubah tingkat kelengkungan */
+  max-width: 100%;
+  height: auto;
 }
 
-.custom-tabs ul li.is-active a {
-  color: #3273dc; /* biru Bulma */
-  font-weight: 600;
-  position: relative;
+/* Social Media Icons */
+/* Warna ikon sesuai brand */
+.youtube-icon {
+  color: #FF0000;
+}
+.instagram-icon {
+  color: #C13584;
+}
+.facebook-icon {
+  color: #3b5998;
+}
+.whatsapp-icon {
+  color: #25D366;
+}
+.tiktok-icon {
+  color: #000000;
+}
+/* Hover effect for social media icons */
+.youtube-icon:hover {
+  color: #cc0000;
+}
+.instagram-icon:hover {
+  color: #a52a6a;
+}
+.facebook-icon:hover {
+  color: #2d4373;
+}
+.whatsapp-icon:hover {
+  color: #1ebe5d;
+}
+.tiktok-icon:hover {
+  color: #333333;
 }
 
-.custom-tabs ul li.is-active a::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;   /* jarak garis bawah */
-  left: 0;
-  right: 0;
-  height: 3px;
-  border-radius: 2px;
-  background-color: #3273dc; /* biru */
+/* Footer */
+.footer{
+  padding-bottom: 0px; /* jarak antara kolom footer dan bawah layar */
+}
+
+/* Jarak antar tulisan di kolom footer (Shop, Sell, Finance, About) */
+.footer .column ul li a {
+  display: inline-block;
+  margin: 3px 0;   /* jarak atas-bawah antar tulisan */
+  padding: 2px 0;  
+}
+
+/* Tambahan biar lebih rapi */
+.footer .column {
+  display: block;
+  margin-bottom: 10px; /* jarak antara judul (Shop, Sell, dsb) dan item */
+}
+
+/* copyright footer */
+/* Atur jarak antar kolom footer */
+.footer .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+.footer .content{
+  margin-top: 20px; /* jarak antara kolom footer dan copyright */
+  padding-bottom: 20px; /* jarak antara kolom footer dan bawah layar */
 }
 
 
