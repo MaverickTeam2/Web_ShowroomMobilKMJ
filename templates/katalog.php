@@ -129,75 +129,21 @@ $bahanBakar = [
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
   <!--Import Font Awesome-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Import Bootstrap-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!--Import Catalog CSS-->
   <link rel="stylesheet" href="../assets/css/katalog.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <!--Import Custom CSS-->
   <link rel="stylesheet" href="../assets/css/style.css" />
-  <!--Import Navbar Burger Script-->
-  <script src="../assets/js/navbar_burger.js" defer></script>
 
 </head>
 
 <body>
   <!-- navbar -->
-  <!-- Navbar -->
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="../templates/index.html">
-        <img src="../assets/img/Logo_KMJ_YB.png" alt="Showroom KMJ Logo" width="112" height="28" />
-      </a>
+    <script src="../assets/js/navbar.js"></script>
 
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
-    <!-- Navbar Menu -->
-    <div id="navbarMenu" class="navbar-menu">
-      <div class="navbar-start">
-        <a class="navbar-item" href="../templates/catalog.html">Shop</a>
-        <a class="navbar-item" href="../templates/jual_mobil.html">Jual Mobil</a>
-        <a class="navbar-item" href="../templates/pembiayaan.html">Pembiayaan</a>
-        <!--dropdown more-->
-        <div class="navbar-item has-dropdown" id="moreDropdown">
-          <a class="navbar-link">More</a>
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="../templates/FAQ&Support.html">FAQ & Support</a>
-            <a class="navbar-item" href="../templates/about.html">About KMJ</a>
-            <!--Move To Whatsapp CS-->
-            <a class="navbar-item" href="https://wa.me/628123456789">Beli Online</a>
-          </div>
-        </div>
-      </div>
-      <!-- Right side Navbar-->
-      <div class="navbar-end">
-        <a class="navbar-item" href="https://maps.app.goo.gl/qGcSdiQD9ELbNJwv7">
-          <span class="icon"><i class="fa-solid fa-location-dot"></i></span>
-          <span>Showroom KMJ</span>
-        </a>
-        <a class="navbar-item" href="favorite.html">
-          <span class="icon"><i class="fa-solid fa-heart"></i></span>
-          <span>Favorite</span>
-        </a>
-        <div class="navbar-item has-dropdown" id="accountDropdown">
-          <a class="navbar-link">
-            <span class="icon"><i class="fa-solid fa-user"></i></span>
-            <span>Account</span>
-          </a>
-          <div class="navbar-dropdown is-right">
-            <a class="navbar-item" href="../templates/login.html">Login</a>
-            <a class="navbar-item" href="../templates/register.html">Register</a>
-          </div>
-        </div>
-      </div>
-  </nav>
-  <!-- Search Bar -->
-  <input class="input is-rounded my-4 mx-1" type="text" placeholder="Ingin Mencari Mobil Apa?" />
-
-  <!-- end navbar -->
-
+    <!-- Card Container -->
   <div class="container-fluid">
     <div class="row mt-3">
       <!-- Sidebar Filter -->
@@ -581,83 +527,7 @@ $bahanBakar = [
     </div>
   </div>
   <!-- footer -->
-  <footer class="footer has-background-light">
-    <div class="container">
-      <div class="columns">
-        <!-- Logo & Sosmed -->
-        <div class="column is-one-quarter">
-          <figure class="image is-128x128 mb-3">
-            <img src="../assets/img/Logo_KMJ_YB.png" alt="KMJ Logo" />
-          </figure>
-          <p>
-            <a href="https://wa.me/628123456789"><i class="fab fa-whatsapp fa-lg mx-1 whatsapp-icon"></i></a>
-            <a href="https://facebook.com"><i class="fab fa-facebook fa-lg mx-1 facebook-icon"></i></a>
-            <a href="https://instagram.com"><i class="fab fa-instagram fa-lg mx-1 instagram-icon"></i></a>
-            <a href="https://tiktok.com"><i class="fab fa-tiktok fa-lg mx-1 tiktok-icon"></i></a>
-            <a href="https://youtube.com"><i class="fab fa-youtube fa-lg mx-1 youtube-icon"></i></a>
-          </p>
-        </div>
-
-        <!-- Shop -->
-        <div class="column">
-          <p class="title is-6">Shop</p>
-          <ul>
-            <li><a href="#" class="has-text-black">Kategori</a></li>
-            <li>
-              <a href="../templates/catalog.html" class="has-text-black">Semua produk</a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Sell -->
-        <div class="column">
-          <p class="title is-6">Sell</p>
-          <ul>
-            <li>
-              <a href="#" class="has-text-black">Bagaimana cara kerjanya?</a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Finance -->
-        <div class="column">
-          <p class="title is-6">Finance</p>
-          <ul>
-            <li>
-              <a href="#" class="has-text-black">Kalkulator Pembayaran</a>
-            </li>
-            <li><a href="#" class="has-text-black">Tutorial</a></li>
-          </ul>
-        </div>
-
-        <!-- About -->
-        <div class="column">
-          <p class="title is-6">About</p>
-          <ul>
-            <li>
-              <a href="https://wa.me/628123456789" class="has-text-black">Contact us</a>
-            </li>
-            <li>
-              <a href="../templates/about.html" class="has-text-black">About KMJ</a>
-            </li>
-            <li><a href="#" class="has-text-black">Media Center</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Copyright -->
-      <div class="content has-text-centered mt-6">
-        <p>
-          Dengan menggunakan <strong>kmj.com</strong>, Anda menyetujui
-          pemantauan dan penyimpanan interaksi Anda dengan situs web, termasuk
-          vendor KMJ.
-          <br />
-          <a href="#">Kebijakan Privasi</a> kami untuk detail selengkapnya.
-        </p>
-      </div>
-    </div>
-  </footer>
-  <!-- end footer -->
+  <script src="../assets/js/footer.js"></script>
 </body>
 
 </html>
