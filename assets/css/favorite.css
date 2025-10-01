@@ -1,23 +1,71 @@
 .card {
-  width: 300px;
-}
-.card-image {
-  position: relative; /* penting untuk parent */
+  position: relative;   /* penting untuk absolute child */
+  width: 295px;
+  font-family: 'lato' !important;
 }
 
+/* Gambar utama */
+.card-image {
+  position: relative;   /* parent untuk icon di atas gambar */
+}
 .card-image .img_main {
   display: block;
   width: 100%;
   height: auto;
 }
 
-.card-image .icon-fovorite{
+/* Icon favorit (love) */
+.icon-favorite {
   position: absolute;
   top: 10px;
-  margin-left: 260px;
-  width: 120px;  /* atur ukuran logo */
+  right: 20px;
   color: #FF0000;
+  font-size: 20px;
 }
-.odometer {
-    font-size: 15px;
+
+/* Info bagian bawah card */
+.info {
+  display: flex;          /* horizontal */
+  align-items: center;    /* tengah vertikal */
+  gap: 5px;
+}
+.info img {
+  width: 35px;
+  height: 35px;
+}
+
+/* Tombol titik 3 */
+.titik3 {
+  position: absolute;
+  bottom: 215px;   /* muncul di bawah kanan card */
+  left: 220px;
+}
+
+/* Dropdown agar menu nempel ke tombol */
+.titik3.dropdown {
+  position: relative; /* supaya .dropdown-menu jadi absolute terhadap ini */
+}
+
+/* Styling tombol titik 3 */
+.titik3 .button,
+.btn-titik3 {
+  width: 32px;        /* bulat sempurna */
+  height: 32px;
+  border: none;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.columns {
+  display: flex;
+  flex-wrap: wrap;
+  
+  justify-content: space-around;
+}
+.card-content .title {
+  color:#0568DA !important;
 }
