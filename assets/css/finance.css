@@ -1,0 +1,13 @@
+/* Custom tambahan */
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+.card img {
+    object-fit: cover;
+}
+
+.message-header {
+    justify-content: space-between;
+    cursor: pointer;
+}

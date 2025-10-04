@@ -1,0 +1,160 @@
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+/* ========== GALLERY CONTAINER ========== */
+.gallery-container {
+  position: relative;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto 40px;
+  overflow: hidden;
+}
+
+/* ========== WRAPPER (HORIZONTAL SCROLL) ========== */
+.gallery-wrapper {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  gap: 30px;
+  padding: 10px;
+}
+.gallery-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+.gallery-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+/* ========== ITEM (1 set hero + sub images) ========== */
+.gallery-item {
+  display: flex;
+  gap: 15px;
+  flex: 0 0 auto;
+  align-items: stretch;
+}
+
+/* ========== HERO IMAGE ========== */
+.hero-image {
+  position: relative;
+  width: 700px;
+  height: 500px;
+  flex-shrink: 0;
+}
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Tabs di dalam hero */
+.gallery-tabs {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 5;
+}
+.gallery-tabs .tab {
+  padding: 6px 15px;
+  border: none;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+.gallery-tabs .tab.active {
+  background: #0056b3;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* ========== SUB-IMAGES (2 susun vertikal di kanan hero) ========== */
+.sub-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 400px;
+  height: 500px;
+  flex-shrink: 0;
+}
+.sub-col img {
+  width: 100%;
+  height: calc(50% - 5px); /* dua gambar pas dengan hero */
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ========== SCROLL BUTTONS ========== */
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: none;
+  padding: 5px 15px;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 22px;
+  z-index: 10;
+}
+.scroll-btn.left { left: 10px; }
+.scroll-btn.right { right: 10px; }
+
+
+/* ======= STICKY TABS ======= */
+.sticky-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 0;
+}
+
+.tabs-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tab-item {
+  background: none;
+  border: none;
+  font-size: 17px;
+  font-weight: 600;
+  color: #6b6f78;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-item:hover {
+  color: #000;
+}
+
+.tab-item.active {
+  color: #0066ff; /* biru aktif */
+  font-weight: 700;
+}
+
+/* Tambahan efek shadow saat sticky */
+.sticky-tabs.stuck {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Buat jarak antar section */
+.tab-section {
+  padding: 80px 20px;
+  max-width: 1000px;
+  margin: auto;
+}
