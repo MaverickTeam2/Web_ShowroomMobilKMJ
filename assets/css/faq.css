@@ -1,0 +1,105 @@
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.title {
+  font-size: 4rem;
+  font-weight: 700;
+}
+
+.has-text-weight-bold {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.topic-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.topic-buttons .button {
+  border: 1px solid #f1c40f;
+  background: white;
+  color: black;
+}
+
+.topic-buttons .button:hover {
+  background: #f1c40f;
+  color: white;
+}
+.faq-contact-title {
+  font-size: 2rem;
+  margin-top: 100px;
+}
+.columns {
+  margin-top: 5px;
+}
+.card.is-danger-border {
+  border: 2px solid #0a154a; /* warna merah Bulma */
+}
+.column span {
+  font-size: 3rem;
+  margin-left: 30px;
+  margin-top: 20px;
+}
+.content {
+  margin-top: 20px;
+}
+.button.is-custom {
+  background-color: #0a154a;
+  color: white;
+}
+/* Tombol bulat */
+a.button.is-custom2 {
+  width: 50px; /* lebar tombol */
+  height: 50px; /* tinggi tombol */
+  padding: 0; /* hilangkan padding default Bulma */
+  background-color: #0a154a; /* warna tombol */
+  border-radius: 30%; /* membuat bulat sempurna */
+  display: inline-flex; /* supaya ikon bisa center */
+  align-items: center; /* vertikal center */
+  justify-content: center; /* horizontal center */
+  text-decoration: none; /* hapus underline */
+}
+
+/* Ikon di dalam tombol */
+a.button.is-custom2 .icon i {
+  font-size: 24px; /* ukuran ikon */
+  color: white;
+  margin-bottom: 18px; /* warna ikon */
+}
+.fa-whatsapp {
+  color: #25d366; /* hijau WhatsApp */
+}
+
+.fa-instagram {
+  color: #e1306c; /* pink Instagram (atau pakai gradient) */
+}
+
+.fa-tiktok {
+  color: #010101; /* hitam TikTok */
+}
+
+.fa-facebook-f {
+  color: #1877f2; /* biru Facebook */
+}
+.icon1 i {
+  font-size: 30px;
+  margin-right: -20px;
+  margin-top: -1000px;
+}
+.accordion {
+  margin-top: 10px;
+  width: 900px;
+}
+
+/* Semua elemen mengecil saat layar HP */
+@media (max-width: 576px) {
+  .accordion {
+    width: 100%;
+    max-width: 600px; /* batas maksimal kalau di layar besar */
+    margin: 0 auto;
+  }
+}

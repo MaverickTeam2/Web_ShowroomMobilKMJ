@@ -127,35 +127,39 @@ $bahanBakar = [
   <title>KMJ</title>
   <link rel="icon" type="image/x-icon" href="../assets/img/Logo_KMJ_YB2.ico ">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
-  <!--Import Font Awesome-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <!-- Import Bootstrap-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!--Import Catalog CSS-->
-  <link rel="stylesheet" href="../assets/css/katalog.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!--Import Font Awesome-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <!--Import Custom CSS-->
   <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/katalog2.css">
+  <!-- Tambahkan Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <!-- icon -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+
 
 </head>
 
 <body>
   <!-- navbar -->
-    <script src="../assets/js/navbar.js"></script>
+  <script src="../assets/js/navbar.js"></script>
 
-    <!-- Card Container -->
+  <!-- Card Container -->
   <div class="container-fluid">
-    <div class="row mt-3">
+    <div class="row">
       <!-- Sidebar Filter -->
-      <aside class="col-md-3">
+      <aside class="col-12 col-md-4 col-lg-3 mb-3 order-0 order-md-0" id="sidebar-filter">
         <div class="card p-3 shadow-sm">
-          <h5 class="filter-header">
+          <h5 class="filter-header d-flex justify-content-between align-items-center">
             <span>Filter & Urutkan</span>
             <div class="hapus">hapus filter</div>
           </h5>
           <p>Tambahkan filter untuk menyimpan pencarian Anda dan dapatkan pemberitahuan saat inventaris baru tiba.</p>
-          <div class="button-simpan">
-            <button type="button" class="btn btn-outline-secondary ">Simpan Pencarian</button>
+          <div class="button-simpan mb-3">
+            <button type="button" class="btn btn-outline-secondary w-100">Simpan Pencarian</button>
           </div>
           <hr>
           <div class="accordion" id="accordionPanelsStayOpenExample">
@@ -171,65 +175,22 @@ $bahanBakar = [
               <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
                 <div class="accordion-body">
                   <strong>
+                    <!-- radio button list tetap sama -->
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="sortOption" id="bestMatch" value="best"
                         checked>
-                      <label class="form-check-label" for="bestMatch" style="font-size: 20px;">
-                        Terbaik
-                      </label>
+                      <label class="form-check-label" for="bestMatch" style="font-size: 20px;">Terbaik</label>
                     </div>
-
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="sortOption" id="nearestDistance"
                         value="nearest">
-                      <label class="form-check-label" for="nearestDistance" style="font-size: 20px;">
-                        Jarak terdekat
-                      </label>
+                      <label class="form-check-label" for="nearestDistance" style="font-size: 20px;">Jarak
+                        terdekat</label>
                     </div>
-
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="sortOption" id="lowestPrice"
                         value="lowestPrice">
-                      <label class="form-check-label" for="lowestPrice" style="font-size: 20px;">
-                        Harga Terendah
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="sortOption" id="nearestDistance"
-                        value="nearest">
-                      <label class="form-check-label" for="nearestDistance" style="font-size: 20px;">
-                        Harga Tertinggi
-                      </label>
-                    </div>
-
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="sortOption" id="lowestPrice"
-                        value="lowestPrice">
-                      <label class="form-check-label" for="lowestPrice" style="font-size: 20px;">
-                        Jarak Tempuh Terendah
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="sortOption" id="nearestDistance"
-                        value="nearest">
-                      <label class="form-check-label" for="nearestDistance" style="font-size: 20px;">
-                        Jarak Tempuh tertinggi
-                      </label>
-                    </div>
-
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="sortOption" id="lowestPrice"
-                        value="lowestPrice">
-                      <label class="form-check-label" for="lowestPrice" style="font-size: 20px;">
-                        Tahun Terbaru
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="sortOption" id="nearestDistance"
-                        value="nearest">
-                      <label class="form-check-label" for="nearestDistance" style="font-size: 20px;">
-                        Tahun Tertua
-                      </label>
+                      <label class="form-check-label" for="lowestPrice" style="font-size: 20px;">Harga Terendah</label>
                     </div>
 
                   </strong>
@@ -385,15 +346,17 @@ $bahanBakar = [
               <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
                 <div class="accordion-body">
                   <div class="fuel-filter">
-  <?php foreach ($bahanBakar as $jenis => $jumlah): ?>
-    <div class="form-check mb-2">
-      <input class="form-check-input" type="checkbox" value="<?= $jenis ?>" id="<?= strtolower(str_replace(' ', '_', $jenis)) ?>">
-      <label class="form-check-label" for="<?= strtolower(str_replace(' ', '_', $jenis)) ?>" style="font-size: 18px;">
-        <?= $jenis ?> (<?= number_format($jumlah, 0, ',', '.') ?>)
-      </label>
-    </div>
-  <?php endforeach; ?>
-</div>
+                    <?php foreach ($bahanBakar as $jenis => $jumlah): ?>
+                      <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" value="<?= $jenis ?>"
+                          id="<?= strtolower(str_replace(' ', '_', $jenis)) ?>">
+                        <label class="form-check-label" for="<?= strtolower(str_replace(' ', '_', $jenis)) ?>"
+                          style="font-size: 18px;">
+                          <?= $jenis ?> (<?= number_format($jumlah, 0, ',', '.') ?>)
+                        </label>
+                      </div>
+                    <?php endforeach; ?>
+                  </div>
                 </div>
               </div>
             </div>
@@ -464,70 +427,81 @@ $bahanBakar = [
       </aside>
 
 
+
       <!-- Konten Daftar Mobil -->
-      <main class="col-md-9">
-        <div class="totalMobil">
+      <main class="col-lg-9 col-md-8 col-12 order-1 order-md-1" id="catalog-content">
+        <div class="totalMobil mb-4">
           <h5>Total <?= $jumlahMobil; ?> Mobil Tersedia</h5>
         </div>
-        <div class="row">
 
-          <?php foreach ($mobil as $m): ?>
-            <div class="col-md-4 mb-4">
-              <div class="card shadow-sm h-100 position-relative">
-                <!-- Gambar mobil -->
-                <img src="<?= $m['gambar']; ?>" class="card-img-top" alt="<?= $m['nama']; ?>">
-                <!-- Tombol favorite -->
-                <button class="btn btn-light position-absolute top-0 end-0 m-2 rounded-circle shadow-sm">
-                  <img src="../assets/img/love.jpg" alt="" style="width:24px; height:24px;">
-                  <i class="bi bi-heart"></i>
-                </button>
-                <div class="titik3"><!-- Tombol titik tiga -->
-                  <div class="dropdown position-absolute bottom-0 end-0 m-2">
-                    <button class="btn btn-light rounded-circle shadow-sm" type="button" data-bs-toggle="dropdown"
-                      aria-expanded="false">
-                      <img src="../assets/img/titik3.jpg" alt="" style="width:24px; height:24px;">
-                      <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                      <li><a class="dropdown-item" href="#"><i class="bi bi-heart me-2"></i> Tambahkan ke favorit</a></li>
-                      <li><a class="dropdown-item" href="#"><i class="bi bi-shuffle me-2"></i> Bandingkan</a></li>
-                      <li><a class="dropdown-item" href="#"><i class="bi bi-share me-2"></i> Bagikan</a></li>
-                      <li><a class="dropdown-item" href="#"><i class="bi bi-car-front me-2"></i> Fitur & Spesifikasi</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+        <section class="section">
+          <div class="columns is-multiline is-justify-content-left">
 
-
-                <!-- Body card -->
-                <div class="card-body">
-                  <h4>
-                    <a href="" style="text-decoration: none; color: inherit;">
-                      <?= $m['nama']; ?>
-                    </a>
-                  </h4>
-                  <h3><?= $m['harga']; ?> X <?= $m['totalKredit']; ?></h3>
-                  <h5> Dp <?= $m['dp']; ?></h5>
-                  <hr class="hr-custom">
-                  <div class="info">
-                    <img src="../assets/img/kecepatan.jpg" alt="">
-                    <span style="font-size: 25px"><?= $m['kecepatan']; ?></span>
-                    <img src="../assets/img/kalender.jpg" alt="">
-                    <span style="font-size: 25px"><?= $m['tahun']; ?></span>
-
+            <?php foreach ($mobil as $m): ?>
+              <div class="column">
+                <div class="card car-card">
+                  <div class="card-image">
+                    <figure class="image image-wrapper">
+                      <img src="<?= $m['gambar']; ?>" alt="<?= $m['nama']; ?>" class="img_main" />
+                      <span class="icon-favorite"><i class="fa-solid fa-heart"></i></span>
+                    </figure>
                   </div>
 
+                  <div class="card-content">
+                    <p class="title is-5"><?= $m['nama']; ?></p>
+                    <p class="ansguran"><?= $m['harga']; ?> x <?= $m['totalKredit']; ?></p>
+                    <p class="uang_dp"><?= $m['dp']; ?></p>
+                    <hr>
+
+                    <div class="info">
+                      <img src="../assets/img/kecepatan.jpg" alt="">
+                      <span style="font-size: 15px"><?= $m['kecepatan']; ?></span>
+                      <img src="../assets/img/kalender.jpg" alt="">
+                      <span style="font-size: 20px"><?= $m['tahun']; ?></span>
+                    </div>
+
+                    <div class="titik3 dropdown is-right is-hoverable">
+                      <div class="dropdown-trigger">
+                        <button class="button is-white btn-titik3" aria-haspopup="true" aria-controls="dropdown-menu">
+                          <span class="icon is-small">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                          </span>
+                        </button>
+                      </div>
+                      <div class="dropdown-menu" role="menu">
+                        <div class="dropdown-content">
+                          <a href="#" class="dropdown-item"><i class="fa-solid fa-trash"></i> Hapus dari favorit</a>
+                          <a href="#" class="dropdown-item"><i class="fa-solid fa-shuffle me-2"></i> Bandingkan</a>
+                          <a href="#" class="dropdown-item"><i class="fa-solid fa-share me-2"></i> Bagikan</a>
+                          <a href="#" class="dropdown-item"><i class="fa-solid fa-car me-2"></i> Fitur & Spesifikasi</a>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
               </div>
-            </div>
-          <?php endforeach; ?>
+            <?php endforeach; ?>
 
-        </div>
+          </div>
+        </section>
       </main>
+
+
     </div>
   </div>
+  <script>
+  document.querySelectorAll('.icon-favorite').forEach(icon => {
+    icon.addEventListener('click', () => {
+      icon.classList.toggle('active');
+    });
+  });
+</script>
+
   <!-- footer -->
   <script src="../assets/js/footer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>
