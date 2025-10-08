@@ -1,0 +1,140 @@
+body {
+  font-family: "Lato";
+}
+.hero-body .title {
+  font-size: 4rem;
+}
+.custom-alert {
+  font-size: 1.2rem; /* ukuran huruf lebih besar */
+  padding: 1rem; /* kotak lebih tebal */
+}
+.responsive-title {
+  font-size: 3rem; /* ukuran default di desktop */
+}
+.halaman2 {
+  padding: 2rem 0; /* jarak atas bawah isi */
+  margin-top: -100px; /* ini yang bikin naik ke atas */
+}
+.halaman3 {
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f8f9fa; /* bisa ganti sesuai tema */
+}
+
+.halaman3 .title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+
+/* Carousel styling */
+.halaman3 .carousel {
+  width: 90%; /* ukuran carousel */
+  max-width: 1000px; /* maksimal lebar */
+  border-radius: 12px; /* sudut bulat */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* shadow */
+  overflow: hidden;
+  position: relative;
+}
+
+/* Tambah garis pemisah antar slide (opsional) */
+.halaman3 .carousel-item img {
+  /* border-bottom: 2px solid #ccc; */
+  object-fit: cover; /* gambar tidak melar */
+  height: 400px; /* tinggi tetap */
+  width: 100%;
+}
+
+/* Carousel caption */
+.halaman3 .carousel-caption {
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent */
+  padding: 1rem;
+  border-radius: 8px;
+}
+/* Panah prev/next lebih jelas */
+.halaman3 .carousel-control-prev-icon,
+.halaman3 .carousel-control-next-icon {
+  background-color: rgba(100, 100, 100, 0.5); /* abu-abu semi transparan */
+  border-radius: 50%; /* bentuk bulat */
+  width: 50px; /* lebih besar */
+  height: 50px; /* lebih besar */
+  background-size: 50% 50%; /* sesuaikan ukuran icon panah */
+}
+
+/* Hover efek supaya lebih menonjol */
+.halaman3 .carousel-control-prev-icon:hover,
+.halaman3 .carousel-control-next-icon:hover {
+  background-color: rgba(100, 100, 100, 0.8);
+}
+.title-custom {
+  font-weight: 700;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.subtitle-custom {
+  font-weight: 400;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.line-item {
+  border-bottom: 1px solid #ccc;
+  padding: 0.8rem 0;
+  font-size: 1rem;
+}
+
+.button-custom {
+  background-color: #0a154a;
+  color: #fff;
+  border-radius: 50px;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.button-custom:hover {
+  background-color: #081036;
+  color: #fff;
+}
+
+.container-custom {
+  max-width: 500px;
+  margin: 0 auto;
+}
+.halaman4 {
+  margin-top: 50px;
+}
+.line-item {
+  position: relative;
+  padding-right: 30px; /* memberi ruang untuk icon di kanan */
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.check-icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #28a745; /* hijau */
+  font-size: 1.2rem;
+}
+
+/* Jika layar kecil (HP) font title mengecil */
+@media (max-width: 576px) {
+  .responsive-title {
+    font-size: 1.8rem;
+  }
+  .halaman3 .title {
+    font-size: 1.8rem;
+  }
+  .halaman3 .carousel-item img {
+    height: 250px;
+  }
+  .halaman3 .carousel-caption {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+}
