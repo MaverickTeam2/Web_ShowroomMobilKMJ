@@ -1,0 +1,98 @@
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: linear-gradient(to bottom, #f8fdff, #ffffff);
+  margin: 0;
+  padding: 20px;
+  color: #0a2342;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.back {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #1a73e8;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.arrow {
+  font-size: 18px;
+}
+
+.back-text {
+  text-decoration: none;
+  color: #1a73e8;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 25px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 40px;
+  padding: 20px 25px;
+  background: #fff;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 10px;
+}
+
+.card-header h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  flex-grow: 1;
+  margin-left: 10px;
+  color: #0a2342; /* warna teks gelap biru tua, opsional */
+}
+
+.info-icon {
+  font-size: 18px;
+  color: #1a73e8;
+  margin-right: 10px;
+}
+
+
+.edit-btn {
+  color: #1a73e8;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.card-content {
+  margin-top: 10px;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 20px;
+  margin: 5px 0;
+}
+
+.email a {
+  color: #1a73e8;
+  text-decoration: underline;
+  font-size: 17px;
+}
+
+.phone {
+  font-size: 17px;
+  color: #333;
+  margin-top: 5px;
+}
