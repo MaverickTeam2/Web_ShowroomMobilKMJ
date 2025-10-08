@@ -11,3 +11,44 @@ body {
     justify-content: space-between;
     cursor: pointer;
 }
+
+/* ==== ACCORDION (Other resources) ==== */
+.custom-accordion .accordion-item {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  background: #fff;
+}
+
+.custom-accordion .accordion-button {
+  background-color: #fff;
+  color: #000;
+  font-weight: 500;
+  box-shadow: none;
+  border: none;
+  padding: 16px 20px;
+}
+
+.custom-accordion .accordion-button::after {
+  background-image: none;
+  content: "+";
+  font-size: 22px;
+  font-weight: 400;
+  color: #000;
+  transition: transform 0.2s ease;
+}
+
+.custom-accordion .accordion-button:not(.collapsed)::after {
+  transform: rotate(45deg);
+}
+
+.custom-accordion .accordion-body {
+  padding: 15px 20px;
+  background-color: #f9f9f9;
+  color: #555;
+}
+
+.custom-accordion .accordion-button:focus {
+  box-shadow: none;
+}

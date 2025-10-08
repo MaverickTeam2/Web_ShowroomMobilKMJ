@@ -51,10 +51,15 @@ $faqs = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KMJ Finance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/css/finance.css">
 </head>
 <body>
+
+<!-- navbar -->
+ <script src="../assets/js/navbar.js" defer></script>
 
     <!-- Hero -->
     <section class="section">
@@ -109,19 +114,84 @@ $faqs = [
     </section>
 
     <!-- FAQ -->
-    <section class="section">
-        <h2 class="title is-4">Finance FAQs</h2>
-        <div class="content">
-            <?php foreach ($faqs as $faq): ?>
-                <article class="message is-light">
-                    <div class="message-header">
-                        <p><?= $faq; ?></p>
-                        <button class="button is-small">▼</button>
-                    </div>
-                </article>
-            <?php endforeach; ?>
+  <div class="container my-5">
+    <h2 class="fw-bold mb-4">Finance FAQs</h2>
+
+    <div class="accordion custom-accordion" id="resourcesAccordion">
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#office">
+            Corporate Home Office
+          </button>
+        </h2>
+        <div id="office" class="accordion-collapse collapse" data-bs-parent="#resourcesAccordion">
+          <div class="accordion-body">
+            Content for Corporate Home Office.
+          </div>
         </div>
-    </section>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#foundation">
+            The KMJ Foundation
+          </button>
+        </h2>
+        <div id="foundation" class="accordion-collapse collapse" data-bs-parent="#resourcesAccordion">
+          <div class="accordion-body">
+            Content for The KMJ Foundation.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#marketing">
+            Marketing Vendoring Inquiries
+          </button>
+        </h2>
+        <div id="marketing" class="accordion-collapse collapse" data-bs-parent="#resourcesAccordion">
+          <div class="accordion-body">
+            Content for Marketing Vendoring Inquiries.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#news">
+            News Media Inquiries
+          </button>
+        </h2>
+        <div id="news" class="accordion-collapse collapse" data-bs-parent="#resourcesAccordion">
+          <div class="accordion-body">
+            Content for News Media Inquiries.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#supplied">
+            Supplied Inquiries
+          </button>
+        </h2>
+        <div id="supplied" class="accordion-collapse collapse" data-bs-parent="#resourcesAccordion">
+          <div class="accordion-body">
+            Content for Supplied Inquiries.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+    
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Footer -->
+<script src="../assets/js/footer.js" defer></script>
 
 </body>
 </html>
