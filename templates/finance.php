@@ -61,6 +61,19 @@ $faqs = [
 <!-- navbar -->
  <script src="../assets/js/navbar.js" defer></script>
 
+<!-- Sub Navigation -->
+<div class="container">
+  <div class="tab-switch">
+    <a href="#" id="tabHow" class="active">How it works</a>
+    <a href="#" id="tabKalkulator">Kalkulator Pembayaran</a>
+  </div>
+</div>
+
+
+
+<!-- ================= HOW IT WORKS SECTION ================= -->
+<div id="howItWorks" class="tab-content active">
+
     <!-- Hero -->
     <section class="section">
         <div class="columns is-vcentered">
@@ -77,7 +90,7 @@ $faqs = [
     </section>
 
     <!-- Finance Company -->
-    <section class="section has-background-light">
+    <section class="section">
         <div class="box has-text-centered">
             <div class="columns is-multiline is-mobile is-centered">
                 <?php foreach ($finance as $f): ?>
@@ -186,12 +199,98 @@ $faqs = [
 
     </div>
   </div>
+</div>
+
+  
+<!-- ================= KALKULATOR PEMBAYARAN SECTION ================= -->
+<div id="kalkulator" class="tab-content">
+    <section class="section">
+        <h2 class="title is-4 has-text-centered">Kalkulator Pembayaran Bulanan</h2>
+        <div class="columns">
+            <div class="column is-half">
+                <div class="box">
+                    <div class="field">
+                        <label class="label">Harga Kendaraan</label>
+                        <input class="input" id="hargaKendaraan" type="number" placeholder="200000000">
+                    </div>
+                    <div class="field">
+                        <label class="label">Uang Muka</label>
+                        <input class="input" id="uangMuka" type="number" placeholder="10000000">
+                    </div>
+                    <div class="field">
+                        <label class="label">Lama Cicilan (bulan)</label>
+                        <input class="input" id="lamaCicilan" type="number" placeholder="72">
+                    </div>
+                    <div class="field">
+                        <label class="label">Bunga (%)</label>
+                        <input class="input" id="bunga" type="number" value="5">
+                    </div>
+                    <button class="button is-warning mt-3" id="btnHitung">Hitung Pembayaran</button>
+                </div>
+            </div>
+
+            <div class="column is-half">
+                <div class="summary-box">
+                    <h3 class="fw-bold mb-3">Summary</h3>
+                    <p>Harga Kendaraan: <span id="summaryHarga">Rp. 0</span></p>
+                    <p>Uang Muka: <span id="summaryDP">Rp. 0</span></p>
+                    <p>Bunga: <span id="summaryBunga">0%</span></p>
+                    <hr>
+                    <h4>Estimasi Pembayaran Bulanan</h4>
+                    <h2 class="fw-bold fs-2 text-primary" id="hasilPembayaran">Rp. 0</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- === Section: Cara kerja pembayaran === -->
+<section class="section cara-kerja-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="image-placeholder" style="background-image: url('../assets/img/bgfinance.jpg');">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h2 class="fw-bold">Bagaimana cara kerja pembayaran di KHM</h2>
+        <p class="text-muted mb-3">
+          Dapatkan pra-kualifikasi untuk mendapatkan gambaran tentang apa yang bisa Anda belanjakan.
+        </p>
+        <a href="#" class="btn-outline-blue">Dapatkan Informasi</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === Section: Belanja Mobil dengan Harga Terbaik === -->
+<section class="section harga-terbaik-section">
+  <div class="container">
+    <div class="row align-items-start">
+      <div class="col-md-6">
+        <h2 class="fw-bold text-dark-blue">Belanja Mobil<br>dengan Harga Terbaik!</h2>
+      </div>
+      <div class="col-md-6">
+        <div class="list-harga">
+          <a href="#" class="harga-item">Harga &lt; Rp. 200 Juta <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#" class="harga-item">Harga &lt; Rp. 500 Juta <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#" class="harga-item">Harga &lt; Rp. 700 Juta <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#" class="harga-item">Harga &lt; Rp. 1 Miliar <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#" class="harga-item">Harga &lt; Rp. 10 Miliar <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
 
     
 <!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Footer -->
 <script src="../assets/js/footer.js" defer></script>
+<script src="../assets/js/finance.js" defer></script>
 
 </body>
 </html>

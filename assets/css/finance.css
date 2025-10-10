@@ -52,3 +52,130 @@ body {
 .custom-accordion .accordion-button:focus {
   box-shadow: none;
 }
+
+/* ==== SUB NAVIGATION (How it works / Kalkulator Pembayaran) ==== */
+.tab-switch {
+  display: flex;
+  justify-content: flex-start; /* supaya mulai dari kiri */
+  gap: 40px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: 40px; /* tambahkan jarak dari navbar */
+  margin-bottom: 30px;
+  margin-left: 2%; /* agak menjorok biar sejajar sama teks konten */
+}
+
+.tab-switch a {
+  color: #000;
+  text-decoration: none;
+  position: relative;
+  transition: 0.3s;
+}
+
+.tab-switch a:hover {
+  color: #0044ff;
+}
+
+.tab-switch a.active {
+  color: #0044ff;
+}
+
+.tab-switch a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: #0044ff;
+  border-radius: 2px;
+}
+
+
+/* Tampilan antar section */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Section: Cara kerja pembayaran === */
+.cara-kerja-section {
+  padding-top: 60px;
+  padding-bottom: 80px;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 250px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #f3f3f3;
+  border-radius: 12px;
+}
+
+
+.btn-outline-blue {
+  display: inline-block;
+  color: #0044ff;
+  border: 2px solid #0044ff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-outline-blue:hover {
+  background-color: #0044ff;
+  color: white;
+}
+
+/* === Section: Belanja Mobil === */
+.harga-terbaik-section {
+  background: #f8f9fa;
+  padding-top: 60px;
+  padding-bottom: 80px;
+}
+
+.text-dark-blue {
+  color: #0b1e3f;
+}
+
+.list-harga {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.harga-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 18px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: white;
+  color: #000;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.harga-item:hover {
+  background-color: #eef3ff;
+  border-color: #0044ff;
+  color: #0044ff;
+}
+
+.harga-item i {
+  font-size: 1rem;
+}
