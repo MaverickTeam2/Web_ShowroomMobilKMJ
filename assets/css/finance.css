@@ -1,6 +1,21 @@
-/* Custom tambahan */
 body {
     font-family: 'Arial', sans-serif;
+}
+
+
+.title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #001e3c;
+}
+
+.image-placeholder {
+    width: 100%;
+    height: 400px;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-color: #f3f3f3;
+    border-radius: 12px;
 }
 
 .card img {
@@ -56,13 +71,12 @@ body {
 /* ==== SUB NAVIGATION (How it works / Kalkulator Pembayaran) ==== */
 .tab-switch {
   display: flex;
-  justify-content: flex-start; /* supaya mulai dari kiri */
-  gap: 40px;
+  gap: 30px;
   font-weight: 600;
   font-size: 1.1rem;
   margin-top: 40px; /* tambahkan jarak dari navbar */
   margin-bottom: 30px;
-  margin-left: 2%; /* agak menjorok biar sejajar sama teks konten */
+  margin-left: 1%; /* agak menjorok biar sejajar sama teks konten */
 }
 
 .tab-switch a {
@@ -178,4 +192,69 @@ body {
 
 .harga-item i {
   font-size: 1rem;
+} 
+
+/* === Section: Kalkulator Pembayaran === */
+
+.kalkulator-wrapper {
+  align-items: stretch; /* bikin tinggi kolom otomatis sama */
 }
+
+
+.kalkulator-section {
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+.kalkulator-box, .summary-box {
+  height: 100%;
+  border: 1.5px solid #ccc;
+  border-radius: 18px;
+  padding: 25px;
+  background-color: #fafafa;
+}
+
+.summary-box {
+  background-color: #f9fafc;
+}
+
+.summary-box h3 {
+  color: #001e3c;
+  font-weight: 700;
+}
+
+.summary-box span {
+  font-size: 0.95rem;
+}
+
+.summary-box hr {
+  border-top: 1px solid #ccc;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+#hasilPembayaran {
+  color: #0b1e3f;
+  font-size: 2rem;
+}
+
+.cari-btn {
+  width: 160px;
+  height: 50px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #0b1e3f;
+  background-color: #e8b900;
+  border: none;
+  transition: 0.3s;
+}
+
+.cari-btn:hover:enabled {
+  background-color: #ffdb33;
+}
+
+.cari-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+

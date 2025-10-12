@@ -4,17 +4,17 @@
 // Data mobil
 $mobil = [
     "judul" => "Dapatkan hasil pembiayaan tanpa memengaruhi kredit Anda",
-    "gambar" => "https://via.placeholder.com/500x300.png?text=Mobil+Dummy",
+    "gambar" => "../assets/img/mobilfinance.png",
     "cta" => "Dapatkan Persyaratan"
 ];
 
 // Data finance company
 $finance = [
-    ["nama" => "BCA Finance", "logo" => "https://via.placeholder.com/150x50.png?text=BCA+Finance"],
-    ["nama" => "FIFGROUP", "logo" => "https://via.placeholder.com/150x50.png?text=FIFGROUP"],
-    ["nama" => "BRI Finance", "logo" => "https://via.placeholder.com/150x50.png?text=BRI+Finance"],
-    ["nama" => "Mandiri Utama Finance", "logo" => "https://via.placeholder.com/150x50.png?text=Mandiri+Finance"],
-    ["nama" => "PT Summit OTO Finance", "logo" => "https://via.placeholder.com/150x50.png?text=OTO+Finance"],
+    ["nama" => "BCA Finance", "logo" => "../assets/img/bcalogo.png"],
+    ["nama" => "FIFGROUP", "logo" => "../assets/img/fifgroup.png"],
+    ["nama" => "BRI Finance", "logo" => "../assets/img/brifinance.png"],
+    ["nama" => "PT Summit OTO Finance", "logo" => "../assets/img/ptotto.png"],
+    ["nama" => "Mandiri Utama Finance", "logo" => "../assets/img/mandirifinance.png"],
 ];
 
 // Data tips kredit
@@ -82,8 +82,7 @@ $faqs = [
                 <button class="button is-warning"><?= $mobil['cta']; ?></button>
             </div>
             <div class="column is-half">
-                <figure class="image">
-                    <img src="<?= $mobil['gambar']; ?>" alt="Mobil Dummy">
+                <figure class="image-placeholder" style="background-image: url('../assets/img/mobilfinance.png');">
                 </figure>
             </div>
         </div>
@@ -95,7 +94,7 @@ $faqs = [
             <div class="columns is-multiline is-mobile is-centered">
                 <?php foreach ($finance as $f): ?>
                     <div class="column is-2">
-                        <figure class="image is-128x128">
+                        <figure class="image is-128x128"">
                             <img src="<?= $f['logo']; ?>" alt="<?= $f['nama']; ?>">
                         </figure>
                     </div>
@@ -204,44 +203,60 @@ $faqs = [
   
 <!-- ================= KALKULATOR PEMBAYARAN SECTION ================= -->
 <div id="kalkulator" class="tab-content">
-    <section class="section">
-        <h2 class="title is-4 has-text-centered">Kalkulator Pembayaran Bulanan</h2>
-        <div class="columns">
-            <div class="column is-half">
-                <div class="box">
-                    <div class="field">
-                        <label class="label">Harga Kendaraan</label>
-                        <input class="input" id="hargaKendaraan" type="number" placeholder="200000000">
-                    </div>
-                    <div class="field">
-                        <label class="label">Uang Muka</label>
-                        <input class="input" id="uangMuka" type="number" placeholder="10000000">
-                    </div>
-                    <div class="field">
-                        <label class="label">Lama Cicilan (bulan)</label>
-                        <input class="input" id="lamaCicilan" type="number" placeholder="72">
-                    </div>
-                    <div class="field">
-                        <label class="label">Bunga (%)</label>
-                        <input class="input" id="bunga" type="number" value="5">
-                    </div>
-                    <button class="button is-warning mt-3" id="btnHitung">Hitung Pembayaran</button>
-                </div>
-            </div>
-
-            <div class="column is-half">
-                <div class="summary-box">
-                    <h3 class="fw-bold mb-3">Summary</h3>
-                    <p>Harga Kendaraan: <span id="summaryHarga">Rp. 0</span></p>
-                    <p>Uang Muka: <span id="summaryDP">Rp. 0</span></p>
-                    <p>Bunga: <span id="summaryBunga">0%</span></p>
-                    <hr>
-                    <h4>Estimasi Pembayaran Bulanan</h4>
-                    <h2 class="fw-bold fs-2 text-primary" id="hasilPembayaran">Rp. 0</h2>
-                </div>
-            </div>
+  <section class="section kalkulator-section">
+    <h2 class="title is-4 has-text-centered mb-5">Pembayaran Bulanan</h2>
+    <div class="columns">
+      <!-- Form Input -->
+      <div class="column is-half">
+        <div class="box kalkulator-box">
+          <div class="field">
+            <label class="label">Harga Kendaraan</label>
+            <input class="input" id="hargaKendaraan" type="number" placeholder="200000000">
+          </div>
+          <div class="field">
+            <label class="label">Uang Muka</label>
+            <input class="input" id="uangMuka" type="number" placeholder="10000000">
+          </div>
+          <div class="field">
+            <label class="label">Nama Leasing</label>
+            <input class="input" id="leasing" type="text" placeholder="Contoh: BCA Finance">
+          </div>
+          <div class="field">
+            <label class="label">Bunga (%)</label>
+            <input class="input" id="bunga" type="number" value="5">
+          </div>
+          <div class="field">
+            <label class="label">Jangka Waktu (bulan)</label>
+            <input class="input" id="lamaCicilan" type="number" value="72">
+          </div>
+          <button class="button is-warning mt-3" id="btnHitung">Hitung Estimasi</button>
         </div>
-    </section>
+      </div>
+
+      <!-- Summary -->
+      <div class="column is-half">
+        <div class="box summary-box text-center">
+          <h3 class="fw-bold mb-4">Summary</h3>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Harga Kendaraan</span> <span id="summaryHarga">Rp. 0</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Uang Muka</span> <span id="summaryDP">Rp. 0</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Nama Leasing</span> <span id="summaryLeasing">-</span>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <span>Total</span> <span id="summaryTotal">Rp. 0</span>
+          </div>
+          <hr>
+          <h4 class="mt-3">Estimasi Pembayaran Bulanan</h4>
+          <h2 class="fw-bold fs-2 text-primary" id="hasilPembayaran">Rp. 0</h2>
+          <button class="button cari-btn is-warning mt-4" id="btnCari" disabled>Cari</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
     <!-- === Section: Cara kerja pembayaran === -->
 <section class="section cara-kerja-section">
