@@ -340,7 +340,7 @@ $recommendations = [
           <?= $rec["km"]; ?> | <?= $rec["year"]; ?></p>
         </div>
         <button class="btn btn-light position-absolute bottom-0 end-0 m-2">
-          <i class="fa-solid fa-ellipsis-vertical"></i>
+          <
         </button>
       </div>
     </div>
