@@ -102,3 +102,43 @@ if (switchMode) {
     }
   });
 }
+
+
+// =========================
+// TAMBAHAN: TOMBOL TAMBAH MOBIL & BREADCRUMB DINAMIS
+// =========================
+
+// Fungsi untuk update breadcrumb
+function updateBreadcrumb(items) {
+  const breadcrumb = document.querySelector('.breadcrumb');
+  if (!breadcrumb) return;
+
+  breadcrumb.innerHTML = items
+    .map((item, i) => {
+      if (item.active) {
+        return `<li><a class="active" href="#">${item.name}</a></li>`;
+      } else if (item.link) {
+        return `<li><a href="${item.link}">${item.name}</a></li>`;
+      } else {
+        return `<li>${item.name}</li>`;
+      }
+    })
+    .join("<li><i class='bx bx-chevron-right'></i></li>");
+}
+
+// Event listener untuk tombol tambah mobil
+document.addEventListener('click', function (e) {
+  const btnTambah = e.target.closest('#btn-tambah-mobil');
+  if (btnTambah) {
+    e.preventDefault();
+    const page = btnTambah.getAttribute('data-page');
+    if (page) {
+      loadPage(page);
+      updateBreadcrumb([
+        { name: 'Dashboard', link: '#' },
+        { name: 'Manajemen Mobil', link: '#' },
+        { name: 'Tambah Stok Mobil', active: true }
+      ]);
+    }
+  }
+});

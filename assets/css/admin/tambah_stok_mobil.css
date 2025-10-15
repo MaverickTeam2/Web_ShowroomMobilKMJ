@@ -1,0 +1,29 @@
+.photo-upload {
+  border: 2px dashed #cbd5e1;
+  border-radius: 10px;
+  text-align: center;
+  padding: 30px 10px;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: border-color 0.3s;
+}
+.photo-upload:hover {
+  border-color: #0d6efd;
+  color: #0d6efd;
+}
+.photo-upload i {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 10px;
+}
+.section-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 5px;
+}
+.card {
+  border-radius: 12px;
+  border: none;
+}
