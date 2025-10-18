@@ -1,98 +1,151 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Bulma</title>
-  <!-- Bulma CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
-  <!-- Google Font Lato (opsional) -->
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Lato', sans-serif;
-      min-height: 100vh;
-    }
-    .login-container {
-      min-height: 100vh;
-      display: flex;
-    }
-    .left-side {
-      background: url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80") no-repeat center center;
-      background-size: cover;
-    }
-    .logo img {
-      max-height: 60px;
-      margin-bottom: 10px;
-    }
-    .btn-social img {
-      height: 20px;
-      margin-right: 8px;
-    }
-  </style>
-</head>
-<body>
-  <section class="section login-container">
-    <div class="columns is-gapless is-flex-grow-1">
-      <!-- Left Side Image (hidden on mobile) -->
-      <div class="column is-hidden-mobile is-half left-side"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Bulma</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" />
+    <style>
+      body {
+        font-family: "Lato", sans-serif;
+        min-height: 100vh;
+      }
+      .login-container {
+        min-height: 100vh;
+        display: flex;
+      }
+      .left-side {
+        background: url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80") no-repeat center center;
+        background-size: cover;
+      }
+      .logo img {
+        max-height: 60px;
+        margin-bottom: 10px;
+      }
 
-      <!-- Right Side Form -->
-      <div class="column is-flex is-align-items-center is-justify-content-center">
-        <div class="box" style="max-width: 400px; width: 100%;">
-          <!-- Logo -->
-          <div class="logo has-text-centered mb-4">
-            <img src="../assets/img/Logo_KMJ_YB.png" alt="Logo">
-            <h2 class="title is-4 has-text-weight-bold">LOGIN</h2>
-          </div>
+      /* Floating label */
+      .field {
+        position: relative;
+        margin-bottom: 1.5rem;
+      }
+      .floating-input {
+        width: 100%;
+        border: 1px solid #dbdbdb;
+        border-radius: 50px;
+        padding: 12px 16px;
+        transition: all 0.3s;
+      }
+      .floating-label {
+        position: absolute;
+        top: 12px;
+        left: 20px;
+        color: #888;
+        font-size: 0.9rem;
+        pointer-events: none;
+        transition: all 0.2s ease;
+      }
+      .floating-input:focus + .floating-label,
+      .floating-input:not(:placeholder-shown) + .floating-label {
+        top: -8px;
+        left: 16px;
+        font-size: 0.75rem;
+        background: white;
+        padding: 0 4px;
+        color: #3273dc;
+      }
 
-          <!-- Form -->
-          <form>
-            <div class="field">
-              <div class="control">
-                <input class="input is-rounded" type="text" placeholder="Username">
+      /* Eye icon */
+      .password-wrapper {
+        position: relative;
+      }
+      .toggle-password {
+        position: absolute;
+        right: 25px;
+        font-size: 1.3rem;
+        top: 40%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #888;
+      }
+      .toggle-password:hover {
+        color: #3273dc;
+      }
+
+      /* Button hover */
+      .button.is-primary {
+        transition: all 0.3s ease;
+      }
+      .button.is-primary:hover {
+        background-color: #276cda;
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="section login-container">
+      <div class="columns is-gapless is-flex-grow-1">
+        <!-- Left Side Image -->
+        <div class="column is-hidden-mobile is-half left-side"></div>
+
+        <!-- Right Side Form -->
+        <div class="column is-flex is-align-items-center is-justify-content-center">
+          <div class="box" style="max-width: 400px; width: 100%">
+            <div class="logo has-text-centered mb-4">
+              <img src="../assets/img/Logo_KMJ_YB.png" alt="Logo" />
+              <h2 class="title is-4 has-text-weight-bold">LOGIN</h2>
+            </div>
+
+            <form>
+              <div class="field">
+                <input class="floating-input" type="text" placeholder=" " required />
+                <label class="floating-label">Username</label>
               </div>
+
+              <div class="field password-wrapper">
+                <input class="floating-input" type="password" id="password" placeholder=" " required />
+                <label class="floating-label">Password</label>
+                <span class="toggle-password"><i class="bx bx-show"></i></span>
+                <p class="has-text-right is-size-7 mt-1">
+                  <a href="#">Lupa kata sandi?</a>
+                </p>
+              </div>
+
+              <div class="field">
+                <button type="submit" class="button is-primary is-fullwidth is-rounded has-text-weight-semibold">LOGIN</button>
+              </div>
+            </form>
+
+            <div class="has-text-centered my-4">
+              <span class="is-size-7 has-text-grey">OR</span>
             </div>
 
             <div class="field">
-              <div class="control">
-                <input class="input is-rounded" type="password" placeholder="Password">
-              </div>
-              <p class="has-text-right is-size-7 mt-1">
-                <a href="#">Lupa kata sandi?</a>
-              </p>
-            </div>
-
-            <div class="field">
-              <button type="submit" class="button is-primary is-fullwidth is-rounded has-text-weight-semibold">
-                LOGIN
+              <button class="button is-light is-fullwidth is-rounded">
+                <img src="https://img.icons8.com/color/20/000000/google-logo.png" alt="Google" />
+                <span>Continue with Google</span>
               </button>
             </div>
-          </form>
 
-          <!-- Divider -->
-          <div class="has-text-centered my-4">
-            <span class="is-size-7 has-text-grey">OR</span>
-          </div>
-
-          <!-- Social Login -->
-          <div class="field">
-            <button class="button is-light is-fullwidth is-rounded btn-social">
-              <img src="https://img.icons8.com/color/20/000000/google-logo.png" alt="Google">
-              <span>Continue with Google</span>
-            </button>
-          </div>
-
-          <!-- Register -->
-          <div class="has-text-centered mt-3">
-            <p class="is-size-7">
-              Belum punya akun? <a href="#">Daftar</a>
-            </p>
+            <div class="has-text-centered mt-3">
+              <p class="is-size-7">Belum punya akun? <a href="register.html">Daftar</a></p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-</body>
+    </section>
+
+    <script>
+      const togglePassword = document.querySelector(".toggle-password");
+      const passwordInput = document.querySelector("#password");
+
+      togglePassword.addEventListener("click", () => {
+        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput.setAttribute("type", type);
+        togglePassword.innerHTML =
+          type === "password" ? '<i class="bx bx-show"></i>' : '<i class="bx bx-hide"></i>';
+      });
+    </script>
+  </body>
 </html>
