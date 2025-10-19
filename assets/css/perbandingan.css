@@ -1,0 +1,17 @@
+body {
+        background-color: #fafafa;
+      }
+      table {
+        table-layout: fixed;
+        width: 100%;
+      }
+      td,
+      th {
+        word-wrap: break-word;
+        white-space: normal;
+        text-align: center !important;
+      }
+      h3.subtitle {
+        margin-top: 2rem;
+        font-weight: 600;
+      }
