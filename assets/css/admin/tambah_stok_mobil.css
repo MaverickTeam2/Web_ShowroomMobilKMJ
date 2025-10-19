@@ -1,0 +1,157 @@
+body {
+  background-color: #f8f9fa;
+}
+
+.photo-upload {
+  border: 2px dashed #cbd5e1;
+  border-radius: 10px;
+  text-align: center;
+  padding: 30px 10px;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: border-color 0.3s;
+}
+
+.photo-upload:hover {
+  border-color: #0d6efd;
+  color: #0d6efd;
+}
+
+.photo-upload i {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 5px;
+}
+
+.card {
+  border-radius: 12px;
+  border: none;
+  background: #fff;
+}
+
+.status-description p {
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+/* Badge bulat di samping status */
+.status-badge {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-right: 8px;
+  transition: all 0.3s ease;
+}
+
+/* Label status */
+.status-label {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+/* Warna status */
+.available {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.reserved {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.sold {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.shipping {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.delivered {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+/* Badge kecil (lingkaran) warna sesuai status */
+.badge-available {
+  background-color: #28a745;
+}
+
+.badge-reserved {
+  background-color: #007bff;
+}
+
+.badge-sold {
+  background-color: #dc3545;
+}
+
+.badge-shipping {
+  background-color: #ffc107;
+}
+
+.badge-delivered {
+  background-color: #17a2b8;
+}
+/* ============ INFORMASI MOBIL ============ */
+.card .form-label {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.form-control,
+.form-select {
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+}
+
+.form-multiply {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #475569;
+  text-align: center;
+  width: 100%;
+}
+
+/* Tambahan spacing dan style agar menyerupai mockup */
+.row.g-3 > [class*="col-"] {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 5px;
+}
+/* ============ Enda INFORMASI MOBIL ============ */
+ .row.g-3 {
+    row-gap: 1rem; /* jarak antar baris checkbox */
+    column-gap: 1rem; /* jarak antar kolom */
+  }

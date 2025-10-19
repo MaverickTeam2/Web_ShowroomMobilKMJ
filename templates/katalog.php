@@ -448,7 +448,7 @@ $bahanBakar = [
                   </div>
 
                   <div class="card-content">
-                    <p class="title is-5"><?= $m['nama']; ?></p>
+                    <a href="../templates/detail_mobil.php" class="text-decoration-none mb-3 d-inline-block"><p class="title is-5"><?= $m['nama']; ?></p></a>
                     <p class="ansguran"><?= $m['harga']; ?> x <?= $m['totalKredit']; ?></p>
                     <p class="uang_dp"><?= $m['dp']; ?></p>
                     <hr>

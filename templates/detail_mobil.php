@@ -81,7 +81,7 @@ $recommendations = [
 <script src="../assets/js/navbar.js" defer></script>
 
 <div class="container mt-4">
-  <a href="#" class="text-decoration-none mb-3 d-inline-block">← Back</a>
+  <a href="../templates/katalog.php" class="text-decoration-none mb-3 d-inline-block">← Back</a>
   <h3 class="fw-bold"><?= $car["title"]; ?></h3>
 
   <!-- Warna -->
@@ -340,7 +340,7 @@ $recommendations = [
           <?= $rec["km"]; ?> | <?= $rec["year"]; ?></p>
         </div>
         <button class="btn btn-light position-absolute bottom-0 end-0 m-2">
-          <i class="fa-solid fa-ellipsis-vertical"></i>
+          <
         </button>
       </div>
     </div>
