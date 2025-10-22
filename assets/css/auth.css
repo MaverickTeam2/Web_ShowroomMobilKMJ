@@ -1,0 +1,175 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: "Lato", sans-serif;
+}
+
+/* ===== CONTAINER & ANIMATION ===== */
+.auth-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  transition: all 0.8s ease;
+}
+
+/* ===== LEFT SIDE (Image) ===== */
+.left-side {
+  flex: 1;
+  background-image: url("https://4kwallpapers.com/images/wallpapers/bmw-black-cars-cinematic-autumn-foliage-road-tarmac-1080x2400-3282.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: all 1s ease-in-out;
+  will-change: transform, background-image;
+}
+
+/* Saat ke REGISTER — ganti gambar & geser ke kanan */
+.auth-container.active .left-side {
+  background-image: url("../img/Phorce911.webp");
+  transform: translateX(100%);
+  filter: brightness(0.95);
+}
+
+/* ===== RIGHT SIDE (Form) ===== */
+.right-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.8s ease;
+}
+
+/* Saat ke REGISTER — geser form kanan */
+.auth-container.active .right-side {
+  transform: translateX(-100%);
+}
+
+/* ===== FORM BOX ===== */
+.form-box {
+  position: absolute;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  background: white;
+  border-radius: 16px;
+  transition: all 0.6s ease;
+}
+
+.hidden {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+}
+
+.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* ===== LOGO ===== */
+.logo img {
+  max-height: 60px;
+  margin-bottom: 10px;
+}
+
+/* ===== FLOATING INPUT ===== */
+.field {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.floating-input {
+  width: 100%;
+  border: 1px solid #dbdbdb;
+  border-radius: 50px;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+}
+
+.floating-input:focus {
+  border-color: #3273dc;
+  box-shadow: 0 0 6px rgba(50, 115, 220, 0.3);
+}
+
+.floating-label {
+  position: absolute;
+  top: 12px;
+  left: 20px;
+  color: #888;
+  font-size: 0.9rem;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.floating-input:focus + .floating-label,
+.floating-input:not(:placeholder-shown) + .floating-label {
+  top: -8px;
+  left: 16px;
+  font-size: 0.75rem;
+  background: white;
+  padding: 0 4px;
+  color: #3273dc;
+}
+
+/* ===== PASSWORD ICON ===== */
+.password-wrapper {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  font-size: 1.3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888;
+  transition: color 0.3s;
+}
+
+.toggle-password:hover {
+  color: #3273dc;
+}
+
+/* ===== BUTTON & LINK ===== */
+.button.is-link {
+  margin-bottom: 20px; /* ✅ jarak bawah tombol utama */
+  transition: all 0.3s ease;
+}
+
+.button.is-link:hover {
+  background-color: #276cda;
+  transform: translateY(-2px);
+}
+
+.switch-link {
+  color: #3273dc;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .auth-container {
+    flex-direction: column;
+  }
+
+  .left-side {
+    display: none;
+  }
+
+  .right-side {
+    flex: 1;
+    padding: 20px;
+    transform: none !important;
+  }
+
+  .auth-container.active .right-side {
+    transform: none;
+  }
+}

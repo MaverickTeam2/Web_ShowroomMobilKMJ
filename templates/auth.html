@@ -1,398 +1,129 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Auth Page - Bulma Animated</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css"
-    />
-    <style>
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        overflow: hidden;
-        font-family: "Lato", sans-serif;
-      }
 
-      /* ===== CONTAINER DAN ANIMASI ===== */
-      .auth-container {
-        display: flex;
-        height: 100vh;
-        width: 100vw;
-        transition: all 0.8s ease;
-        overflow: hidden;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KMJ</title>
+  <!--Import Bulma-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" />
+  <!--Import Lato-->
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+  <!--Import BoxIcon-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" />
+  <!--Import auth css-->
+  <link rel="stylesheet" href="../assets/css/auth.css">
+</head>
 
-      /* Efek animasi dan anti-blur */
-.left-side {
-  flex: 1;
-  background-image: url("https://4kwallpapers.com/images/wallpapers/bmw-black-cars-cinematic-autumn-foliage-road-tarmac-1080x2400-3282.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: all 1s ease-in-out;
-  will-change: transform, background-image;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  image-rendering: -webkit-optimize-contrast;
-}
+<body>
+  <section class="auth-container" id="authContainer">
+    <div class="left-side"></div>
 
-/* Saat pindah ke Register */
-.auth-container.active .left-side {
-  background-image: url("../assets/img/Phorce911.webp");
-  transform: translateX(0);
-  filter: brightness(0.95);
-}
-
-
-      .right-side {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.8s ease;
-      }
-
-      /* Saat berpindah ke register: kiri geser, kanan juga */
-      .auth-container.active .left-side {
-        transform: translateX(100%);
-      }
-
-      .auth-container.active .right-side {
-        transform: translateX(-100%);
-      }
-
-      /* ===== FORM BOX ===== */
-      .form-box {
-        position: absolute;
-        width: 100%;
-        max-width: 400px;
-        padding: 40px;
-        background: white;
-        border-radius: 16px;
-        transition: all 0.6s ease;
-        box-shadow: none;
-      }
-
-      .hidden {
-        opacity: 0;
-        transform: scale(0.95);
-        pointer-events: none;
-      }
-
-      .active {
-        opacity: 1;
-        transform: scale(1);
-        pointer-events: auto;
-      }
-
-      .logo img {
-        max-height: 60px;
-        margin-bottom: 10px;
-      }
-
-      /* ===== FLOATING INPUT ===== */
-      .field {
-        position: relative;
-        margin-bottom: 1.5rem;
-      }
-
-      .floating-input {
-        width: 100%;
-        border: 1px solid #dbdbdb;
-        border-radius: 50px;
-        padding: 12px 16px;
-        transition: all 0.3s ease;
-      }
-
-      .floating-input:focus {
-        border-color: #3273dc;
-        box-shadow: 0 0 6px rgba(50, 115, 220, 0.3);
-      }
-
-      .floating-label {
-        position: absolute;
-        top: 12px;
-        left: 20px;
-        color: #888;
-        font-size: 0.9rem;
-        pointer-events: none;
-        transition: all 0.2s ease;
-      }
-
-      .floating-input:focus + .floating-label,
-      .floating-input:not(:placeholder-shown) + .floating-label {
-        top: -8px;
-        left: 16px;
-        font-size: 0.75rem;
-        background: white;
-        padding: 0 4px;
-        color: #3273dc;
-      }
-
-      /* ===== PASSWORD ICON ===== */
-      .password-wrapper {
-        position: relative;
-      }
-
-      .toggle-password {
-        position: absolute;
-        right: 15px;
-        font-size: 1.3rem;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        color: #888;
-        transition: color 0.3s;
-      }
-
-      .toggle-password:hover {
-        color: #3273dc;
-      }
-
-      /* ===== BUTTON & LINK ===== */
-      .button.is-link:hover {
-        background-color: #276cda;
-        transform: translateY(-2px);
-      }
-
-      .switch-link {
-        color: #3273dc;
-        cursor: pointer;
-        font-weight: 600;
-      }
-
-      /* ===== RESPONSIVE ===== */
-      @media (max-width: 768px) {
-        .auth-container {
-          flex-direction: column;
-        }
-
-        .left-side {
-          display: none;
-        }
-
-        .right-side {
-          flex: 1;
-          padding: 20px;
-          transform: none !important;
-        }
-
-        .auth-container.active .right-side {
-          transform: none;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <section class="auth-container" id="authContainer">
-      <div class="left-side"></div>
-
-      <div class="right-side">
-        <!-- Login Form -->
-        <div id="loginForm" class="form-box active">
-          <div class="logo has-text-centered mb-4">
-            <img src="../assets/img/Logo_KMJ_YB.png" alt="Logo" />
-            <h2 class="title is-4 has-text-weight-bold">LOGIN</h2>
-          </div>
-
-          <form>
-            <div class="field">
-              <input
-                class="floating-input"
-                type="text"
-                placeholder=" "
-                required
-              />
-              <label class="floating-label">Username</label>
-            </div>
-
-            <div class="field password-wrapper">
-              <input
-                class="floating-input"
-                type="password"
-                id="password-login"
-                placeholder=" "
-                required
-              />
-              <label class="floating-label">Password</label>
-              <span class="toggle-password" data-target="password-login"
-                ><i class="bx bx-show"></i
-              ></span>
-            </div>
-
-            <div class="field">
-              <button
-                type="submit"
-                class="button is-link is-fullwidth is-rounded has-text-weight-semibold"
-              >
-                LOGIN
-              </button>
-            </div>
-          </form>
-
-          <div class="has-text-centered my-4">
-            <span class="is-size-7 has-text-grey">OR</span>
-          </div>
-
-          <div class="field">
-            <button class="button is-light is-fullwidth is-rounded mb-2">
-              <img
-                src="https://img.icons8.com/color/20/000000/google-logo.png"
-                alt="Google"
-              />
-              <span>Continue with Google</span>
-            </button>
-          </div>
-
-          <div class="has-text-centered mt-3">
-            <p class="is-size-7">
-              Belum punya akun?
-              <span class="switch-link" id="showRegister">Daftar</span>
-            </p>
-          </div>
+    <div class="right-side">
+      <!-- Login Form -->
+      <div id="loginForm" class="form-box active">
+        <div class="logo has-text-centered mb-4">
+          <img src="../assets/img/Logo_KMJ_YB.png" alt="Logo" />
+          <h2 class="title is-4 has-text-weight-bold">LOGIN</h2>
         </div>
 
-        <!-- Register Form -->
-        <div id="registerForm" class="form-box hidden">
-          <div class="logo has-text-centered mb-4">
-            <img src="../assets/img/Logo_KMJ_YB.png" alt="Logo" />
-            <h2 class="title is-4 has-text-weight-bold">REGISTER</h2>
+        <form>
+          <div class="field">
+            <input class="floating-input" type="text" placeholder=" " required />
+            <label class="floating-label">Username</label>
           </div>
 
-          <form>
-            <div class="field">
-              <input
-                class="floating-input"
-                type="text"
-                placeholder=" "
-                required
-              />
-              <label class="floating-label">Full Name</label>
-            </div>
-
-            <div class="field">
-              <input
-                class="floating-input"
-                type="email"
-                placeholder=" "
-                required
-              />
-              <label class="floating-label">Email</label>
-            </div>
-
-            <div class="field password-wrapper">
-              <input
-                class="floating-input"
-                type="password"
-                id="password1"
-                placeholder=" "
-                required
-              />
-              <label class="floating-label">Password</label>
-              <span class="toggle-password" data-target="password1"
-                ><i class="bx bx-show"></i
-              ></span>
-            </div>
-
-            <div class="field password-wrapper">
-              <input
-                class="floating-input"
-                type="password"
-                id="password2"
-                placeholder=" "
-                required
-              />
-              <label class="floating-label">Confirm Password</label>
-              <span class="toggle-password" data-target="password2"
-                ><i class="bx bx-show"></i
-              ></span>
-            </div>
-
-            <div class="field">
-              <button
-                type="submit"
-                class="button is-link is-fullwidth is-rounded has-text-weight-semibold"
-              >
-                REGISTER
-              </button>
-            </div>
-          </form>
-
-          <div class="has-text-centered my-4">
-            <span class="is-size-7 has-text-grey">OR</span>
+          <div class="field password-wrapper">
+            <input class="floating-input" type="password" id="password-login" placeholder=" " required />
+            <label class="floating-label">Password</label>
+            <span class="toggle-password" data-target="password-login"><i class="bx bx-show"></i></span>
           </div>
 
           <div class="field">
-            <button class="button is-light is-fullwidth is-rounded mb-2">
-              <img
-                src="https://img.icons8.com/color/20/000000/google-logo.png"
-                alt="Google"
-              />
-              <span>Register with Google</span>
+            <button type="submit" class="button is-link is-fullwidth is-rounded has-text-weight-semibold">
+              LOGIN
             </button>
           </div>
+        </form>
 
-          <div class="has-text-centered mt-3">
-            <p class="is-size-7">
-              Sudah punya akun?
-              <span class="switch-link" id="showLogin">Login</span>
-            </p>
-          </div>
+        <div class="has-text-centered my-4">
+          <span class="is-size-7 has-text-grey">OR</span>
+        </div>
+
+        <div class="field">
+          <button class="button is-light is-fullwidth is-rounded mb-2">
+            <img src="https://img.icons8.com/color/20/000000/google-logo.png" alt="Google" />
+            <span>Continue with Google</span>
+          </button>
+        </div>
+
+        <div class="has-text-centered mt-3">
+          <p class="is-size-7">
+            Belum punya akun?
+            <span class="switch-link" id="showRegister">Daftar</span>
+          </p>
         </div>
       </div>
-    </section>
 
-    <script>
-      const authContainer = document.getElementById("authContainer");
-      const loginForm = document.getElementById("loginForm");
-      const registerForm = document.getElementById("registerForm");
-      const showRegister = document.getElementById("showRegister");
-      const showLogin = document.getElementById("showLogin");
+      <!-- Register Form -->
+      <div id="registerForm" class="form-box hidden">
+        <div class="logo has-text-centered mb-4">
+          <img src="../assets/img/Logo_KMJ_YB.png" alt="Logo" />
+          <h2 class="title is-4 has-text-weight-bold">REGISTER</h2>
+        </div>
 
-      // Ganti form dan animasi gambar
-      showRegister.addEventListener("click", () => {
-        authContainer.classList.add("active");
-        loginForm.classList.add("hidden");
-        loginForm.classList.remove("active");
-        registerForm.classList.remove("hidden");
-        registerForm.classList.add("active");
-      });
+        <form>
+          <div class="field">
+            <input class="floating-input" type="text" placeholder=" " required />
+            <label class="floating-label">Full Name</label>
+          </div>
 
-      showLogin.addEventListener("click", () => {
-        authContainer.classList.remove("active");
-        registerForm.classList.add("hidden");
-        registerForm.classList.remove("active");
-        loginForm.classList.remove("hidden");
-        loginForm.classList.add("active");
-      });
+          <div class="field">
+            <input class="floating-input" type="email" placeholder=" " required />
+            <label class="floating-label">Email</label>
+          </div>
 
-      // Toggle password visibility
-      document.querySelectorAll(".toggle-password").forEach((icon) => {
-        icon.addEventListener("click", () => {
-          const input = document.getElementById(icon.dataset.target);
-          const type =
-            input.getAttribute("type") === "password" ? "text" : "password";
-          input.setAttribute("type", type);
-          icon.innerHTML =
-            type === "password"
-              ? '<i class="bx bx-show"></i>'
-              : '<i class="bx bx-hide"></i>';
-        });
-      });
-    </script>
-  </body>
+          <div class="field password-wrapper">
+            <input class="floating-input" type="password" id="password1" placeholder=" " required />
+            <label class="floating-label">Password</label>
+            <span class="toggle-password" data-target="password1"><i class="bx bx-show"></i></span>
+          </div>
+
+          <div class="field password-wrapper">
+            <input class="floating-input" type="password" id="password2" placeholder=" " required />
+            <label class="floating-label">Confirm Password</label>
+            <span class="toggle-password" data-target="password2"><i class="bx bx-show"></i></span>
+          </div>
+
+          <div class="field">
+            <button type="submit" class="button is-link is-fullwidth is-rounded has-text-weight-semibold">
+              REGISTER
+            </button>
+          </div>
+        </form>
+
+        <div class="has-text-centered my-4">
+          <span class="is-size-7 has-text-grey">OR</span>
+        </div>
+
+        <div class="field">
+          <button class="button is-light is-fullwidth is-rounded mb-2">
+            <img src="https://img.icons8.com/color/20/000000/google-logo.png" alt="Google" />
+            <span>Register with Google</span>
+          </button>
+        </div>
+
+        <div class="has-text-centered mt-3">
+          <p class="is-size-7">
+            Sudah punya akun?
+            <span class="switch-link" id="showLogin">Login</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="../assets/js/auth.js"></script>
+</body>
+
 </html>
