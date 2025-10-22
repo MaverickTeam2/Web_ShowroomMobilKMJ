@@ -2,18 +2,20 @@
 // SIDEBAR ACTIVE STATE + PAGE LOADER
 // =========================
 
-const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a[data-page]');
+const allSideMenu = document.querySelectorAll('#sidebar .side-menu li a[data-page]');
 const mainContent = document.getElementById("main-content");
 
 // Fungsi untuk load halaman ke <main>
 async function loadPage(page) {
   try {
     const response = await fetch(page);
-    if (!response.ok) throw new Error("Halaman tidak ditemukan");
+    if (!response.ok) throw new Error(`Halaman "${page}" tidak ditemukan`);
     const html = await response.text();
     mainContent.innerHTML = html;
   } catch (err) {
-    mainContent.innerHTML = `<p style="color:red;">Gagal memuat halaman: ${err.message}</p>`;
+    mainContent.innerHTML = `<p style="color:red; text-align:center; padding:20px;">
+      ⚠️ Gagal memuat halaman: ${err.message}
+    </p>`;
   }
 }
 
@@ -142,3 +144,44 @@ document.addEventListener('click', function (e) {
     }
   }
 });
+
+// =========================
+// TOMBOL TAMBAH TRANSAKSI
+// =========================
+document.addEventListener('click', function (e) {
+  const btnTambahTransaksi = e.target.closest('#btn-tambah-transaksi');
+  if (btnTambahTransaksi) {
+    e.preventDefault();
+
+    const page = btnTambahTransaksi.getAttribute('data-page');
+    if (page) {
+      loadPage(page);
+      updateBreadcrumb([
+        { name: 'Dashboard', link: '#' },
+        { name: 'Transaksi', link: '#' },
+        { name: 'Tambah Transaksi', active: true }
+      ]);
+    }
+  }
+});
+
+// =========================
+// TOMBOL TAMBAH TRANSAKSI
+// =========================
+document.addEventListener('click', function (e) {
+  const btnTambahTransaksi = e.target.closest('#btn-tambah-transaksi');
+  if (btnTambahTransaksi) {
+    e.preventDefault();
+
+    const page = btnTambahTransaksi.getAttribute('data-page');
+    if (page) {
+      loadPage(page);
+      updateBreadcrumb([
+        { name: 'Dashboard', link: '#' },
+        { name: 'Transaksi', link: '#' },
+        { name: 'Tambah Transaksi', active: true }
+      ]);
+    }
+  }
+});
+
