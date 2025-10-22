@@ -4,22 +4,58 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Bulma</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css"
+    />
     <style>
       body {
         font-family: "Lato", sans-serif;
-        min-height: 100vh;
+        margin: 0;
       }
+
       .login-container {
-        min-height: 100vh;
         display: flex;
+        height: 100vh;
+        width: 100%;
       }
+
+      /* === Gambar kiri (desktop) === */
       .left-side {
-        background: url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80") no-repeat center center;
-        background-size: cover;
+        flex: 1;
+        overflow: hidden;
       }
+
+      .left-side img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* isi penuh, sedikit terpotong tapi rapi */
+        object-position: center;
+        display: block;
+      }
+
+      .right-side {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .box {
+        box-shadow: none;
+        max-width: 400px;
+        width: 100%;
+      }
+
       .logo img {
         max-height: 60px;
         margin-bottom: 10px;
@@ -30,6 +66,7 @@
         position: relative;
         margin-bottom: 1.5rem;
       }
+
       .floating-input {
         width: 100%;
         border: 1px solid #dbdbdb;
@@ -37,6 +74,7 @@
         padding: 12px 16px;
         transition: all 0.3s;
       }
+
       .floating-label {
         position: absolute;
         top: 12px;
@@ -46,6 +84,7 @@
         pointer-events: none;
         transition: all 0.2s ease;
       }
+
       .floating-input:focus + .floating-label,
       .floating-input:not(:placeholder-shown) + .floating-label {
         top: -8px;
@@ -56,10 +95,10 @@
         color: #3273dc;
       }
 
-      /* Eye icon */
       .password-wrapper {
         position: relative;
       }
+
       .toggle-password {
         position: absolute;
         right: 25px;
@@ -69,68 +108,122 @@
         cursor: pointer;
         color: #888;
       }
+
       .toggle-password:hover {
         color: #3273dc;
       }
 
-      /* Button hover */
       .button.is-primary {
         transition: all 0.3s ease;
       }
+
       .button.is-primary:hover {
         background-color: #276cda;
         transform: translateY(-2px);
       }
+
+      /*RESPONSIVE: Mobile layout*/
+      @media (max-width: 768px) {
+  .left-side {
+    display: none; /* gambar kiri hilang di mobile */
+  }
+
+  .login-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh; /* ✅ biar konten full tinggi layar */
+  }
+
+  .right-side {
+    flex: none; /* ✅ biar gak ikut flex 1 dari desktop */
+    width: 100%;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .box {
+    width: 100%;
+    max-width: 400px;
+    box-shadow: none;
+  }
+}
+
     </style>
   </head>
   <body>
-    <section class="section login-container">
-      <div class="columns is-gapless is-flex-grow-1">
-        <!-- Left Side Image -->
-        <div class="column is-hidden-mobile is-half left-side"></div>
+    <section class="login-container">
+      <!-- Gambar kiri / atas -->
+      <div class="left-side">
+        <img
+          src="https://4kwallpapers.com/images/wallpapers/bmw-black-cars-cinematic-autumn-foliage-road-tarmac-1080x2400-3282.jpg"
+          alt="Car_Background"
+        />
+      </div>
 
-        <!-- Right Side Form -->
-        <div class="column is-flex is-align-items-center is-justify-content-center">
-          <div class="box" style="max-width: 400px; width: 100%">
-            <div class="logo has-text-centered mb-4">
-              <img src="../assets/img/Logo_KMJ_YB.png" alt="Logo" />
-              <h2 class="title is-4 has-text-weight-bold">LOGIN</h2>
+      <!-- Form kanan / bawah -->
+      <div class="right-side">
+        <div class="box">
+          <div class="logo has-text-centered mb-4">
+            <img src="../assets/img/Logo_KMJ_YB.png" alt="Logo" />
+            <h2 class="title is-4 has-text-weight-bold">LOGIN</h2>
+          </div>
+
+          <form>
+            <div class="field">
+              <input
+                class="floating-input"
+                type="text"
+                placeholder=" "
+                required
+              />
+              <label class="floating-label">Username</label>
             </div>
 
-            <form>
-              <div class="field">
-                <input class="floating-input" type="text" placeholder=" " required />
-                <label class="floating-label">Username</label>
-              </div>
-
-              <div class="field password-wrapper">
-                <input class="floating-input" type="password" id="password" placeholder=" " required />
-                <label class="floating-label">Password</label>
-                <span class="toggle-password"><i class="bx bx-show"></i></span>
-                <p class="has-text-right is-size-7 mt-1">
-                  <a href="#">Lupa kata sandi?</a>
-                </p>
-              </div>
-
-              <div class="field">
-                <button type="submit" class="button is-link is-fullwidth is-rounded has-text-weight-semibold">LOGIN</button>
-              </div>
-            </form>
-
-            <div class="has-text-centered my-4">
-              <span class="is-size-7 has-text-grey">OR</span>
+            <div class="field password-wrapper">
+              <input
+                class="floating-input"
+                type="password"
+                id="password"
+                placeholder=" "
+                required
+              />
+              <label class="floating-label">Password</label>
+              <span class="toggle-password"><i class="bx bx-show"></i></span>
+              <p class="has-text-right is-size-7 mt-1">
+                <a href="#">Lupa kata sandi?</a>
+              </p>
             </div>
 
             <div class="field">
-              <button class="button is-light is-fullwidth is-rounded">
-                <img src="https://img.icons8.com/color/20/000000/google-logo.png" alt="Google" />
-                <span>Continue with Google</span>
+              <button
+                type="submit"
+                class="button is-link is-fullwidth is-rounded has-text-weight-semibold"
+              >
+                LOGIN
               </button>
             </div>
+          </form>
 
-            <div class="has-text-centered mt-3">
-              <p class="is-size-7">Belum punya akun? <a href="register.html">Daftar</a></p>
-            </div>
+          <div class="has-text-centered my-4">
+            <span class="is-size-7 has-text-grey">OR</span>
+          </div>
+
+          <div class="field">
+            <button class="button is-light is-fullwidth is-rounded">
+              <img
+                src="https://img.icons8.com/color/20/000000/google-logo.png"
+                alt="Google"
+              />
+              <span>Continue with Google</span>
+            </button>
+          </div>
+
+          <div class="has-text-centered mt-3">
+            <p class="is-size-7">
+              Belum punya akun? <a href="register.html">Daftar</a>
+            </p>
           </div>
         </div>
       </div>
@@ -141,10 +234,15 @@
       const passwordInput = document.querySelector("#password");
 
       togglePassword.addEventListener("click", () => {
-        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        const type =
+          passwordInput.getAttribute("type") === "password"
+            ? "text"
+            : "password";
         passwordInput.setAttribute("type", type);
         togglePassword.innerHTML =
-          type === "password" ? '<i class="bx bx-show"></i>' : '<i class="bx bx-hide"></i>';
+          type === "password"
+            ? '<i class="bx bx-show"></i>'
+            : '<i class="bx bx-hide"></i>';
       });
     </script>
   </body>
