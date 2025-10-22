@@ -150,8 +150,26 @@ body {
   border-bottom: 2px solid #e2e8f0;
   padding-bottom: 5px;
 }
-/* ============ Enda INFORMASI MOBIL ============ */
- .row.g-3 {
-    row-gap: 1rem; /* jarak antar baris checkbox */
-    column-gap: 1rem; /* jarak antar kolom */
-  }
+
+/* ========== Layout Checkbox Fitur ========== */
+.fitur-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* buat kolom otomatis */
+  gap: 8px 20px; /* jarak antar item */
+  margin-top: 10px;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.form-check input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #0d6efd; /* warna centang */
+  cursor: pointer;
+}
