@@ -72,6 +72,14 @@ session_start();
         </div>
       </div>
 
+      <!-- Back ke Beranda -->
+      <a href="../../templates/index.php"
+        style="position: absolute; top: 20px; right: 20px; z-index: 1000; text-decoration: none; color: #000000; font-weight: 600;">
+        <span class="icon"><i class='bx bx-arrow-back'></i></span>
+       <span>Back</span>
+      </a>
+
+
       <!-- ===== REGISTER FORM ===== -->
       <div id="registerForm" class="form-box hidden">
         <div class="logo has-text-centered mb-4">
@@ -125,22 +133,6 @@ session_start();
   </section>
 
   <script src="../../assets/js/auth.js"></script>
-  <!-- Popup Modal -->
-  <div id="popupModal" class="modal">
-    <div class="modal-background"></div>
-    <div class="modal-card" style="max-width: 400px;">
-      <header class="modal-card-head" style="justify-content: center; border-bottom: none;">
-        <span id="popupIcon" class="icon is-large"></span>
-      </header>
-      <section class="modal-card-body has-text-centered">
-        <p id="popupTitle" class="title is-5"></p>
-        <p id="popupMessage" class="subtitle is-6"></p>
-      </section>
-      <footer class="modal-card-foot" style="justify-content: center; border-top: none;">
-        <button class="button is-link is-rounded" onclick="closePopup()">OK</button>
-      </footer>
-    </div>
-  </div>
 </body>
 
 </html>
