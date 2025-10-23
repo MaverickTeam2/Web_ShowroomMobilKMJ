@@ -13,7 +13,7 @@
 <body>
 
     <!-- Navbar -->
-    <script src="../assets/js/navbar.js" defer></script>
+    <?php include '../templates/navbar_footer/navbar.php'; ?>
 
   <div class="container text-center my-5">
     <h2 class="fw-bold">We hope we meet on the road</h2>

@@ -29,7 +29,7 @@
 
   <body>
     <!-- Navbar -->
-    <script src="../assets/js/navbar.js" defer></script>
+    <?php include '../templates/navbar_footer/navbar.php'; ?>
 
     <section class="hero is-white is-fullheight-with-navbar">
       <div class="hero-body">

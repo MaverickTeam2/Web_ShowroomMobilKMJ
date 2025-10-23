@@ -5,6 +5,19 @@ body {
   overflow: hidden;
   font-family: "Lato", sans-serif;
 }
+/* popup css */
+#popupModal .modal-card-head .icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+#popupModal .modal-card {
+    border-radius: 12px;
+    text-align: center;
+}
+#popupModal .button.is-link {
+    width: 80px;
+}
+
 
 /* ===== CONTAINER & ANIMATION ===== */
 .auth-container {

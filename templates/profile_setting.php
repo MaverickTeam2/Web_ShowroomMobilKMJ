@@ -28,7 +28,7 @@ $user = [
   <div class="container py-4">
     <div class="d-flex align-items-center mb-3">
       <span class="me-2 fs-4">←</span>
-      <a href="#" class="text-decoration-none">Back</a>
+      <a href="../templates/index.php" class="text-decoration-none">Back</a>
     </div>
 
     <h1 class="mb-4">Profile Setting</h1>

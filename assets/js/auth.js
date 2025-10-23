@@ -1,3 +1,16 @@
+// Toggle password
+document.querySelectorAll(".toggle-password").forEach((icon) => {
+    icon.addEventListener("click", () => {
+        const input = document.getElementById(icon.dataset.target);
+        const type = input.getAttribute("type") === "password" ? "text" : "password";
+        input.setAttribute("type", type);
+        icon.innerHTML = type === "password"
+            ? '<i class="bx bx-show"></i>'
+            : '<i class="bx bx-hide"></i>';
+    });
+});
+
+// Animasi pindah login ↔ register
 const authContainer = document.getElementById("authContainer");
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
@@ -34,3 +47,24 @@ document.querySelectorAll(".toggle-password").forEach((icon) => {
                 : '<i class="bx bx-hide"></i>';
     });
 });
+function showPopup(type, title, message) {
+    const modal = document.getElementById('popupModal');
+    const popupTitle = document.getElementById('popupTitle');
+    const popupMessage = document.getElementById('popupMessage');
+    const popupIcon = document.getElementById('popupIcon');
+
+    popupTitle.textContent = title;
+    popupMessage.textContent = message;
+
+    if (type === 'success') {
+        popupIcon.innerHTML = '<i class="fa-solid fa-circle-check has-text-success fa-2x"></i>';
+    } else if (type === 'error') {
+        popupIcon.innerHTML = '<i class="fa-solid fa-circle-xmark has-text-danger fa-2x"></i>';
+    }
+
+    modal.classList.add('is-active');
+}
+
+function closePopup() {
+    document.getElementById('popupModal').classList.remove('is-active');
+}

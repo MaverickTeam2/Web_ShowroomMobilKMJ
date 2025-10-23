@@ -59,7 +59,7 @@ $faqs = [
 <body>
 
 <!-- navbar -->
- <script src="../assets/js/navbar.js" defer></script>
+ <?php include '../templates/navbar_footer/navbar.php'; ?>
 
 <!-- Sub Navigation -->
 <div class="container">
