@@ -10,7 +10,7 @@ document.querySelectorAll(".toggle-password").forEach((icon) => {
     });
 });
 
-// Animasi pindah login ↔ register
+// Animasi pindah login atau register
 const authContainer = document.getElementById("authContainer");
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
@@ -68,3 +68,14 @@ function showPopup(type, title, message) {
 function closePopup() {
     document.getElementById('popupModal').classList.remove('is-active');
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("form") === "register") {
+    authContainer.classList.add("active");
+    loginForm.classList.add("hidden");
+    loginForm.classList.remove("active");
+    registerForm.classList.remove("hidden");
+    registerForm.classList.add("active");
+  }
+});
