@@ -55,6 +55,8 @@ $faqs = [
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="../assets/css/finance.css">
+    <!--Import Custom CSS-->
+    <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
 <body>
 
