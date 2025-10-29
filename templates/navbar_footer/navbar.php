@@ -63,8 +63,7 @@ session_start();
             <a class="navbar-item" href="profile_setting.php">Profile</a>
             <a class="navbar-item" href="auth/logout.php">Logout</a>
           <?php else: ?>
-            <a class="navbar-item" href="auth/auth.php">Login</a>
-            <a class="navbar-item" href="auth/auth.php#registerForm">Register</a>
+            <a class="navbar-item" href="auth/auth.php"> Login </a>
           <?php endif; ?>
         </div>
       </div>
