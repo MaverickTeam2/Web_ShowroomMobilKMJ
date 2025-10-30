@@ -16,7 +16,7 @@ async function loadPage(page) {
     mainContent.innerHTML = html;
     if (page.includes("setting1")) {
       setTimeout(() => {
-        initCropperFeature();
+        // initCropperFeature();
         initScheduleFeature();
         initRestoreFeature();
       }, 100);
