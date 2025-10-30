@@ -66,7 +66,7 @@
             <p class="title is-6">About</p>
             <ul>
               <li>
-                <a href="https://wa.me/628123456789" class="has-text-black"
+                <a href="contactus.php" class="has-text-black"
                   >Contact us</a
                 >
               </li>

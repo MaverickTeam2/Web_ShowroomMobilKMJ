@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" date-theme="light">
+<html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,13 +8,17 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
+  <!--Import Custom CSS-->
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <!--Import Font Awesome-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="../assets/css/contactus.css">
 </head>
+
 <body>
 
-    <!-- Navbar -->
-    <?php include '../templates/navbar_footer/navbar.php'; ?>
+  <!-- Navbar -->
+  <?php include '../templates/navbar_footer/navbar.php'; ?>
 
   <div class="container text-center my-5">
     <h2 class="fw-bold">We hope we meet on the road</h2>
@@ -72,7 +77,7 @@
     </div>
   </div>
 
-  
+
   <!-- OTHER RESOURCES SECTION -->
   <div class="container my-5">
     <h3 class="fw-bold mb-4">Other resources</h3>
@@ -94,7 +99,8 @@
 
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#foundation">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#foundation">
             The KMJ Foundation
           </button>
         </h2>
@@ -107,7 +113,8 @@
 
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#marketing">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#marketing">
             Marketing Vendoring Inquiries
           </button>
         </h2>
@@ -143,15 +150,16 @@
           </div>
         </div>
       </div>
-
     </div>
+  </div>
   </div>
 
 
-    <!-- Bootstrap JS -->
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Footer -->
-<script src="../assets/js/footer.js" defer></script>
+  <script src="../assets/js/footer.js" defer></script>
 
 </body>
+
 </html>
