@@ -78,7 +78,7 @@ $recommendations = [
 
 
 <!-- Header/Navbar -->
-<script src="../assets/js/navbar.js" defer></script>
+<?php include '../templates/navbar_footer/navbar.php'; ?>
 
 <div class="container mt-4">
   <a href="../templates/katalog.php" class="text-decoration-none mb-3 d-inline-block">← Back</a>

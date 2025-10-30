@@ -20,6 +20,8 @@ $user = [
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <!-- CSS custom -->
   <link rel="stylesheet" href="../assets/profileset.css">
+  <!--Import Custom CSS-->
+    <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
 <body>
   <!--header/navbar-->
@@ -27,8 +29,7 @@ $user = [
 
   <div class="container py-4">
     <div class="d-flex align-items-center mb-3">
-      <span class="me-2 fs-4">←</span>
-      <a href="#" class="text-decoration-none">Back</a>
+      <a href="../templates/index.php" class="text-decoration-none d-flex align-items-center"><span class="me-2 fs-4">←</span>Back</a>
     </div>
 
     <h1 class="mb-4">Profile Setting</h1>
@@ -83,6 +84,6 @@ $user = [
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Footer -->
-<script src="../assets/js/footer.js" defer></script>
+  <script src="../assets/js/footer.js" defer></script>
 </body>
 </html>

@@ -145,7 +145,7 @@ $bahanBakar = [
 
 <body>
   <!-- navbar -->
-  <script src="../assets/js/navbar.js"></script>
+  <?php include '../templates/navbar_footer/navbar.php'; ?>
 
   <!-- Card Container -->
   <div class="container-fluid">
@@ -471,7 +471,7 @@ $bahanBakar = [
                       <div class="dropdown-menu" role="menu">
                         <div class="dropdown-content">
                           <a href="#" class="dropdown-item"><i class="fa-solid fa-trash"></i> Hapus dari favorit</a>
-                          <a href="#" class="dropdown-item"><i class="fa-solid fa-shuffle me-2"></i> Bandingkan</a>
+                          <a href="../templates/perbandingan.html" class="dropdown-item"><i class="fa-solid fa-shuffle me-2"></i> Bandingkan</a>
                           <a href="#" class="dropdown-item"><i class="fa-solid fa-share me-2"></i> Bagikan</a>
                           <a href="#" class="dropdown-item"><i class="fa-solid fa-car me-2"></i> Fitur & Spesifikasi</a>
                         </div>

@@ -27,7 +27,7 @@
   </head>
   <body>
     <!-- Navbar -->
-    <script src="../assets/js/navbar.js"></script>
+    <?php include '../templates/navbar_footer/navbar.php'; ?>
 
     <!-- Container Hero Section-->
     <section class="hero is-fullheight-with-navbar p-4 m">

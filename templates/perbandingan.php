@@ -8,8 +8,16 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
     />
-    <!--import css perbandingan-->
+    <!--Import Font Awesome-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!--import css Perbandingan-->
     <link rel="stylesheet" href="../assets/css/perbandingan.css" />
+    <!--Import Custom CSS-->
+    <link rel="stylesheet" href="../assets/css/style.css" />
+
     <title>Perbandingan Mobil</title>
   </head>
   <body>
@@ -22,42 +30,82 @@
         </div>
 
         <div class="columns is-variable is-6 is-multiline has-text-centered">
-            <div class="column is-half">
-                <div class="card" style="max-width: 480px; margin: 0 auto;">
-                    <div class="card-image">
-                        <figure class="image" style="margin: 0;">
-                            <img src="../assets/img/mercedes.png" alt="Mercedes S2000" style="width: 100%; height: auto; border: none; box-shadow: none;" />
-                        </figure>
-                    </div>
-                    <div class="card-content" style="padding-top: 1rem;">
-                        <p class="title is-5 mt-3">Mercedes S2000</p>
-                        <button class="button is-info is-rounded mt-3" style="background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%); color: #fff; border: none;">
-                            Ubah
-                        </button>
-                    </div>
-                </div>
+          <div class="column is-half">
+            <div class="card" style="max-width: 480px; margin: 0 auto">
+              <div class="card-image">
+                <figure class="image" style="margin: 0">
+                  <img
+                    src="https://hips.hearstapps.com/hmg-prod/images/koenigsegg-regera-mmp-1-1591115837.jpg?crop=0.779xw:0.660xh;0.0945xw,0.230xh&resize=1200:*"
+                    alt="Koenigsegg Regera"
+                    style="
+                      width: 100%;
+                      height: auto;
+                      border: none;
+                      box-shadow: none;
+                    "
+                  />
+                </figure>
+              </div>
+              <div class="card-content" style="padding-top: 1rem">
+                <p class="title is-5 mt-3">Koenigsegg Regera</p>
+                <button
+                  class="button is-info is-rounded mt-3"
+                  style="
+                    background: linear-gradient(
+                      90deg,
+                      #00c6ff 0%,
+                      #0072ff 100%
+                    );
+                    color: #fff;
+                    border: none;
+                  "
+                >
+                  Ubah
+                </button>
+              </div>
             </div>
-            <div class="column is-half">
-                <div class="card" style="max-width: 480px; margin: 0 auto;">
-                    <div class="card-image">
-                        <figure class="image" style="margin: 0;">
-                            <img src="../assets/img/ferrari.png" alt="Honda Civic LX" style="width: 100%; height: auto; border: none; box-shadow: none;" />
-                        </figure>
-                    </div>
-                    <div class="card-content" style="padding-top: 1rem;">
-                        <p class="title is-5 mt-3">Honda Civic LX</p>
-                        <button class="button is-danger is-rounded mt-3" style="background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%); color: #fff; border: none;">
-                            Ubah
-                        </button>
-                    </div>
-                </div>
+          </div>
+          <div class="column is-half">
+            <div class="card" style="max-width: 480px; margin: 0 auto">
+              <div class="card-image">
+                <figure class="image" style="margin: 0">
+                  <img
+                    src="https://www.topgear.com/sites/default/files/cars-car/image/2016/08/rh_huayrabc-67.jpg"
+                    alt="Pagani Huayra"
+                    style="
+                      width: 100%;
+                      height: auto;
+                      border: none;
+                      box-shadow: none;
+                    "
+                  />
+                </figure>
+              </div>
+              <div class="card-content" style="padding-top: 1rem">
+                <p class="title is-5 mt-3">Pagani Huayra</p>
+                <button
+                  class="button is-danger is-rounded mt-3"
+                  style="
+                    background: linear-gradient(
+                      90deg,
+                      #ff512f 0%,
+                      #dd2476 100%
+                    );
+                    color: #fff;
+                    border: none;
+                  "
+                >
+                  Ubah
+                </button>
+              </div>
             </div>
+          </div>
         </div>
 
         <div class="has-text-centered mt-5">
-            <button class="button is-link is-rounded" id="comparePhotosBtn">
-                Bandingkan Foto
-            </button>
+          <button class="button is-link is-rounded" id="comparePhotosBtn">
+            Bandingkan Foto
+          </button>
         </div>
 
         <div class="tabs is-centered is-boxed mt-5" id="comparisonTabs">
@@ -216,5 +264,8 @@
     </div>
     <!--Import perbandingan JS-->
     <script src="../assets/js/perbandingan.js"></script>
+
+    <!--Import Footer-->
+    <script src="../assets/js/footer.js"></script>
   </body>
 </html>

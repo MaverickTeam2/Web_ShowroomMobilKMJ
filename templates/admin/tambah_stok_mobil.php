@@ -29,7 +29,7 @@
       <!-- ================= Foto Mobil ================= -->
       <div class="card p-4 shadow-sm mb-4">
         <h5 class="section-title">Foto Mobil</h5>
-        <div class="row g-3">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 ">
           <?php
           $fotoLabels = ['360° View', 'Tampilan Depan', 'Tampilan Belakang', 'Tampilan Samping'];
           foreach ($fotoLabels as $i => $label): ?>
@@ -84,7 +84,7 @@
             </select>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-5">
             <label class="form-label">Jenis Bahan Bakar *</label>
             <select class="form-select" required>
               <option value="">Pilih Jenis bahan bakar</option>
@@ -94,7 +94,7 @@
             </select>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-5">
             <label class="form-label">Sistem Penggerak *</label>
             <select class="form-select" required>
               <option value="">Pilih sistem penggerak</option>
@@ -104,20 +104,20 @@
             </select>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-5">
+            <label class="form-label">Warna Exterior *</label>
+            <input type="text" class="form-control" placeholder="Gray, Black, Red, dll" required>
+          </div>
+          <div class="col-md-5">
             <label class="form-label">Warna Exterior *</label>
             <input type="text" class="form-control" placeholder="Gray, Black, Red, dll" required>
           </div>
 
-          <div class="col-12 d-flex gap-3 align-items-end">
+          <div class="col-6 d-flex gap-3 ">
             <!-- Warna Exterior -->
-            <div class="flex-grow-1">
-              <label class="form-label">Warna Exterior *</label>
-              <input type="text" class="form-control" placeholder="Gray, Black, Red, dll" required>
-            </div>
 
             <!-- Angsuran × Tenor -->
-            <div class="d-flex align-items-end gap-2" style="min-width: 220px;">
+            <div class="d-flex align-items-end gap-1" style="min-width: 100px;">
               <div class="flex-grow-1">
                 <label class="form-label">Angsuran (Rp) *</label>
                 <input type="number" class="form-control" placeholder="2500" required>
@@ -140,7 +140,6 @@
         </div>
       </div>
 
-
 <!-- ================= Fitur & Spesifikasi ================= -->
 <div class="card p-4 shadow-sm mb-4">
   <h5 class="section-title">Fitur & Spesifikasi</h5>
@@ -148,291 +147,75 @@
   <!-- Fitur Keselamatan -->
   <div class="mb-3">
     <h6>Fitur Keselamatan</h6>
-    <br>
-    <div class="row g-3">
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="airbag">
-          <label class="form-check-label" for="airbag">Airbag Pengemudi</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="traction">
-          <label class="form-check-label" for="traction">Traction Control</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="abs">
-          <label class="form-check-label" for="abs">ABS</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="esc">
-          <label class="form-check-label" for="esc">ESC</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="blindspot">
-          <label class="form-check-label" for="blindspot">Blind Spot Monitoring</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="ldw">
-          <label class="form-check-label" for="ldw">Lane Departure Warning</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="fcw">
-          <label class="form-check-label" for="fcw">Forward Collision Warning</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="eb">
-          <label class="form-check-label" for="eb">Emergency Braking</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="rearcam">
-          <label class="form-check-label" for="rearcam">Rearview Camera</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="parking">
-          <label class="form-check-label" for="parking">Parking Sensors</label>
-        </div>
-      </div>
+    <div class="fitur-grid">
+      <label class="form-check"><input type="checkbox" id="airbag"> Airbag Pengemudi</label>
+      <label class="form-check"><input type="checkbox" id="traction"> Traction Control</label>
+      <label class="form-check"><input type="checkbox" id="abs"> ABS</label>
+      <label class="form-check"><input type="checkbox" id="esc"> ESC</label>
+      <label class="form-check"><input type="checkbox" id="blindspot"> Blind Spot Monitoring</label>
+      <label class="form-check"><input type="checkbox" id="ldw"> Lane Departure Warning</label>
+      <label class="form-check"><input type="checkbox" id="fcw"> Forward Collision Warning</label>
+      <label class="form-check"><input type="checkbox" id="eb"> Emergency Braking</label>
+      <label class="form-check"><input type="checkbox" id="rearcam"> Rearview Camera</label>
+      <label class="form-check"><input type="checkbox" id="parking"> Parking Sensors</label>
     </div>
   </div>
-  <br>
 
   <!-- Fitur Kenyamanan & Hiburan -->
   <div class="mb-3">
     <h6>Fitur Kenyamanan & Hiburan</h6>
-    <br>
-    <div class="row g-3">
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="ac">
-          <label class="form-check-label" for="ac">Air Conditioning</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="climate">
-          <label class="form-check-label" for="climate">Climate Control</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="steering">
-          <label class="form-check-label" for="steering">Power Steering</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="windows">
-          <label class="form-check-label" for="windows">Power Windows</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="lock">
-          <label class="form-check-label" for="lock">Central Locking</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="usb">
-          <label class="form-check-label" for="usb">USB Port</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="bluetooth">
-          <label class="form-check-label" for="bluetooth">Bluetooth</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="wireless">
-          <label class="form-check-label" for="wireless">Wireless Charging</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="audio">
-          <label class="form-check-label" for="audio">Premium Audio System</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="nav">
-          <label class="form-check-label" for="nav">Navigation Seats</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="heated">
-          <label class="form-check-label" for="heated">Heated Seats</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="ventilated">
-          <label class="form-check-label" for="ventilated">Ventilated Seats</label>
-        </div>
-      </div>
+    <div class="fitur-grid">
+      <label class="form-check"><input type="checkbox" id="ac"> Air Conditioning</label>
+      <label class="form-check"><input type="checkbox" id="climate"> Climate Control</label>
+      <label class="form-check"><input type="checkbox" id="steering"> Power Steering</label>
+      <label class="form-check"><input type="checkbox" id="windows"> Power Windows</label>
+      <label class="form-check"><input type="checkbox" id="lock"> Central Locking</label>
+      <label class="form-check"><input type="checkbox" id="usb"> USB Port</label>
+      <label class="form-check"><input type="checkbox" id="bluetooth"> Bluetooth</label>
+      <label class="form-check"><input type="checkbox" id="wireless"> Wireless Charging</label>
+      <label class="form-check"><input type="checkbox" id="audio"> Premium Audio System</label>
+      <label class="form-check"><input type="checkbox" id="nav"> Navigation System</label>
+      <label class="form-check"><input type="checkbox" id="heated"> Heated Seats</label>
+      <label class="form-check"><input type="checkbox" id="ventilated"> Ventilated Seats</label>
     </div>
   </div>
-  <br>
 
   <!-- Fitur Exterior -->
   <div class="mb-3">
     <h6>Fitur Exterior</h6>
-    <br>
-    <div class="row g-3">
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="headlights">
-          <label class="form-check-label" for="headlights">LED Headlights</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="taillights">
-          <label class="form-check-label" for="taillights">LED Taillights</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="fog">
-          <label class="form-check-label" for="fog">Fog Lamps</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="sunroof">
-          <label class="form-check-label" for="sunroof">Sunroof</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="panoramic">
-          <label class="form-check-label" for="panoramic">Panoramic Roof</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="spoiler">
-          <label class="form-check-label" for="spoiler">Spoiler</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="rails">
-          <label class="form-check-label" for="rails">Roof Rails</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="trim">
-          <label class="form-check-label" for="trim">Chrome Trim</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="wheels">
-          <label class="form-check-label" for="wheels">Alloy Wheels</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="runflat">
-          <label class="form-check-label" for="runflat">Run-flat Tires</label>
-        </div>
-      </div>
+    <div class="fitur-grid">
+      <label class="form-check"><input type="checkbox" id="headlights"> LED Headlights</label>
+      <label class="form-check"><input type="checkbox" id="taillights"> LED Taillights</label>
+      <label class="form-check"><input type="checkbox" id="fog"> Fog Lamps</label>
+      <label class="form-check"><input type="checkbox" id="sunroof"> Sunroof</label>
+      <label class="form-check"><input type="checkbox" id="panoramic"> Panoramic Roof</label>
+      <label class="form-check"><input type="checkbox" id="spoiler"> Spoiler</label>
+      <label class="form-check"><input type="checkbox" id="rails"> Roof Rails</label>
+      <label class="form-check"><input type="checkbox" id="trim"> Chrome Trim</label>
+      <label class="form-check"><input type="checkbox" id="wheels"> Alloy Wheels</label>
+      <label class="form-check"><input type="checkbox" id="runflat"> Run-flat Tires</label>
     </div>
   </div>
-  <br>
 
-  <!-- Fitur Tambahan / Keamanan -->
+  <!-- Fitur Tambahan -->
   <div class="mb-3">
     <h6>Fitur Tambahan</h6>
-    <br>
-    <div class="row g-3">
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="immobilizer">
-          <label class="form-check-label" for="immobilizer">Engine Immobilizer</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="keyless">
-          <label class="form-check-label" for="keyless">Keyless Entry</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="pushbutton">
-          <label class="form-check-label" for="pushbutton">Push Button Start</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="autoheadlamps">
-          <label class="form-check-label" for="autoheadlamps">Auto Headlamps</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="rainwipers">
-          <label class="form-check-label" for="rainwipers">Rain Sensing Wipers</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="parkingassist">
-          <label class="form-check-label" for="parkingassist">Parking Assist</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="cruiseextra">
-          <label class="form-check-label" for="cruiseextra">Cruise Control</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="adaptivecruise">
-          <label class="form-check-label" for="adaptivecruise">Adaptive Cruise Control</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="hillstart">
-          <label class="form-check-label" for="hillstart">Hill Start Assist</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="tirepressure">
-          <label class="form-check-label" for="tirepressure">Tire Pressure Monitoring</label>
-        </div>
-      </div>
+    <div class="fitur-grid">
+      <label class="form-check"><input type="checkbox" id="immobilizer"> Engine Immobilizer</label>
+      <label class="form-check"><input type="checkbox" id="keyless"> Keyless Entry</label>
+      <label class="form-check"><input type="checkbox" id="pushbutton"> Push Button Start</label>
+      <label class="form-check"><input type="checkbox" id="autoheadlamps"> Auto Headlamps</label>
+      <label class="form-check"><input type="checkbox" id="rainwipers"> Rain Sensing Wipers</label>
+      <label class="form-check"><input type="checkbox" id="parkingassist"> Parking Assist</label>
+      <label class="form-check"><input type="checkbox" id="cruiseextra"> Cruise Control</label>
+      <label class="form-check"><input type="checkbox" id="adaptivecruise"> Adaptive Cruise Control</label>
+      <label class="form-check"><input type="checkbox" id="hillstart"> Hill Start Assist</label>
+      <label class="form-check"><input type="checkbox" id="tirepressure"> Tire Pressure Monitoring</label>
     </div>
   </div>
 </div>
-<br>
+
+
 
 
       <!-- ================= Status Mobil ================= -->
