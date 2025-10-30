@@ -8,7 +8,7 @@ const mainContent = document.getElementById("main-content");
 // Fungsi untuk load halaman ke <main>
 async function loadPage(page) {
   try {
-    const response = await fetch(page);
+    const response = await fetch(page); // cukup page saja
     if (!response.ok) throw new Error(`Halaman "${page}" tidak ditemukan`);
     const html = await response.text();
     mainContent.innerHTML = html;
@@ -18,6 +18,7 @@ async function loadPage(page) {
     </p>`;
   }
 }
+
 
 // Klik menu di sidebar
 allSideMenu.forEach(item => {
@@ -37,7 +38,7 @@ allSideMenu.forEach(item => {
 });
 
 // load default halaman saat awal
-loadPage("dashboard.html");
+loadPage("dashboard.php");
 
 
 // =========================
