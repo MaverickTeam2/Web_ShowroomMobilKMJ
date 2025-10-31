@@ -56,167 +56,312 @@ $accounts = [
     ]
 ];
 ?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manajemen Akun - Kaliwates Mobil Jember</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        }
 
-        [id^="status-badge-"] {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 94px;
-        text-align: center;
+<style>
+    .account-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 40px;
     }
-    </style>
-</head>
-<body class="bg-gray-50">
-    <div class="flex min-h-screen">
-        <aside class="w-56 bg-white border-r border-gray-200 flex flex-col fixed h-screen">
-            <div class="p-4 border-b border-gray-200 flex items-center gap-3">
-                <div class="w-10 h-10 bg-black rounded flex items-center justify-center flex-shrink-0">
-                    <span class="text-yellow-400 font-bold text-lg">KM</span>
-                </div>
-                <div class="min-w-0">
-                    <h1 class="font-semibold text-sm leading-tight">Kaliwates Mobil Jember</h1>
-                    <p class="text-xs text-gray-500">Admin Dashboard</p>
-                </div>
-            </div>
-            
-            <nav class="flex-1 p-3 overflow-y-auto">
-                <p class="text-xs font-medium text-gray-500 mb-2 px-2">Menu</p>
-                <ul class="space-y-0.5">
-                    <li>
-                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
-                            <i class="fas fa-home text-base w-4"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
-                            <i class="fas fa-exchange-alt text-base w-4"></i>
-                            <span>Transaksi</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
-                            <i class="fas fa-car text-base w-4"></i>
-                            <span>Manejemen Mobil</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
-                            <i class="fas fa-chart-bar text-base w-4"></i>
-                            <span>Report</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-white bg-indigo-950 rounded-md">
-                            <i class="fas fa-users text-base w-4"></i>
-                            <span>Manajemen Akun</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
 
-            <div class="p-3 border-t border-gray-200">
-                <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md mb-0.5 transition-colors">
-                    <i class="fas fa-cog text-base w-4"></i>
-                    <span>Settings</span>
-                </a>
-                <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
-                    <i class="fas fa-question-circle text-base w-4"></i>
-                    <span>Help Center</span>
-                </a>
-            </div>
-        </aside>
+    .account-header h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #000;
+        margin: 0 0 8px 0;
+        line-height: 1;
+    }
 
-        <main class="flex-1 ml-56">
-            <div class="px-10 pt-6 pb-8">
-                <div class="flex justify-between items-start mb-8">
-                    <div>
-                        <h2 class="text-4xl font-bold text-gray-900 mb-1.5">Manajemen Akun</h2>
-                        <p class="text-gray-600 text-base">Edit dan Tambah akun di halaman ini</p>
+    .account-header p {
+        color: #666;
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .btn-tambah-akun {
+        background: #4169E1;
+        color: white;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .btn-tambah-akun:hover {
+        background: #3154c4;
+    }
+
+    .account-card {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .account-card-top {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    .account-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    .account-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .account-card .account-info .account-name {
+        font-size: 1.6rem !important;
+        font-weight: 800 !important;
+        color: #111 !important;
+        margin: 0 0 8px 0 !important;
+        line-height: 1.3 !important;
+        letter-spacing: -0.3px !important;
+    }
+
+    .account-card .account-info .account-email {
+        font-size: 1rem !important;
+        color: #555 !important;
+        margin: 0 0 4px 0 !important;
+    }
+
+    .account-card .account-info .account-login {
+        font-size: 0.9rem !important;
+        color: #888 !important;
+        margin: 0 !important;
+    }
+
+    .account-card-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+    }
+
+    .account-badges {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .badge-role {
+        padding: 8px 20px;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .badge-admin {
+        background: #FFE5E5;
+        color: #E74C3C;
+    }
+
+    .badge-owner {
+        background: #E3F2FD;
+        color: #2196F3;
+    }
+
+    .badge-status {
+        min-width: 120px; 
+        text-align: center;
+        padding: 8px 20px;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .badge-aktif {
+        background: #E8F5E9;
+        color: #4CAF50;
+    }
+
+    .badge-nonaktif {
+        background: #FFE5E5;
+        color: #E74C3C;
+    }
+
+    .toggle-switch {
+        position: relative;
+        width: 64px;
+        height: 32px;
+        flex-shrink: 0;
+    }
+
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background-color: #E74C3C; /* merah default */
+        border-radius: 34px;
+        transition: 0.3s;
+    }
+
+    .toggle-slider:before {
+        content: "";
+        position: absolute;
+        height: 24px;
+        width: 24px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        border-radius: 50%;
+        transition: 0.3s;
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+        background-color: #4CAF50; /* hijau aktif */
+    }
+
+    .toggle-switch input:checked + .toggle-slider:before {
+        transform: translateX(32px);
+    }
+
+    .btn-edit {
+        color: #4169E1;
+        text-decoration: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1rem;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: background 0.2s;
+    }
+
+    .btn-edit:hover {
+        background: #f0f4ff;
+    }
+
+    .btn-edit i {
+        font-size: 1.2rem;
+    }
+</style>
+
+<div class="account-header">
+    <div>
+        <h1>Manajemen Akun</h1>
+        <p>Edit dan Tambah akun di halaman ini</p>
+    </div>
+    <<button type="button" class="btn-tambah-akun" data-page="add_account.php">
+    <i class='bx bx-plus' style="font-size: 1.3rem;"></i>
+        Tambah Akun
+    </button>
+
+</div>
+
+<main style="padding: 0 20px;">
+    <div class="row g-4">
+        <?php foreach ($accounts as $account): ?>
+        <div class="col-lg-6 col-md-12">
+            <div class="account-card">
+                <div class="account-card-top">
+                    <img src="<?= htmlspecialchars($account['avatar']) ?>" 
+                         alt="<?= htmlspecialchars($account['name']) ?>" 
+                         class="account-avatar">
+                    
+                    <div class="account-info">
+                        <h1 class="account-name"><?= htmlspecialchars($account['name']) ?></h1>
+                        <p class="account-email"><?= htmlspecialchars($account['email']) ?></p>
+                        <p class="account-login"><?= htmlspecialchars($account['last_login']) ?></p>
                     </div>
-                    <a href="add_account.php" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg flex items-center gap-2 text-sm font-medium transition-colors">
-                        <i class="fas fa-plus text-sm"></i>
-                        <span>Tambah Akun</span>
+                </div>
+                
+                <div class="account-card-bottom">
+                    <div class="account-badges">
+                        <span class="badge-role <?= $account['role'] == 'Admin' ? 'badge-admin' : 'badge-owner' ?>">
+                            <?= htmlspecialchars($account['role']) ?>
+                        </span>
+                        
+                        <span id="status-badge-<?= $account['id'] ?>" 
+                              class="badge-status <?= $account['is_active'] ? 'badge-aktif' : 'badge-nonaktif' ?>">
+                              <?= $account['is_active'] ? 'Aktif' : 'NonAktif' ?>
+                        </span>
+                        
+                        <label class="toggle-switch">
+                            <input type="checkbox" 
+                                   id="toggle-<?= $account['id'] ?>"
+                                   <?= $account['is_active'] ? 'checked' : '' ?>
+                                   onchange="toggleStatus(<?= $account['id'] ?>, this.checked)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <a href="edit_account.php" class="btn-edit" data-page="edit_account.php?id=<?= $account['id'] ?>">
+                        <i class='bx bx-edit-alt'></i>
+                        Edit
                     </a>
                 </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                    <?php foreach ($accounts as $account): ?>
-                    <div class="bg-white rounded-xl border border-gray-200 p-5">
-                        <div class="flex gap-4">
-                            <img src="<?= $account['avatar'] ?>" alt="<?= $account['name'] ?>" 
-                                 class="w-28 h-28 rounded-full object-cover flex-shrink-0">
-                            
-                            <div class="flex-1 min-w-0">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="text-xl font-bold text-gray-900"><?= $account['name'] ?></h3>
-                                </div>
-                                <p class="text-gray-700 mb-0.5 text-sm"><?= $account['email'] ?></p>
-                                <p class="text-xs text-gray-500 mb-3"><?= $account['last_login'] ?></p>
-                                
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-3">
-                                        <span class="<?= $account['role'] == 'Admin' ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-600' ?> px-4 py-2 rounded-full text-sm font-semibold">
-                                            <?= $account['role'] ?>
-                                        </span>
-                                        
-                                        <span id="status-badge-<?= $account['id'] ?>" class="<?= $account['is_active'] ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600' ?> px-4 py-2 rounded-full text-sm font-semibold">
-                                            <?= $account['is_active'] ? 'Aktif' : 'NonAktif' ?>
-                                        </span>
-                                        
-                                        <label class="relative inline-block w-16 h-8 cursor-pointer">
-                                            <input 
-                                                type="checkbox" 
-                                                id="toggle-<?= $account['id'] ?>" 
-                                                class="sr-only peer"
-                                                <?= $account['is_active'] ? 'checked' : '' ?>
-                                                onchange="toggleStatus(<?= $account['id'] ?>, this.checked)"
-                                            >
-                                            <div class="w-16 h-8 bg-red-500 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-8 peer-checked:bg-green-500 after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all"></div>
-                                        </label>
-                                    </div>
-                                    
-                                    <a href="edit_account.php?id=<?= $account['id'] ?>" 
-                                       class="text-blue-600 hover:text-blue-700 flex items-center gap-1.5 font-medium text-sm">
-                                        <i class="fas fa-pen text-sm"></i>
-                                        <span>Edit</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
             </div>
-        </main>
+        </div>
+        <?php endforeach; ?>
     </div>
+</main>
 
-    <script>
-        function toggleStatus(accountId, isActive) {
-            console.log('Account ID:', accountId, 'Status:', isActive ? 'Aktif' : 'Non Aktif');
-            
-            const statusBadge = document.getElementById(`status-badge-${accountId}`);
-            if (isActive) {
-                statusBadge.textContent = 'Aktif';
-                statusBadge.className = 'bg-green-50 text-green-600 px-4 py-2 rounded-full text-sm font-semibold';
-            } else {
-                statusBadge.textContent = 'Non Aktif';
-                statusBadge.className = 'bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-semibold';
-            }
-            
-        }
-    </script>
-</body>
-</html>
+<script>
+function toggleStatus(accountId, isActive) {
+    const statusBadge = document.getElementById(`status-badge-${accountId}`);
+    if (isActive) {
+        statusBadge.textContent = 'Aktif';
+        statusBadge.className = 'badge-status badge-aktif';
+    } else {
+        statusBadge.textContent = 'NonAktif';
+        statusBadge.className = 'badge-status badge-nonaktif';
+    }
+}
+
+function loadPage(page) {
+    const mainContent = document.getElementById("main-content");
+    if (mainContent) {
+        fetch(page)
+            .then(response => {
+                if (!response.ok) throw new Error("Halaman tidak ditemukan");
+                return response.text();
+            })
+            .then(html => {
+                mainContent.innerHTML = html;
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            })
+            .catch(err => {
+                console.error("Gagal memuat halaman:", err);
+                alert("Gagal membuka halaman: " + page);
+            });
+    } else {
+        window.location.href = page;
+    }
+}
+
+// Gunakan event delegation agar event tetap aktif meskipun konten berubah
+document.addEventListener("click", function(e) {
+    const target = e.target.closest("[data-page]");
+    if (target) {
+        e.preventDefault();
+        const page = target.getAttribute("data-page");
+        loadPage(page);
+    }
+});
+</script>
