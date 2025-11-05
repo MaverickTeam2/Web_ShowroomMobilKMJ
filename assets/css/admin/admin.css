@@ -56,7 +56,7 @@ body {
 	width: 280px;
 	height: 100%;
 	background: var(--light);
-	z-index: 2000;
+	z-index: 1000;
 	font-family: var(--lato);
 	transition: .3s ease;
 	overflow-x: hidden;
@@ -715,5 +715,30 @@ body {
 #content main .head-title .left .breadcrumb li + li::before {
 	content: none;
 }
+
+/* === FIX HEADER NGAMBANG DI SEMUA HALAMAN === */
+#content nav {
+  position: fixed;
+  top: 0;
+  left: 280px; /* karena sidebar lebarnya 280px */
+  width: calc(100% - 280px);
+  z-index: 1000;
+  margin: 0 !important;
+  padding: 10px 24px !important;
+  background: var(--light);
+  border-bottom: 1px solid var(--grey);
+}
+
+/* Saat sidebar disembunyikan */
+#sidebar.hide ~ #content nav {
+  left: 60px;
+  width: calc(100% - 60px);
+}
+
+/* Biar konten gak ketutup header */
+#content main {
+  margin-top: 70px; /* kasih ruang setinggi header */
+}
+
 
 
