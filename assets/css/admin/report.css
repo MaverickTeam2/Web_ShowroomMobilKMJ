@@ -1,0 +1,57 @@
+#main-content .head-title {
+  margin-bottom: 1.5rem;
+}
+
+#main-content .breadcrumb li {
+  list-style: none;
+  display: inline;
+  color: #6c757d;
+}
+
+#main-content .breadcrumb li a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+#main-content .breadcrumb .active {
+  color: #000;
+  font-weight: 500;
+}
+
+.card h6.text-muted {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.card h3 {
+  margin: 0;
+}
+
+.table thead th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+.btn i {
+  vertical-align: middle;
+}
+
+/* Pastikan hanya body yang bisa scroll */
+body {
+  overflow-y: auto;
+}
+
+/* Jangan buat main atau #content ikut scroll lagi */
+#content, #main-content {
+  overflow: visible !important;
+  height: auto !important;
+}
+
+/* Jika layout-mu pakai flex container */
+section#content {
+  display: block;
+}

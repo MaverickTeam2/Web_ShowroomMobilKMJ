@@ -2,7 +2,7 @@
 $host = "localhost";    // nama host (biasanya: localhost)
 $user = "root";         // username MySQL (default: root)
 $pass = "";              // password MySQL (kosong jika default di XAMPP)
-$db = "webshowrooms"; // ganti dengan nama database kamu
+$db = "kmjshowrooms"; // ganti dengan nama database kamu
 
 // Membuat koneksi
 $conn = mysqli_connect($host, $user, $pass, $db);
