@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"  date-theme="light">
+<html lang="en"  data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
 <body>
 
     <!-- Navbar -->
-    <script src="../assets/js/navbar.js" defer></script>
+    <?php include '../templates/navbar_footer/navbar.php'; ?>
 
   <!-- Hero Section -->
   <section class="hero">

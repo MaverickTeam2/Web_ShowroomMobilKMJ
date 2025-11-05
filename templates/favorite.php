@@ -14,7 +14,7 @@
 </head>
 
 <body>
-  <script src="../assets/js/navbar.js"></script>
+  <?php include '../templates/navbar_footer/navbar.php'; ?>
 
   <section class="section">
     <div class="columns is-multiline is-justify-content-left">

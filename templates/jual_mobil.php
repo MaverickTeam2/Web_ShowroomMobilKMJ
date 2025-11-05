@@ -29,18 +29,18 @@
 
   <body>
     <!-- Navbar -->
-    <script src="../assets/js/navbar.js" defer></script>
+    <?php include '../templates/navbar_footer/navbar.php'; ?>
 
     <section class="hero is-white is-fullheight-with-navbar">
       <div class="hero-body">
         <div class="container has-text-centered">
-          <h1 class="title">Pembiayaan</h1>
+          <h1 class="title">Jual Mobil</h1>
           <h2 class="subtitle">Your trusted car dealership</h2>
         </div>
       </div>
     </section>
 
     <!-- Footer -->
-      <script src="../assets/js/footer.js"></script>
+    <script src="../assets/js/footer.js"></script>
   </body>
 </html>

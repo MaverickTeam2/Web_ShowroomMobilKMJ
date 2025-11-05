@@ -145,7 +145,7 @@ $bahanBakar = [
 
 <body>
   <!-- navbar -->
-  <script src="../assets/js/navbar.js"></script>
+  <?php include '../templates/navbar_footer/navbar.php'; ?>
 
   <!-- Card Container -->
   <div class="container-fluid">

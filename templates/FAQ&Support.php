@@ -24,7 +24,7 @@
 
   <body>
     <!-- Navbar -->
-    <script src="../assets/js/navbar.js"></script>
+    <?php include '../templates/navbar_footer/navbar.php'; ?>
 
     <section class="section">
       <div class="container">
@@ -38,7 +38,7 @@
           <div class="column is-7 has-text-centered">
             <h4 class="has-text-weight-bold">Browse By Topic</h4>
             <div class="topic-buttons">
-              <a href="../templates/general.html"><button class="button is-rounded">General</button></a> 
+              <a href="../templates/general.php"><button class="button is-rounded">General</button></a> 
               <button class="button is-rounded">Pembelian Mobil Bekas</button>
               <button class="button is-rounded">Proses Kredit Mobil</button>
               <button class="button is-rounded">Pembayaran</button>
