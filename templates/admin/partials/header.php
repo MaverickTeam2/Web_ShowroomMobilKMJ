@@ -31,6 +31,18 @@
     if ($currentPage === 'report.php') {
         echo '<link rel="stylesheet" href="../../assets/css/admin/report.css">';
     }
+
+    if ($currentPage === 'dashboard.php') {
+        echo '<link rel="stylesheet" href="../../assets/css/admin/dashboard.css">';
+    }
+
+    if ($currentPage === 'setting1.php') {
+        echo '<link rel="stylesheet" href="../../assets/css/admin/setting.css">';
+    }
+
+    
+
+    
   ?>
   
 </head>

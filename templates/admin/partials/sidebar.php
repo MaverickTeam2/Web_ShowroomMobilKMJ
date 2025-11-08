@@ -9,15 +9,16 @@
   </a>
 
   <ul class="side-menu top">
-    <li><a href="index.php"><i class='bx bxs-dashboard'></i><span class="text">Dashboard</span></a></li>
+    <li><a href="dashboard.php"><i class='bx bxs-dashboard'></i><span class="text">Dashboard</span></a></li>
     <li><a href="transaksi.php"><i class='bx bxs-shopping-bag-alt'></i><span class="text">Transaksi</span></a></li>
     <li><a href="manajemen_mobil.php"><i class='bx bxs-car'></i><span class="text">Manajemen Mobil</span></a></li>
     <li><a href="report.php"><i class='bx bxs-bar-chart-alt-2'></i><span class="text">Report</span></a></li>
-    <li><a href="akun.php"><i class='bx bxs-user'></i><span class="text">Manajemen Akun</span></a></li>
+    <li><a href="manajemen_account.php"><i class='bx bxs-user'></i><span class="text">Manajemen Akun</span></a></li>
+    
   </ul>
 
   <ul class="side-menu bottom">
-    <li><a href="setting.php"><i class='bx bxs-cog'></i><span class="text">Settings</span></a></li>
+    <li><a href="setting1.php"><i class='bx bxs-cog'></i><span class="text">Settings</span></a></li>
     <li><a href="help.php" class="logout"><i class='bx bxs-log-out-circle'></i><span class="text">Help Center</span></a></li>
   </ul>
 </section>

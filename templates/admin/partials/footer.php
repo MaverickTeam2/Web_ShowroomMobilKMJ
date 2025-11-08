@@ -1,6 +1,5 @@
   </div> <!-- end .admin-wrapper -->
   
-
   <!-- Main JS -->
   <script src="../../assets/js/mainadmin.js"></script>
 
