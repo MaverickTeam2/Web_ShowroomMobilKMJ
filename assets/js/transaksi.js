@@ -92,55 +92,96 @@
   }
 
   // ======================================================
-  // 📄 HALAMAN: tambah_transaksi.php
-  // ======================================================
-  if (path.includes("tambah_transaksi.php")) {
-    console.log("📄 Mode: tambah transaksi aktif");
+// 📄 HALAMAN: tambah_transaksi.php
+// ======================================================
+if (path.includes("tambah_transaksi.php")) {
+  console.log("📄 Mode: tambah transaksi aktif");
 
-    const jenisMobil = document.getElementById("jenisMobil");
-    const mobilPreview = document.getElementById("mobilPreview");
-    const mobilImage = document.getElementById("mobilImage");
-    const mobilNama = document.getElementById("mobilNama");
-    const mobilHarga = document.getElementById("mobilHarga");
-    const mobilDetail = document.getElementById("mobilDetail");
-    const mobilKm = document.getElementById("mobilKm");
-    const mobilTahun = document.getElementById("mobilTahun");
-    const metodePembayaran = document.getElementById("jenisPembayaran");
-    const kreditField = document.getElementById("field-nama-kredit");
+  // --- elemen preview & form ---
+  const jenisMobil       = document.getElementById("jenisMobil");
+  const mobilPreview     = document.getElementById("mobilPreview");
+  const mobilImage       = document.getElementById("mobilImage");
+  const mobilNama        = document.getElementById("mobilNama");
+  const mobilHarga       = document.getElementById("mobilHarga");
+  const mobilDetail      = document.getElementById("mobilDetail");
+  const mobilKm          = document.getElementById("mobilKm");
+  const mobilTahun       = document.getElementById("mobilTahun");
+  const tipeMobilInput   = document.getElementById("tipeMobil");
+  const jenisPembayaran  = document.getElementById("jenisPembayaran");
+  const fieldNamaKredit  = document.getElementById("field-nama-kredit");
 
-    // Ambil data mobil dari database lewat API get_mobil.php
-    jenisMobil.addEventListener("change", async () => {
-      const idMobil = jenisMobil.value;
-      if (!idMobil) {
-        mobilPreview.classList.add("d-none");
-        return;
-      }
+  // --- helpers ---
+  const toNum = (v) => Number(v || 0);
+  const toIDR = (n) => "Rp " + toNum(n).toLocaleString("id-ID");
+  const showPrev = () => mobilPreview && mobilPreview.classList.remove("d-none");
+  const hidePrev = () => mobilPreview && mobilPreview.classList.add("d-none");
 
-      try {
-        const res = await fetch(`get_mobil.php?id=${idMobil}`);
-        const data = await res.json();
-
-        if (!data || data.status === "error") {
-          mobilPreview.classList.add("d-none");
-          return;
-        }
-
-        mobilImage.src = `../../assets/img/${data.foto}`;
-        mobilNama.textContent = data.nama_mobil;
-        mobilHarga.textContent = `Rp ${parseInt(data.harga).toLocaleString("id-ID")}`;
-        mobilDetail.textContent = `DP Rp ${parseInt(data.dp).toLocaleString("id-ID")}`;
-        mobilKm.textContent = `${data.km || 0} Km`;
-        mobilTahun.textContent = data.tahun;
-        mobilPreview.classList.remove("d-none");
-      } catch (err) {
-        console.error("❌ Gagal ambil data mobil:", err);
-        mobilPreview.classList.add("d-none");
-      }
-    });
-
-     metodePembayaran.addEventListener("change", () => {
-      const isKredit = metodePembayaran.value === "kredit";
-      kreditField.style.display = isKredit ? "block" : "none";
-    });
+  // --- toggle kredit/tunai ---
+  if (jenisPembayaran && fieldNamaKredit) {
+    const apply = () => {
+      const isKredit = (jenisPembayaran.value || "").toLowerCase() === "kredit";
+      fieldNamaKredit.style.display = isKredit ? "block" : "none";
+    };
+    apply();
+    jenisPembayaran.addEventListener("change", apply);
   }
-})();
+
+  // --- preview mobil saat dipilih ---
+  if (jenisMobil) {
+    jenisMobil.addEventListener("change", handleMobilChange);
+    if (jenisMobil.value && jenisMobil.value !== "") {
+      handleMobilChange().catch((e) => console.warn(e));
+    }
+  }
+
+  async function handleMobilChange() {
+    const idMobil = (jenisMobil.value || "").trim();
+    if (!idMobil) { hidePrev(); setTipe("-"); return; }
+
+    try {
+      const res = await fetch(`get_mobil.php?id=${encodeURIComponent(idMobil)}`, {
+        headers: { Accept: "application/json" },
+      });
+      const raw = await res.text();
+
+      let data;
+      try {
+        data = JSON.parse(raw);
+      } catch (e) {
+        throw new Error("Response bukan JSON valid: " + raw.slice(0, 120));
+      }
+
+      if (!data || data.status !== "ok") {
+        hidePrev(); setTipe("-"); return;
+      }
+
+      // ⬇️ gunakan URL langsung dari API (get_foto.php?id_mobil=...)
+      if (mobilImage)   mobilImage.src         = data.foto || "";
+      if (mobilNama)    mobilNama.textContent  = data.nama_mobil || "-";
+      if (mobilHarga)   mobilHarga.textContent = data.harga ? toIDR(data.harga) : "-";
+      if (mobilDetail)  mobilDetail.textContent= data.dp ? `DP ${toIDR(data.dp)}` : "-";
+      if (mobilKm)      mobilKm.textContent    = `${toNum(data.km).toLocaleString("id-ID")} Km`;
+      if (mobilTahun)   mobilTahun.textContent = data.tahun || "-";
+
+      setTipe(data.tipe || "-"); // kalau belum ada di API biarkan "-"
+
+      showPrev();
+    } catch (err) {
+      console.error("❌ Gagal ambil data mobil:", err);
+      hidePrev(); setTipe("-");
+    }
+  }
+
+  function setTipe(v) {
+    if (!tipeMobilInput) return;
+    if (tipeMobilInput.tagName === "SELECT") {
+      tipeMobilInput.innerHTML = "";
+      const opt = document.createElement("option");
+      opt.value = v; opt.textContent = v; opt.selected = true;
+      tipeMobilInput.appendChild(opt);
+    } else {
+      tipeMobilInput.value = v;
+    }
+  }
+} 
+})();      

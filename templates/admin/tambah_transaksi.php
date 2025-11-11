@@ -2,6 +2,13 @@
 include '../../db/koneksi.php';
 include 'partials/header.php';
 include 'partials/sidebar.php';
+
+// 🔁 CHANGED: ambil daftar mobil dari DB untuk isi dropdown
+$mobilList = $conn->query("
+  SELECT id_mobil, nama_mobil, tahun_mobil
+  FROM mobil
+  ORDER BY nama_mobil
+")->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <section id="content">
@@ -37,11 +44,16 @@ include 'partials/sidebar.php';
             <div class="col-md-5">
               <div class="mb-3">
                 <label class="form-label">Jenis Mobil</label>
-                <select id="jenisMobil" class="form-select">
-                  <option selected disabled>Pilih jenis mobil</option>
-                  <option value="r8">Audi R8 GTX</option>
-                  <option value="lamborghini">Lamborghini Aventador</option>
-                  <option value="ferrari">Ferrari F8 Tributo</option>
+
+                <!-- 🔁 CHANGED: dropdown dinamis dari DB (value = id_mobil angka) -->
+                <select id="jenisMobil" class="form-select" required>
+                  <option value="" selected disabled>Pilih jenis mobil</option>
+                  <?php foreach ($mobilList as $m): ?>
+                    <option value="<?= (int)$m['id_mobil'] ?>">
+                      <?= htmlspecialchars($m['nama_mobil']) ?>
+                      <?= $m['tahun_mobil'] ? " (" . htmlspecialchars($m['tahun_mobil']) . ")" : "" ?>
+                    </option>
+                  <?php endforeach; ?>
                 </select>
               </div>
 
@@ -133,3 +145,13 @@ include 'partials/sidebar.php';
         <div class="text-end mt-4">
           <button type="submit" class="btn btn-primary px-4">Submit</button>
         </div>
+      </form>
+    </div> <!-- .content-area -->
+  </main> <!-- #main-content -->
+</section> <!-- #content -->
+
+<!-- Load JS -->
+<script src="../../assets/js/transaksi.js"></script>
+
+</body>
+</html>
