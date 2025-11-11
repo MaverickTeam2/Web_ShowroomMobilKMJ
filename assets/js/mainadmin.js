@@ -157,23 +157,42 @@
     });
   }
 
-  // ====== Breadcrumb sederhana (opsional) ==================================
-  function initBreadcrumbFromActiveLink() {
-    var breadcrumb = document.querySelector('.breadcrumb');
-    if (!breadcrumb) return;
+  // ====== Breadcrumb Dinamis (global) ==================================
+function initBreadcrumbFromActiveLink(optionalHtml) {
+  var breadcrumb = document.querySelector('.breadcrumb');
+  if (!breadcrumb) return;
 
-    var activeTextEl =
-      document.querySelector('#sidebar .side-menu a.active .text') ||
-      document.querySelector('#sidebar .side-menu a.active') ||
-      document.querySelector('#sidebar a.active');
-
-    var name = (activeTextEl && (activeTextEl.textContent || '').trim()) || 'Dashboard';
-
-    breadcrumb.innerHTML =
-      '<li><a href="dashboard.php">Home</a></li>' +
-      "<li><i class=\"bx bx-chevron-right\"></i></li>" +
-      '<li>' + escapeHtml(name) + '</li>';
+  // Jika kita memuat halaman via fetch (optionalHtml dikirim)
+  // maka kita ambil breadcrumb dari halaman tersebut
+  if (optionalHtml) {
+    const temp = document.createElement('div');
+    temp.innerHTML = optionalHtml.trim();
+    const newBreadcrumb = temp.querySelector('.breadcrumb');
+    if (newBreadcrumb) {
+      breadcrumb.innerHTML = newBreadcrumb.innerHTML;
+      return; // stop di sini kalau halaman punya breadcrumb sendiri
+    }
   }
+
+  // Kalau tidak ada breadcrumb di halaman yang dimuat,
+  // pakai deteksi dari sidebar (default behaviour)
+  var activeTextEl =
+    document.querySelector('#sidebar .side-menu a.active .text') ||
+    document.querySelector('#sidebar .side-menu a.active') ||
+    document.querySelector('#sidebar a.active');
+
+  var name = (activeTextEl && (activeTextEl.textContent || '').trim()) || 'Dashboard';
+
+  breadcrumb.innerHTML =
+    '<li><a href="dashboard.php">Home</a></li>' +
+    '<li><i class="bx bx-chevron-right"></i></li>' +
+    '<li>' + escapeHtml(name) + '</li>';
+}
+
+// pastikan fungsi tersedia di global (opsional tapi aman)
+window.initBreadcrumbFromActiveLink = initBreadcrumbFromActiveLink;
+
+
 
   function escapeHtml(s) {
     return String(s)
