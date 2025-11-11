@@ -29,41 +29,32 @@ session_start();
         </div>
       </div>
     </div>
-
     <div class="navbar-end">
-      <!-- Google Maps -->
-      <a class="navbar-item" href="https://maps.app.goo.gl/qGcSdiQD9ELbNJwv7" target="_blank">
-        <span class="icon"><i class="fa-solid fa-location-dot"></i></span>
-        <span>Showroom KMJ</span>
+      <!-- Store Location (ikon + 2 baris teks kecil) -->
+      <a class="navbar-item store-location" href="https://maps.app.goo.gl/qGcSdiQD9ELbNJwv7" target="_blank" aria-label="Store Location">
+        <span class="icon is-medium"><i class="fa-solid fa-location-dot"></i></span>
+        <span class="store-copy">
+          <small>Store Location</small>
+          <strong>Kaliwates, Jember</strong>
+        </span>
       </a>
 
-      <!-- Favorite -->
-      <a class="navbar-item" href="favorite.php">
-        <span class="icon"><i class="fa-solid fa-heart"></i></span>
-        <span>Favorite</span>
+      <!-- Favorite: ikon saja -->
+      <a class="navbar-item icon-only" href="favorite.php" aria-label="Favorite">
+        <span class="icon is-medium"><i class="fa-regular fa-heart"></i></span>
       </a>
 
-      <!-- Account Dropdown -->
-      <div class="navbar-item has-dropdown" id="accountDropdown">
-        <a class="navbar-link">
-          <span class="icon"><i class="fa-solid fa-user"></i></span>
-          <span>
-            <?php 
-            if(isset($_SESSION['user_id'])) {
-              echo htmlspecialchars($_SESSION['full_name']);
-            } else {
-              echo 'Account';
-            }
-            ?>
-          </span>
+      <!-- Account: ikon saja + dropdown -->
+      <div class="navbar-item has-dropdown is-right" id="accountDropdown">
+        <a class="navbar-link icon-only" aria-label="Account">
+          <span class="icon is-medium"><i class="fa-regular fa-user"></i></span>
         </a>
-
         <div class="navbar-dropdown is-right">
           <?php if(isset($_SESSION['user_id'])): ?>
             <a class="navbar-item" href="profile_setting.php">Profile</a>
             <a class="navbar-item" href="auth/logout.php">Logout</a>
           <?php else: ?>
-            <a class="navbar-item" href="auth/auth.php"> Login </a>
+            <a class="navbar-item" href="auth/auth.php">Login</a>
           <?php endif; ?>
         </div>
       </div>
@@ -72,7 +63,9 @@ session_start();
 </nav>
 
 <!-- Search Bar -->
-<input class="input is-rounded my-4 mx-1" type="text" placeholder="Ingin Mencari Mobil Apa?" />
+<div class="nav-search-wrap">
+  <input class="input is-rounded my-4 nav-search" type="text" placeholder="Ingin Mencari Mobil Apa?" />
+</div>
 
 <script>
 // Burger menu
