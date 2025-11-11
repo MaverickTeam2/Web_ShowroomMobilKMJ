@@ -1,16 +1,15 @@
 <?php
-$host = "localhost";    // nama host (biasanya: localhost)
-$user = "root";         // username MySQL (default: root)
-$pass = "";              // password MySQL (kosong jika default di XAMPP)
-$db = "kmjshowrooms"; // ganti dengan nama database kamu
+$host = 'localhost';
+$user = 'root';
+$pass = '';
+$db   = 'kmjshowrooms';
 
-// Membuat koneksi
-$conn = mysqli_connect($host, $user, $pass, $db);
-
-// Mengecek koneksi
-if (!$conn) {
-  die("Koneksi gagal: " . mysqli_connect_error());
-} else {
-  echo "Koneksi berhasil!";
+$conn = new mysqli($host, $user, $pass, $db);
+if ($conn->connect_error) {
+  http_response_code(500);
+  // Jangan echo ke output JSON/gambar
+  error_log("DB connect error: " . $conn->connect_error);
+  exit;
 }
-?>
+mysqli_set_charset($conn, 'utf8mb4');
+// tidak ada echo apa pun
