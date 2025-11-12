@@ -32,7 +32,7 @@
         echo '<link rel="stylesheet" href="../../assets/css/admin/report.css">';
     }
 
-    if ($currentPage === 'dashboard.php') {
+    if ($currentPage === 'index.php') {
         echo '<link rel="stylesheet" href="../../assets/css/admin/dashboard.css">';
     }
 

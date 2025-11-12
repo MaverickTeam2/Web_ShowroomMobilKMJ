@@ -9,7 +9,7 @@
   </a>
 
   <ul class="side-menu top">
-    <li><a href="dashboard.php"><i class='bx bxs-dashboard'></i><span class="text">Dashboard</span></a></li>
+    <li><a href="index.php"><i class='bx bxs-dashboard'></i><span class="text">Dashboard</span></a></li>
     <li><a href="transaksi.php"><i class='bx bxs-shopping-bag-alt'></i><span class="text">Transaksi</span></a></li>
     <li><a href="manajemen_mobil.php"><i class='bx bxs-car'></i><span class="text">Manajemen Mobil</span></a></li>
     <li><a href="report.php"><i class='bx bxs-bar-chart-alt-2'></i><span class="text">Report</span></a></li>
