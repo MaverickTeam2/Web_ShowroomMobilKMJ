@@ -1,5 +1,11 @@
 console.log("🧩 [mobil.js] FILE BERHASIL DIMUAT oleh browser!");
 
+// =========================
+// KONFIGURASI URL API
+// (ganti sesuai lokasi API kamu)
+// =========================
+const BASE_API_URL = "http://localhost/API_kmj"; // folder API
+
 // ✅ Fungsi utama
 function initMobilForm() {
   const formMobil = document.getElementById("formMobil");
@@ -41,7 +47,8 @@ function initMobilForm() {
     console.log("📤 [mobil.js] Data siap dikirim:", Array.from(formData.entries()));
 
     try {
-      const response = await fetch("api/mobil_tambah.php", {
+      // 🔁 Kirim ke API terpisah (bukan lagi di folder web)
+      const response = await fetch("../../API_kmj/admin/mobil_tambah.php", {
         method: "POST",
         body: formData,
       });
