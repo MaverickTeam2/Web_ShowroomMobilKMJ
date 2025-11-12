@@ -1,290 +1,246 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+// Cek apakah file ini dibuka langsung di browser (bukan via fetch)
+$is_direct = (basename($_SERVER['SCRIPT_FILENAME']) == basename(__FILE__));
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="../../assets/css/admin/tambah_stok_mobil.css">
-  <title>Tambah Stok Mobil</title>
-</head>
+// Kalau dibuka langsung, tampilkan layout lengkap
+if ($is_direct) {
+  include '../../db/koneksi.php';
+  include 'partials/header.php';
+  include 'partials/sidebar.php';
+  echo '<section id="content"><nav><i class="bx bx-menu"></i></nav><main id="main-content" class="p-4">';
+}
+?>
 
-<body>
-  <div class="head-title d-flex justify-content-between align-items-center">
-    <div class="left">
-      <h1>Tambah Stok Mobil</h1>
-      <ul class="breadcrumb">
-        <li><a href="dashboard.html" data-page="dashboard.html">Dashboard</a></li>
-        <li><i class='bx bx-chevron-right'></i></li>
-        <li><a href="manajemen_mobil.php" data-page="manajemen_mobil.php">Manajemen Mobil</a></li>
-        <li><i class='bx bx-chevron-right'></i></li>
-        <li><a class="active" href="#">Tambah Stok Mobil</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <main class="container my-4">
-    <form method="POST" enctype="multipart/form-data">
-
-      <!-- ================= Foto Mobil ================= -->
-      <div class="card p-4 shadow-sm mb-4">
-        <h5 class="section-title">Foto Mobil</h5>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 ">
-          <?php
-          $fotoLabels = ['360° View', 'Tampilan Depan', 'Tampilan Belakang', 'Tampilan Samping'];
-          foreach ($fotoLabels as $i => $label): ?>
-            <div class="col-md-3">
-              <div class="photo-upload" onclick="document.getElementById('foto<?= $i ?>').click()">
-                <i class='bx bx-camera'></i>
-                <?= $label ?><br><small>Click to upload</small>
-                <input type="file" name="foto[]" id="foto<?= $i ?>" accept="image/*" class="d-none"
-                  onchange="previewImage(event, <?= $i ?>)">
-                <img id="preview<?= $i ?>" class="photo-preview d-none" alt="Preview">
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
-
-        <div class="mt-3">
-          <div class="photo-upload w-25" onclick="document.getElementById('fotoTambahan').click()">
-            <i class='bx bx-plus'></i>Add Photo
-            <input type="file" name="foto[]" id="fotoTambahan" multiple accept="image/*" class="d-none"
-              onchange="previewMultiple(event)">
-          </div>
-          <div id="previewTambahan" class="d-flex flex-wrap gap-2 mt-2"></div>
-        </div>
-      </div>
-
-      <!-- ================= Informasi Mobil ================= -->
-      <div class="card p-4 shadow-sm mb-4">
-        <h5 class="section-title">Informasi Mobil</h5>
-
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label">Nama Mobil *</label>
-            <input type="text" class="form-control" placeholder="Masukkan nama mobil" required>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Tahun *</label>
-            <input type="number" class="form-control" placeholder="2025" required>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Jarak Tempuh *</label>
-            <input type="text" class="form-control" placeholder="0 KM" required>
-          </div>
-
-          <div class="col-md-6">
-            <label class="form-label">Tipe Kendaraan *</label>
-            <select class="form-select" required>
-              <option value="">Pilih tipe Kendaraan</option>
-              <option value="SUV">SUV</option>
-              <option value="MPV">MPV</option>
-              <option value="Sedan">Sedan</option>
-              <option value="Sport">Sport</option>
-            </select>
-          </div>
-
-          <div class="col-md-5">
-            <label class="form-label">Jenis Bahan Bakar *</label>
-            <select class="form-select" required>
-              <option value="">Pilih Jenis bahan bakar</option>
-              <option value="Bensin">Bensin</option>
-              <option value="Diesel">Diesel</option>
-              <option value="Listrik">Listrik</option>
-            </select>
-          </div>
-
-          <div class="col-md-5">
-            <label class="form-label">Sistem Penggerak *</label>
-            <select class="form-select" required>
-              <option value="">Pilih sistem penggerak</option>
-              <option value="FWD">FWD (Front Wheel Drive)</option>
-              <option value="RWD">RWD (Rear Wheel Drive)</option>
-              <option value="AWD">AWD (All Wheel Drive)</option>
-            </select>
-          </div>
-
-          <div class="col-md-5">
-            <label class="form-label">Warna Exterior *</label>
-            <input type="text" class="form-control" placeholder="Gray, Black, Red, dll" required>
-          </div>
-          <div class="col-md-5">
-            <label class="form-label">Warna Exterior *</label>
-            <input type="text" class="form-control" placeholder="Gray, Black, Red, dll" required>
-          </div>
-
-          <div class="col-6 d-flex gap-3 ">
-            <!-- Warna Exterior -->
-
-            <!-- Angsuran × Tenor -->
-            <div class="d-flex align-items-end gap-1" style="min-width: 100px;">
-              <div class="flex-grow-1">
-                <label class="form-label">Angsuran (Rp) *</label>
-                <input type="number" class="form-control" placeholder="2500" required>
-              </div>
-
-              <div class="d-flex align-items-center px-2" style="font-weight:700; font-size:1.4rem;">X</div>
-
-              <div style="width: 70px;">
-                <label class="form-label">Tenor *</label>
-                <input type="number" class="form-control" placeholder="0" required>
-              </div>
-            </div>
-
-            <!-- Warna Interior -->
-            <div class="flex-grow-1">
-              <label class="form-label">Uang Muka (Rp) *</label>
-              <input type="text" class="form-control" placeholder="Gray, Black, Red, dll" required>
-            </div>
-          </div>
-        </div>
-      </div>
-
-<!-- ================= Fitur & Spesifikasi ================= -->
-<div class="card p-4 shadow-sm mb-4">
-  <h5 class="section-title">Fitur & Spesifikasi</h5>
-
-  <!-- Fitur Keselamatan -->
-  <div class="mb-3">
-    <h6>Fitur Keselamatan</h6>
-    <div class="fitur-grid">
-      <label class="form-check"><input type="checkbox" id="airbag"> Airbag Pengemudi</label>
-      <label class="form-check"><input type="checkbox" id="traction"> Traction Control</label>
-      <label class="form-check"><input type="checkbox" id="abs"> ABS</label>
-      <label class="form-check"><input type="checkbox" id="esc"> ESC</label>
-      <label class="form-check"><input type="checkbox" id="blindspot"> Blind Spot Monitoring</label>
-      <label class="form-check"><input type="checkbox" id="ldw"> Lane Departure Warning</label>
-      <label class="form-check"><input type="checkbox" id="fcw"> Forward Collision Warning</label>
-      <label class="form-check"><input type="checkbox" id="eb"> Emergency Braking</label>
-      <label class="form-check"><input type="checkbox" id="rearcam"> Rearview Camera</label>
-      <label class="form-check"><input type="checkbox" id="parking"> Parking Sensors</label>
-    </div>
-  </div>
-
-  <!-- Fitur Kenyamanan & Hiburan -->
-  <div class="mb-3">
-    <h6>Fitur Kenyamanan & Hiburan</h6>
-    <div class="fitur-grid">
-      <label class="form-check"><input type="checkbox" id="ac"> Air Conditioning</label>
-      <label class="form-check"><input type="checkbox" id="climate"> Climate Control</label>
-      <label class="form-check"><input type="checkbox" id="steering"> Power Steering</label>
-      <label class="form-check"><input type="checkbox" id="windows"> Power Windows</label>
-      <label class="form-check"><input type="checkbox" id="lock"> Central Locking</label>
-      <label class="form-check"><input type="checkbox" id="usb"> USB Port</label>
-      <label class="form-check"><input type="checkbox" id="bluetooth"> Bluetooth</label>
-      <label class="form-check"><input type="checkbox" id="wireless"> Wireless Charging</label>
-      <label class="form-check"><input type="checkbox" id="audio"> Premium Audio System</label>
-      <label class="form-check"><input type="checkbox" id="nav"> Navigation System</label>
-      <label class="form-check"><input type="checkbox" id="heated"> Heated Seats</label>
-      <label class="form-check"><input type="checkbox" id="ventilated"> Ventilated Seats</label>
-    </div>
-  </div>
-
-  <!-- Fitur Exterior -->
-  <div class="mb-3">
-    <h6>Fitur Exterior</h6>
-    <div class="fitur-grid">
-      <label class="form-check"><input type="checkbox" id="headlights"> LED Headlights</label>
-      <label class="form-check"><input type="checkbox" id="taillights"> LED Taillights</label>
-      <label class="form-check"><input type="checkbox" id="fog"> Fog Lamps</label>
-      <label class="form-check"><input type="checkbox" id="sunroof"> Sunroof</label>
-      <label class="form-check"><input type="checkbox" id="panoramic"> Panoramic Roof</label>
-      <label class="form-check"><input type="checkbox" id="spoiler"> Spoiler</label>
-      <label class="form-check"><input type="checkbox" id="rails"> Roof Rails</label>
-      <label class="form-check"><input type="checkbox" id="trim"> Chrome Trim</label>
-      <label class="form-check"><input type="checkbox" id="wheels"> Alloy Wheels</label>
-      <label class="form-check"><input type="checkbox" id="runflat"> Run-flat Tires</label>
-    </div>
-  </div>
-
-  <!-- Fitur Tambahan -->
-  <div class="mb-3">
-    <h6>Fitur Tambahan</h6>
-    <div class="fitur-grid">
-      <label class="form-check"><input type="checkbox" id="immobilizer"> Engine Immobilizer</label>
-      <label class="form-check"><input type="checkbox" id="keyless"> Keyless Entry</label>
-      <label class="form-check"><input type="checkbox" id="pushbutton"> Push Button Start</label>
-      <label class="form-check"><input type="checkbox" id="autoheadlamps"> Auto Headlamps</label>
-      <label class="form-check"><input type="checkbox" id="rainwipers"> Rain Sensing Wipers</label>
-      <label class="form-check"><input type="checkbox" id="parkingassist"> Parking Assist</label>
-      <label class="form-check"><input type="checkbox" id="cruiseextra"> Cruise Control</label>
-      <label class="form-check"><input type="checkbox" id="adaptivecruise"> Adaptive Cruise Control</label>
-      <label class="form-check"><input type="checkbox" id="hillstart"> Hill Start Assist</label>
-      <label class="form-check"><input type="checkbox" id="tirepressure"> Tire Pressure Monitoring</label>
-    </div>
+<!-- ======================== KONTEN HALAMAN ======================== -->
+<div class="head-title d-flex justify-content-between align-items-center">
+  <div class="left">
+    <h1>Tambah Stok Mobil</h1>
+    <ul class="breadcrumb">
+      <li><a href="manajemen_mobil.php" data-page="manajemen_mobil.php">Manajemen Mobil</a></li>
+      <li><i class='bx bx-chevron-right'></i></li>
+      <li><a class="active" href="#">Tambah Stok Mobil</a></li>
+    </ul>
   </div>
 </div>
 
+<div class="card p-4 shadow-sm mt-4" style="max-width:1100px; margin:auto;">
+ <form id="formMobil" method="POST" enctype="multipart/form-data">
 
 
+    <!-- ================= Informasi Mobil ================= -->
+    <div class="card p-4 shadow-sm mb-4">
+      <h5 class="section-title">Informasi Mobil</h5>
 
-      <!-- ================= Status Mobil ================= -->
-      <div class="card p-4 shadow-sm mt-4 mb-5">
-        <h5 class="section-title mb-3">Status Mobil</h5>
-
-        <div class="row align-items-center mb-3">
-          <div class="col-md-4">
-            <label class="form-label">Status Saat Ini</label>
-            <select class="form-select" id="statusMobil" onchange="updateStatusDisplay()">
-              <option value="Available" selected>Available</option>
-              <option value="Reserved">Reserved</option>
-              <option value="Sold">Sold</option>
-              <option value="Shipping">Shipping</option>
-              <option value="Delivered">Delivered</option>
-            </select>
-          </div>
-
-          <div class="col-md-4 mt-3 mt-md-0 d-flex align-items-center">
-            <span id="statusBadge" class="status-badge badge-available"></span>
-            <span id="statusText" class="status-label available">Available</span>
-          </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Nama Mobil *</label>
+          <input type="text" class="form-control" placeholder="Masukkan nama mobil" name="nama_mobil" required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Tahun *</label>
+          <input type="number" class="form-control" placeholder="2025" name="tahun" required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Jarak Tempuh *</label>
+          <input type="text" class="form-control" placeholder="0 KM" name="jarak_tempuh" required>
         </div>
 
-        <div class="status-description text-muted">
-          <p><strong>Available:</strong> Mobil siap dijual</p>
-          <p><strong>Reserved:</strong> Pelanggan telah memesan mobil</p>
-          <p><strong>Sold:</strong> Mobil sudah terjual tapi belum dikirim</p>
-          <p><strong>Shipping:</strong> Mobil sedang diantar ke pelanggan</p>
-          <p><strong>Delivered:</strong> Mobil sudah dikirim ke pelanggan</p>
+        <div class="col-md-6">
+          <label class="form-label">Tipe Kendaraan *</label>
+          <select class="form-select" name="tipe_kendaraan" required>
+            <option value="">Pilih tipe Kendaraan</option>
+            <option value="SUV">SUV</option>
+            <option value="MPV">MPV</option>
+            <option value="Sedan">Sedan</option>
+            <option value="Sport">Sport</option>
+          </select>
         </div>
 
-        <hr>
+        <div class="col-md-5">
+          <label class="form-label">Jenis Bahan Bakar *</label>
+          <select class="form-select" name="bahan_bakar" required>
+            <option value="">Pilih Jenis bahan bakar</option>
+            <option value="Bensin">Bensin</option>
+            <option value="Diesel">Diesel</option>
+            <option value="Listrik">Listrik</option>
+          </select>
+        </div>
 
-        <div class="d-flex flex-wrap justify-content-between align-items-center mt-3">
-          <div class="text-muted small">
-            <p class="mb-1"><strong>Save Draft:</strong> Simpan progress anda tanpa membuat mobil terlihat oleh
-              pelanggan</p>
-            <p class="mb-0"><strong>Publish Mobil:</strong> Jadikan mobil tersedia untuk dilihat dan dibeli pelanggan
-            </p>
+        <div class="col-md-5">
+          <label class="form-label">Sistem Penggerak *</label>
+          <select class="form-select" name="sistem_penggerak" required>
+            <option value="">Pilih sistem penggerak</option>
+            <option value="FWD">FWD (Front Wheel Drive)</option>
+            <option value="RWD">RWD (Rear Wheel Drive)</option>
+            <option value="AWD">AWD (All Wheel Drive)</option>
+          </select>
+        </div>
+
+        <div class="col-md-5">
+          <label class="form-label">Warna Exterior *</label>
+          <input type="text" class="form-control" placeholder="Gray, Black, Red, dll" name="warna_exterior" required>
+        </div>
+        <div class="col-md-5">
+          <label class="form-label">Warna Exterior *</label>
+          <input type="text" class="form-control" placeholder="Gray, Black, Red, dll" name="warna_interior" required>
+        </div>
+
+        <div class="col-6 d-flex gap-3 ">
+          <!-- Warna Exterior -->
+
+          <!-- Angsuran × Tenor -->
+          <div class="d-flex align-items-end gap-1" style="min-width: 100px;">
+            <div class="flex-grow-1">
+              <label class="form-label">Angsuran (Rp) *</label>
+              <input type="number" class="form-control" placeholder="2500" name="angsuran" required>
+            </div>
+
+            <div class="d-flex align-items-center px-2" style="font-weight:700; font-size:1.4rem;">X</div>
+
+            <div style="width: 70px;">
+              <label class="form-label">Tenor *</label>
+              <input type="number" class="form-control" placeholder="0" name="tenor" required>
+            </div>
           </div>
-          <div class="mt-3 mt-md-0">
-            <button type="button" class="btn btn-outline-secondary me-2"><i class='bx bx-save me-1'></i> Save
-              Draft</button>
-            <button type="submit" class="btn btn-primary"><i class='bx bx-upload me-1'></i> Publish Mobil</button>
+
+          <!-- Warna Interior -->
+          <div class="flex-grow-1">
+            <label class="form-label">Uang Muka (Rp) *</label>
+            <input type="number" class="form-control" placeholder="2000" name="uang_muka" required>
           </div>
         </div>
       </div>
+    </div>
 
-    </form>
-  </main>
+    <!-- ================= CARD 2: Semua Fitur + Submit ================= -->
+    <div class="card p-4 shadow-sm mb-4">
+      <h5 class="section-title mb-3">Fitur & Spesifikasi</h5>
+
+      <!-- Fitur Keselamatan -->
+      <div class="mb-3">
+        <h6>Fitur Keselamatan</h6>
+        <div class="fitur-grid">
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="1"> Airbag Pengemudi</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="2"> Traction Control</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="3"> Blind Spot Monitoring</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="4"> Forward Collision Warning</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="5"> Rearview Camera</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="6"> ABS (Anti-lock Braking
+            System)</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="7"> ESC (Electronic Stability
+            Control)</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="8"> Lane Departure Warning</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="9"> Emergency Braking</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="10"> Parking Sensors</label>
+        </div>
+      </div>
+
+      <!-- Fitur Kenyamanan & Hiburan -->
+      <div class="mb-3">
+        <h6>Fitur Kenyamanan & Hiburan</h6>
+        <div class="fitur-grid">
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="11"> Air Conditioning</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="12"> Power Steering</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="13"> Central Locking</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="14"> Bluetooth</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="15"> Premium Audio System</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="16"> Heated Seats</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="17"> Climate Control</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="18"> Power Windows</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="19"> USB Port</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="20"> Wireless Charging</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="21"> Navigation Seats</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="22"> Ventilated Seats</label>
+        </div>
+      </div>
+
+      <!-- Fitur Exterior -->
+      <div class="mb-3">
+        <h6>Fitur Exterior</h6>
+        <div class="fitur-grid">
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="23"> LED Headlights</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="24"> Fog Lamps</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="25"> Panoramic Roof</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="26"> Roof Rails</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="27"> Alloy Wheels</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="28"> LED Taillights</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="29"> Sunroof</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="30"> Spoiler</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="31"> Chrome Trim</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="32"> Run-flat Tires</label>
+        </div>
+      </div>
+
+      <!-- Fitur Tambahan -->
+      <div class="mb-3">
+        <h6>Fitur Tambahan</h6>
+        <div class="fitur-grid">
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="33"> Engine Immobilizer</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="34"> Push Botton Start</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="35"> Rain Sensing Wipers</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="36"> Cruise Control</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="37"> Hill Start Assist</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="38"> Keyless Entry</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="39"> Auto Headlamps</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="40"> Parking Assist</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="41"> Adaptive Cruise Control</label>
+          <label class="form-check"><input type="checkbox" name="fitur[]" value="42"> Tire Pressure Monitoring</label>
+        </div>
+      </div>
+
+      <!-- ================= CARD 3: Publish Mobil ================= -->
+      <div class="card p-4 shadow-sm mb-5 text-center">
+        <h5 class="section-title mb-3">Publish Mobil</h5>
+        <p class="text-muted">Klik tombol di bawah ini untuk mempublikasikan mobil ke katalog showroom.</p>
+        <button type="submit" class="btn btn-primary px-5 py-2">
+          <i class='bx bx-upload me-1'></i> Publish Mobil
+        </button>
+      </div>
+  </form>
 
   <script>
-    function updateStatusDisplay() {
-      const status = document.getElementById("statusMobil").value.toLowerCase();
-      const text = document.getElementById("statusText");
-      const badge = document.getElementById("statusBadge");
+    document.addEventListener("DOMContentLoaded", function () {
+      const formMobil = document.getElementById("formMobil");
+      if (!formMobil) return;
 
-      text.className = "status-label";
-      badge.className = "status-badge";
+      formMobil.addEventListener("submit", async function (e) {
+        e.preventDefault(); // cegah reload
 
-      text.classList.add(status);
-      badge.classList.add(`badge-${status}`);
+        const formData = new FormData(formMobil);
 
-      text.textContent = status.charAt(0).toUpperCase() + status.slice(1);
-    }
+        try {
+          // ✅ path fix sesuai struktur kamu
+          const response = await fetch("api/mobil_tambah.php", {
+            method: "POST",
+            body: formData
+          });
 
-    window.addEventListener("DOMContentLoaded", updateStatusDisplay);
+          if (!response.ok) throw new Error("Gagal mengirim data ke server");
+
+          const result = await response.json();
+          console.log("Response:", result);
+
+          if (result.success) {
+            alert(result.message || "Mobil berhasil ditambahkan!");
+            window.location.href = "manajemen_mobil.php";
+          } else {
+            alert(result.message || "Gagal menambahkan mobil.");
+          }
+        } catch (err) {
+          console.error("❌ Error:", err);
+          alert("Terjadi kesalahan: " + err.message);
+        }
+      });
+    });
   </script>
-</body>
+</div>
 
-</html>
+<?php
+// Tutup layout kalau dibuka langsung
+if ($is_direct) {
+  echo '</main></section>';
+  include 'partials/footer.php';
+}
+?>
+
+<link rel="stylesheet" href="../../assets/css/admin/tambah_stok_mobil.css">

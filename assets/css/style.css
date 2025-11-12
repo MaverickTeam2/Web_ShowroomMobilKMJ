@@ -174,4 +174,95 @@
   background: rgba(0, 0, 0, 0.8);
 }
 
+/* === Navbar Right (sesuai mockup) === */
+.navbar { background: transparent; } /* tanpa gradient, biarkan bersih */
+
+/* Rapikan jarak item kanan */
+.navbar-end .navbar-item {
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+}
+
+/* Store location: icon + 2 baris copy kecil */
+.store-location {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.store-location .icon {
+  line-height: 1;
+}
+.store-copy {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.store-copy small {
+  font-size: 11px;
+  color: #6b7280; /* abu-abu */
+}
+.store-copy strong {
+  font-size: 12px;
+  font-weight: 600;
+  color: #111827; /* hitam keabu-abuan */
+}
+
+/* Icon-only (favorit & akun) */
+.icon-only .icon i {
+  font-size: 1.1rem; /* kira-kira ukuran yang pas */
+}
+.icon-only:hover .icon i,
+.store-location:hover .icon i {
+  transform: translateY(-1px);
+}
+.icon-only:hover,
+.store-location:hover {
+  background-color: transparent;
+}
+
+/* Hilangkan underline/warna link di hover */
+.navbar a.navbar-item,
+.navbar .navbar-link {
+  color: #0b0b0b;
+}
+.navbar a.navbar-item:hover,
+.navbar .navbar-link:hover {
+  color: #0b0b0b;
+  background: transparent;
+}
+
+.navbar .navbar-dropdown.is-right {
+  right: 0;
+  left: auto;
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+
+@media (max-width: 768px) {
+  .icon-only .icon i { font-size: 1.25rem; }
+}
+
+.navbar .navbar-menu .navbar-start > .navbar-item,
+.navbar .navbar-menu .navbar-start > .navbar-link {
+  padding-left: 0.6rem !important;
+  padding-right: 0.4rem !important;
+}
+
+.navbar, 
+.navbar .container {
+  padding-left: 30px !important;  
+  padding-right: 30px !important;
+}
+.navbar .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.navbar {
+  margin-top: 10px;
+}
+
+.nav-search-wrap {
+  padding-left: 30px;
+  padding-right: 30px;
+}
 
