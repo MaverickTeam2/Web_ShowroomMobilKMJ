@@ -6,7 +6,7 @@ include '../../db/koneksi.php';
 
 $query = "
   SELECT 
-    t.id_transaksi,
+    t.kode_transaksi,
     t.nama_pembeli,
     m.nama_mobil,
     t.created_at AS tanggal,
@@ -14,10 +14,11 @@ $query = "
     t.harga_akhir,
     u.full_name AS kasir
   FROM transaksi t
-  LEFT JOIN mobil m ON t.id_mobil = m.id_mobil
-  LEFT JOIN users u ON t.user_id = u.id
+  LEFT JOIN mobil  m ON t.kode_mobil = m.kode_mobil
+  LEFT JOIN users  u ON t.kode_user  = u.kode_user
   ORDER BY t.created_at DESC
 ";
+
 
 $result = $conn->query($query);
 $transaksis = [];
@@ -95,7 +96,7 @@ $averageDeal = $totalTransaksi > 0 ? $totalRevenue / $totalTransaksi : 0;
             <?php if (!empty($transaksis)): ?>
               <?php foreach ($transaksis as $trx): ?>
                 <tr>
-                  <td><?= htmlspecialchars($trx['id_transaksi']) ?></td>
+                  <td><?= htmlspecialchars($trx['kode_transaksi']) ?></td>
                   <td><?= htmlspecialchars($trx['nama_pembeli']) ?></td>
                   <td><?= htmlspecialchars($trx['nama_mobil'] ?? '-') ?></td>
                   <td><?= htmlspecialchars($trx['tanggal']) ?></td>
@@ -113,7 +114,7 @@ $averageDeal = $totalTransaksi > 0 ? $totalRevenue / $totalTransaksi : 0;
                   <td>
                     <div class="d-flex gap-2">
                       <button class="btn btn-outline-primary btn-sm btn-detail" 
-                              data-id="<?= htmlspecialchars($trx['id_transaksi']) ?>">
+                              data-id="<?= htmlspecialchars($trx['kode_transaksi']) ?>">
                         <i class="bx bx-detail"></i>
                       </button>
                       <button class="btn btn-outline-secondary btn-sm">

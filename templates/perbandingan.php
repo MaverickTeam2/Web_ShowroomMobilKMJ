@@ -1,3 +1,5 @@
+<?php include '../templates/navbar_footer/navbar.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
   <head>
