@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nama = mysqli_real_escape_string($conn, $_POST['nama']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = $_POST['password'];
-    $confirm  = $_POST['confirm'];
+    $confirm = $_POST['confirm'];
 
     if ($password !== $confirm) {
         echo "<script>alert('Password dan konfirmasi tidak cocok!'); window.history.back();</script>";
@@ -23,9 +23,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Panggil fungsi generate_kode_users() langsung dari MySQL
+    // Gunakan fungsi generate_kode_users('customer')
     $query = "INSERT INTO users (kode_user, full_name, email, password, role, created_at, updated_at)
-              VALUES (generate_kode_users(), ?, ?, ?, 'customer', NOW(), NOW())";
+          VALUES (generate_kode_users(), ?, ?, ?, 'customer', NOW(), NOW())";
+
 
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "sss", $nama, $email, $hashed);
@@ -33,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (mysqli_stmt_execute($stmt)) {
         echo "<script>alert('Registrasi berhasil! Silakan login.'); window.location='auth.php';</script>";
     } else {
-        echo 'Error: ' . mysqli_error($conn);
+        echo '<pre>Error MySQL: ' . mysqli_error($conn) . '</pre>';
     }
 }
 ?>
