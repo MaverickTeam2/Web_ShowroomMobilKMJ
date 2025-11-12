@@ -13,8 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Hash pakai SHA-256 → simpan sebagai BINARY(32)
-    $hashed = hash('sha256', $password, true);
+    // Hash password aman
+    $hashed = password_hash($password, PASSWORD_DEFAULT);
 
     // Cek email
     $cek = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
@@ -23,15 +23,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    $query = "INSERT INTO users (full_name, email, password, created_at, updated_at)
-              VALUES ('$nama', '$email', ?, NOW(), NOW())";
+    // Panggil fungsi generate_kode_users() langsung dari MySQL
+    $query = "INSERT INTO users (kode_user, full_name, email, password, role, created_at, updated_at)
+              VALUES (generate_kode_users(), ?, ?, ?, 'customer', NOW(), NOW())";
 
     $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, "s", $hashed); // string/binary
-    if(mysqli_stmt_execute($stmt)){
+    mysqli_stmt_bind_param($stmt, "sss", $nama, $email, $hashed);
+
+    if (mysqli_stmt_execute($stmt)) {
         echo "<script>alert('Registrasi berhasil! Silakan login.'); window.location='auth.php';</script>";
     } else {
-        echo "Error: ".mysqli_error($conn);
+        echo 'Error: ' . mysqli_error($conn);
     }
 }
 ?>
