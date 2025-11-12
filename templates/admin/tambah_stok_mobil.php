@@ -24,7 +24,8 @@ if ($is_direct) {
 </div>
 
 <div class="card p-4 shadow-sm mt-4" style="max-width:1100px; margin:auto;">
-  <form id="formMobil" method="POST" enctype="multipart/form-data" action="javascript:void(0);">
+ <form id="formMobil" method="POST" enctype="multipart/form-data">
+
 
     <!-- ================= Informasi Mobil ================= -->
     <div class="card p-4 shadow-sm mb-4">
