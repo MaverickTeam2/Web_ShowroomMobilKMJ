@@ -101,20 +101,36 @@ $averageDeal = $totalTransaksi > 0 ? $totalRevenue / $totalTransaksi : 0;
                   <td><?= htmlspecialchars($trx['nama_mobil'] ?? '-') ?></td>
                   <td><?= htmlspecialchars($trx['tanggal']) ?></td>
                   <td>
-                    <?php if ($trx['status'] === 'Completed'): ?>
-                      <span class="badge bg-success">Completed</span>
-                    <?php elseif ($trx['status'] === 'Pending'): ?>
-                      <span class="badge bg-warning text-dark">Pending</span>
-                    <?php else: ?>
-                      <span class="badge bg-danger">Cancelled</span>
-                    <?php endif; ?>
+                    <?php
+                    $status = strtolower(trim($trx['status'] ?? ''));
+                    switch ($status) {
+                      case 'completed':
+                        $badgeClass = 'bg-success';
+                        $statusText = 'Completed';
+                        break;
+                      case 'pending':
+                        $badgeClass = 'bg-warning text-dark';
+                        $statusText = 'Pending';
+                        break;
+                      case 'cancelled':
+                      case 'canceled':
+                        $badgeClass = 'bg-danger';
+                        $statusText = 'Cancelled';
+                        break;
+                      default:
+                        $badgeClass = 'bg-secondary';
+                        $statusText = ucfirst($status ?: 'Unknown');
+                    }
+                    ?>
+                    <span class="badge <?= $badgeClass ?>"><?= htmlspecialchars($statusText) ?></span>
                   </td>
+
                   <td>Rp <?= number_format($trx['harga_akhir'], 0, ',', '.') ?></td>
                   <td><?= htmlspecialchars($trx['kasir'] ?? '-') ?></td>
                   <td>
                     <div class="d-flex gap-2">
-                      <button class="btn btn-outline-primary btn-sm btn-detail" 
-                              data-id="<?= htmlspecialchars($trx['kode_transaksi']) ?>">
+                      <button class="btn btn-outline-primary btn-sm btn-detail"
+                        data-id="<?= htmlspecialchars($trx['kode_transaksi']) ?>">
                         <i class="bx bx-detail"></i>
                       </button>
                       <button class="btn btn-outline-secondary btn-sm">
@@ -125,7 +141,9 @@ $averageDeal = $totalTransaksi > 0 ? $totalRevenue / $totalTransaksi : 0;
                 </tr>
               <?php endforeach; ?>
             <?php else: ?>
-              <tr><td colspan="8" class="text-center text-muted">Belum ada transaksi</td></tr>
+              <tr>
+                <td colspan="8" class="text-center text-muted">Belum ada transaksi</td>
+              </tr>
             <?php endif; ?>
           </tbody>
         </table>
@@ -158,18 +176,18 @@ $averageDeal = $totalTransaksi > 0 ? $totalRevenue / $totalTransaksi : 0;
     </div>
 
     <!-- Modal Detail -->
-<div class="modal fade" id="modalDetailTransaksi" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content border-0 shadow">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title">Detail Transaksi</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    <div class="modal fade" id="modalDetailTransaksi" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title">Detail Transaksi</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body" id="modalDetailBody"></div>
+          <p class="text-muted text-center mb-3">© 2024 Showroom Mobil KMJ</p>
+        </div>
       </div>
-      <div class="modal-body" id="modalDetailBody"></div>
-      <p class="text-muted text-center mb-3">© 2024 Showroom Mobil KMJ</p>
     </div>
-  </div>
-</div>
 
   </main>
 </section>

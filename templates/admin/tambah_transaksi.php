@@ -5,7 +5,7 @@ include 'partials/sidebar.php';
 
 // 🔁 CHANGED: ambil daftar mobil dari DB untuk isi dropdown
 $mobilList = $conn->query("
-  SELECT id_mobil, nama_mobil, tahun_mobil
+  SELECT kode_mobil, nama_mobil, tahun_mobil
   FROM mobil
   ORDER BY nama_mobil
 ")->fetch_all(MYSQLI_ASSOC);
@@ -47,14 +47,14 @@ $mobilList = $conn->query("
 
                 <!-- 🔁 CHANGED: dropdown dinamis dari DB (value = id_mobil angka) -->
                 <select id="jenisMobil" class="form-select" required>
-                  <option value="" selected disabled>Pilih jenis mobil</option>
-                  <?php foreach ($mobilList as $m): ?>
-                    <option value="<?= (int)$m['id_mobil'] ?>">
-                      <?= htmlspecialchars($m['nama_mobil']) ?>
-                      <?= $m['tahun_mobil'] ? " (" . htmlspecialchars($m['tahun_mobil']) . ")" : "" ?>
-                    </option>
-                  <?php endforeach; ?>
-                </select>
+  <option value="" selected disabled>Pilih jenis mobil</option>
+  <?php foreach ($mobilList as $m): ?>
+    <option value="<?= htmlspecialchars($m['kode_mobil']) ?>">
+      <?= htmlspecialchars($m['nama_mobil']) ?>
+      <?= $m['tahun_mobil'] ? " (" . htmlspecialchars($m['tahun_mobil']) . ")" : "" ?>
+    </option>
+  <?php endforeach; ?>
+</select>
               </div>
 
               <div class="mb-3">
@@ -92,11 +92,11 @@ $mobilList = $conn->query("
               <h5 class="section-title mb-3">Data Pembeli</h5>
               <div class="mb-3">
                 <label class="form-label">Nama</label>
-                <input type="text" class="form-control" placeholder="Masukkan nama pembeli">
+                <input id="namaPembeli" type="text" class="form-control" placeholder="Masukkan nama pembeli">
               </div>
               <div class="mb-3">
                 <label class="form-label">No HP</label>
-                <input type="text" class="form-control" placeholder="Masukkan nomor HP">
+                <input id="noHp" type="text" class="form-control" placeholder="Masukkan nomor HP">
               </div>
               <div class="d-flex gap-3 flex-wrap">
                 <label><input type="checkbox"> KTP</label>
@@ -120,23 +120,23 @@ $mobilList = $conn->query("
 
               <div id="field-nama-kredit" class="mb-3">
                 <label class="form-label">Nama Kredit</label>
-                <input type="text" class="form-control" placeholder="Contoh: BRI Finance">
+                <input id="namaKredit" type="text" class="form-control" placeholder="Contoh: BRI Finance">
               </div>
 
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Full Price</label>
-                  <input type="text" class="form-control" placeholder="Rp 0">
+                  <input id="fullPrice" type="text" class="form-control" placeholder="Rp 0">
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Deal Price</label>
-                  <input type="text" class="form-control" placeholder="Rp 0">
+                  <input id="dealPrice" type="text" class="form-control" placeholder="Rp 0">
                 </div>
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Catatan</label>
-                <textarea class="form-control" rows="2" placeholder="Tambahkan catatan jika ada..."></textarea>
+                <textarea id="catatan" class="form-control" rows="2" placeholder="Tambahkan catatan jika ada..."></textarea>
               </div>
             </div>
           </div>

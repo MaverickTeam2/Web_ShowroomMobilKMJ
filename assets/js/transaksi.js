@@ -6,7 +6,7 @@
   // ======================================================
   // 📄 HALAMAN: transaksi.php (list & modal detail)
   // ======================================================
-  if (path.includes("transaksi.php")) {
+  if (path.endsWith("transaksi.php")) {
     console.log("Halaman transaksi.php terdeteksi");
 
     const btnTambah    = document.getElementById("btn-tambah-transaksi");
@@ -22,99 +22,103 @@
       });
     }
 
-    // Tombol detail transaksi
-    const detailButtons = document.querySelectorAll(".btn-detail");
-    detailButtons.forEach((btn) => {
-      btn.addEventListener("click", async (e) => {
-        e.preventDefault();
+   // Tombol detail transaksi
+const detailButtons = document.querySelectorAll(".btn-detail");
+detailButtons.forEach((btn) => {
+  btn.addEventListener("click", async (e) => {
+    e.preventDefault();
 
-        const id = (btn.dataset.id || "").trim(); // <- harus berisi kode_transaksi
-        if (!id) {
-          console.warn("❗ data-id kosong pada tombol detail");
-          return;
-        }
+    const id = (btn.dataset.id || "").trim();
+    if (!id) {
+      console.warn("❗ data-id kosong pada tombol detail");
+      return;
+    }
 
-        console.log("🔍 Lihat detail transaksi ID:", id);
+    console.log("🔍 Lihat detail transaksi ID:", id);
 
-        // tampilkan loading di modal
-        if (modalBody) {
-          modalBody.innerHTML = `
-            <div class="text-center my-3">
-              <div class="spinner-border text-primary" role="status"></div>
-              <p class="mt-2 text-muted">Memuat data transaksi...</p>
+    if (modalBody) {
+      modalBody.innerHTML = `
+        <div class="text-center my-3">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-2 text-muted">Memuat data transaksi...</p>
+        </div>
+      `;
+    }
+
+    try {
+      const API_URL = "http://localhost/API_kmj/admin/transaksi.php";
+
+      const res = await fetch(
+        `${API_URL}?action=detail&id=${encodeURIComponent(id)}`,
+        { method: "GET", headers: { Accept: "application/json" } }
+      );
+
+      const text = await res.text();
+      let payload;
+      try {
+        payload = JSON.parse(text);
+      } catch {
+        throw new Error("Respons bukan JSON: " + text.slice(0, 200));
+      }
+
+      if (!res.ok || payload.status === "error" || !payload.data) {
+        throw new Error(payload.message || "Gagal mengambil data");
+      }
+
+      const d = payload.data;
+      const status = (d.status || "").toLowerCase();
+      const badge =
+        status === "completed" ? "bg-success" :
+        status === "pending"   ? "bg-warning text-dark" :
+        "bg-danger";
+
+      modalBody.innerHTML = `
+        <div>
+          <h5 class="fw-bold mb-3">Detail Transaksi #${d.kode_transaksi || "-"}</h5>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <p><b>Nama Pembeli:</b> ${d.nama_pembeli ?? "-"}</p>
+              <p><b>No HP:</b> ${d.no_hp ?? "-"}</p>
+              <p><b>Tipe Pembayaran:</b> ${d.tipe_pembayaran ?? "-"}</p>
+              <p><b>Harga Akhir:</b> Rp ${Number(d.harga_akhir || 0).toLocaleString("id-ID")}</p>
             </div>
-          `;
-        }
+            <div class="col-md-6">
+              <p><b>Tanggal:</b> ${d.created_at ?? "-"}</p>
+              <p><b>Kasir:</b> ${d.kasir ?? "-"}</p>
+              <p><b>Status:</b> <span class="badge ${badge}">${status ? status[0].toUpperCase()+status.slice(1) : "-"}</span></p>
+            </div>
+          </div>
+          <hr>
+          <h6 class="fw-bold mt-3">Detail Mobil</h6>
+          <ul class="mb-0">
+            <li><b>Nama Mobil:</b> ${d.nama_mobil ?? "-"}</li>
+            <li><b>Tahun:</b> ${d.tahun_mobil ?? "-"}</li>
+          </ul>
+        </div>
+      `;
 
-        try {
-          // 🔗 PAKAI API BARU (BUKAN detail_transaksi.php lokal)
-          const API_BASE = "http://localhost/API_kmj/user/routes";
-          const res = await fetch(
-            `${API_BASE}/transaksi.php?action=detail&id=${encodeURIComponent(id)}`,
-            { headers: { Accept: "application/json" } }
-          );
+      // ✅ show modal di sini untuk kasus sukses
+      if (modalElement) new bootstrap.Modal(modalElement).show();
 
-          const text = await res.text(); // jaga-jaga kalau API balas HTML/error
-          let data;
-          try {
-            data = JSON.parse(text);
-          } catch (e) {
-            throw new Error("Respons bukan JSON: " + text.slice(0, 200));
-          }
+    } catch (err) {
+      console.error("❌ Error mengambil data transaksi:", err);
+      if (modalBody) {
+        modalBody.innerHTML = `
+          <p class="text-center text-danger my-3">
+            Terjadi kesalahan saat mengambil data transaksi.
+          </p>`;
+      }
+      // ✅ dan show modal juga saat error
+      if (modalElement) new bootstrap.Modal(modalElement).show();
+    }
+  });
+});
 
-          if (!data || data.status === "error") {
-            modalBody.innerHTML = `
-              <p class="text-center text-danger my-3">
-                ${data?.message || "Data tidak ditemukan."}
-              </p>`;
-          } else {
-            // ⚠️ pakai field yg ADA di API/DB kamu:
-            // kode_transaksi, nama_pembeli, no_hp, tipe_pembayaran, harga_akhir,
-            // created_at, kasir, nama_mobil, tahun_mobil
-            modalBody.innerHTML = `
-              <div>
-                <h5 class="fw-bold mb-3">Detail Transaksi #${data.kode_transaksi}</h5>
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <p><b>Nama Pembeli:</b> ${data.nama_pembeli ?? "-"}</p>
-                    <p><b>No HP:</b> ${data.no_hp ?? "-"}</p>
-                    <p><b>Tipe Pembayaran:</b> ${data.tipe_pembayaran ?? "-"}</p>
-                    <p><b>Harga Akhir:</b> Rp ${Number(data.harga_akhir || 0).toLocaleString("id-ID")}</p>
-                  </div>
-                  <div class="col-md-6">
-                    <p><b>Tanggal:</b> ${data.created_at ?? "-"}</p>
-                    <p><b>Kasir:</b> ${data.kasir ?? "-"}</p>
-                  </div>
-                </div>
-                <hr>
-                <h6 class="fw-bold mt-3">Detail Mobil</h6>
-                <ul class="mb-0">
-                  <li><b>Nama Mobil:</b> ${data.nama_mobil ?? "-"}</li>
-                  <li><b>Tahun:</b> ${data.tahun_mobil ?? "-"}</li>
-                </ul>
-              </div>
-            `;
-          }
-
-          if (modalElement) new bootstrap.Modal(modalElement).show();
-        } catch (err) {
-          console.error("❌ Error mengambil data transaksi:", err);
-          if (modalBody) {
-            modalBody.innerHTML = `
-              <p class="text-center text-danger my-3">
-                Terjadi kesalahan saat mengambil data transaksi.
-              </p>`;
-          }
-          if (modalElement) new bootstrap.Modal(modalElement).show();
-        }
-      });
-    });
-  }
 
   // ======================================================
   // 📄 HALAMAN: tambah_transaksi.php
   // ======================================================
-  if (path.includes("tambah_transaksi.php")) {
+  if (path.endsWith("tambah_transaksi.php")) {
     console.log("📄 Mode: tambah transaksi aktif");
 
     // --- elemen preview & form ---
@@ -201,5 +205,69 @@
         tipeMobilInput.value = v;
       }
     }
+
+        // ======================================================
+    // 🚀 SUBMIT FORM → API create transaksi
+    // ======================================================
+
+    const form = document.querySelector(".tambah-transaksi-form");
+
+    // Ambil elemen input utama (ingat, kamu sudah kasih id di PHP)
+    const namaPembeli = document.getElementById("namaPembeli");
+    const noHp = document.getElementById("noHp");
+    const dealPrice = document.getElementById("dealPrice");
+
+    // NOTE: kode_user HARUS dari session, sementara hardcode dulu
+    const KODE_USER = "USR001";
+
+    const toNumber = (str) =>
+      Number(String(str || "0").replace(/\D/g, "")); // hapus Rp, titik, koma dll
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const payload = {
+        action: "create",
+        nama_pembeli: namaPembeli.value.trim(),
+        no_hp: noHp.value.trim(),
+        tipe_pembayaran: jenisPembayaran.value,
+        harga_akhir: toNumber(dealPrice.value),
+        kode_mobil: jenisMobil.value, // sudah value kode_mobil karena kamu ganti di PHP
+        kode_user: KODE_USER,
+        status: "pending"
+      };
+
+      console.log("📤 Payload kirim:", payload);
+
+      try {
+        const res = await fetch(
+          "http://localhost/API_kmj/admin/transaksi.php",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+
+        const json = await res.json();
+        console.log("📥 Response API:", json);
+
+        if (!res.ok || json.status === "error") {
+          alert(json.message || "Gagal membuat transaksi");
+          return;
+        }
+
+        alert("Transaksi berhasil dibuat!");
+        window.location.href = "transaksi.php";
+      } catch (err) {
+        console.error("❌ ERROR saat kirim:", err);
+        alert("Terjadi kesalahan jaringan.");
+      }
+    });
   }
+}
 })();
+
