@@ -156,11 +156,19 @@
       toggleTheme();
     });
   }
-
-  // ====== Breadcrumb Dinamis (global) ==================================
+  
+// ====== Breadcrumb Dinamis (global) ==================================
 function initBreadcrumbFromActiveLink(optionalHtml) {
   var breadcrumb = document.querySelector('.breadcrumb');
   if (!breadcrumb) return;
+
+  // 0) Kalau halaman sudah punya breadcrumb statis
+  //    atau ditandai fixed, jangan ditimpa.
+  if (!optionalHtml) {
+    if (breadcrumb.dataset.fixed === 'true' || breadcrumb.children.length > 0) {
+      return;
+    }
+  }
 
   // Jika kita memuat halaman via fetch (optionalHtml dikirim)
   // maka kita ambil breadcrumb dari halaman tersebut
@@ -183,25 +191,23 @@ function initBreadcrumbFromActiveLink(optionalHtml) {
 
   var name = (activeTextEl && (activeTextEl.textContent || '').trim()) || 'Dashboard';
 
+  // fallback escape kalau belum ada
+  if (typeof escapeHtml !== 'function') {
+    window.escapeHtml = function (str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    };
+  }
+
   breadcrumb.innerHTML =
     '<li><a href="dashboard.php">Home</a></li>' +
     '<li><i class="bx bx-chevron-right"></i></li>' +
     '<li>' + escapeHtml(name) + '</li>';
 }
-
-// pastikan fungsi tersedia di global (opsional tapi aman)
-window.initBreadcrumbFromActiveLink = initBreadcrumbFromActiveLink;
-
-
-
-  function escapeHtml(s) {
-    return String(s)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
 
   // ====== BOOT =============================================================
   document.addEventListener('DOMContentLoaded', function () {
