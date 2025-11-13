@@ -2,6 +2,11 @@
 // Cek apakah file ini dibuka langsung di browser (bukan via fetch)
 $is_direct = (basename($_SERVER['SCRIPT_FILENAME']) == basename(__FILE__));
 
+// >>> TAMBAHKAN BARIS INI <<<
+if ($is_direct) {
+  $title = 'tambah_stok_mobil';
+}
+
 // Kalau dibuka langsung, tampilkan layout lengkap
 if ($is_direct) {
   include '../../db/koneksi.php';
@@ -15,7 +20,7 @@ if ($is_direct) {
 <div class="head-title d-flex justify-content-between align-items-center">
   <div class="left">
     <h1>Tambah Stok Mobil</h1>
-    <ul class="breadcrumb">
+    <ul class="breadcrumb" data-fixed="true">
       <li><a href="manajemen_mobil.php" data-page="manajemen_mobil.php">Manajemen Mobil</a></li>
       <li><i class='bx bx-chevron-right'></i></li>
       <li><a class="active" href="#">Tambah Stok Mobil</a></li>
@@ -24,7 +29,7 @@ if ($is_direct) {
 </div>
 
 <div class="card p-4 shadow-sm mt-4" style="max-width:1100px; margin:auto;">
- <form id="formMobil" method="POST" enctype="multipart/form-data">
+  <form id="formMobil" method="POST" enctype="multipart/form-data">
 
 
     <!-- ================= Informasi Mobil ================= -->
@@ -36,14 +41,37 @@ if ($is_direct) {
           <label class="form-label">Nama Mobil *</label>
           <input type="text" class="form-control" placeholder="Masukkan nama mobil" name="nama_mobil" required>
         </div>
+
         <div class="col-md-3">
           <label class="form-label">Tahun *</label>
-          <input type="number" class="form-control" placeholder="2025" name="tahun" required>
+          <div class="year-picker" style="position:relative; max-width:130px;">
+            <div class="input-group">
+              <input type="text" class="form-control" name="tahun" id="tahunInput" placeholder="YYYY"
+                inputmode="numeric" pattern="\d{4}" required readonly>
+              <button type="button" class="btn btn-outline-secondary" id="ypToggle" tabindex="-1">▾</button>
+            </div>
+
+            <!-- Panel decade view -->
+            <div class="yp-panel shadow" id="ypPanel" hidden>
+              <div class="yp-header d-flex justify-content-between align-items-center px-2 py-1">
+                <button type="button" class="btn btn-sm btn-light" id="ypPrev" aria-label="Prev decade">&laquo;</button>
+                <span class="fw-semibold" id="ypRange">—</span>
+                <button type="button" class="btn btn-sm btn-light" id="ypNext" aria-label="Next decade">&raquo;</button>
+              </div>
+              <div class="yp-grid p-2" id="ypGrid"></div>
+            </div>
+          </div>
         </div>
+
         <div class="col-md-3">
           <label class="form-label">Jarak Tempuh *</label>
-          <input type="text" class="form-control" placeholder="0 KM" name="jarak_tempuh" required>
+          <div class="input-group">
+            <input type="number" class="form-control no-spin" placeholder="0" name="jarak_tempuh" id="jarak_tempuh"
+              required>
+            <span class="input-group-text">KM</span>
+          </div>
         </div>
+
 
         <div class="col-md-6">
           <label class="form-label">Tipe Kendaraan *</label>
@@ -81,7 +109,7 @@ if ($is_direct) {
           <input type="text" class="form-control" placeholder="Gray, Black, Red, dll" name="warna_exterior" required>
         </div>
         <div class="col-md-5">
-          <label class="form-label">Warna Exterior *</label>
+          <label class="form-label">Warna Interior *</label>
           <input type="text" class="form-control" placeholder="Gray, Black, Red, dll" name="warna_interior" required>
         </div>
 
@@ -91,22 +119,30 @@ if ($is_direct) {
           <!-- Angsuran × Tenor -->
           <div class="d-flex align-items-end gap-1" style="min-width: 100px;">
             <div class="flex-grow-1">
-              <label class="form-label">Angsuran (Rp) *</label>
-              <input type="number" class="form-control" placeholder="2500" name="angsuran" required>
+              <label class="form-label">Angsuran *</label>
+              <div class="input-group">
+                <span class="input-group-text">Rp</span>
+                <input type="number" class="form-control no-spin" placeholder="2500" name="angsuran" id="angsuran"
+                  required>
+              </div>
             </div>
 
             <div class="d-flex align-items-center px-2" style="font-weight:700; font-size:1.4rem;">X</div>
 
             <div style="width: 70px;">
               <label class="form-label">Tenor *</label>
-              <input type="number" class="form-control" placeholder="0" name="tenor" required>
+              <input type="number" class="form-control no-spin" placeholder="0" name="tenor" id="tenor" required>
             </div>
           </div>
 
           <!-- Warna Interior -->
           <div class="flex-grow-1">
-            <label class="form-label">Uang Muka (Rp) *</label>
-            <input type="number" class="form-control" placeholder="2000" name="uang_muka" required>
+            <label class="form-label">Uang Muka *</label>
+            <div class="input-group">
+              <span class="input-group-text">Rp</span>
+              <input type="number" class="form-control no-spin" placeholder="2000" name="uang_muka" id="uang_muka"
+                required>
+            </div>
           </div>
         </div>
       </div>
@@ -197,42 +233,6 @@ if ($is_direct) {
         </button>
       </div>
   </form>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const formMobil = document.getElementById("formMobil");
-      if (!formMobil) return;
-
-      formMobil.addEventListener("submit", async function (e) {
-        e.preventDefault(); // cegah reload
-
-        const formData = new FormData(formMobil);
-
-        try {
-          // ✅ path fix sesuai struktur kamu
-          const response = await fetch("api/mobil_tambah.php", {
-            method: "POST",
-            body: formData
-          });
-
-          if (!response.ok) throw new Error("Gagal mengirim data ke server");
-
-          const result = await response.json();
-          console.log("Response:", result);
-
-          if (result.success) {
-            alert(result.message || "Mobil berhasil ditambahkan!");
-            window.location.href = "manajemen_mobil.php";
-          } else {
-            alert(result.message || "Gagal menambahkan mobil.");
-          }
-        } catch (err) {
-          console.error("❌ Error:", err);
-          alert("Terjadi kesalahan: " + err.message);
-        }
-      });
-    });
-  </script>
 </div>
 
 <?php
@@ -242,5 +242,91 @@ if ($is_direct) {
   include 'partials/footer.php';
 }
 ?>
+<script src="../../assets/js/mobil.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('tahunInput');
+    const toggle = document.getElementById('ypToggle');
+    const panel = document.getElementById('ypPanel');
+    const grid = document.getElementById('ypGrid');
+    const rangeEl = document.getElementById('ypRange');
+    const prevBtn = document.getElementById('ypPrev');
+    const nextBtn = document.getElementById('ypNext');
+
+    if (!input || !panel || !grid || !rangeEl || !prevBtn || !nextBtn || !toggle) {
+      console.warn('[YearPicker] Elemen tidak lengkap, cek id di HTML.');
+      return;
+    }
+
+    const now = new Date().getFullYear();
+    let selected = /^\d{4}$/.test(input.value) ? parseInt(input.value, 10) : now;
+    let decadeStart = Math.floor(selected / 10) * 10;
+
+    function render() {
+      rangeEl.textContent = `${decadeStart} - ${decadeStart + 9}`;
+      grid.innerHTML = '';
+      for (let y = decadeStart - 1; y <= decadeStart + 10; y++) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'yp-year' +
+          (y < decadeStart || y > decadeStart + 9 ? ' muted' : '') +
+          (y === selected ? ' selected' : '');
+        btn.textContent = y;
+        btn.addEventListener('click', () => {
+          selected = y;
+          input.value = String(y);
+          hide();
+        });
+        grid.appendChild(btn);
+      }
+    }
+
+    function show() {
+      // set dekade berdasar nilai saat ini / tahun sekarang
+      if (/^\d{4}$/.test(input.value)) {
+        selected = parseInt(input.value, 10);
+        decadeStart = Math.floor(selected / 10) * 10;
+      } else {
+        selected = now;
+        decadeStart = Math.floor(now / 10) * 10;
+      }
+      render();
+      panel.hidden = false;
+
+      // kalau mepet bawah layar, tampilkan ke atas
+      const rect = panel.getBoundingClientRect();
+      if (rect.bottom > window.innerHeight) { panel.style.top = 'auto'; panel.style.bottom = '110%'; }
+    }
+
+    function hide() {
+      panel.hidden = true;
+      panel.style.top = '110%';
+      panel.style.bottom = 'auto';
+    }
+
+    // buka panel saat klik input atau tombol ▾
+    input.addEventListener('click', function (e) { e.stopPropagation(); show(); });
+    toggle.addEventListener('click', function (e) { e.stopPropagation(); panel.hidden ? show() : hide(); });
+
+    prevBtn.addEventListener('click', function (e) { e.stopPropagation(); decadeStart -= 10; render(); });
+    nextBtn.addEventListener('click', function (e) { e.stopPropagation(); decadeStart += 10; render(); });
+
+    // klik di luar menutup panel
+    document.addEventListener('click', function (e) {
+      if (panel.hidden) return;
+      if (!panel.contains(e.target) && e.target !== input && e.target !== toggle) { hide(); }
+    });
+
+    // keyboard
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); show(); }
+      if (e.key === 'Escape') { hide(); }
+    });
+  });
+</script>
+
+
+
+
 
 <link rel="stylesheet" href="../../assets/css/admin/tambah_stok_mobil.css">
