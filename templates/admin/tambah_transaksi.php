@@ -143,13 +143,12 @@ $mobilList = $conn->query("
         </div>
 
         <div class="text-end mt-4">
-          <button type="submit" class="btn btn-primary px-4">Submit</button>
+          <button type="submit" class="btn btn-primary" style="width: 910px;">Submit</button>
         </div>
       </form>
-    </div> <!-- .content-area -->
-  </main> <!-- #main-content -->
-</section> <!-- #content -->
-
+    </div> 
+  </main>
+</section> 
 <!-- Load JS -->
 <script src="../../assets/js/transaksi.js"></script>
 
