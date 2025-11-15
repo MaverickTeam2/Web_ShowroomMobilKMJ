@@ -36,69 +36,93 @@ $mobils = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
       </div>
 
       <!-- Tombol Tambah Mobil -->
-      <button id="btn-tambah-mobil" class="btn btn-primary d-flex align-items-center" data-page="tambah_stok_mobil.php">
+      <!-- <button id="btn-tambah-mobil" class="btn btn-primary d-flex align-items-center" data-page="tambah_stok_mobil.php">
         <i class="bx bx-plus me-2"></i> Tambah Mobil
       </button>
-    </div>
+    </div> -->
+      <a href="tambah_stok_mobil.php" class="btn btn-primary d-flex align-items-center">
+        <i class="bx bx-plus me-2"></i> Tambah Mobil
+      </a>
 
-    <!-- Search dan Filter -->
-    <div class="d-flex flex-wrap align-items-center gap-2 mb-4 mt-3">
-      <div class="input-group" style="max-width: 1000px;">
-        <span class="input-group-text bg-white border-end-0"><i class="bx bx-search"></i></span>
-        <input type="text" class="form-control border-start-0" placeholder="Cari mobil, model, atau tahun...">
+
+      <!-- Search dan Filter -->
+      <div class="d-flex flex-wrap align-items-center gap-2 mb-4 mt-3">
+        <div class="input-group" style="max-width: 1000px;">
+          <span class="input-group-text bg-white border-end-0"><i class="bx bx-search"></i></span>
+          <input type="text" class="form-control border-start-0" placeholder="Cari mobil, model, atau tahun...">
+        </div>
       </div>
-      <button class="btn btn-outline-secondary d-flex align-items-center">
-        <i class="bx bx-filter-alt me-2"></i> Filter
-      </button>
-    </div>
 
-    <!-- Grid Card Mobil -->
-    <div class="row g-4">
-      <?php if (empty($mobils)): ?>
-        <div class="text-center py-5 text-muted">Belum ada data mobil.</div>
-      <?php else: ?>
-        <?php foreach ($mobils as $mobil): ?>
-          <div class="col-md-4 col-sm-6">
-            <div class="card shadow-sm border-0 h-100">
-              <img src="<?= htmlspecialchars($mobil['gambar'] ?? '../../assets/img/no-image.jpg') ?>" class="card-img-top"
-                alt="<?= htmlspecialchars($mobil['nama_mobil'] ?? 'Mobil Tanpa Nama') ?>">
+      <!-- Grid Card Mobil -->
+      <div class="row g-4">
+        <?php if (empty($mobils)): ?>
+          <div class="text-center py-5 text-muted">Belum ada data mobil.</div>
+        <?php else: ?>
+          <?php foreach ($mobils as $mobil): ?>
+            <div class="col-md-4 col-sm-6">
+              <div class="card shadow-sm border-0 h-100">
+                <img src="<?= htmlspecialchars($mobil['gambar'] ?? '../../assets/img/no-image.jpg') ?>" class="card-img-top"
+                  alt="<?= htmlspecialchars($mobil['nama_mobil'] ?? 'Mobil Tanpa Nama') ?>">
 
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                  <h5 class="card-title fw-bold mb-0">
-                    <?= htmlspecialchars($mobil['nama_mobil'] ?? 'Tanpa Nama') ?>
-                  </h5>
-                  <span class="badge bg-success">Available</span>
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="card-title fw-bold mb-0">
+                      <?= htmlspecialchars($mobil['nama_mobil'] ?? 'Tanpa Nama') ?>
+                    </h5>
+
+                    <?php
+                    // ambil status dari database, fallback ke 'available'
+                    $status = $mobil['status'] ?? 'available';
+
+                    // mapping status → label + warna badge
+                    $statusMap = [
+                      'available' => ['label' => 'Available', 'class' => 'bg-success'],
+                      'reserved' => ['label' => 'Reserved', 'class' => 'bg-warning text-dark'],
+                      'sold' => ['label' => 'Sold', 'class' => 'bg-secondary'],
+                      'shipping' => ['label' => 'Shipping', 'class' => 'bg-info text-dark'],
+                      'delivered' => ['label' => 'Delivered', 'class' => 'bg-primary'],
+                    ];
+
+                    $statusCfg = $statusMap[$status] ?? $statusMap['available'];
+                    ?>
+
+                    <span class="badge <?= $statusCfg['class'] ?>">
+                      <?= htmlspecialchars($statusCfg['label']) ?>
+                    </span>
+                  </div>
+
+                  <!-- sisanya tetap, jangan diubah -->
+                  <p class="text-muted mb-1">Tahun: <?= htmlspecialchars($mobil['tahun_mobil'] ?? '-') ?></p>
+                  <p class="text-muted mb-1">
+                    Warna: <?= htmlspecialchars($mobil['warna_exterior'] ?? '-') ?> /
+                    <?= htmlspecialchars($mobil['warna_interior'] ?? '-') ?>
+                  </p>
+                  <p class="text-muted mb-1">Jarak Tempuh: <?= number_format($mobil['jarak_tempuh'] ?? 0) ?> KM</p>
+                  <p class="text-muted mb-1">Jenis: <?= htmlspecialchars($mobil['jenis_kendaraan'] ?? '-') ?></p>
+                  <p class="text-muted mb-1">Bahan Bakar: <?= htmlspecialchars($mobil['tipe_bahan_bakar'] ?? '-') ?></p>
+                  <p class="text-muted mb-2">Tenor: <?= htmlspecialchars($mobil['tenor'] ?? '-') ?> bulan</p>
+
+                  <h6 class="fw-bold text-primary mb-3">
+                    Rp. <?= number_format($mobil['angsuran'] ?? 0, 0, ',', '.') ?> / bulan
+                  </h6>
+
+                  <div class="d-flex justify-content-end gap-2">
+                    <a href="tambah_stok_mobil.php?kode=<?= $mobil['kode_mobil'] ?>" class="btn btn-outline-primary btn-sm">
+                      <i class="bx bx-edit-alt"></i>
+                    </a>
+
+                    <button class="btn btn-danger btn-sm btnDeleteMobil" data-kode="<?= $mobil['kode_mobil'] ?>">
+                      <i class="bx bx-trash"></i>
+                    </button>
+                  </div>
+
                 </div>
 
-                <p class="text-muted mb-1">Tahun: <?= htmlspecialchars($mobil['tahun_mobil'] ?? '-') ?></p>
-                <p class="text-muted mb-1">
-                  Warna: <?= htmlspecialchars($mobil['warna_exterior'] ?? '-') ?> /
-                  <?= htmlspecialchars($mobil['warna_interior'] ?? '-') ?>
-                </p>
-                <p class="text-muted mb-1">Jarak Tempuh: <?= number_format($mobil['jarak_tempuh'] ?? 0) ?> KM</p>
-                <p class="text-muted mb-1">Jenis: <?= htmlspecialchars($mobil['jenis_kendaraan'] ?? '-') ?></p>
-                <p class="text-muted mb-1">Bahan Bakar: <?= htmlspecialchars($mobil['tipe_bahan_bakar'] ?? '-') ?></p>
-                <p class="text-muted mb-2">Tenor: <?= htmlspecialchars($mobil['tenor'] ?? '-') ?> bulan</p>
-
-                <h6 class="fw-bold text-primary mb-3">
-                  Rp. <?= number_format($mobil['angsuran'] ?? 0, 0, ',', '.') ?> / bulan
-                </h6>
-
-                <div class="d-flex justify-content-end gap-2">
-                  <button class="btn btn-outline-primary btn-sm">
-                    <i class="bx bx-edit-alt"></i>
-                  </button>
-                  <button class="btn btn-outline-danger btn-sm">
-                    <i class="bx bx-trash"></i>
-                  </button>
-                </div>
               </div>
             </div>
-          </div>
-        <?php endforeach; ?>
-      <?php endif; ?>
-    </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </div>
   </main>
 </section>
 
@@ -106,40 +130,40 @@ $mobils = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
   document.addEventListener("DOMContentLoaded", function () {
     const btnTambah = document.getElementById("btn-tambah-mobil");
 
-    if (btnTambah) {
-      btnTambah.addEventListener("click", async function (e) {
-        e.preventDefault();
-        const page = btnTambah.getAttribute("data-page");
-        const main = document.getElementById("main-content");
+    if (!btnTambah) return;
+  });
+</script>
+<!-- // hapus -->
+<script>
+  document.addEventListener("click", async function (e) {
+    if (!e.target.closest(".btnDeleteMobil")) return;
 
-        try {
-          const response = await fetch(page);
-          if (!response.ok) throw new Error("Gagal memuat halaman");
-          const html = await response.text();
+    const btn = e.target.closest(".btnDeleteMobil");
+    const kode = btn.dataset.kode;
 
-          const temp = document.createElement("div");
-          temp.innerHTML = html.trim();
-          const fetchedMain = temp.querySelector("#main-content");
-          const inner = fetchedMain ? fetchedMain.innerHTML : temp.innerHTML;
+    if (!confirm(`Yakin hapus mobil ${kode}?`)) return;
 
-          main.innerHTML = inner;
-          window.history.pushState({}, '', page);
+    const res = await fetch(window.location.origin + "/API_KMJ/admin/mobil_tambah.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        delete: 1,
+        kode_mobil: kode
+      }),
+    });
 
-          if (typeof window.initBreadcrumbFromActiveLink === 'function') {
-            window.initBreadcrumbFromActiveLink(html);
-          }
-          if (typeof window.initTheme === 'function') window.initTheme();
-          if (typeof window.initSidebarState === 'function') window.initSidebarState();
-          if (typeof window.initSidebarDropdowns === 'function') window.initSidebarDropdowns();
-          if (typeof window.wireUI === 'function') window.wireUI();
+    const json = await res.json();
+    console.log(json);
 
-        } catch (err) {
-          main.innerHTML = `<div class='alert alert-danger text-center mt-5'>${err.message}</div>`;
-        }
-      });
+    if (json.success) {
+      alert("Berhasil dihapus!");
+      location.reload();
+    } else {
+      alert("Gagal: " + json.message);
     }
   });
 </script>
+
 
 <?php include 'partials/footer.php'; ?>
 <link rel="stylesheet" href="../../assets/css/admin/manajemen_mobil.css">
