@@ -6,7 +6,7 @@
 // ===========================
 // 1. Konfigurasi Base URL API
 // ===========================
-define('BASE_API_URL', 'http://192.168.1.20:8888/API_kmj');
+define('BASE_API_URL', 'http://192.168.1.51:8888/api_kmj');
 
 // ===========================
 // 2. Fungsi untuk GET request

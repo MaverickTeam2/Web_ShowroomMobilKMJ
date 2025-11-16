@@ -3,9 +3,8 @@ include '../../db/koneksi.php';
 include 'partials/header.php';
 include 'partials/sidebar.php';
 
-// 🔁 CHANGED: ambil daftar mobil dari DB untuk isi dropdown
 $mobilList = $conn->query("
-  SELECT id_mobil, nama_mobil, tahun_mobil
+  SELECT kode_mobil, nama_mobil, tahun_mobil
   FROM mobil
   ORDER BY nama_mobil
 ")->fetch_all(MYSQLI_ASSOC);
@@ -35,21 +34,18 @@ $mobilList = $conn->query("
     <!-- FORM TAMBAH TRANSAKSI -->
     <div class="content-area mt-4">
       <form class="tambah-transaksi-form">
-        <!-- Informasi Pembelian -->
         <div class="card p-3 mb-4 informasi-pembelian">
           <h5 class="section-title mb-3">Informasi Pembelian</h5>
 
           <div class="row align-items-start g-3">
-            <!-- Kolom Kiri -->
             <div class="col-md-5">
               <div class="mb-3">
                 <label class="form-label">Jenis Mobil</label>
 
-                <!-- 🔁 CHANGED: dropdown dinamis dari DB (value = id_mobil angka) -->
                 <select id="jenisMobil" class="form-select" required>
                   <option value="" selected disabled>Pilih jenis mobil</option>
                   <?php foreach ($mobilList as $m): ?>
-                    <option value="<?= (int)$m['id_mobil'] ?>">
+                    <option value="<?= (int)$m['kode_mobil'] ?>">
                       <?= htmlspecialchars($m['nama_mobil']) ?>
                       <?= $m['tahun_mobil'] ? " (" . htmlspecialchars($m['tahun_mobil']) . ")" : "" ?>
                     </option>
@@ -63,7 +59,6 @@ $mobilList = $conn->query("
               </div>
             </div>
 
-            <!-- Kolom Kanan - Preview Mobil -->
             <div class="col-md-7">
               <div id="mobilPreview" class="mobil-preview d-none">
                 <div class="mobil-card">
@@ -86,7 +81,6 @@ $mobilList = $conn->query("
 
         <!-- Data Pembeli dan Pembayaran -->
         <div class="row g-4">
-          <!-- Data Pembeli -->
           <div class="col-md-6">
             <div class="card p-3 h-100">
               <h5 class="section-title mb-3">Data Pembeli</h5>
@@ -146,9 +140,9 @@ $mobilList = $conn->query("
           <button type="submit" class="btn btn-primary px-4">Submit</button>
         </div>
       </form>
-    </div> <!-- .content-area -->
-  </main> <!-- #main-content -->
-</section> <!-- #content -->
+    </div> 
+  </main> 
+</section> 
 
 <!-- Load JS -->
 <script src="../../assets/js/transaksi.js"></script>
