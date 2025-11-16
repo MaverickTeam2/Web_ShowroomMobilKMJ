@@ -2,41 +2,140 @@
   console.log("✅ transaksi.js aktif");
 
   const path = window.location.pathname;
+  const page = path.split("/").pop(); // nama file terakhir, mis: "transaksi.php" / "tambah_transaksi.php"
 
-  // ======================================================
-  // 📄 HALAMAN: transaksi.php (list & modal detail)
-  // ======================================================
-  if (path.includes("transaksi.php")) {
-    console.log("Halaman transaksi.php terdeteksi");
+  if (page === "transaksi.php") {
+  console.log("Halaman transaksi.php terdeteksi");
 
-    const btnTambah    = document.getElementById("btn-tambah-transaksi");
-    const modalElement = document.getElementById("modalDetailTransaksi");
-    const modalBody    = document.getElementById("modalDetailBody");
+  const btnTambah      = document.getElementById("btn-tambah-transaksi");
+  const modalElement   = document.getElementById("modalDetailTransaksi");
+  const modalBody      = document.getElementById("modalDetailBody");
+  const tbodyTransaksi = document.getElementById("tbody-transaksi");
 
-    // Tombol tambah transaksi
-    if (btnTambah) {
-      btnTambah.addEventListener("click", (e) => {
-        e.preventDefault();
-        console.log("🟢 Tambah transaksi diklik");
-        window.location.href = "tambah_transaksi.php";
+  const statTotalRevenue    = document.getElementById("statTotalRevenue");
+  const statAverageDeal     = document.getElementById("statAverageDeal");
+  const statTotalTransaksi1 = document.getElementById("statTotalTransaksi1");
+  const statTotalTransaksi2 = document.getElementById("statTotalTransaksi2");
+
+  const API_URL = "http://localhost/API_kmj/admin/transaksi.php";
+
+  // Tombol tambah transaksi
+  if (btnTambah) {
+    btnTambah.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.location.href = "tambah_transaksi.php";
+    });
+  }
+
+  // helper format rupiah
+  const toIDR = (n) => "Rp " + Number(n || 0).toLocaleString("id-ID");
+
+  // 🔹 LOAD LIST TRANSAKSI
+  async function loadTransaksi() {
+    if (!tbodyTransaksi) return;
+
+    tbodyTransaksi.innerHTML = `
+      <tr><td colspan="8" class="text-center text-muted">Memuat data...</td></tr>
+    `;
+
+    try {
+      const res = await fetch(`${API_URL}?action=list`, {
+        headers: { Accept: "application/json" },
       });
-    }
 
-    // Tombol detail transaksi
+      const text = await res.text();
+      console.log("📥 RAW list:", text);
+
+      let payload;
+      try {
+        payload = JSON.parse(text);
+      } catch {
+        throw new Error("Respons list bukan JSON: " + text.slice(0, 200));
+      }
+
+      if (!res.ok || payload.status === "error") {
+        throw new Error(payload.message || "Gagal mengambil list transaksi");
+      }
+
+      const rows = payload.data || [];
+
+      if (rows.length === 0) {
+        tbodyTransaksi.innerHTML = `
+          <tr><td colspan="8" class="text-center text-muted">Belum ada transaksi</td></tr>
+        `;
+      } else {
+        tbodyTransaksi.innerHTML = rows.map((trx) => {
+          const statusRaw = (trx.status || "").toLowerCase().trim();
+          let badgeClass, statusText;
+          switch (statusRaw) {
+            case "completed":
+              badgeClass = "bg-success"; statusText = "Completed"; break;
+            case "pending":
+              badgeClass = "bg-warning text-dark"; statusText = "Pending"; break;
+            case "cancelled":
+            case "canceled":
+              badgeClass = "bg-danger"; statusText = "Cancelled"; break;
+            default:
+              badgeClass = "bg-secondary";
+              statusText = statusRaw ? statusRaw : "Unknown";
+          }
+
+          return `
+            <tr>
+              <td>${trx.kode_transaksi ?? "-"}</td>
+              <td>${trx.nama_pembeli ?? "-"}</td>
+              <td>${trx.nama_mobil ?? "-"}</td>
+              <td>${trx.tanggal ?? "-"}</td>
+              <td><span class="badge ${badgeClass}">${statusText}</span></td>
+              <td>${toIDR(trx.harga_akhir)}</td>
+              <td>${trx.kasir ?? "-"}</td>
+              <td>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-outline-primary btn-sm btn-detail"
+                          data-id="${trx.kode_transaksi ?? ""}">
+                    <i class="bx bx-detail"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary btn-sm">
+                    <i class="bx bx-download"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      // 🔹 hitung statistik
+      const totalRevenue   = rows.reduce((sum, r) => sum + Number(r.harga_akhir || 0), 0);
+      const totalTransaksi = rows.length;
+      const averageDeal    = totalTransaksi > 0 ? totalRevenue / totalTransaksi : 0;
+
+      if (statTotalRevenue)   statTotalRevenue.textContent   = toIDR(totalRevenue);
+      if (statAverageDeal)    statAverageDeal.textContent    = toIDR(averageDeal);
+      if (statTotalTransaksi1)statTotalTransaksi1.textContent = `Dari ${totalTransaksi} transaksi`;
+      if (statTotalTransaksi2)statTotalTransaksi2.textContent = totalTransaksi;
+
+      // pasang handler tombol detail
+      attachDetailHandlers();
+    } catch (err) {
+      console.error("❌ Gagal load list transaksi:", err);
+      tbodyTransaksi.innerHTML = `
+        <tr><td colspan="8" class="text-center text-danger">
+          Gagal memuat data transaksi.
+        </td></tr>
+      `;
+    }
+  }
+
+  // 🔹 DETAIL (pakai API action=detail yang tadi sudah jalan)
+  function attachDetailHandlers() {
     const detailButtons = document.querySelectorAll(".btn-detail");
     detailButtons.forEach((btn) => {
       btn.addEventListener("click", async (e) => {
         e.preventDefault();
+        const id = (btn.dataset.id || "").trim();
+        if (!id) return;
 
-        const id = (btn.dataset.id || "").trim(); // <- harus berisi kode_transaksi
-        if (!id) {
-          console.warn("❗ data-id kosong pada tombol detail");
-          return;
-        }
-
-        console.log("🔍 Lihat detail transaksi ID:", id);
-
-        // tampilkan loading di modal
         if (modalBody) {
           modalBody.innerHTML = `
             <div class="text-center my-3">
@@ -47,54 +146,53 @@
         }
 
         try {
-          // 🔗 PAKAI API BARU (BUKAN detail_transaksi.php lokal)
-          const API_BASE = "http://localhost/API_kmj/user/routes";
           const res = await fetch(
-            `${API_BASE}/transaksi.php?action=detail&id=${encodeURIComponent(id)}`,
+            `${API_URL}?action=detail&id=${encodeURIComponent(id)}`,
             { headers: { Accept: "application/json" } }
           );
 
-          const text = await res.text(); // jaga-jaga kalau API balas HTML/error
-          let data;
-          try {
-            data = JSON.parse(text);
-          } catch (e) {
-            throw new Error("Respons bukan JSON: " + text.slice(0, 200));
+          const text = await res.text();
+          console.log("📥 RAW detail:", text);
+
+          let payload;
+          try { payload = JSON.parse(text); }
+          catch { throw new Error("Respons detail bukan JSON: " + text.slice(0, 200)); }
+
+          if (!res.ok || payload.status === "error" || !payload.data) {
+            throw new Error(payload.message || "Gagal mengambil data");
           }
 
-          if (!data || data.status === "error") {
-            modalBody.innerHTML = `
-              <p class="text-center text-danger my-3">
-                ${data?.message || "Data tidak ditemukan."}
-              </p>`;
-          } else {
-            // ⚠️ pakai field yg ADA di API/DB kamu:
-            // kode_transaksi, nama_pembeli, no_hp, tipe_pembayaran, harga_akhir,
-            // created_at, kasir, nama_mobil, tahun_mobil
-            modalBody.innerHTML = `
-              <div>
-                <h5 class="fw-bold mb-3">Detail Transaksi #${data.kode_transaksi}</h5>
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <p><b>Nama Pembeli:</b> ${data.nama_pembeli ?? "-"}</p>
-                    <p><b>No HP:</b> ${data.no_hp ?? "-"}</p>
-                    <p><b>Tipe Pembayaran:</b> ${data.tipe_pembayaran ?? "-"}</p>
-                    <p><b>Harga Akhir:</b> Rp ${Number(data.harga_akhir || 0).toLocaleString("id-ID")}</p>
-                  </div>
-                  <div class="col-md-6">
-                    <p><b>Tanggal:</b> ${data.created_at ?? "-"}</p>
-                    <p><b>Kasir:</b> ${data.kasir ?? "-"}</p>
-                  </div>
+          const d = payload.data;
+          const status = (d.status || "").toLowerCase();
+          const badge =
+            status === "completed" ? "bg-success" :
+            status === "pending"   ? "bg-warning text-dark" :
+            "bg-danger";
+
+          modalBody.innerHTML = `
+            <div>
+              <h5 class="fw-bold mb-3">Detail Transaksi #${d.kode_transaksi || "-"}</h5>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <p><b>Nama Pembeli:</b> ${d.nama_pembeli ?? "-"}</p>
+                  <p><b>No HP:</b> ${d.no_hp ?? "-"}</p>
+                  <p><b>Tipe Pembayaran:</b> ${d.tipe_pembayaran ?? "-"}</p>
+                  <p><b>Harga Akhir:</b> ${toIDR(d.harga_akhir)}</p>
                 </div>
-                <hr>
-                <h6 class="fw-bold mt-3">Detail Mobil</h6>
-                <ul class="mb-0">
-                  <li><b>Nama Mobil:</b> ${data.nama_mobil ?? "-"}</li>
-                  <li><b>Tahun:</b> ${data.tahun_mobil ?? "-"}</li>
-                </ul>
+                <div class="col-md-6">
+                  <p><b>Tanggal:</b> ${d.created_at ?? "-"}</p>
+                  <p><b>Kasir:</b> ${d.kasir ?? "-"}</p>
+                  <p><b>Status:</b> <span class="badge ${badge}">${status ? status[0].toUpperCase()+status.slice(1) : "-"}</span></p>
+                </div>
               </div>
-            `;
-          }
+              <hr>
+              <h6 class="fw-bold mt-3">Detail Mobil</h6>
+              <ul class="mb-0">
+                <li><b>Nama Mobil:</b> ${d.nama_mobil ?? "-"}</li>
+                <li><b>Tahun:</b> ${d.tahun_mobil ?? "-"}</li>
+              </ul>
+            </div>
+          `;
 
           if (modalElement) new bootstrap.Modal(modalElement).show();
         } catch (err) {
@@ -111,10 +209,15 @@
     });
   }
 
+  // 🚀 jalankan saat halaman load
+  loadTransaksi();
+}
+
+
   // ======================================================
   // 📄 HALAMAN: tambah_transaksi.php
   // ======================================================
-  if (path.includes("tambah_transaksi.php")) {
+  if (page === "tambah_transaksi.php"){
     console.log("📄 Mode: tambah transaksi aktif");
 
     // --- elemen preview & form ---
@@ -130,13 +233,12 @@
     const jenisPembayaran = document.getElementById("jenisPembayaran");
     const fieldNamaKredit = document.getElementById("field-nama-kredit");
 
-    // --- helpers ---
-    const toNum  = (v) => Number(v || 0);
-    const toIDR  = (n) => "Rp " + toNum(n).toLocaleString("id-ID");
+    const toNumMobil  = (v) => Number(v || 0);
+    const toIDRMobil  = (n) => "Rp " + toNumMobil(n).toLocaleString("id-ID");
     const showPrev = () => mobilPreview && mobilPreview.classList.remove("d-none");
     const hidePrev = () => mobilPreview && mobilPreview.classList.add("d-none");
 
-    // --- toggle kredit/tunai ---
+    // toggle kredit/tunai
     if (jenisPembayaran && fieldNamaKredit) {
       const apply = () => {
         const isKredit = (jenisPembayaran.value || "").toLowerCase() === "kredit";
@@ -146,7 +248,7 @@
       jenisPembayaran.addEventListener("change", apply);
     }
 
-    // --- preview mobil saat dipilih ---
+    // preview mobil saat dipilih
     if (jenisMobil) {
       jenisMobil.addEventListener("change", handleMobilChange);
       if (jenisMobil.value && jenisMobil.value !== "") {
@@ -177,9 +279,9 @@
 
         if (mobilImage)   mobilImage.src          = data.foto || "";
         if (mobilNama)    mobilNama.textContent   = data.nama_mobil || "-";
-        if (mobilHarga)   mobilHarga.textContent  = data.harga ? toIDR(data.harga) : "-";
-        if (mobilDetail)  mobilDetail.textContent = data.dp ? `DP ${toIDR(data.dp)}` : "-";
-        if (mobilKm)      mobilKm.textContent     = `${toNum(data.km).toLocaleString("id-ID")} Km`;
+        if (mobilHarga)   mobilHarga.textContent  = data.harga ? toIDRMobil(data.harga) : "-";
+        if (mobilDetail)  mobilDetail.textContent = data.dp ? `DP ${toIDRMobil(data.dp)}` : "-";
+        if (mobilKm)      mobilKm.textContent     = `${toNumMobil(data.km).toLocaleString("id-ID")} Km`;
         if (mobilTahun)   mobilTahun.textContent  = data.tahun || "-";
 
         setTipe(data.tipe || "-");
@@ -201,5 +303,74 @@
         tipeMobilInput.value = v;
       }
     }
+
+    // ======================================================
+    // 🚀 SUBMIT FORM → API create transaksi
+    // ======================================================
+
+    const form = document.querySelector(".tambah-transaksi-form");
+    const namaPembeli = document.getElementById("namaPembeli");
+    const noHp        = document.getElementById("noHp");
+    const dealPrice   = document.getElementById("dealPrice");
+
+    const KODE_USER = "USR001"; // TODO: ambil dari session PHP
+
+    const toNumber = (str) =>
+      Number(String(str || "0").replace(/\D/g, ""));
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const payload = {
+        action: "create",
+        nama_pembeli: namaPembeli.value.trim(),
+        no_hp: noHp.value.trim(),
+        tipe_pembayaran: jenisPembayaran.value,
+        harga_akhir: toNumber(dealPrice.value),
+        kode_mobil: jenisMobil.value,
+        kode_user: KODE_USER,
+        status: "pending"
+      };
+
+      console.log("📤 Payload kirim:", payload);
+
+      try {
+        const res = await fetch(
+          "http://localhost/API_kmj/admin/transaksi.php",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+
+        const text = await res.text();
+        console.log("📥 RAW response:", text);
+
+        let json;
+        try {
+          json = JSON.parse(text);
+        } catch (e) {
+          throw new Error("Response bukan JSON valid");
+        }
+
+        console.log("📥 Parsed JSON:", json);
+
+        if (!res.ok || json.status === "error") {
+          alert(json.message || "Gagal membuat transaksi");
+          return;
+        }
+
+        alert("Transaksi berhasil dibuat!");
+        window.location.href = "transaksi.php";
+      } catch (err) {
+        console.error("❌ ERROR saat kirim:", err);
+        alert("Terjadi kesalahan jaringan.");
+      }
+    });
   }
+
 })();

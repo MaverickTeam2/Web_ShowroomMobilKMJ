@@ -2,37 +2,6 @@
 $title = "Transaksi";
 include 'partials/header.php';
 include 'partials/sidebar.php';
-include '../../db/koneksi.php';
-
-$query = "
-  SELECT 
-    t.kode_transaksi,
-    t.nama_pembeli,
-    m.nama_mobil,
-    t.created_at AS tanggal,
-    t.status,
-    t.harga_akhir,
-    u.full_name AS kasir
-  FROM transaksi t
-  LEFT JOIN mobil  m ON t.kode_mobil = m.kode_mobil
-  LEFT JOIN users  u ON t.kode_user  = u.kode_user
-  ORDER BY t.created_at DESC
-";
-
-
-$result = $conn->query($query);
-$transaksis = [];
-
-if ($result && $result->num_rows > 0) {
-  while ($row = $result->fetch_assoc()) {
-    $transaksis[] = $row;
-  }
-}
-
-// Statistik
-$totalRevenue = array_sum(array_column($transaksis, 'harga_akhir'));
-$totalTransaksi = count($transaksis);
-$averageDeal = $totalTransaksi > 0 ? $totalRevenue / $totalTransaksi : 0;
 ?>
 
 <section id="content">
@@ -60,14 +29,15 @@ $averageDeal = $totalTransaksi > 0 ? $totalRevenue / $totalTransaksi : 0;
     <div class="card p-3 mb-4 border-0 shadow-sm mt-4">
       <div class="d-flex flex-wrap align-items-center gap-2">
         <div class="flex-grow-1">
-          <input type="text" class="form-control" placeholder="Cari nama pembeli, ID, atau mobil...">
+          <input id="searchTransaksi" type="text" class="form-control"
+                 placeholder="Cari nama pembeli, ID, atau mobil...">
         </div>
         <div>
-          <select class="form-select border-primary text-primary" style="min-width: 160px;">
-            <option selected>All status</option>
-            <option>Completed</option>
-            <option>Pending</option>
-            <option>Cancelled</option>
+          <select id="filterStatus" class="form-select border-primary text-primary" style="min-width: 160px;">
+            <option value="">All status</option>
+            <option value="completed">Completed</option>
+            <option value="pending">Pending</option>
+            <option value="cancelled">Cancelled</option>
           </select>
         </div>
         <button class="btn btn-outline-secondary d-flex align-items-center">
@@ -92,41 +62,11 @@ $averageDeal = $totalTransaksi > 0 ? $totalRevenue / $totalTransaksi : 0;
               <th>Aksi</th>
             </tr>
           </thead>
-          <tbody>
-            <?php if (!empty($transaksis)): ?>
-              <?php foreach ($transaksis as $trx): ?>
-                <tr>
-                  <td><?= htmlspecialchars($trx['kode_transaksi']) ?></td>
-                  <td><?= htmlspecialchars($trx['nama_pembeli']) ?></td>
-                  <td><?= htmlspecialchars($trx['nama_mobil'] ?? '-') ?></td>
-                  <td><?= htmlspecialchars($trx['tanggal']) ?></td>
-                  <td>
-                    <?php if ($trx['status'] === 'Completed'): ?>
-                      <span class="badge bg-success">Completed</span>
-                    <?php elseif ($trx['status'] === 'Pending'): ?>
-                      <span class="badge bg-warning text-dark">Pending</span>
-                    <?php else: ?>
-                      <span class="badge bg-danger">Cancelled</span>
-                    <?php endif; ?>
-                  </td>
-                  <td>Rp <?= number_format($trx['harga_akhir'], 0, ',', '.') ?></td>
-                  <td><?= htmlspecialchars($trx['kasir'] ?? '-') ?></td>
-                  <td>
-                    <div class="d-flex gap-2">
-                      <button class="btn btn-outline-primary btn-sm btn-detail" 
-                              data-id="<?= htmlspecialchars($trx['kode_transaksi']) ?>">
-                        <i class="bx bx-detail"></i>
-                      </button>
-                      <button class="btn btn-outline-secondary btn-sm">
-                        <i class="bx bx-download"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              <?php endforeach; ?>
-            <?php else: ?>
-              <tr><td colspan="8" class="text-center text-muted">Belum ada transaksi</td></tr>
-            <?php endif; ?>
+          <tbody id="tbody-transaksi">
+            <!-- Akan diisi via JS dari API -->
+            <tr>
+              <td colspan="8" class="text-center text-muted">Memuat data...</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -137,39 +77,39 @@ $averageDeal = $totalTransaksi > 0 ? $totalRevenue / $totalTransaksi : 0;
       <div class="col-md-4 mb-3">
         <div class="stat-card">
           <div class="stat-title">Total revenue</div>
-          <div class="stat-value text-green">Rp <?= number_format($totalRevenue, 0, ',', '.') ?></div>
-          <div class="stat-subtext">Dari <?= $totalTransaksi ?> transaksi</div>
+          <div id="statTotalRevenue" class="stat-value text-green">Rp 0</div>
+          <div id="statTotalTransaksi1" class="stat-subtext">Dari 0 transaksi</div>
         </div>
       </div>
       <div class="col-md-4 mb-3">
         <div class="stat-card">
           <div class="stat-title">Average deal</div>
-          <div class="stat-value text-blue">Rp <?= number_format($averageDeal, 0, ',', '.') ?></div>
+          <div id="statAverageDeal" class="stat-value text-blue">Rp 0</div>
           <div class="stat-subtext">Rata-rata per transaksi</div>
         </div>
       </div>
       <div class="col-md-4 mb-3">
         <div class="stat-card">
           <div class="stat-title">Total transaksi</div>
-          <div class="stat-value text-purple"><?= $totalTransaksi ?></div>
+          <div id="statTotalTransaksi2" class="stat-value text-purple">0</div>
           <div class="stat-subtext">Keseluruhan</div>
         </div>
       </div>
     </div>
 
     <!-- Modal Detail -->
-<div class="modal fade" id="modalDetailTransaksi" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content border-0 shadow">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title">Detail Transaksi</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    <div class="modal fade" id="modalDetailTransaksi" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title">Detail Transaksi</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body" id="modalDetailBody"></div>
+          <p class="text-muted text-center mb-3">© 2024 Showroom Mobil KMJ</p>
+        </div>
       </div>
-      <div class="modal-body" id="modalDetailBody"></div>
-      <p class="text-muted text-center mb-3">© 2024 Showroom Mobil KMJ</p>
     </div>
-  </div>
-</div>
 
   </main>
 </section>

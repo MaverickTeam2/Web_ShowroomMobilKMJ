@@ -6,12 +6,14 @@
 // ===========================
 // 1. Konfigurasi Base URL API
 // ===========================
-define('BASE_API_URL', 'http://192.168.1.51:8888/api_kmj');
+define('BASE_API_URL', 'http://localhost/API_KMJ');
+
 
 // ===========================
 // 2. Fungsi untuk GET request
 // ===========================
-function api_get($endpoint) {
+function api_get($endpoint)
+{
     $url = BASE_API_URL . '/' . ltrim($endpoint, '/');
 
     $response = @file_get_contents($url);
@@ -36,7 +38,8 @@ function api_get($endpoint) {
 // ===========================
 // 3. Fungsi untuk POST request
 // ===========================
-function api_post($endpoint, $postData = []) {
+function api_post($endpoint, $postData = [])
+{
     $url = BASE_API_URL . '/' . ltrim($endpoint, '/');
 
     $ch = curl_init($url);
@@ -64,9 +67,3 @@ function api_post($endpoint, $postData = []) {
 
     return $data;
 }
-
-// ===========================
-// 4. Contoh penggunaan
-// ===========================
-// $produk = api_get('produk.php');
-// $login = api_post('login.php', ['username'=>'admin','password'=>'12345']);

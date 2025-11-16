@@ -2,68 +2,97 @@
 header('Content-Type: application/json; charset=utf-8');
 require_once '../../db/koneksi.php';
 
-// --- Validasi & casting ID ---
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-if ($id <= 0) {
-  echo json_encode(['status' => 'error', 'message' => 'ID mobil tidak dikirim / tidak valid']);
+// ambil kode mobil dari ?id=...
+$kode = isset($_GET['id']) ? trim($_GET['id']) : '';
+if ($kode === '') {
+  echo json_encode([
+    'status'  => 'error',
+    'message' => 'Kode mobil tidak dikirim'
+  ]);
   exit;
 }
 
-/*
-  Struktur tabel kamu:
-  - mobil: id_mobil, nama_mobil, tahun_mobil, jarak_tempuh, uang_muka, tenor, angsuran, ...
-  - mobil_foto: id_foto, id_mobil, data_foto (longblob), is_primary, created_at
-*/
-
+// ambil data dari tabel mobil
 $sql = "
-SELECT 
-  m.id_mobil,
-  m.nama_mobil,
-  m.tahun_mobil,
-  m.jarak_tempuh,
-  m.uang_muka,
-  m.tenor,
-  m.angsuran,
-  -- Estimasi harga kalau tidak ada kolom harga khusus
-  (COALESCE(m.uang_muka,0) + (COALESCE(m.angsuran,0) * COALESCE(m.tenor,0))) AS harga
-FROM mobil m
-WHERE m.id_mobil = ?
-LIMIT 1
+  SELECT 
+    kode_mobil,
+    nama_mobil,
+    tahun_mobil,
+    jarak_tempuh,
+    uang_muka,
+    tenor,
+    angsuran,
+    jenis_kendaraan
+  FROM mobil
+  WHERE kode_mobil = ?
+  LIMIT 1
 ";
 
 $stmt = $conn->prepare($sql);
 if (!$stmt) {
-  echo json_encode(['status' => 'error', 'message' => 'Query prepare gagal']);
+  echo json_encode([
+    'status'  => 'error',
+    'message' => 'Gagal prepare query: ' . $conn->error
+  ]);
   exit;
 }
 
-$stmt->bind_param("i", $id);
+$stmt->bind_param('s', $kode);
 $stmt->execute();
 $res = $stmt->get_result();
-$row = $res ? $res->fetch_assoc() : null;
+$row = $res->fetch_assoc();
+$stmt->close();
 
 if (!$row) {
-  echo json_encode(['status' => 'error', 'message' => 'Mobil tidak ditemukan']);
+  echo json_encode([
+    'status'  => 'error',
+    'message' => 'Mobil tidak ditemukan'
+  ]);
   exit;
 }
 
-// URL endpoint untuk ambil foto dari tabel mobil_foto
-$fotoUrl = "get_foto.php?id_mobil=" . $id;
+// hitung harga kasar (boleh kamu ubah rumusnya kalau mau)
+$uang_muka = (int)($row['uang_muka'] ?? 0);
+$angsuran  = (int)($row['angsuran'] ?? 0);
+$tenor     = (int)($row['tenor'] ?? 0);
+$harga     = $uang_muka + ($angsuran * $tenor);
 
-// Normalisasi nama field agar mudah dipakai di front-end
-$out = [
-  'status'     => 'ok',
-  'id_mobil'   => (int)$row['id_mobil'],
-  'nama_mobil' => $row['nama_mobil'] ?? '-',
-  'tahun'      => $row['tahun_mobil'] ?? null,
-  'km'         => isset($row['jarak_tempuh']) ? (int)$row['jarak_tempuh'] : 0,
-  'dp'         => isset($row['uang_muka']) ? (int)$row['uang_muka'] : 0,
-  'tenor'      => isset($row['tenor']) ? (int)$row['tenor'] : 0,
-  'angsuran'   => isset($row['angsuran']) ? (int)$row['angsuran'] : 0,
-  'harga'      => isset($row['harga']) ? (int)$row['harga'] : 0,
-  'foto'       => $fotoUrl,  // 🔥 sekarang kirim URL ke get_foto.php
-];
+// --- cari foto di tabel mobil_foto (optional) ---
+$placeholderUrl = '../../assets/img/car-placeholder.jpeg'; // <-- bikin file ini sendiri ya
 
-echo json_encode($out);
+$fotoUrl = $placeholderUrl; // default abu-abu
+
+$sqlFoto = "
+  SELECT nama_file 
+  FROM mobil_foto 
+  WHERE kode_mobil = ?
+  ORDER BY urutan ASC, id_foto ASC
+  LIMIT 1
+";
+$stmt2 = $conn->prepare($sqlFoto);
+if ($stmt2) {
+  $stmt2->bind_param('s', $kode);
+  $stmt2->execute();
+  $resFoto = $stmt2->get_result();
+  if ($fotoRow = $resFoto->fetch_assoc()) {
+    // SESUAIKAN path upload-mu:
+    $fotoUrl = '../../uploads/mobil/' . $fotoRow['nama_file'];
+  }
+  $stmt2->close();
+}
+
+// respon JSON ke JS
+echo json_encode([
+  'status'      => 'ok',
+  'kode_mobil'  => $row['kode_mobil'],
+  'nama_mobil'  => $row['nama_mobil'],
+  'tahun'       => $row['tahun_mobil'],
+  'km'          => (int)($row['jarak_tempuh'] ?? 0),
+  'dp'          => $uang_muka,
+  'tenor'       => $tenor,
+  'angsuran'    => $angsuran,
+  'harga'       => $harga,
+  'tipe'        => $row['jenis_kendaraan'] ?? '-',
+  'foto'        => $fotoUrl,
+]);
 exit;
-?>

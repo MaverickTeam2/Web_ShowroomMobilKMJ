@@ -41,7 +41,7 @@ input[readonly] {
 .btn-primary {
   background-color: #2563EB;
   border: none;
-  border-radius: 8px;
+  border-radius: 20px;
   font-weight: 500;
 }
 
