@@ -126,38 +126,37 @@ if ($isEdit) {
 
   <!-- ================= Informasi Mobil ================= -->
   <div class="card p-4 shadow-sm mb-4">
-    <h5 class="section-title">Informasi Mobil</h5>
+    <h5 class="section-title mb-3">Informasi Mobil</h5>
 
     <div class="row g-3">
       <div class="col-md-6">
         <label class="form-label">Nama Mobil *</label>
-        <input type="text" class="form-control" placeholder="Masukkan nama mobil" name="nama_mobil" required
+        <input type="text" class="form-control" name="nama_mobil" required placeholder="Masukkan nama mobil"
           value="<?= $isEdit ? htmlspecialchars($mobilData['nama_mobil']) : '' ?>">
       </div>
 
+      <!-- Tahun -->
       <div class="col-md-3">
         <label class="form-label">Tahun *</label>
-        <div class="year-picker" style="position:relative; max-width:130px;">
+        <div class="year-picker" style="position:relative;">
           <div class="input-group">
-            <input type="text" class="form-control" name="tahun" id="tahunInput" placeholder="YYYY" inputmode="numeric"
-              pattern="\d{4}" required readonly
+            <input type="text" class="form-control" name="tahun" id="tahunInput" placeholder="YYYY" required readonly
               value="<?= $isEdit ? htmlspecialchars($mobilData['tahun_mobil']) : '' ?>">
-            <button type="button" class="btn btn-outline-secondary" id="ypToggle" tabindex="-1">▾</button>
+            <button type="button" class="btn btn-outline-secondary" id="ypToggle">▾</button>
           </div>
 
-          <!-- Panel decade view -->
           <div class="yp-panel shadow" id="ypPanel" hidden>
             <div class="yp-header d-flex justify-content-between align-items-center px-2 py-1">
-              <button type="button" class="btn btn-sm btn-light" id="ypPrev" aria-label="Prev decade">&laquo;</button>
+              <button class="btn btn-sm btn-light" id="ypPrev">&laquo;</button>
               <span class="fw-semibold" id="ypRange">—</span>
-              <button type="button" class="btn btn-sm btn-light" id="ypNext" aria-label="Next decade">&raquo;</button>
+              <button class="btn btn-sm btn-light" id="ypNext">&raquo;</button>
             </div>
             <div class="yp-grid p-2" id="ypGrid"></div>
           </div>
         </div>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-6">
         <label class="form-label">Jarak Tempuh *</label>
         <div class="input-group">
           <input type="number" class="form-control no-spin" placeholder="0" name="jarak_tempuh" id="jarak_tempuh"
@@ -180,7 +179,7 @@ if ($isEdit) {
         </select>
       </div>
 
-      <div class="col-md-5">
+      <div class="col-md-6">
         <label class="form-label">Jenis Bahan Bakar *</label>
         <select class="form-select" name="bahan_bakar" required>
           <option value="">Pilih Jenis bahan bakar</option>
@@ -193,7 +192,7 @@ if ($isEdit) {
         </select>
       </div>
 
-      <div class="col-md-5">
+      <div class="col-md-6">
         <label class="form-label">Sistem Penggerak *</label>
         <select class="form-select" name="sistem_penggerak" required>
           <option value="">Pilih sistem penggerak</option>
@@ -206,47 +205,51 @@ if ($isEdit) {
         </select>
       </div>
 
-      <div class="col-md-5">
+      <div class="col-md-6">
         <label class="form-label">Warna Exterior *</label>
         <input type="text" class="form-control" placeholder="Gray, Black, Red, dll" name="warna_exterior" required
           value="<?= $isEdit ? htmlspecialchars($mobilData['warna_exterior']) : '' ?>">
       </div>
-      <div class="col-md-5">
+      <div class="col-md-6">
         <label class="form-label">Warna Interior *</label>
         <input type="text" class="form-control" placeholder="Gray, Black, Red, dll" name="warna_interior" required
           value="<?= $isEdit ? htmlspecialchars($mobilData['warna_interior']) : '' ?>">
       </div>
 
       <div class=" col-6 d-flex gap-3 ">
-        <!-- Warna Exterior -->
+
 
         <!-- Angsuran × Tenor -->
-        <div class=" d-flex align-items-end gap-1" style="min-width: 100px;">
-          <div class="flex-grow-1">
-            <label class="form-label">Angsuran *</label>
-            <div class="input-group">
-              <span class="input-group-text">Rp</span>
-              <input type="number" class="form-control no-spin" placeholder="2500" name="angsuran" id="angsuran"
-                required value="<?= $isEdit ? htmlspecialchars($mobilData['angsuran']) : '' ?>">
+        <!-- Angsuran × Tenor + Uang Muka -->
+        <div class="col-md-12">
+          <label class="form-label">Angsuran × Tenor *</label>
+          <div class="d-flex align-items-end gap-2">
+
+            <div class="flex-grow-1">
+              <div class="input-group" ">
+                <span class="input-group-text">Rp</span>
+                <input type="number" class="form-control" name="angsuran" required placeholder="2500"
+                  value="<?= $isEdit ? htmlspecialchars($mobilData['angsuran']) : '' ?>">
+              </div>
             </div>
-          </div>
 
-          <div class="d-flex align-items-center px-2" style="font-weight:700; font-size:1.4rem;">X</div>
+            <div class="fw-bold fs-4 px-2">×</div>
 
-          <div style="width: 70px;">
-            <label class="form-label">Tenor *</label>
-            <input type="number" class="form-control no-spin" placeholder="0" name="tenor" id="tenor" required
-              value="<?= $isEdit ? htmlspecialchars($mobilData['tenor']) : '' ?>">
+            <div style="width:150px;">
+              <input type="number" class="form-control" name="tenor" required placeholder="0"
+                value="<?= $isEdit ? htmlspecialchars($mobilData['tenor']) : '' ?>">
+            </div>
+
           </div>
         </div>
 
-        <!-- Warna Interior -->
-        <div class="flex-grow-1">
+        <!-- uang muka -->
+        <div class="col-md-6">
           <label class="form-label">Uang Muka *</label>
           <div class="input-group">
             <span class="input-group-text">Rp</span>
-            <input type="number" class="form-control no-spin" placeholder="2000" name="uang_muka" id="uang_muka"
-              required value="<?= $isEdit ? htmlspecialchars($mobilData['uang_muka']) : '' ?>">
+            <input type="number" class="form-control" name="uang_muka" required placeholder="2000"
+              value="<?= $isEdit ? htmlspecialchars($mobilData['uang_muka']) : '' ?>">
           </div>
         </div>
       </div>
