@@ -1,8 +1,10 @@
 <?php
 $title = "manajemen_mobil";
 include '../../db/koneksi.php';
+include '../../db/config_api.php'; 
 include 'partials/header.php';
 include 'partials/sidebar.php';
+include '../../include/header.php';
 
 // Ambil data mobil beserta 1 foto utamanya (jika ada)
 $query = "
@@ -70,8 +72,14 @@ $mobils = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
             data-bbm="<?= htmlspecialchars($mobil['tipe_bahan_bakar']) ?>"
             data-status="<?= htmlspecialchars($mobil['status']) ?>">
             <div class="card shadow-sm border-0 h-100">
-              <img src="<?= htmlspecialchars($mobil['gambar'] ?? '../../assets/img/no-image.jpg') ?>"
-                class="card-img-top car-thumb" alt="<?= htmlspecialchars($mobil['nama_mobil'] ?? 'Mobil Tanpa Nama') ?>">
+              <?php
+              $img = $mobil['gambar']
+                ? IMAGE_URL . $mobil['gambar']
+                : '../../assets/img/no-image.jpg';
+              ?>
+              <img src="<?= $img ?>" class="card-img-top car-thumb"
+                alt="<?= htmlspecialchars($mobil['nama_mobil'] ?? 'Mobil Tanpa Nama') ?>">
+
 
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start mb-2">
@@ -320,7 +328,7 @@ $mobils = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
 
     if (!confirm("Apakah Anda yakin ingin menghapus mobil ini?")) return;
 
-    const BASE_API_URL = window.BASE_API_URL || `${window.location.origin}/API_KMJ`;
+    const BASE_API_URL = window.BASE_API_URL || `${window.location.origin}/api_kmj`;
 
     // Kirim POST dengan body FormData supaya mobil_tambah.php tahu ini delete
     const formData = new FormData();

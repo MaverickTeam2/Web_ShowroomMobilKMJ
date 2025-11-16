@@ -3,7 +3,11 @@ console.log("🧩 [mobil.js] FILE BERHASIL DIMUAT oleh browser!");
 // =========================
 // KONFIGURASI URL API
 // =========================
-const BASE_API_URL = `${window.location.origin}/API_KMJ`;
+// ⚠️ JANGAN definisikan ulang BASE_API_URL di sini!
+// Variabel ini sudah diberikan oleh PHP melalui include/header.php
+// Contoh di header.php:
+// <script> const BASE_API_URL = "https://api.domainmu.com"; </script>
+// =========================
 
 // ✅ Fungsi utama (dibuat global supaya bisa dipanggil dari manajemen_mobil.php)
 function initMobilForm() {
@@ -81,7 +85,8 @@ function initMobilForm() {
     }
   });
 }
-// Biar bisa dipanggil juga dari script lain (misalnya setelah fetch)
+
+// Biar bisa dipanggil juga dari script lain
 window.initMobilForm = initMobilForm;
 
 // Langsung coba inisialisasi saat file ini dimuat
@@ -132,6 +137,7 @@ dropzones.forEach(dz => {
     }
   });
 });
+
 // =========================
 // MODE EDIT
 // =========================
@@ -166,4 +172,3 @@ if (window.existingMobilFoto) {
   // clear supaya tidak dipakai ulang
   window.existingMobilFoto = null;
 }
-
