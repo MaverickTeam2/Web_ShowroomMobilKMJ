@@ -140,7 +140,7 @@ if (!$api['success']) {
                       <?= htmlspecialchars($mobil['tenor'] ?? '-') ?>
                     </h6>
                     <small style="color:#6b7280; font-size:15px">
-                      Dp. Rp <?= number_format($mobil['uang_muka'] ?? 0, 0, ',', '.') ?>
+                      Dp. Rp <?= number_format($mobil['dp'] ?? 0, 0, ',', '.') ?>
                     </small>
                   </div>
 
@@ -326,7 +326,7 @@ if (!$api['success']) {
 
     if (!confirm("Apakah Anda yakin ingin menghapus mobil ini?")) return;
 
-    const BASE_API_URL = window.BASE_API_URL || `${window.location.origin}/api_kmj`;
+
 
     // Kirim POST dengan body FormData supaya mobil_tambah.php tahu ini delete
     const formData = new FormData();
