@@ -2,42 +2,40 @@
 // Cek apakah file ini dibuka langsung di browser (bukan via fetch)
 $is_direct = (basename($_SERVER['SCRIPT_FILENAME']) == basename(__FILE__));
 
-// >>> TAMBAHKAN BARIS INI <<<
 if ($is_direct) {
   $title = 'tambah_stok_mobil';
 }
 
-// Kalau dibuka langsung, tampilkan layout lengkap
 if ($is_direct) {
   include '../../db/koneksi.php';
+  include '../../db/config_api.php';   // ← penting
+  include '../../include/header.php';  // ← buat BASE_API_URL & IMAGE_URL di JS
   include 'partials/header.php';
   include 'partials/sidebar.php';
   echo '<section id="content"><nav><i class="bx bx-menu"></i></nav><main id="main-content" class="p-4">';
+} else {
+  // kalau dimuat via fetch dari manajemen_mobil.php
+  include '../../db/koneksi.php';
+  include '../../db/config_api.php';   // ← supaya IMAGE_URL bisa dipakai
 }
+
 $kodeEdit = $_GET['kode'] ?? null;
 $isEdit = !empty($kodeEdit);
 
 if ($isEdit) {
-  $stmt = $conn->prepare("SELECT * FROM mobil WHERE kode_mobil=? LIMIT 1");
-  $stmt->bind_param("s", $kodeEdit);
-  $stmt->execute();
-  $mobilData = $stmt->get_result()->fetch_assoc();
-}
-// AMBIL FITUR MOBIL (EDIT MODE)
-$mobilFitur = [];
-if ($isEdit) {
-  $res = $conn->query("SELECT id_fitur FROM mobil_fitur WHERE kode_mobil='$kodeEdit'");
-  while ($row = $res->fetch_assoc()) {
-    $mobilFitur[] = (int) $row['id_fitur'];
+
+  
+  require_once '../../db/api_client.php';
+  $data = api_get("admin/web_mobil_detail.php?kode_mobil=$kodeEdit");
+
+  if (!$data['success']) {
+    die("Gagal mengambil data dari API");
   }
-}
-// AMBIL FOTO MOBIL
-$mobilFoto = [];
-if ($isEdit) {
-  $res = $conn->query("SELECT * FROM mobil_foto WHERE kode_mobil='$kodeEdit' ORDER BY urutan ASC");
-  while ($row = $res->fetch_assoc()) {
-    $mobilFoto[] = $row;
-  }
+
+  // isi data
+  $mobilData = $data['mobil'];
+  $mobilFitur = $data['fitur'];
+  $mobilFoto = $data['foto'];
 }
 
 
@@ -227,7 +225,7 @@ if ($isEdit) {
 
             <div class="flex-grow-1">
               <div class="input-group" ">
-                <span class="input-group-text">Rp</span>
+                <span class=" input-group-text">Rp</span>
                 <input type="number" class="form-control" name="angsuran" required placeholder="2500"
                   value="<?= $isEdit ? htmlspecialchars($mobilData['angsuran']) : '' ?>">
               </div>
@@ -380,10 +378,12 @@ if ($is_direct) {
 }
 ?>
 <?php if ($isEdit): ?>
-  <script>
+  <script data-page-script="true">
     window.existingMobilFoto = <?= json_encode($mobilFoto) ?>;
+    console.log('[EDIT] existingMobilFoto dari PHP:', window.existingMobilFoto);
   </script>
 <?php endif; ?>
+
 
 <script src="../../assets/js/mobil.js"></script>
 <script data-page-script="true">

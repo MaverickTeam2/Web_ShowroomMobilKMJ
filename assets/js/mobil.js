@@ -94,44 +94,44 @@ console.log("🕐 [mobil.js] Memanggil initMobilForm() saat script dimuat");
 initMobilForm();
 console.log("🖼 [mobil.js] Setup preview foto...");
 
-const dropzones = document.querySelectorAll('.foto-dropzone');
+const dropzones = document.querySelectorAll(".foto-dropzone");
 
-dropzones.forEach(dz => {
+dropzones.forEach((dz) => {
   const input = dz.querySelector('input[type="file"]');
-  const preview = dz.querySelector('.dz-preview-img');
-  const subtext = dz.querySelector('.dz-sub');
+  const preview = dz.querySelector(".dz-preview-img");
+  const subtext = dz.querySelector(".dz-sub");
 
   if (!input || !preview) return;
 
-  input.addEventListener('change', () => {
-    preview.innerHTML = ''; // clear dulu
+  input.addEventListener("change", () => {
+    preview.innerHTML = ""; // clear dulu
 
     if (!input.files || input.files.length === 0) {
-      if (subtext) subtext.style.display = '';
+      if (subtext) subtext.style.display = "";
       return;
     }
 
-    if (subtext) subtext.style.display = 'none';
+    if (subtext) subtext.style.display = "none";
 
     // Jika multiple
     if (input.multiple) {
       const files = Array.from(input.files);
       const maxShow = 4;
 
-      files.slice(0, maxShow).forEach(file => {
-        const img = document.createElement('img');
+      files.slice(0, maxShow).forEach((file) => {
+        const img = document.createElement("img");
         img.src = URL.createObjectURL(file);
         preview.appendChild(img);
       });
 
       if (files.length > maxShow) {
-        const more = document.createElement('span');
+        const more = document.createElement("span");
         more.textContent = `+${files.length - maxShow} lagi`;
         preview.appendChild(more);
       }
     } else {
       const file = input.files[0];
-      const img = document.createElement('img');
+      const img = document.createElement("img");
       img.src = URL.createObjectURL(file);
       preview.appendChild(img);
     }
@@ -141,11 +141,13 @@ dropzones.forEach(dz => {
 // =========================
 // MODE EDIT
 // =========================
+// =========================
+// MODE EDIT
+// =========================
 if (window.existingMobilFoto) {
   console.log("🖼 [mobil.js] Mode EDIT terdeteksi — load foto lama...");
 
-  window.existingMobilFoto.forEach(f => {
-    // cari input field berdasarkan tipe_foto
+  window.existingMobilFoto.forEach((f) => {
     let inputName = "";
 
     if (f.tipe_foto === "tambahan") {
@@ -162,13 +164,11 @@ if (window.existingMobilFoto) {
     if (subtext) subtext.style.display = "none";
 
     const img = document.createElement("img");
-    img.src = f.nama_file;
-    img.alt = f.tipe_foto;
+    img.src = f.nama_file; // ← sudah full URL: http://192.168.0.101:80/images/mobil/xxx.jpg
+    img.alt = f.tipe_foto || "";
     preview.appendChild(img);
   });
 
   console.log("🟢 [mobil.js] Foto lama berhasil ditampilkan!");
-
-  // clear supaya tidak dipakai ulang
   window.existingMobilFoto = null;
 }

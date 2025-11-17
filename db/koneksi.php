@@ -1,9 +1,9 @@
 <?php
-$host = '127.0.0.1';
-$user = 'admin';
-$pass = '1234';
-$db   = 'maverick_kmj';
-$port = 8889;
+$host = 'localhost';
+$user = 'root';
+$pass = '';
+$db = 'kmjshowrooms';
+$port = 3306;
 
 $conn = new mysqli($host, $user, $pass, $db, $port);
 if ($conn->connect_error) {
