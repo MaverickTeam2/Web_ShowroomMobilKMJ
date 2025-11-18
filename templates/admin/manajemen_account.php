@@ -141,7 +141,6 @@ $accounts = [
       </div>
     </div>
 
-    <!-- Footer kecil di dalam main (optional, sama seperti modal di transaksi punya copyright) -->
     <p class="text-muted text-center my-4">© 2024 Showroom Mobil KMJ</p>
   </main>
 </section>
@@ -193,7 +192,6 @@ function toggleStatus(accountId, isActive) {
   el.className = 'badge-status ' + (isActive ? 'badge-aktif' : 'badge-nonaktif');
 }
 
-// ajax navigate (match perilaku yang kamu punya)
 function loadPage(page) {
   const mainContent = document.getElementById("main-content");
   if (mainContent) {
