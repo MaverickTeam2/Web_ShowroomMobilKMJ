@@ -1,36 +1,35 @@
 <?php
 $title = "Laporan Penjualan";
+
+include '../../db/config_api.php';
+include '../../db/api_client.php';
 include 'partials/header.php';
 include 'partials/sidebar.php';
-include '../../db/koneksi.php';
+include '../../include/header.php';
 
-// ===== DATA DUMMY UNTUK SIMULASI LAPORAN =====
-$laporan = [
-  [
-    'id' => 1,
-    'nama_laporan' => 'Laporan Penjualan Bulanan',
-    'periode' => 'Oktober 2025',
-    'tanggal_generate' => '31 Okt 2025 15:20',
-    'total_transaksi' => 48,
-    'total_pendapatan' => 152000000
-  ],
-  [
-    'id' => 2,
-    'nama_laporan' => 'Laporan Penjualan Bulanan',
-    'periode' => 'September 2025',
-    'tanggal_generate' => '30 Sep 2025 18:10',
-    'total_transaksi' => 62,
-    'total_pendapatan' => 184500000
-  ],
-  [
-    'id' => 3,
-    'nama_laporan' => 'Laporan Penjualan Bulanan',
-    'periode' => 'Agustus 2025',
-    'tanggal_generate' => '31 Agt 2025 17:45',
-    'total_transaksi' => 55,
-    'total_pendapatan' => 164750000
-  ]
+$apiResponse = api_get('admin/report_penjualan.php?status=all');
+
+$laporan = [];
+$ringkasan = [
+  'total_laporan'       => 0,
+  'total_pendapatan'    => 0,
+  'total_transaksi'     => 0,
+  'rata_rata_transaksi' => 0,
 ];
+
+if ($apiResponse && isset($apiResponse['status']) && $apiResponse['status'] === true) {
+    $data    = $apiResponse['data'] ?? [];
+    $laporan = $data['items'] ?? [];
+
+    if (isset($data['ringkasan'])) {
+        $ringkasan['total_laporan']       = $data['ringkasan']['total_laporan']       ?? 0;
+        $ringkasan['total_pendapatan']    = $data['ringkasan']['total_pendapatan']    ?? 0;
+        $ringkasan['total_transaksi']     = $data['ringkasan']['total_transaksi']     ?? 0;
+        $ringkasan['rata_rata_transaksi'] = $data['ringkasan']['rata_rata_transaksi'] ?? 0;
+    }
+} else {
+    $errorMessage = $apiResponse['message'] ?? 'Gagal mengambil data laporan dari API';
+}
 ?>
 
 <section id="content">
@@ -51,19 +50,27 @@ $laporan = [
       </div>
     </div>
 
+    <?php if (isset($errorMessage)): ?>
+      <div class="alert alert-danger mt-3">
+        <?= htmlspecialchars($errorMessage) ?>
+      </div>
+    <?php endif; ?>
+
     <!-- Ringkasan Statistik -->
     <div class="row mt-4 mb-4">
       <div class="col-md-4">
         <div class="card shadow-sm border-0 text-center p-3">
           <h6 class="text-muted">Total Laporan</h6>
-          <h3 class="fw-bold text-primary"><?= count($laporan) ?></h3>
+          <h3 class="fw-bold text-primary">
+            <?= number_format($ringkasan['total_laporan'], 0, ',', '.') ?>
+          </h3>
         </div>
       </div>
       <div class="col-md-4">
         <div class="card shadow-sm border-0 text-center p-3">
           <h6 class="text-muted">Total Pendapatan (Semua)</h6>
           <h3 class="fw-bold text-success">
-            Rp <?= number_format(array_sum(array_column($laporan, 'total_pendapatan')), 0, ',', '.') ?>
+            Rp <?= number_format($ringkasan['total_pendapatan'], 0, ',', '.') ?>
           </h3>
         </div>
       </div>
@@ -71,34 +78,41 @@ $laporan = [
         <div class="card shadow-sm border-0 text-center p-3">
           <h6 class="text-muted">Rata-rata Transaksi</h6>
           <h3 class="fw-bold text-warning">
-            <?= number_format(array_sum(array_column($laporan, 'total_transaksi')) / count($laporan), 1) ?>
+            <?= number_format($ringkasan['rata_rata_transaksi'], 1, ',', '.') ?>
           </h3>
         </div>
       </div>
     </div>
 
-    <!-- Quick Reports -->
+    <!-- Histori Laporan -->
     <div class="card border-0 shadow-sm rounded-3 mb-5">
       <div class="card-body">
         <h5 class="fw-semibold mb-3">Histori Laporan</h5>
-        <ul class="list-group list-group-flush">
-          <?php foreach ($laporan as $row): ?>
-            <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3 border-0 border-bottom">
-              <div>
-                <span class="fw-semibold text-dark"><?= htmlspecialchars($row['nama_laporan']) ?></span>
-                <p class="mb-0 text-muted small">
-                  Periode: <?= htmlspecialchars($row['periode']) ?> • 
-                  <?= htmlspecialchars($row['total_transaksi']) ?> transaksi • 
-                  Rp <?= number_format($row['total_pendapatan'], 0, ',', '.') ?>
-                </p>
-              </div>
-              <div>
-                <a href="#" class="text-primary me-3">View</a>
-                <i class="bi bi-download text-secondary"></i>
-              </div>
-            </li>
-          <?php endforeach; ?>
-        </ul>
+
+        <?php if (empty($laporan)): ?>
+          <p class="text-muted mb-0">Belum ada data laporan penjualan.</p>
+        <?php else: ?>
+          <ul class="list-group list-group-flush">
+            <?php foreach ($laporan as $row): ?>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3 border-0 border-bottom">
+                <div>
+                  <span class="fw-semibold text-dark">
+                    <?= htmlspecialchars($row['nama_laporan']) ?>
+                  </span>
+                  <p class="mb-0 text-muted small">
+                    Periode: <?= htmlspecialchars($row['periode']) ?> • 
+                    <?= htmlspecialchars($row['total_transaksi']) ?> transaksi • 
+                    Rp <?= number_format($row['total_pendapatan'], 0, ',', '.') ?>
+                  </p>
+                </div>
+                <div>
+                  <a href="#" class="text-primary me-3">View</a>
+                  <i class="bi bi-download text-secondary"></i>
+                </div>
+              </li>
+            <?php endforeach; ?>
+          </ul>
+        <?php endif; ?>
       </div>
     </div>
 

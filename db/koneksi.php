@@ -2,8 +2,7 @@
 $host = 'localhost';
 $user = 'root';
 $pass = '';
-$db = 'kmjshowrooms';
-$port = 3306;
+$db   = 'maverick_kmj';
 
 $conn = new mysqli($host, $user, $pass, $db, $port);
 if ($conn->connect_error) {
@@ -13,4 +12,3 @@ if ($conn->connect_error) {
   exit;
 }
 mysqli_set_charset($conn, 'utf8mb4');
-// tidak ada echo apa pun
