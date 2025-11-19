@@ -1,14 +1,209 @@
-.card img {
+/* ===================== LAYOUT UMUM PAGE ===================== */
+#main-content {
+  background: #f3f4f7;
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* ===================== BUTTON TAMBAH MOBIL ===================== */
+.btn-add-car, #btn-tambah-mobil {
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+  display: flex;
+  align-items: center;
+}
+
+.btn-add-car i, #btn-tambah-mobil i {
+  font-size: 18px;
+  margin-right: 6px;
+}
+
+/* ===================== SEARCH + FILTER ===================== */
+.search-wrapper .input-group, .input-group {
+  border-radius: 999px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.05);
+}
+
+.search-wrapper .input-group-text,
+.search-wrapper .form-control,
+.input-group-text,
+.form-control {
+  border: none !important;
+}
+
+.search-wrapper .form-control:focus,
+.form-control:focus {
+  box-shadow: none;
+}
+
+.btn-filter {
+  border-radius: 999px;
+  font-size: 14px;
+  padding: 8px 16px;
+}
+
+/* ===================== CARD MOBIL ===================== */
+.car-card-item {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
+  display: block;
 }
+
+.car-card-item .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
 .card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform .2s ease, box-shadow .2s ease;
+  height: 100%;
+  background: #ffffff;
 }
+
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+/* Gambar Mobil */
+.car-thumb {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  background: #f3f4f6;
+}
+
+.card:hover .car-thumb {
+  transform: scale(1.04);
+}
+
+/* Card Body */
+.card-body {
+  padding: 16px 18px;
+}
+
+/* Title Mobil */
+.card-title {
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+/* Tahun Mobil */
+.car-year {
+  font-size: 14px;
+  font-weight: 700;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+/* Meta Data (warna, jarak tempuh, bbm) */
+.car-meta {
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.car-meta span {
+  color: #6b7280;
+}
+
+.car-meta strong {
+  color: #111827;
+  font-weight: 700;
+}
+
+/* Harga / Angsuran */
+.car-price-box {
+  margin-top: 10px;
+}
+
+.car-price-box .angsuran {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.car-price-box .dp {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* Tombol Edit / Hapus */
+.card-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.card-actions i {
+  font-size: 30px;
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+.card-actions i:hover {
+  transform: scale(1.1);
+}
+
+/* ===================== BADGE STATUS ===================== */
+.badge {
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+/* Warna badge sesuai status */
+.bg-success { background: #dcfce7 !important; color: #166534 !important; }
+.bg-warning { background: #fef3c7 !important; color: #92400e !important; }
+.bg-secondary { background: #fee2e2 !important; color: #b91c1c !important; }
+.bg-info { background: #e0f2fe !important; color: #075985 !important; }
+.bg-primary { background: #e5e7eb !important; color: #374151 !important; }
+
+/* ===================== GRID RESPONSIVE ===================== */
+.row.g-4 {
+  display: grid !important;
+  gap: 1.5rem;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media (min-width: 768px) {
+  .row.g-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .row.g-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }

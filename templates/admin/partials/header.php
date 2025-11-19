@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,37 +15,43 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="../../assets/css/admin/admin.css">
 
-   <!-- Custom CSS per Halaman -->
+  <!-- Custom CSS per Halaman -->
   <?php
-    // Ambil nama file saat ini, contoh: transaksi.php, report.php, dst
-    $currentPage = basename($_SERVER['PHP_SELF']);
+  // Ambil nama file saat ini, contoh: transaksi.php, report.php, dst
+  $currentPage = basename($_SERVER['PHP_SELF']);
 
-    // Kalau halaman ini transaksi.php, tambahkan CSS khusus transaksi
-    if ($currentPage === 'transaksi.php') {
-        echo '<link rel="stylesheet" href="../../assets/css/admin/transaksi.css">';
-    }
+  // Kalau halaman ini transaksi.php, tambahkan CSS khusus transaksi
+  if ($currentPage === 'transaksi.php') {
+    echo '<link rel="stylesheet" href="../../assets/css/admin/transaksi.css">';
+  }
 
-    if ($currentPage === 'tambah_transaksi.php') {
-        echo '<link rel="stylesheet" href="../../assets/css/admin/tambah_transaksi.css">';
-    }
+  if ($currentPage === 'tambah_transaksi.php') {
+    echo '<link rel="stylesheet" href="../../assets/css/admin/tambah_transaksi.css">';
+  }
 
-    if ($currentPage === 'report.php') {
-        echo '<link rel="stylesheet" href="../../assets/css/admin/report.css">';
-    }
 
-    if ($currentPage === 'index.php') {
-        echo '<link rel="stylesheet" href="../../assets/css/admin/dashboard.css">';
-    }
+  if ($currentPage === 'tambah_stok_mobil.php') {
+    echo '<link rel="stylesheet" href="../../assets/css/admin/tambah_stok_mobil.css">';
+  }
 
-    if ($currentPage === 'setting1.php') {
-        echo '<link rel="stylesheet" href="../../assets/css/admin/setting.css">';
-    }
+  if ($currentPage === 'report.php') {
+    echo '<link rel="stylesheet" href="../../assets/css/admin/report.css">';
+  }
 
-    
+  if ($currentPage === 'index.php') {
+    echo '<link rel="stylesheet" href="../../assets/css/admin/dashboard.css">';
+  }
 
-    
+  if ($currentPage === 'setting1.php') {
+    echo '<link rel="stylesheet" href="../../assets/css/admin/setting.css">';
+  }
+
+
+
+
   ?>
-  
+
 </head>
+
 <body>
   <div class="admin-wrapper">
