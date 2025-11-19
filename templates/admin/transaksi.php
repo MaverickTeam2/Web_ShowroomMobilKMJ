@@ -1,8 +1,13 @@
 <?php
 $title = "Transaksi";
-include 'partials/header.php';
-include 'partials/sidebar.php';
+require_once 'partials/header.php';
+require_once 'partials/sidebar.php';
+require_once '../../include/header.php';
+// kalau memang BUTUH langsung, pakai require_once juga:
+require_once '../../db/config_api.php';
 ?>
+
+<link rel="stylesheet" href="../../assets/css/admin/detail_transaksi.css?v=1">
 
 <section id="content">
   <nav>
@@ -40,9 +45,6 @@ include 'partials/sidebar.php';
             <option value="cancelled">Cancelled</option>
           </select>
         </div>
-        <button class="btn btn-outline-secondary d-flex align-items-center">
-          <i class='bx bx-download me-1'></i> Export
-        </button>
       </div>
     </div>
 
@@ -97,22 +99,110 @@ include 'partials/sidebar.php';
       </div>
     </div>
 
-    <!-- Modal Detail -->
-    <div class="modal fade" id="modalDetailTransaksi" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-          <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title">Detail Transaksi</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body" id="modalDetailBody"></div>
-          <p class="text-muted text-center mb-3">© 2024 Showroom Mobil KMJ</p>
+    <!-- Modal Detail Transaksi -->
+<div class="modal fade" id="modalDetailTransaksi" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Detail Transaksi</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="dt-container">
+          <div class="row g-3 mb-3">
+      <!-- Card 1: Data pembeli -->
+      <div class="col-md-4">
+        <div class="dt-card">
+          <div class="dt-card-title">Data pembeli</div>
+
+          <div class="dt-label">Nama pembeli</div>
+          <div class="dt-value" id="dt-nama">-</div>
+
+          <div class="dt-label mt-3">No Handphone</div>
+          <div class="dt-value" id="dt-nohp">-</div>
+
+          <!-- Biar mirip desain, isi static aja dulu -->
+          <div class="dt-label mt-3">KTP &nbsp;&nbsp; KK &nbsp;&nbsp; Rekening tabungan</div>
+        </div>
+      </div>
+
+      <!-- Card 2: Pembayaran -->
+      <div class="col-md-4">
+        <div class="dt-card">
+          <div class="dt-card-title">Pembayaran</div>
+
+          <div class="dt-label">Jenis</div>
+          <div class="dt-value" id="dt-jenis-bayar">-</div>
+
+          <div class="dt-label mt-3">Note</div>
+          <div class="dt-value" id="dt-note-bayar">-</div>
+        </div>
+      </div>
+
+      <!-- Card 3: Info transaksi -->
+      <div class="col-md-4">
+        <div class="dt-card">
+          <div class="dt-card-title">Info transaksi</div>
+
+          <div class="dt-label">Tanggal transaksi</div>
+          <div class="dt-value" id="dt-tanggal">-</div>
+
+          <hr class="dt-separator">
+
+          <div class="dt-label">Kode transaksi</div>
+          <div class="dt-value" id="dt-kode">-</div>
+
+          <hr class="dt-separator">
+
+          <div class="dt-label">Kasir</div>
+          <div class="dt-value" id="dt-kasir">-</div>
         </div>
       </div>
     </div>
+
+    <!-- Tabel mobil -->
+    <div class="dt-table-wrapper">
+      <table class="table dt-table mb-0">
+        <thead>
+          <tr>
+            <th>Kode transaksi</th>
+            <th>Nama mobil</th>
+            <th>Merk</th>
+            <th>Tahun</th>
+            <th>Full price</th>
+            <th>Deal price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="dt-row-kode">-</td>
+            <td id="dt-row-mobil">-</td>
+            <td id="dt-row-merk">-</td>
+            <td id="dt-row-tahun">-</td>
+            <td id="dt-row-fullprice">-</td>
+            <td id="dt-row-dealprice">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Status di pojok kanan bawah -->
+        <div class="d-flex justify-content-end mt-2">
+          <span id="dt-status-badge" class="badge bg-secondary">-</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
   </main>
 </section>
 
 <?php include 'partials/footer.php'; ?>
-<script src="../../assets/js/transaksi.js"></script>
+<!-- JS Bootstrap (kalau belum ada di header) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../assets/js/transaksi_list.js"></script>

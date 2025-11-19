@@ -1,34 +1,101 @@
-body {
-  font-family: 'Poppins', sans-serif;
+/* ===== Modal detail transaksi – layout custom ===== */
+
+#modalDetailTransaksi .modal-dialog {
+  max-width: 960px;
 }
 
-.card {
-  border-radius: 12px;
-  border: 1px solid #e3e6f0;
+#modalDetailTransaksi .modal-content {
+  border-radius: 24px;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
 }
 
-h5 {
+#modalDetailTransaksi .modal-header {
+  background: #2563eb;
+  color: #fff;
+  border-bottom: none;
+  padding: 14px 22px;
+}
+
+#modalDetailTransaksi .modal-title {
   font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
-.table th, .table td {
+#modalDetailTransaksi .btn-close {
+  filter: invert(1);
+}
+
+/* Body abu-abu lembut */
+#modalDetailTransaksi .modal-body {
+  background: #f3f4f6;
+  padding: 20px 22px 16px;
+}
+
+/* Container dalam modal */
+#modalDetailTransaksi .dt-container {
+  width: 100%;
+}
+
+/* Card info (3 kolom atas) */
+#modalDetailTransaksi .dt-card {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  padding: 18px 20px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+  height: 100%;
+}
+
+#modalDetailTransaksi .dt-card-title {
+  font-weight: 600;
+  font-size: 0.98rem;
+  margin-bottom: 8px;
+}
+
+#modalDetailTransaksi .dt-label {
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+
+#modalDetailTransaksi .dt-value {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+#modalDetailTransaksi .dt-separator {
+  margin: 10px 0;
+  border-color: #e5e7eb;
+}
+
+/* Tabel bawah */
+#modalDetailTransaksi .dt-table-wrapper {
+  margin-top: 10px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+}
+
+#modalDetailTransaksi .dt-table thead th {
+  background: #f9fafb;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-bottom-color: #e5e7eb;
+}
+
+#modalDetailTransaksi .dt-table td {
+  font-size: 0.9rem;
   vertical-align: middle;
 }
 
-.table th {
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
-}
-
-.table td {
-  font-size: 0.95rem;
-}
-
-.btn-secondary {
-  border-radius: 8px;
-}
-
-.shadow-sm {
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+/* Badge status pojok bawah */
+#modalDetailTransaksi #dt-status-badge {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  padding: 4px 12px;
+  border-radius: 999px;
 }

@@ -26,7 +26,7 @@ require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
           <li><i class='bx bx-chevron-right'></i></li>
           <li><a href="transaksi.php">Transaksi</a></li>
           <li><i class='bx bx-chevron-right'></i></li>
-          <li><a class="active" href="#">Tambah Transaksi</a></li>
+          <li><a class="active" href="#">Edit Transaksi</a></li>
         </ul>
       </div>
     </div>
@@ -162,7 +162,7 @@ require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
 </section> 
 
 <script>const BASE_API_URL = "<?= BASE_API_URL ?>";</script>
-<script src="../../assets/js/tambah_transaksi.js"></script>
+<script src="../../assets/js/edit_transaksi.js"></script>
 
 </body>
 </html>
