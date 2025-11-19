@@ -1,5 +1,5 @@
 <?php 
-$title = "Tambah Transaksi";
+$title = "Edit Transaksi";
 
 // Hanya layout (jika aman)
 require_once 'partials/header.php';
@@ -20,7 +20,7 @@ require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
   <main id="main-content" class="p-4">
     <div class="head-title d-flex justify-content-between align-items-center">
       <div class="left">
-        <h1 class="h3 mb-1">Tambah Transaksi</h1>
+        <h1 class="h3 mb-1">Edit Transaksi</h1>
         <ul class="breadcrumb mb-0">
           <li><a href="index.php">Dashboard</a></li>
           <li><i class='bx bx-chevron-right'></i></li>

@@ -34,6 +34,10 @@
     echo '<link rel="stylesheet" href="../../assets/css/admin/tambah_stok_mobil.css">';
   }
 
+  if ($currentPage === 'edit_transaksi.php') {
+    echo '<link rel="stylesheet" href="../../assets/css/admin/edit_transaksi.css">';
+  }
+
   if ($currentPage === 'report.php') {
     echo '<link rel="stylesheet" href="../../assets/css/admin/report.css">';
   }

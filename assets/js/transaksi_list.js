@@ -274,6 +274,16 @@
         }
       });
     });
+
+    editButtons.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const id = (btn.dataset.id || "").trim();
+      if (!id) return;
+      console.log("✏️ Klik edit:", id);
+      window.location.href = `edit_transaksi.php?id=${encodeURIComponent(id)}`;
+    });
+  });
   }
 
   loadTransaksi();
