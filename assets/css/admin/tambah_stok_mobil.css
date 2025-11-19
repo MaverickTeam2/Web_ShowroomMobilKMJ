@@ -47,6 +47,17 @@ input[type="number"].no-spin {
   color: #fff;
   border-color: #0d6efd;
 }
+.yp-year.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: #eee !important;
+  color: #999 !important;
+  border-color: #ddd !important;
+}
+
+.yp-year.disabled:hover {
+  background-color: #eee !important;
+}
 /* UPLOAD FOTO */
 .foto-dropzone {
   border: 2px dashed #d0d7de;
@@ -282,4 +293,8 @@ body {
 .container,
 .card {
   max-width: 1100px;
+}
+.form-control {
+  border: 1px solid #d1d5db !important;
+  border-radius: 9999px !important;
 }

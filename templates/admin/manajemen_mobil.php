@@ -1,25 +1,22 @@
 <?php
 $title = "manajemen_mobil";
-include '../../db/koneksi.php';
-include '../../db/config_api.php'; 
+
+include '../../db/config_api.php';
+include '../../db/api_client.php';   // ⬅️ PENTING: pakai API_Client
 include 'partials/header.php';
 include 'partials/sidebar.php';
 include '../../include/header.php';
 
-// Ambil data mobil beserta 1 foto utamanya (jika ada)
-$query = "
-  SELECT 
-    m.*, 
-    f.nama_file AS gambar
-  FROM mobil m
-  LEFT JOIN mobil_foto f 
-    ON m.kode_mobil = f.kode_mobil 
-    AND f.urutan = 1
-  ORDER BY m.created_at DESC
-";
-$result = $conn->query($query);
-$mobils = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+// 🔥 AMBIL DATA MOBIL VIA API, BUKAN QUERY DB LANGSUNG
+$api = api_get('admin/web_mobil_list.php');
+
+if (!$api['success']) {
+  $mobils = [];
+} else {
+  $mobils = $api['data'];
+}
 ?>
+
 
 <section id="content">
   <nav>
@@ -73,8 +70,9 @@ $mobils = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
             data-status="<?= htmlspecialchars($mobil['status']) ?>">
             <div class="card shadow-sm border-0 h-100">
               <?php
-              $img = $mobil['gambar']
-                ? IMAGE_URL . $mobil['gambar']
+              // data dari API: 'foto' sudah full URL (http://.../images/mobil/xxx.jpg)
+              $img = !empty($mobil['foto'])
+                ? $mobil['foto']
                 : '../../assets/img/no-image.jpg';
               ?>
               <img src="<?= $img ?>" class="card-img-top car-thumb"
@@ -142,7 +140,7 @@ $mobils = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
                       <?= htmlspecialchars($mobil['tenor'] ?? '-') ?>
                     </h6>
                     <small style="color:#6b7280; font-size:15px">
-                      Dp. Rp <?= number_format($mobil['uang_muka'] ?? 0, 0, ',', '.') ?>
+                      Dp. Rp <?= number_format($mobil['dp'] ?? 0, 0, ',', '.') ?>
                     </small>
                   </div>
 
@@ -328,7 +326,7 @@ $mobils = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
 
     if (!confirm("Apakah Anda yakin ingin menghapus mobil ini?")) return;
 
-    const BASE_API_URL = window.BASE_API_URL || `${window.location.origin}/api_kmj`;
+
 
     // Kirim POST dengan body FormData supaya mobil_tambah.php tahu ini delete
     const formData = new FormData();

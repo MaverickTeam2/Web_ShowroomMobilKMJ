@@ -2,47 +2,47 @@
 // Cek apakah file ini dibuka langsung di browser (bukan via fetch)
 $is_direct = (basename($_SERVER['SCRIPT_FILENAME']) == basename(__FILE__));
 
-// >>> TAMBAHKAN BARIS INI <<<
 if ($is_direct) {
   $title = 'tambah_stok_mobil';
 }
 
-// Kalau dibuka langsung, tampilkan layout lengkap
 if ($is_direct) {
   include '../../db/koneksi.php';
+  include '../../db/config_api.php';   // ← penting
+  include '../../include/header.php';  // ← buat BASE_API_URL & IMAGE_URL di JS
   include 'partials/header.php';
   include 'partials/sidebar.php';
   echo '<section id="content"><nav><i class="bx bx-menu"></i></nav><main id="main-content" class="p-4">';
+} else {
+  // kalau dimuat via fetch dari manajemen_mobil.php
+  include '../../db/koneksi.php';
+  include '../../db/config_api.php';   // ← supaya IMAGE_URL bisa dipakai
 }
+
 $kodeEdit = $_GET['kode'] ?? null;
 $isEdit = !empty($kodeEdit);
 
 if ($isEdit) {
-  $stmt = $conn->prepare("SELECT * FROM mobil WHERE kode_mobil=? LIMIT 1");
-  $stmt->bind_param("s", $kodeEdit);
-  $stmt->execute();
-  $mobilData = $stmt->get_result()->fetch_assoc();
-}
-// AMBIL FITUR MOBIL (EDIT MODE)
-$mobilFitur = [];
-if ($isEdit) {
-  $res = $conn->query("SELECT id_fitur FROM mobil_fitur WHERE kode_mobil='$kodeEdit'");
-  while ($row = $res->fetch_assoc()) {
-    $mobilFitur[] = (int) $row['id_fitur'];
+
+
+  require_once '../../db/api_client.php';
+  $data = api_get("admin/web_mobil_detail.php?kode_mobil=$kodeEdit");
+
+  if (!$data['success']) {
+    die("Gagal mengambil data dari API");
   }
-}
-// AMBIL FOTO MOBIL
-$mobilFoto = [];
-if ($isEdit) {
-  $res = $conn->query("SELECT * FROM mobil_foto WHERE kode_mobil='$kodeEdit' ORDER BY urutan ASC");
-  while ($row = $res->fetch_assoc()) {
-    $mobilFoto[] = $row;
-  }
+
+  // isi data
+  $mobilData = $data['mobil'];
+  $mobilFitur = $data['fitur'];
+  $mobilFoto = $data['foto'];
 }
 
 
 
 ?>
+<link rel="stylesheet" href="../../assets/css/admin/tambah_stok_mobil.css">
+
 
 <!-- ======================== KONTEN HALAMAN ======================== -->
 <div class="head-title d-flex justify-content-between align-items-center">
@@ -147,9 +147,9 @@ if ($isEdit) {
 
           <div class="yp-panel shadow" id="ypPanel" hidden>
             <div class="yp-header d-flex justify-content-between align-items-center px-2 py-1">
-              <button class="btn btn-sm btn-light" id="ypPrev">&laquo;</button>
+              <button type="button" class="btn btn-sm btn-light" id="ypPrev">&laquo;</button>
               <span class="fw-semibold" id="ypRange">—</span>
-              <button class="btn btn-sm btn-light" id="ypNext">&raquo;</button>
+              <button type="button" class="btn btn-sm btn-light" id="ypNext">&raquo;</button>
             </div>
             <div class="yp-grid p-2" id="ypGrid"></div>
           </div>
@@ -217,18 +217,15 @@ if ($isEdit) {
       </div>
 
       <div class=" col-6 d-flex gap-3 ">
-
-
-        <!-- Angsuran × Tenor -->
         <!-- Angsuran × Tenor + Uang Muka -->
         <div class="col-md-12">
           <label class="form-label">Angsuran × Tenor *</label>
           <div class="d-flex align-items-end gap-2">
 
             <div class="flex-grow-1">
-              <div class="input-group" ">
-                <span class="input-group-text">Rp</span>
-                <input type="number" class="form-control" name="angsuran" required placeholder="2500"
+              <div class="input-group">
+                <span class=" input-group-text">Rp</span>
+                <input type="number" class="form-control no-spin" name="angsuran" required placeholder="2500"
                   value="<?= $isEdit ? htmlspecialchars($mobilData['angsuran']) : '' ?>">
               </div>
             </div>
@@ -236,7 +233,7 @@ if ($isEdit) {
             <div class="fw-bold fs-4 px-2">×</div>
 
             <div style="width:150px;">
-              <input type="number" class="form-control" name="tenor" required placeholder="0"
+              <input type="number" class="form-control" name="tenor" required placeholder="0" min="0"
                 value="<?= $isEdit ? htmlspecialchars($mobilData['tenor']) : '' ?>">
             </div>
 
@@ -248,7 +245,7 @@ if ($isEdit) {
           <label class="form-label">Uang Muka *</label>
           <div class="input-group">
             <span class="input-group-text">Rp</span>
-            <input type="number" class="form-control" name="uang_muka" required placeholder="2000"
+            <input type="number" class="form-control no-spin" name="uang_muka" required placeholder="2000"
               value="<?= $isEdit ? htmlspecialchars($mobilData['uang_muka']) : '' ?>">
           </div>
         </div>
@@ -380,12 +377,16 @@ if ($is_direct) {
 }
 ?>
 <?php if ($isEdit): ?>
-  <script>
+  <script data-page-script="true">
     window.existingMobilFoto = <?= json_encode($mobilFoto) ?>;
+    console.log('[EDIT] existingMobilFoto dari PHP:', window.existingMobilFoto);
   </script>
 <?php endif; ?>
 
+
 <script src="../../assets/js/mobil.js"></script>
+
+<!-- untuk tahun  -->
 <script data-page-script="true">
   (function () {
     const input = document.getElementById('tahunInput');
@@ -406,20 +407,46 @@ if ($is_direct) {
     let decadeStart = Math.floor(selected / 10) * 10;
 
     function render() {
+      const maxYear = 2025; // tahun maksimal yang boleh dipilih
+
       rangeEl.textContent = `${decadeStart} - ${decadeStart + 9}`;
       grid.innerHTML = '';
+
       for (let y = decadeStart - 1; y <= decadeStart + 10; y++) {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'yp-year' +
-          (y < decadeStart || y > decadeStart + 9 ? ' muted' : '') +
-          (y === selected ? ' selected' : '');
+
+        // default class
+        btn.className = 'yp-year';
+
+        // warna abu (muted) kalau di luar 1 dekade
+        if (y < decadeStart || y > decadeStart + 9) {
+          btn.classList.add('muted');
+        }
+
+        // blokir jika di atas max year
+        if (y > maxYear) {
+          btn.classList.add('muted');   // warna abu
+          btn.classList.add('disabled'); // nanti CSS-nya kita buat
+          btn.disabled = true;
+        }
+
+        // selected styling
+        if (y === selected) {
+          btn.classList.add('selected');
+        }
+
         btn.textContent = y;
-        btn.addEventListener('click', () => {
-          selected = y;
-          input.value = String(y);
-          hide();
-        });
+
+        // klik normal (hanya kalau y <= maxYear)
+        if (y <= maxYear) {
+          btn.addEventListener('click', () => {
+            selected = y;
+            input.value = String(y);
+            hide();
+          });
+        }
+
         grid.appendChild(btn);
       }
     }
@@ -540,7 +567,14 @@ if ($is_direct) {
   })();
 </script>
 
-
-
-
-<link rel="stylesheet" href="../../assets/css/admin/tambah_stok_mobil.css">
+<!-- untuk input number supaya tidak bisa menginputkan text  -->
+<script>
+  document.querySelectorAll('input[type=number]').forEach(function (input) {
+    input.addEventListener('input', function () {
+      this.value = this.value.replace(/\D/g, '');
+    });
+    input.addEventListener('paste', function (e) {
+      e.preventDefault();
+    });
+  });
+</script>

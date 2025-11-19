@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h2 class="fw-bold text-dark mb-1">Edit Akun</h2>
             <p class="text-secondary">Edit informasi akun admin</p>
         </div>
-        <a href="manajemen_account.php" data-page="manajemen_account.php" 
+        <a href="manajemen_account.php"  
            class="text-primary text-decoration-none fw-medium d-flex align-items-center gap-2">
             <i class="fas fa-arrow-left"></i>
             <span>Kembali</span>
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- Tombol -->
             <div class="d-flex justify-content-end gap-3 mt-5 px-5">
-                <a href="manajemen_account.php" data-page="manajemen_account.php" 
+                <a href="manajemen_account.php" 
                    class="btn btn-outline-secondary btn-lg px-4 py-2 rounded-3 d-flex align-items-center gap-2">
                     <i class="fas fa-times"></i>
                     <span>Batal</span>

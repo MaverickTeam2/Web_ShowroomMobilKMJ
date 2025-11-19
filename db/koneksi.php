@@ -1,9 +1,8 @@
 <?php
-$host = '127.0.0.1';
-$user = 'admin';
-$pass = '1234';
+$host = 'localhost';
+$user = 'root';
+$pass = '';
 $db   = 'maverick_kmj';
-$port = 8889;
 
 $conn = new mysqli($host, $user, $pass, $db, $port);
 if ($conn->connect_error) {
@@ -13,4 +12,3 @@ if ($conn->connect_error) {
   exit;
 }
 mysqli_set_charset($conn, 'utf8mb4');
-// tidak ada echo apa pun

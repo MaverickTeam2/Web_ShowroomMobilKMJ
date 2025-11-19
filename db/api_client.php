@@ -1,8 +1,16 @@
 <?php
-require_once __DIR__ . '/config_api.php';
+// api_client.php
+// File ini berfungsi sebagai "client" untuk memanggil API
+// Bisa digunakan di file PHP lain dengan include atau require
 
 // ===========================
-// 2. Fungsi GET request
+// 1. Konfigurasi Base URL API
+// ===========================
+define('BASE_API_URL', 'http://localhost/API_KMJ');
+
+
+// ===========================
+// 2. Fungsi untuk GET request
 // ===========================
 function api_get($endpoint)
 {
@@ -28,7 +36,7 @@ function api_get($endpoint)
 }
 
 // ===========================
-// 3. Fungsi POST request
+// 3. Fungsi untuk POST request
 // ===========================
 function api_post($endpoint, $postData = [])
 {
