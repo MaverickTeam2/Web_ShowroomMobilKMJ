@@ -96,16 +96,16 @@ $faqs = [
   <div class="box has-text-centered">
     <div class="columns is-multiline is-mobile is-centered">
       <?php foreach ($finance as $f): ?>
-        <div class="column is-2">
-          <figure class="image is-128x128">
-            <img src="<?= $f['logo']; ?>" alt="<?= $f['nama']; ?>">
-          </figure>
-          <p class="mt-2 fw-bold" style="font-size: 0.9rem;">
-            <?= $f['nama']; ?>
-          </p>
-          <p class="text-muted" style="font-size: 0.8rem;">
-            Bunga mulai <?= $f['bunga']; ?>% per tahun
-          </p>
+        <div class="column is-2 leasingLogo" data-leasing="<?= $f['nama']; ?>">
+            <figure class="image is-128x128">
+              <img src="<?= $f['logo']; ?>" alt="<?= $f['nama']; ?>">
+            </figure>
+            <p class="mt-2 fw-bold" style="font-size: 0.9rem;">
+              <?= $f['nama']; ?>
+            </p>
+            <p class="text-muted" style="font-size: 0.8rem;">
+              Bunga mulai <?= $f['bunga']; ?>%
+            </p>
         </div>
       <?php endforeach; ?>
     </div>
