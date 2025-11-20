@@ -60,3 +60,43 @@ if (btnCari) {
   });
 }
 
+// === AUTO ISI BUNGA BERDASARKAN LEASING ===
+document.addEventListener("DOMContentLoaded", function () {
+  const selectLeasing = document.getElementById("leasing");
+  const inputBunga = document.getElementById("bunga");
+  const summaryLeasing = document.getElementById("summaryLeasing");
+
+  if (selectLeasing) {
+    selectLeasing.addEventListener("change", function () {
+      const selectedOption = this.options[this.selectedIndex];
+      const bunga = selectedOption.getAttribute("data-bunga") || "";
+
+      // Isi otomatis
+      inputBunga.value = bunga;
+
+      // Update Summary
+      if (summaryLeasing) {
+        summaryLeasing.innerText = selectedOption.value || "-";
+      }
+    });
+  }
+});
+
+document.querySelectorAll(".leasingLogo").forEach(logo => {
+  logo.addEventListener("click", () => {
+    const leasingName = logo.getAttribute("data-leasing");
+
+    // Pindah tab ke Kalkulator
+    tabKalkulator.click();
+
+    // Set dropdown leasing otomatis
+    const selectLeasing = document.getElementById("leasing");
+    [...selectLeasing.options].forEach(opt => {
+      if (opt.value === leasingName) opt.selected = true;
+    });
+
+    // Trigger event perubahan
+    selectLeasing.dispatchEvent(new Event("change"));
+  });
+});
+

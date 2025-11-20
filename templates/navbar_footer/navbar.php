@@ -41,7 +41,7 @@ session_start();
       </a>
 
       <!-- Favorite -->
-      <a class="navbar-item icon-only" href="favorite.php" aria-label="Favorite">
+      <a class="navbar-item icon-only" href="wishlist.php" aria-label="Favorite">
         <span class="icon is-medium"><i class="fa-regular fa-heart"></i></span>
       </a>
 

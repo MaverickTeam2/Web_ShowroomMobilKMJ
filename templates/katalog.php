@@ -474,7 +474,7 @@ $bahanBakar = [
                       <div class="dropdown-menu" role="menu">
                         <div class="dropdown-content">
                           <a href="#" class="dropdown-item"><i class="fa-solid fa-trash"></i> Hapus dari favorit</a>
-                          <a href="../templates/perbandingan.html" class="dropdown-item"><i class="fa-solid fa-shuffle me-2"></i> Bandingkan</a>
+                          <a href="../templates/perbandingan.php" class="dropdown-item"><i class="fa-solid fa-shuffle me-2"></i> Bandingkan</a>
                           <a href="#" class="dropdown-item"><i class="fa-solid fa-share me-2"></i> Bagikan</a>
                           <!----- WhatsApp Contact Link -->
                           <?php

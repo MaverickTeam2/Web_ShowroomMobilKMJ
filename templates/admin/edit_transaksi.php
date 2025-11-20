@@ -1,5 +1,5 @@
 <?php 
-$title = "Tambah Transaksi";
+$title = "Edit Transaksi";
 
 // Hanya layout (jika aman)
 require_once 'partials/header.php';
@@ -20,13 +20,13 @@ require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
   <main id="main-content" class="p-4">
     <div class="head-title d-flex justify-content-between align-items-center">
       <div class="left">
-        <h1 class="h3 mb-1">Tambah Transaksi</h1>
+        <h1 class="h3 mb-1">Edit Transaksi</h1>
         <ul class="breadcrumb mb-0">
           <li><a href="index.php">Dashboard</a></li>
           <li><i class='bx bx-chevron-right'></i></li>
           <li><a href="transaksi.php">Transaksi</a></li>
           <li><i class='bx bx-chevron-right'></i></li>
-          <li><a class="active" href="#">Tambah Transaksi</a></li>
+          <li><a class="active" href="#">Edit Transaksi</a></li>
         </ul>
       </div>
     </div>
@@ -130,7 +130,7 @@ require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
 
               <div class="mb-3">
                 <label class="form-label">Catatan</label>
-                <textarea id="catatan" class="form-control" rows="2" placeholder="Tambahkan catatan jika ada..."></textarea>
+                <textarea id="note" class="form-control" rows="2" placeholder="Tambahkan catatan jika ada..."></textarea>
               </div>
             </div>
           </div>
@@ -162,7 +162,7 @@ require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
 </section> 
 
 <script>const BASE_API_URL = "<?= BASE_API_URL ?>";</script>
-<script src="../../assets/js/tambah_transaksi.js"></script>
+<script src="../../assets/js/edit_transaksi.js"></script>
 
 </body>
 </html>
