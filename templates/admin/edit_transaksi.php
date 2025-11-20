@@ -108,7 +108,7 @@ require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
                 <label class="form-label">Jenis Pembayaran</label>
                 <select id="jenisPembayaran" class="form-select">
                   <option value="kredit" selected>Kredit</option>
-                  <option value="tunai">Tunai</option>
+                  <option value="cash">Tunai</option>
                 </select>
               </div>
 
@@ -130,7 +130,7 @@ require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
 
               <div class="mb-3">
                 <label class="form-label">Catatan</label>
-                <textarea id="catatan" class="form-control" rows="2" placeholder="Tambahkan catatan jika ada..."></textarea>
+                <textarea id="note" class="form-control" rows="2" placeholder="Tambahkan catatan jika ada..."></textarea>
               </div>
             </div>
           </div>

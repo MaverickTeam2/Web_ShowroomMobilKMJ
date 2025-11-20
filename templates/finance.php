@@ -10,12 +10,13 @@ $mobil = [
 
 // Data finance company
 $finance = [
-    ["nama" => "BCA Finance", "logo" => "../assets/img/bcalogo.png"],
-    ["nama" => "FIFGROUP", "logo" => "../assets/img/fifgroup.png"],
-    ["nama" => "BRI Finance", "logo" => "../assets/img/brifinance.png"],
-    ["nama" => "PT Summit OTO Finance", "logo" => "../assets/img/ptotto.png"],
-    ["nama" => "Mandiri Utama Finance", "logo" => "../assets/img/mandirifinance.png"],
+    ["nama" => "BCA Finance",            "logo" => "../assets/img/bcalogo.png",       "bunga" => 5.0],
+    ["nama" => "FIFGROUP",               "logo" => "../assets/img/fifgroup.png",      "bunga" => 5.5],
+    ["nama" => "BRI Finance",            "logo" => "../assets/img/brifinance.png",    "bunga" => 4.8],
+    ["nama" => "PT Summit OTO Finance",  "logo" => "../assets/img/ptotto.png",        "bunga" => 6.0],
+    ["nama" => "Mandiri Utama Finance",  "logo" => "../assets/img/mandirifinance.png","bunga" => 5.2],
 ];
+
 
 // Data tips kredit
 $tips = [
@@ -92,18 +93,25 @@ $faqs = [
 
     <!-- Finance Company -->
     <section class="section">
-        <div class="box has-text-centered">
-            <div class="columns is-multiline is-mobile is-centered">
-                <?php foreach ($finance as $f): ?>
-                    <div class="column is-2">
-                        <figure class="image is-128x128"">
-                            <img src="<?= $f['logo']; ?>" alt="<?= $f['nama']; ?>">
-                        </figure>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+  <div class="box has-text-centered">
+    <div class="columns is-multiline is-mobile is-centered">
+      <?php foreach ($finance as $f): ?>
+        <div class="column is-2">
+          <figure class="image is-128x128">
+            <img src="<?= $f['logo']; ?>" alt="<?= $f['nama']; ?>">
+          </figure>
+          <p class="mt-2 fw-bold" style="font-size: 0.9rem;">
+            <?= $f['nama']; ?>
+          </p>
+          <p class="text-muted" style="font-size: 0.8rem;">
+            Bunga mulai <?= $f['bunga']; ?>% per tahun
+          </p>
         </div>
-    </section>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+
 
     <!-- Tips Kredit -->
     <section class="section">
@@ -220,13 +228,29 @@ $faqs = [
             <input class="input" id="uangMuka" type="number" placeholder="10000000">
           </div>
           <div class="field">
-            <label class="label">Nama Leasing</label>
-            <input class="input" id="leasing" type="text" placeholder="Contoh: BCA Finance">
-          </div>
-          <div class="field">
-            <label class="label">Bunga (%)</label>
-            <input class="input" id="bunga" type="number" value="5">
-          </div>
+  <label class="label">Nama Leasing</label>
+  <div class="control">
+    <div class="select is-fullwidth">
+      <select id="leasing">
+        <option value="">Pilih Leasing</option>
+        <?php foreach ($finance as $f): ?>
+          <option 
+            value="<?= $f['nama']; ?>" 
+            data-bunga="<?= $f['bunga']; ?>"
+          >
+            <?= $f['nama']; ?> (<?= $f['bunga']; ?>% )
+          </option>
+        <?php endforeach; ?>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Bunga (%)</label>
+  <input class="input" id="bunga" type="number" placeholder="Otomatis dari leasing" disabled>
+</div>
+
           <div class="field">
             <label class="label">Jangka Waktu (bulan)</label>
             <input class="input" id="lamaCicilan" type="number" value="72">
