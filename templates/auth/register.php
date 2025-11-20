@@ -3,38 +3,41 @@ session_start();
 require '../../db/koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nama = mysqli_real_escape_string($conn, $_POST['nama']);
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $nama     = mysqli_real_escape_string($conn, $_POST['nama']);
+    $email    = mysqli_real_escape_string($conn, $_POST['email']);
     $password = $_POST['password'];
-    $confirm = $_POST['confirm'];
+    $confirm  = $_POST['confirm'];
 
+    // Cek password dan konfirmasi
     if ($password !== $confirm) {
-        echo "<script>alert('Password dan konfirmasi tidak cocok!'); window.history.back();</script>";
+        header("Location: auth.php?error=confirm");
         exit;
     }
 
-    // Hash password aman
+    // Hash password
     $hashed = password_hash($password, PASSWORD_DEFAULT);
 
-    // Cek email
-    $cek = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
+    // Cek email sudah ada atau belum
+    $cek = mysqli_query($conn, "SELECT email FROM users WHERE email='$email'");
     if (mysqli_num_rows($cek) > 0) {
-        echo "<script>alert('Email sudah terdaftar!'); window.history.back();</script>";
+        header("Location: auth.php?error=email");
         exit;
     }
 
-    // Gunakan fungsi generate_kode_users('customer')
+    // Insert user baru
     $query = "INSERT INTO users (kode_user, full_name, email, password, role, created_at, updated_at)
-          VALUES (generate_kode_users(), ?, ?, ?, 'customer', NOW(), NOW())";
-
+              VALUES (generate_kode_users(), ?, ?, ?, 'customer', NOW(), NOW())";
 
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "sss", $nama, $email, $hashed);
 
     if (mysqli_stmt_execute($stmt)) {
-        echo "<script>alert('Registrasi berhasil! Silakan login.'); window.location='auth.php';</script>";
+        // Berhasil → langsung redirect ke login
+        header("Location: auth.php?registered=success");
+        exit;
     } else {
-        echo '<pre>Error MySQL: ' . mysqli_error($conn) . '</pre>';
+        header("Location: auth.php?error=server");
+        exit;
     }
 }
 ?>

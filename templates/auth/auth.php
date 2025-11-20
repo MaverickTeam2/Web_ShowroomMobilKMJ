@@ -37,7 +37,7 @@ session_start();
           <h2 class="title is-4 has-text-weight-bold">LOGIN</h2>
         </div>
 
-        <form action="login.php" method="POST">
+        <form id="loginFormElement">
           <div class="field">
             <input class="floating-input" type="email" name="email" placeholder=" " required />
             <label class="floating-label">Email</label>
@@ -133,6 +133,7 @@ session_start();
   </section>
 
   <script src="../../assets/js/auth.js"></script>
+  
 </body>
 
 </html>

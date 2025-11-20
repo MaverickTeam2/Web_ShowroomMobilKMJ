@@ -1,4 +1,5 @@
 <?php
+
 // Contoh data mobil (ini bisa diganti query dari database MySQL)
 $mobil = [
   [
@@ -448,7 +449,9 @@ $bahanBakar = [
                   </div>
 
                   <div class="card-content">
-                    <a href="../templates/detail_mobil.php" class="text-decoration-none mb-3 d-inline-block"><p class="title is-5"><?= $m['nama']; ?></p></a>
+                    <a href="../templates/detail_mobil.php" class="text-decoration-none mb-3 d-inline-block">
+                      <p class="title is-5"><?= $m['nama']; ?></p>
+                    </a>
                     <p class="ansguran"><?= $m['harga']; ?> x <?= $m['totalKredit']; ?></p>
                     <p class="uang_dp"><?= $m['dp']; ?></p>
                     <hr>
@@ -473,6 +476,16 @@ $bahanBakar = [
                           <a href="#" class="dropdown-item"><i class="fa-solid fa-trash"></i> Hapus dari favorit</a>
                           <a href="../templates/perbandingan.html" class="dropdown-item"><i class="fa-solid fa-shuffle me-2"></i> Bandingkan</a>
                           <a href="#" class="dropdown-item"><i class="fa-solid fa-share me-2"></i> Bagikan</a>
+                          <!----- WhatsApp Contact Link -->
+                          <?php
+                          $nomor_wa = "6281234567890";
+                          $pesan = urlencode("Halo, apakah mobil " . $m['nama'] . " masih tersedia?");
+                          ?>
+                          <a href="https://wa.me/<?= $nomor_wa ?>?text=<?= $pesan ?>" target="_blank"
+                            class="dropdown-item">
+                            <i class="fa-brands fa-whatsapp me-2"></i> Hubungi Penjual
+                          </a>
+
                           <a href="#" class="dropdown-item"><i class="fa-solid fa-car me-2"></i> Fitur & Spesifikasi</a>
                         </div>
                       </div>
@@ -491,12 +504,12 @@ $bahanBakar = [
     </div>
   </div>
   <script>
-  document.querySelectorAll('.icon-favorite').forEach(icon => {
-    icon.addEventListener('click', () => {
-      icon.classList.toggle('active');
+    document.querySelectorAll('.icon-favorite').forEach(icon => {
+      icon.addEventListener('click', () => {
+        icon.classList.toggle('active');
+      });
     });
-  });
-</script>
+  </script>
 
   <!-- footer -->
   <script src="../assets/js/footer.js"></script>
