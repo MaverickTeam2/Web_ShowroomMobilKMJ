@@ -55,7 +55,7 @@ require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
 
               <div class="mb-3">
                 <label class="form-label">Tipe Mobil</label>
-                <input id="tipeMobil" type="text" class="form-control" placeholder="-" readonly>
+                <input id="tipeMobil" type="text" class="form-control" placeholder="-" disabled>
               </div>
             </div>
 
@@ -93,9 +93,9 @@ require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
                 <input id="noHp" type="text" class="form-control" placeholder="Masukkan nomor HP">
               </div>
               <div class="d-flex gap-3 flex-wrap">
-                <label><input type="checkbox"> KTP</label>
-                <label><input type="checkbox" checked> KK</label>
-                <label><input type="checkbox"> Rekening Tabungan</label>
+                <label><input type="checkbox" id="cekKtp"> KTP</label>
+                <label><input type="checkbox" id="cekKk"> KK</label>
+                <label><input type="checkbox" id="cekRekening"> Rekening Tabungan</label>
               </div>
             </div>
           </div>

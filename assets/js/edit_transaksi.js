@@ -36,6 +36,12 @@
   const jenisPembayaran = document.getElementById("jenisPembayaran");
   const statusTransaksi = document.getElementById("statusTransaksi");
   const form            = document.querySelector(".tambah-transaksi-form");
+  const namaKreditInput = document.getElementById("namaKredit");
+
+
+  const cekKtp = document.getElementById("cekKtp");
+  const cekKk  = document.getElementById("cekKk");
+  const cekRek = document.getElementById("cekRek");
 
   const toNumMobil  = (v) => Number(v || 0);
   const toIDRMobil  = (n) => "Rp " + toNumMobil(n).toLocaleString("id-ID");
@@ -176,9 +182,16 @@
 
       const d = payload.data;
 
+      const jam = d.jaminan || { ktp: 0, kk: 0, rekening: 0 };
+
+      if (cekKtp) cekKtp.checked = !!jam.ktp;
+      if (cekKk)  cekKk.checked  = !!jam.kk;
+      if (cekRek) cekRek.checked = !!jam.rekening;
+
       if (namaPembeli) namaPembeli.value = d.nama_pembeli ?? "";
       if (noHp)        noHp.value        = d.no_hp ?? "";
       if (noteInput)   noteInput.value   = d.note ?? "";
+      if (namaKreditInput) namaKreditInput.value = d.nama_kredit ?? "";
 
       if (jenisPembayaran) {
         let jp = (d.tipe_pembayaran || "").toLowerCase();
@@ -221,7 +234,12 @@ if (form) {
       kode_mobil: jenisMobil.value.trim(),
       status: statusTransaksi.value.trim(),
       note: noteInput ? noteInput.value.trim() : "",
-      kode_user: "US001", // ⬅️ hardcode sementara, nanti ganti dari session
+      kode_user: "US001", //hardcode sementara, nanti ganti dari session
+      nama_kredit: namaKreditInput ? namaKreditInput.value.trim() : "",
+
+      jaminan_ktp:      cekKtp?.checked ? 1 : 0,
+      jaminan_kk:       cekKk?.checked ? 1 : 0,
+      jaminan_rekening: cekRek?.checked ? 1 : 0,
     };
 
 

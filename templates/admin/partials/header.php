@@ -38,6 +38,10 @@
     echo '<link rel="stylesheet" href="../../assets/css/admin/edit_transaksi.css">';
   }
 
+  if ($currentPage === 'inquire.php') {
+    echo '<link rel="stylesheet" href="../../assets/css/admin/inquire.css">';
+  }
+
   if ($currentPage === 'report.php') {
     echo '<link rel="stylesheet" href="../../assets/css/admin/report.css">';
   }

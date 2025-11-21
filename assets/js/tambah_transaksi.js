@@ -23,6 +23,8 @@
   const tipeMobilInput  = document.getElementById("tipeMobil");
   const jenisPembayaran = document.getElementById("jenisPembayaran");
   const fieldNamaKredit = document.getElementById("field-nama-kredit");
+  const namaKreditInput = document.getElementById("namaKredit");
+
 
   const toNumMobil  = (v) => Number(v || 0);
   const toIDRMobil  = (n) => "Rp " + toNumMobil(n).toLocaleString("id-ID");
@@ -44,7 +46,7 @@
     jenisMobil.innerHTML = '<option value="" disabled selected>Memuat daftar mobil...</option>';
 
     try {
-      const res = await fetch(`${API_GET_MOBIL}?action=list`, {
+      const res = await fetch(`${API_GET_MOBIL}?action=list&status=available`, {
         headers: { Accept: "application/json" },
       });
       const raw = await res.text();
@@ -217,6 +219,11 @@
   const fullPrice = document.getElementById("fullPrice");
   const noteInput   = document.getElementById("catatan"); 
   const statusTransaksi = document.getElementById("statusTransaksi");
+  const cekKtp      = document.getElementById("cekKtp");
+  const cekKk       = document.getElementById("cekKk");
+  const cekRek      = document.getElementById("cekRek");
+  const namaKredit  = document.getElementById("namaKredit");
+
 
 
   const toNumber = (str) =>
@@ -227,6 +234,8 @@
       e.preventDefault();
 
       const note = (noteInput?.value || "").trim();
+      const namaKredit = (namaKreditInput?.value || "").trim();
+
 
       const payload = {
         action: "create",
@@ -238,6 +247,11 @@
         kode_user: "US001", //kalau ada session, ganti ini
         status: statusTransaksi.value, 
         note: note,
+        nama_kredit: namaKredit,
+
+        jaminan_ktp:      cekKtp?.checked ? 1 : 0,
+        jaminan_kk:       cekKk?.checked ? 1 : 0,
+        jaminan_rekening: cekRek?.checked ? 1 : 0,
       };
 
       console.log("📤 Payload kirim:", payload);
