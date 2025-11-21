@@ -81,7 +81,7 @@
       const raw = await res.text();
       let data = JSON.parse(raw);
 
-      if (!data || data.status !== "ok") {
+      if (!data || data.code !== "200") {
         hidePrev();
         setTipe("-");
         if (fullPrice) fullPrice.value = "";
@@ -133,7 +133,7 @@
       const raw = await res.text();
       let json = JSON.parse(raw);
 
-      if (!json || json.status !== "ok" || !Array.isArray(json.data)) {
+      if (!json || json.code !== "200" || !Array.isArray(json.data)) {
         jenisMobil.innerHTML = '<option value="" disabled selected>Gagal memuat mobil</option>';
         return;
       }
@@ -176,7 +176,7 @@
       const raw = await res.text();
       console.log("📥 RAW detail edit:", raw);
       const payload = JSON.parse(raw);
-      if (!res.ok || payload.status === "error" || !payload.data) {
+      if (!res.ok || payload.code === "400" || !payload.data) {
         throw new Error(payload.message || "Gagal ambil detail transaksi");
       }
 
@@ -265,7 +265,7 @@ if (form) {
         throw new Error("Response bukan JSON valid");
       }
 
-      if (!res.ok || json.status === "error") {
+      if (!res.ok || json.code === "400") {
         alert(json.message || "Gagal update transaksi");
         return;
       }

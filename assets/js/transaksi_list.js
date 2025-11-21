@@ -85,7 +85,7 @@
         throw new Error("Respons list bukan JSON: " + text.slice(0, 200));
       }
 
-      if (!res.ok || payload.status === "error") {
+      if (!res.ok || payload.code === "400") {
         throw new Error(payload.message || "Gagal mengambil list transaksi");
       }
 
@@ -273,7 +273,7 @@
             throw new Error("Respons detail bukan JSON: " + text.slice(0, 200));
           }
 
-          if (!res.ok || payload.status === "error" || !payload.data) {
+          if (!res.ok || payload.code === "400" || !payload.data) {
             throw new Error(payload.message || "Gagal mengambil data");
           }
 

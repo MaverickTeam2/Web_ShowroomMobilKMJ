@@ -6,7 +6,7 @@
 // ===========================
 // 1. Konfigurasi Base URL API
 // ===========================
-define('BASE_API_URL', 'http://localhost/API_KMJ');
+define('BASE_API_URL', 'http://localhost:80/API_kmj');
 
 
 // ===========================

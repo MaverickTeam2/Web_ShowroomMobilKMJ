@@ -58,7 +58,7 @@
         throw new Error("Response list mobil bukan JSON: " + raw.slice(0, 150));
       }
 
-      if (!json || json.status !== "ok" || !Array.isArray(json.data)) {
+      if (!json || json.code !== "200" || !Array.isArray(json.data)) {
         console.warn("List mobil tidak valid:", json);
         jenisMobil.innerHTML = '<option value="" disabled selected>Gagal memuat mobil</option>';
         return;
@@ -136,7 +136,7 @@
     console.log("📦 Data mobil:", data);
 
     // kalau status bukan ok
-    if (!data || data.status !== "ok") {
+    if (!data || data.code !== "200") {
       hidePrev();
       setTipe("-");
       if (fullPrice) fullPrice.value = "";
@@ -281,7 +281,7 @@
 
         console.log("📥 Parsed JSON:", json);
 
-        if (!res.ok || json.status === "error") {
+        if (!res.ok || json.code === "400") {
           alert(json.message || "Gagal membuat transaksi");
           return;
         }
