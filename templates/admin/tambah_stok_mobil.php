@@ -164,6 +164,14 @@ if ($isEdit) {
           <span class="input-group-text">KM</span>
         </div>
       </div>
+      <div class="col-md-6">
+        <label class="form-label">Full Prize *</label>
+        <div class="input-group">
+          <input type="number" class="form-control no-spin" placeholder="0" name="full_prize" id="full_prize"
+            required value="<?= $isEdit ? htmlspecialchars($mobilData['full_prize']) : '' ?>">
+          <span class="input-group-text">KM</span>
+        </div>
+      </div>
 
 
       <div class="col-md-6">

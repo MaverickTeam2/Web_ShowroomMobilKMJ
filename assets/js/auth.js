@@ -79,3 +79,25 @@ document.addEventListener("DOMContentLoaded", function () {
     registerForm.classList.add("active");
   }
 });
+
+// login JSON
+document.getElementById("loginFormElement").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    const req = await fetch("login.php", {
+        method: "POST",
+        body: formData
+    });
+
+    const res = await req.json();
+
+    if (res.status === "error") {
+        alert(res.message); 
+        return;
+    }
+
+    //
+    window.location.href = res.redirect;
+});
