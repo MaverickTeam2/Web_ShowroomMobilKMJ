@@ -23,6 +23,8 @@
   const tipeMobilInput  = document.getElementById("tipeMobil");
   const jenisPembayaran = document.getElementById("jenisPembayaran");
   const fieldNamaKredit = document.getElementById("field-nama-kredit");
+  const namaKreditInput = document.getElementById("namaKredit");
+
 
   const toNumMobil  = (v) => Number(v || 0);
   const toIDRMobil  = (n) => "Rp " + toNumMobil(n).toLocaleString("id-ID");
@@ -44,7 +46,7 @@
     jenisMobil.innerHTML = '<option value="" disabled selected>Memuat daftar mobil...</option>';
 
     try {
-      const res = await fetch(`${API_GET_MOBIL}?action=list`, {
+      const res = await fetch(`${API_GET_MOBIL}?action=list&status=available`, {
         headers: { Accept: "application/json" },
       });
       const raw = await res.text();
@@ -56,7 +58,7 @@
         throw new Error("Response list mobil bukan JSON: " + raw.slice(0, 150));
       }
 
-      if (!json || json.status !== "ok" || !Array.isArray(json.data)) {
+      if (!json || json.code !== "200" || !Array.isArray(json.data)) {
         console.warn("List mobil tidak valid:", json);
         jenisMobil.innerHTML = '<option value="" disabled selected>Gagal memuat mobil</option>';
         return;
@@ -134,7 +136,7 @@
     console.log("📦 Data mobil:", data);
 
     // kalau status bukan ok
-    if (!data || data.status !== "ok") {
+    if (!data || data.code !== "200") {
       hidePrev();
       setTipe("-");
       if (fullPrice) fullPrice.value = "";
@@ -217,6 +219,11 @@
   const fullPrice = document.getElementById("fullPrice");
   const noteInput   = document.getElementById("catatan"); 
   const statusTransaksi = document.getElementById("statusTransaksi");
+  const cekKtp      = document.getElementById("cekKtp");
+  const cekKk       = document.getElementById("cekKk");
+  const cekRek      = document.getElementById("cekRek");
+  const namaKredit  = document.getElementById("namaKredit");
+
 
 
   const toNumber = (str) =>
@@ -227,6 +234,8 @@
       e.preventDefault();
 
       const note = (noteInput?.value || "").trim();
+      const namaKredit = (namaKreditInput?.value || "").trim();
+
 
       const payload = {
         action: "create",
@@ -238,6 +247,11 @@
         kode_user: "US001", //kalau ada session, ganti ini
         status: statusTransaksi.value, 
         note: note,
+        nama_kredit: namaKredit,
+
+        jaminan_ktp:      cekKtp?.checked ? 1 : 0,
+        jaminan_kk:       cekKk?.checked ? 1 : 0,
+        jaminan_rekening: cekRek?.checked ? 1 : 0,
       };
 
       console.log("📤 Payload kirim:", payload);
@@ -267,7 +281,7 @@
 
         console.log("📥 Parsed JSON:", json);
 
-        if (!res.ok || json.status === "error") {
+        if (!res.ok || json.code === "400") {
           alert(json.message || "Gagal membuat transaksi");
           return;
         }

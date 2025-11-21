@@ -36,6 +36,12 @@
   const jenisPembayaran = document.getElementById("jenisPembayaran");
   const statusTransaksi = document.getElementById("statusTransaksi");
   const form            = document.querySelector(".tambah-transaksi-form");
+  const namaKreditInput = document.getElementById("namaKredit");
+
+
+  const cekKtp = document.getElementById("cekKtp");
+  const cekKk  = document.getElementById("cekKk");
+  const cekRek = document.getElementById("cekRek");
 
   const toNumMobil  = (v) => Number(v || 0);
   const toIDRMobil  = (n) => "Rp " + toNumMobil(n).toLocaleString("id-ID");
@@ -75,7 +81,7 @@
       const raw = await res.text();
       let data = JSON.parse(raw);
 
-      if (!data || data.status !== "ok") {
+      if (!data || data.code !== "200") {
         hidePrev();
         setTipe("-");
         if (fullPrice) fullPrice.value = "";
@@ -127,7 +133,7 @@
       const raw = await res.text();
       let json = JSON.parse(raw);
 
-      if (!json || json.status !== "ok" || !Array.isArray(json.data)) {
+      if (!json || json.code !== "200" || !Array.isArray(json.data)) {
         jenisMobil.innerHTML = '<option value="" disabled selected>Gagal memuat mobil</option>';
         return;
       }
@@ -170,15 +176,22 @@
       const raw = await res.text();
       console.log("📥 RAW detail edit:", raw);
       const payload = JSON.parse(raw);
-      if (!res.ok || payload.status === "error" || !payload.data) {
+      if (!res.ok || payload.code === "400" || !payload.data) {
         throw new Error(payload.message || "Gagal ambil detail transaksi");
       }
 
       const d = payload.data;
 
+      const jam = d.jaminan || { ktp: 0, kk: 0, rekening: 0 };
+
+      if (cekKtp) cekKtp.checked = !!jam.ktp;
+      if (cekKk)  cekKk.checked  = !!jam.kk;
+      if (cekRek) cekRek.checked = !!jam.rekening;
+
       if (namaPembeli) namaPembeli.value = d.nama_pembeli ?? "";
       if (noHp)        noHp.value        = d.no_hp ?? "";
       if (noteInput)   noteInput.value   = d.note ?? "";
+      if (namaKreditInput) namaKreditInput.value = d.nama_kredit ?? "";
 
       if (jenisPembayaran) {
         let jp = (d.tipe_pembayaran || "").toLowerCase();
@@ -221,7 +234,12 @@ if (form) {
       kode_mobil: jenisMobil.value.trim(),
       status: statusTransaksi.value.trim(),
       note: noteInput ? noteInput.value.trim() : "",
-      kode_user: "US001", // ⬅️ hardcode sementara, nanti ganti dari session
+      kode_user: "US001", //hardcode sementara, nanti ganti dari session
+      nama_kredit: namaKreditInput ? namaKreditInput.value.trim() : "",
+
+      jaminan_ktp:      cekKtp?.checked ? 1 : 0,
+      jaminan_kk:       cekKk?.checked ? 1 : 0,
+      jaminan_rekening: cekRek?.checked ? 1 : 0,
     };
 
 
@@ -247,7 +265,7 @@ if (form) {
         throw new Error("Response bukan JSON valid");
       }
 
-      if (!res.ok || json.status === "error") {
+      if (!res.ok || json.code === "400") {
         alert(json.message || "Gagal update transaksi");
         return;
       }

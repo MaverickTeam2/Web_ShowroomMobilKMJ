@@ -48,6 +48,32 @@ require_once '../../db/config_api.php';
       </div>
     </div>
 
+    
+    <!-- Statistik Ringkasan -->
+    <div class="row mt-4 mb-3 px-2">
+      <div class="col-md-4 mb-3">
+        <div class="stat-card">
+          <div class="stat-title">Total revenue</div>
+          <div id="statTotalRevenue" class="stat-value text-green">Rp 0</div>
+          <div id="statTotalTransaksi1" class="stat-subtext">Dari 0 transaksi</div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="stat-card">
+          <div class="stat-title">Average deal</div>
+          <div id="statAverageDeal" class="stat-value text-blue">Rp 0</div>
+          <div class="stat-subtext">Rata-rata per transaksi</div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="stat-card">
+          <div class="stat-title">Total transaksi</div>
+          <div id="statTotalTransaksi2" class="stat-value text-purple">0</div>
+          <div class="stat-subtext">Keseluruhan</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Tabel Transaksi -->
     <div class="card shadow-sm border-0">
       <div class="card-body table-responsive">
@@ -74,30 +100,6 @@ require_once '../../db/config_api.php';
       </div>
     </div>
 
-    <!-- Statistik Ringkasan -->
-    <div class="row mt-4 mb-3 px-2">
-      <div class="col-md-4 mb-3">
-        <div class="stat-card">
-          <div class="stat-title">Total revenue</div>
-          <div id="statTotalRevenue" class="stat-value text-green">Rp 0</div>
-          <div id="statTotalTransaksi1" class="stat-subtext">Dari 0 transaksi</div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-3">
-        <div class="stat-card">
-          <div class="stat-title">Average deal</div>
-          <div id="statAverageDeal" class="stat-value text-blue">Rp 0</div>
-          <div class="stat-subtext">Rata-rata per transaksi</div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-3">
-        <div class="stat-card">
-          <div class="stat-title">Total transaksi</div>
-          <div id="statTotalTransaksi2" class="stat-value text-purple">0</div>
-          <div class="stat-subtext">Keseluruhan</div>
-        </div>
-      </div>
-    </div>
 
     <!-- Modal Detail Transaksi -->
 <div class="modal fade" id="modalDetailTransaksi" tabindex="-1" aria-hidden="true">
@@ -123,8 +125,11 @@ require_once '../../db/config_api.php';
           <div class="dt-label mt-3">No Handphone</div>
           <div class="dt-value" id="dt-nohp">-</div>
 
-          <!-- Biar mirip desain, isi static aja dulu -->
-          <div class="dt-label mt-3">KTP &nbsp;&nbsp; KK &nbsp;&nbsp; Rekening tabungan</div>
+          <div class="mt-3">
+            <span id="dt-jaminan-ktp">KTP</span>
+            <span id="dt-jaminan-kk" class="ms-3">KK</span>
+            <span id="dt-jaminan-rek" class="ms-3">Rekening tabungan</span>
+          </div>
         </div>
       </div>
 
@@ -135,6 +140,9 @@ require_once '../../db/config_api.php';
 
           <div class="dt-label">Jenis</div>
           <div class="dt-value" id="dt-jenis-bayar">-</div>
+
+          <div class="dt-label mt-3">Nama Kredit</div>
+          <div class="dt-value" id="dt-nama-kredit">-</div>
 
           <div class="dt-label mt-3">Note</div>
           <div class="dt-value" id="dt-note-bayar">-</div>
