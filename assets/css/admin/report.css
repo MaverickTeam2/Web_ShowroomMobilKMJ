@@ -1,7 +1,15 @@
+/* ===========================
+   STYLE UNTUK REPORT PAGE
+   =========================== */
+
+/* BreadCrumb & Header */
+.tab-link.active {
+  color: #0056ff !important;
+  text-decoration: underline !important;
+}
 #main-content .head-title {
   margin-bottom: 1.5rem;
 }
-
 #main-content .breadcrumb li {
   list-style: none;
   display: inline;
@@ -18,6 +26,47 @@
   font-weight: 500;
 }
 
+/* TAB STYLE MIRIP GAMBAR CONTOH */
+
+.tab-switch {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 10px;
+}
+
+.tab-link {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+  padding-bottom: 4px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+/* Underline (muncul hanya untuk yang active) */
+.tab-link.active {
+  color: #0056ff; /* warna biru */
+  font-weight: 700;
+}
+
+.tab-link.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 3px;
+  background: #0056ff;
+  border-radius: 2px;
+}
+
+/* Hover biar kerasa clickable */
+.tab-link:hover {
+  color: #0056ff;
+}
+
+/* ------ Card Styling ------- */
 .card h6.text-muted {
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
@@ -27,6 +76,7 @@
   margin: 0;
 }
 
+/* ------ Table Hover ------- */
 .table thead th {
   background-color: #f8f9fa;
   font-weight: 600;
@@ -36,22 +86,22 @@
   background-color: #f1f3f5;
 }
 
+/* ------ Miscellaneous ------ */
 .btn i {
   vertical-align: middle;
 }
 
-/* Pastikan hanya body yang bisa scroll */
+/* Prevent scroll duplication */
 body {
   overflow-y: auto;
 }
 
-/* Jangan buat main atau #content ikut scroll lagi */
-#content, #main-content {
+#content,
+#main-content {
   overflow: visible !important;
   height: auto !important;
 }
 
-/* Jika layout-mu pakai flex container */
 section#content {
   display: block;
 }

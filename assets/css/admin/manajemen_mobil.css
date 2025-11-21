@@ -33,7 +33,8 @@
 }
 
 /* ===================== SEARCH + FILTER ===================== */
-.search-wrapper .input-group, .input-group {
+/* HANYA untuk search bar di Manajemen Mobil */
+.search-wrapper .input-group {
   border-radius: 999px;
   overflow: hidden;
   background: #ffffff;
@@ -41,9 +42,7 @@
 }
 
 .search-wrapper .input-group-text,
-.search-wrapper .form-control,
-.input-group-text,
-.form-control {
+.search-wrapper .form-control {
   border: none !important;
 }
 

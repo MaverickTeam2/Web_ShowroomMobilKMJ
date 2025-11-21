@@ -145,7 +145,7 @@ dropzones.forEach((dz) => {
 // MODE EDIT
 // =========================
 if (window.existingMobilFoto) {
-  console.log("🖼 [mobil.js] Mode EDIT terdeteksi — load foto lama...");
+  console.log("[mobil.js] Mode EDIT terdeteksi — load foto lama...");
 
   window.existingMobilFoto.forEach((f) => {
     let inputName = "";
@@ -164,7 +164,7 @@ if (window.existingMobilFoto) {
     if (subtext) subtext.style.display = "none";
 
     const img = document.createElement("img");
-    img.src = f.nama_file; // ← sudah full URL: http://192.168.0.101:80/images/mobil/xxx.jpg
+    img.src = f.nama_file;
     img.alt = f.tipe_foto || "";
     preview.appendChild(img);
   });
