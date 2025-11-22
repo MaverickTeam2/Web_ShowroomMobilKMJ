@@ -7,7 +7,6 @@ if ($is_direct) {
 }
 
 if ($is_direct) {
-  include '../../db/koneksi.php';
   include '../../db/config_api.php';   // ← penting
   include '../../include/header.php';  // ← buat BASE_API_URL & IMAGE_URL di JS
   include 'partials/header.php';
@@ -59,7 +58,8 @@ if ($isEdit) {
 
 
 
-<form id="formMobil" method="POST" enctype="multipart/form-data">
+<form id="formMobil" class="form-no-border" method="POST" enctype="multipart/form-data">
+
   <input type="hidden" name="kode_user" value="US001">
   <?php if ($isEdit): ?>
     <input type="hidden" name="update" value="1">
@@ -167,9 +167,8 @@ if ($isEdit) {
       <div class="col-md-6">
         <label class="form-label">Full Prize *</label>
         <div class="input-group">
-          <input type="number" class="form-control no-spin" placeholder="0" name="full_prize" id="full_prize"
-            required value="<?= $isEdit ? htmlspecialchars($mobilData['full_prize']) : '' ?>">
-          <span class="input-group-text">KM</span>
+          <input type="number" class="form-control no-spin" placeholder="0" name="full_prize" id="full_prize" required
+            value="<?= $isEdit ? htmlspecialchars($mobilData['full_prize']) : '' ?>">
         </div>
       </div>
 

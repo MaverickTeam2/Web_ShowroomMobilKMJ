@@ -17,7 +17,7 @@
         <span>Manajemen Mobil</span>
       </a>
     </li>
-
+    <li><a href="inquire.php"><i class='bx bxs-message-dots'></i><span class="text">Inquire</span></a></li>
     <li><a href="report.php"><i class='bx bxs-bar-chart-alt-2'></i><span class="text">Report</span></a></li>
     <li><a href="manajemen_account.php"><i class='bx bxs-user'></i><span class="text">Manajemen Akun</span></a></li>
 

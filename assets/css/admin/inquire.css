@@ -1,0 +1,176 @@
+/* Tabs paling atas */
+.inquire-tabs {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 15px;
+  padding-top: 18px;
+}
+
+.inquire-tab {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #6b7280;
+  padding: 8px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.inquire-tab.active {
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+  color: #111827;
+}
+
+/* List card */
+.inquire-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Card utama */
+.inquire-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+}
+
+/* Header card */
+.inquire-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.customer-name {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.inquire-time {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.badge-type {
+  background: #111827;
+  color: #fff;
+}
+
+.badge-status {
+  min-width: 80px;
+  text-align: center;
+}
+
+.badge-pending {
+  background: #000000;
+  color: #ffffff;
+}
+
+.badge-responded {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.badge-closed {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+/* Body card */
+.inquire-card-body p {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.meta-label {
+  font-weight: 600;
+}
+
+.inquire-message {
+  margin-top: 10px;
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+/* Footer card / tombol */
+.inquire-card-footer {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Tombol Respond (biru panjang) */
+.btn-respond {
+  flex: 1;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Button kecil X */
+.btn-icon {
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Tombol Mark as Closed (abu full width) */
+.btn-mark-closed {
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  background: #e5e7eb;
+  color: #374151;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  .inquire-card {
+    padding: 16px;
+  }
+
+  .inquire-tabs {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}

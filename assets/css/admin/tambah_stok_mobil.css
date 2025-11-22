@@ -212,15 +212,6 @@ input[type="number"].no-spin {
   color: #1e293b;
 }
 
-.form-control,
-.form-select {
-  border: 1.5px solid #cbd5e1;
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 0.95rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
 .form-control:focus,
 .form-select:focus {
   border-color: #0d6efd;
@@ -294,7 +285,25 @@ body {
 .card {
   max-width: 1100px;
 }
-.form-control {
-  border: 1px solid #d1d5db !important;
-  border-radius: 9999px !important;
+/* ================= INPUT TANPA BORDER UNTUK TAMBAH/EDIT STOK ================= */
+
+.form-no-border .form-control,
+.form-no-border .form-select,
+.form-no-border .input-group-text {
+  border: 1.5px solid #cbd5e1 !important;   /* ← mirip desain select */
+  border-radius: 8px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+/* saat focus */
+.form-no-border .form-control:focus,
+.form-no-border .form-select:focus {
+  border-color: #0d6efd !important;
+  box-shadow: 0 0 0 0.15rem rgba(13,110,253,0.25) !important;
+}
+
+.form-no-border .input-group {
+  border: none !important;
+  background: transparent !important;
 }

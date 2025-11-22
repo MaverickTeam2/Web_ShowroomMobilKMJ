@@ -2,7 +2,7 @@
 $host = 'localhost';
 $user = 'root';
 $pass = '';
-$db   = 'showroom_kmj';
+$db   = 'kmjshowroom4';
 
 $conn = new mysqli($host, $user, $pass, $db, $port);
 if ($conn->connect_error) {
