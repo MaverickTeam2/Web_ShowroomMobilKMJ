@@ -7,7 +7,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 // ========== 1. Ambil data dari API get_laporan_gabungan ==========
-$apiUrl = 'http://localhost/API_kmj/admin/get_laporan_gabungan.php';
+$apiUrl = 'http://localhost:8888/api_kmj/admin/get_laporan_gabungan.php';
 // sesuaikan base URL kamu, misal http://localhost/showroom/API_kmj/admin/get_laporan_gabungan.php
 
 $json = file_get_contents($apiUrl);
