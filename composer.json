@@ -1,5 +1,6 @@
 {
     "require": {
-        "dompdf/dompdf": "2.0"
+        "masterminds/html5": "^2.10",
+        "dompdf/dompdf": "2.0.4"
     }
 }

@@ -1,6 +1,7 @@
 <?php
 // Start session kalau mau deteksi login nanti
 session_start();
+require_once __DIR__ . '/../../include/header.php';
 ?>
 
 <!DOCTYPE html>
@@ -59,8 +60,15 @@ session_start();
 
         <div class="field">
           <button class="button is-light is-fullwidth is-rounded mb-4">
-            <img src="https://img.icons8.com/color/20/000000/google-logo.png" alt="Google" />
+            <img width="24" height="24" src="https://img.icons8.com/color/48/google-logo.png" alt="google-logo" />
             <span>Continue with Google</span>
+          </button>
+        </div>
+
+        <div class="field">
+          <button class="button is-light is-fullwidth is-rounded mb-4">
+            <img width="24" height="24" src="https://img.icons8.com/ios-filled/50/mac-os.png" alt="mac-os" />
+            <span>Continue with Apple</span>
           </button>
         </div>
 
@@ -76,7 +84,7 @@ session_start();
       <a href="../../templates/index.php"
         style="position: absolute; top: 20px; right: 20px; z-index: 1000; text-decoration: none; color: #000000; font-weight: 600;">
         <span class="icon"><i class='bx bx-arrow-back'></i></span>
-       <span>Back</span>
+        <span>Back</span>
       </a>
 
 
@@ -87,14 +95,18 @@ session_start();
           <h2 class="title is-4 has-text-weight-bold">REGISTER</h2>
         </div>
 
-        <form action="register.php" method="POST">
+        <form id="registerFormElement">
           <div class="field">
             <input class="floating-input" type="text" name="nama" placeholder=" " required />
-            <label class="floating-label">Full Name</label>
+            <label class="floating-label">Nama Lengkap</label>
           </div>
           <div class="field">
             <input class="floating-input" type="email" name="email" placeholder=" " required />
             <label class="floating-label">Email</label>
+          </div>
+          <div class="field">
+            <input class="floating-input" type="text" name="no_telp" placeholder=" " required />
+            <label class="floating-label">No Telepon</label>
           </div>
           <div class="field password-wrapper">
             <input class="floating-input" type="password" name="password" id="password1" placeholder=" " required />
@@ -102,7 +114,7 @@ session_start();
           </div>
           <div class="field password-wrapper">
             <input class="floating-input" type="password" name="confirm" id="password2" placeholder=" " required />
-            <label class="floating-label">Confirm Password</label>
+            <label class="floating-label">Konfirmasi Password</label>
           </div>
           <div class="field mt-5">
             <button type="submit"
@@ -122,6 +134,13 @@ session_start();
           </button>
         </div>
 
+        <div class="field">
+          <button class="button is-light is-fullwidth is-rounded mb-4">
+            <img width="24" height="24" src="https://img.icons8.com/ios-filled/50/mac-os.png" alt="mac-os" />
+            <span>Register with Apple</span>
+          </button>
+        </div>
+
         <div class="has-text-centered mt-3">
           <p class="is-size-7">
             Sudah punya akun?
@@ -129,11 +148,39 @@ session_start();
           </p>
         </div>
       </div>
+
+      <!-- ===== VERIFY FORM ===== -->
+      <div id="verifyForm" class="form-box hidden">
+        <div class="logo has-text-centered mb-4">
+          <img src="../../assets/img/Logo_KMJ_YB.png" alt="Logo" />
+          <h2 class="title is-4 has-text-weight-bold">VERIFIKASI EMAIL</h2>
+        </div>
+
+        <form id="verifyFormElement">
+
+          <!-- HARUS KODE USER, BUKAN EMAIL -->
+          <input type="hidden" id="verifyKodeUser" name="kode_user">
+
+          <div class="field">
+            <input class="floating-input" type="text" name="kode_verifikasi" placeholder=" " required />
+            <label class="floating-label">Kode Verifikasi</label>
+          </div>
+
+          <div class="field mt-5">
+            <button type="submit" class="button is-link is-fullwidth is-rounded has-text-weight-semibold">
+              VERIFIKASI
+            </button>
+          </div>
+
+        </form>
+      </div>
+
     </div>
   </section>
 
   <script src="../../assets/js/auth.js"></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
 
 </html>

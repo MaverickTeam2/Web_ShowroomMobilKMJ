@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <section id="sidebar">
   <a href="index.php" class="brand d-flex align-items-center">
     <img src="../../assets/img/Logo_KMJ_YB2.ico" alt="KMJ Logo" style="width:70px; height:90px; margin-left:15px;">
@@ -19,8 +23,14 @@
     </li>
     <li><a href="inquire.php"><i class='bx bxs-message-dots'></i><span class="text">Inquire</span></a></li>
     <li><a href="report.php"><i class='bx bxs-bar-chart-alt-2'></i><span class="text">Report</span></a></li>
-    <li><a href="manajemen_account.php"><i class='bx bxs-user'></i><span class="text">Manajemen Akun</span></a></li>
-
+    <?php if (!empty($_SESSION['role']) && $_SESSION['role'] === "owner"): ?>
+      <li>
+        <a href="manajemen_account.php">
+          <i class='bx bxs-user'></i>
+          <span class="text">Manajemen Akun</span>
+        </a>
+      </li>
+    <?php endif; ?>
   </ul>
 
   <ul class="side-menu bottom">
