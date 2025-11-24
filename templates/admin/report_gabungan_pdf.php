@@ -1,24 +1,25 @@
 <?php
-// web/report_gabungan_pdf.php
-
-require __DIR__ . '/../../vendor/autoload.php'; // sesuaikan path ke vendor
+require __DIR__ . '/../../vendor/autoload.php';
+include '../../db/config_api.php';
+include '../../db/api_client.php'; 
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-// ========== 1. Ambil data dari API get_laporan_gabungan ==========
-$apiUrl = 'http://localhost:8888/api_kmj/admin/get_laporan_gabungan.php';
-// sesuaikan base URL kamu, misal http://localhost/showroom/API_kmj/admin/get_laporan_gabungan.php
 
+// ========== 1. Ambil data API ==========
+$apiUrl = BASE_API_URL.'/admin/get_laporan_gabungan.php';
 $json = file_get_contents($apiUrl);
 $data = json_decode($json, true);
 
 $transaksi = $data['data']['transaksi'] ?? [];
-$mobil = $data['data']['mobil'] ?? [];
+$mobil     = $data['data']['mobil'] ?? [];
 
-// ========== 2. Bangun HTML untuk dimasukkan ke PDF ==========
+
+// ========== 2. Buat HTML dengan buffer ==========
 ob_start();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="id">
@@ -58,7 +59,7 @@ ob_start();
 
 <body>
 
-  <h1>Laporan Gabungan</h1>
+  <h1>Laporan Penjualan & Mobil</h1>
   <p style="text-align:center; margin-bottom:20px;">Showroom Mobil KMJ</p>
 
   <!-- Tabel Transaksi -->
@@ -136,14 +137,13 @@ ob_start();
 <?php
 $html = ob_get_clean();
 
-// ========== 3. Render HTML jadi PDF pakai Dompdf ==========
 $options = new Options();
 $options->set('isRemoteEnabled', true);
-$dompdf = new Dompdf($options);
 
+$dompdf = new Dompdf($options);
 $dompdf->loadHtml($html);
+
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 
-// Inline di browser (supaya kebuka tab baru, nggak langsung download)
-$dompdf->stream('laporan_gabungan.pdf', ['Attachment' => true]);
+$dompdf->stream("laporan_gabungan.pdf", ["Attachment" => true]);
