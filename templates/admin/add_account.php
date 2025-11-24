@@ -36,24 +36,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- Input Data -->
             <div class="row g-4 px-5">
                 <div class="col-md-6">
-                    <label for="first_name" class="form-label fw-semibold">Nama Depan</label>
-                    <input type="text" id="first_name" name="first_name" 
+                    <label for="fullname" class="form-label fw-semibold">Nama Lengkap</label>
+                    <input type="text" id="fullname" name="fullname" 
                            class="form-control form-control-lg rounded-3 border-secondary-subtle"
                            placeholder="Masukkan nama depan">
-                </div>
-
-                <div class="col-md-6">
-                    <label for="last_name" class="form-label fw-semibold">Nama Belakang</label>
-                    <input type="text" id="last_name" name="last_name" 
-                           class="form-control form-control-lg rounded-3 border-secondary-subtle"
-                           placeholder="Masukkan nama belakang">
                 </div>
 
                 <div class="col-md-6">
                     <label for="username" class="form-label fw-semibold">Username</label>
                     <input type="text" id="username" name="username" 
                            class="form-control form-control-lg rounded-3 border-secondary-subtle"
-                           placeholder="Masukkan username">
+                           placeholder="Masukkan nama belakang">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="password" class="form-label fw-semibold">Password</label>
+                    <input type="text" id="password" name="password" 
+                           class="form-control form-control-lg rounded-3 border-secondary-subtle"
+                           placeholder="Masukkan password">
                 </div>
 
                 <div class="col-md-6">
