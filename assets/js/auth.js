@@ -124,8 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return Swal.fire("Error", json.message, "error");
         }
 
-        Swal.fire("Sukses", json.message, "success");
-
         localStorage.setItem("verify_kode_user", json.kode_user);
         document.getElementById("verifyKodeUser").value = json.kode_user;
 
@@ -168,8 +166,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (json.code !== 200) {
             return Swal.fire("Error", json.message, "error");
         }
-
-        Swal.fire("Berhasil!", "Akun berhasil diverifikasi. Silakan login.", "success");
 
         localStorage.removeItem("verify_kode_user");
         window.location.href = "../../templates/index.php";
