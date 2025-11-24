@@ -4,12 +4,6 @@
 // Bisa digunakan di file PHP lain dengan include atau require
 
 // ===========================
-// 1. Konfigurasi Base URL API
-// ===========================
-define('BASE_API_URL', 'http://localhost:80/API_kmj');
-
-
-// ===========================
 // 2. Fungsi untuk GET request
 // ===========================
 function api_get($endpoint)
