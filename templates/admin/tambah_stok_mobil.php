@@ -202,11 +202,11 @@ if ($isEdit) {
         <label class="form-label">Sistem Penggerak *</label>
         <select class="form-select" name="sistem_penggerak" required>
           <option value="">Pilih sistem penggerak</option>
-          <option value="FWD" <?= $isEdit && $mobilData['sistem_penggerak'] === 'FWD (Front Wheel Drive)' ? 'selected' : '' ?>>FWD (Front Wheel
+          <option value="FWD (Front Wheel Drive)" <?= $isEdit && $mobilData['sistem_penggerak'] === 'FWD (Front Wheel Drive)' ? 'selected' : '' ?>>FWD (Front Wheel
             Drive)</option>
-          <option value="RWD" <?= $isEdit && $mobilData['sistem_penggerak'] === 'RWD (Rear Wheel Drive)' ? 'selected' : '' ?>>RWD (Rear Wheel
+          <option value="RWD (Rear Wheel Drive)" <?= $isEdit && $mobilData['sistem_penggerak'] === 'RWD (Rear Wheel Drive)' ? 'selected' : '' ?>>RWD (Rear Wheel
             Drive)</option>
-          <option value="AWD" <?= $isEdit && $mobilData['sistem_penggerak'] === 'AWD (All Wheel Drive)' ? 'selected' : '' ?>>AWD (All Wheel
+          <option value="AWD (All Wheel Drive)" <?= $isEdit && $mobilData['sistem_penggerak'] === 'AWD (All Wheel Drive)' ? 'selected' : '' ?>>AWD (All Wheel
             Drive)</option>
         </select>
       </div>
