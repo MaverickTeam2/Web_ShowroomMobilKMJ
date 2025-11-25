@@ -54,10 +54,6 @@ if ($isEdit) {
     </ul>
   </div>
 </div>
-
-
-
-
 <form id="formMobil" class="form-no-border" method="POST" enctype="multipart/form-data">
 
   <input type="hidden" name="kode_user" value="US001">
