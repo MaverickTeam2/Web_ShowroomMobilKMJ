@@ -41,6 +41,8 @@ if ($isEdit) {
 
 ?>
 <link rel="stylesheet" href="../../assets/css/admin/tambah_stok_mobil.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 
 
 <!-- ======================== KONTEN HALAMAN ======================== -->
@@ -163,6 +165,7 @@ if ($isEdit) {
       <div class="col-md-6">
         <label class="form-label">Full Prize *</label>
         <div class="input-group">
+          <span class="input-group-text">Rp</span>
           <input type="number" class="form-control no-spin" placeholder="0" name="full_prize" id="full_prize" required
             value="<?= $isEdit ? htmlspecialchars($mobilData['full_prize']) : '' ?>">
         </div>
@@ -199,11 +202,11 @@ if ($isEdit) {
         <label class="form-label">Sistem Penggerak *</label>
         <select class="form-select" name="sistem_penggerak" required>
           <option value="">Pilih sistem penggerak</option>
-          <option value="FWD" <?= $isEdit && $mobilData['sistem_penggerak'] === 'FWD' ? 'selected' : '' ?>>FWD (Front Wheel
+          <option value="FWD" <?= $isEdit && $mobilData['sistem_penggerak'] === 'FWD (Front Wheel Drive)' ? 'selected' : '' ?>>FWD (Front Wheel
             Drive)</option>
-          <option value="RWD" <?= $isEdit && $mobilData['sistem_penggerak'] === 'RWD' ? 'selected' : '' ?>>RWD (Rear Wheel
+          <option value="RWD" <?= $isEdit && $mobilData['sistem_penggerak'] === 'RWD (Rear Wheel Drive)' ? 'selected' : '' ?>>RWD (Rear Wheel
             Drive)</option>
-          <option value="AWD" <?= $isEdit && $mobilData['sistem_penggerak'] === 'AWD' ? 'selected' : '' ?>>AWD (All Wheel
+          <option value="AWD" <?= $isEdit && $mobilData['sistem_penggerak'] === 'AWD (All Wheel Drive)' ? 'selected' : '' ?>>AWD (All Wheel
             Drive)</option>
         </select>
       </div>
@@ -244,15 +247,18 @@ if ($isEdit) {
         </div>
 
         <!-- uang muka -->
-        <div class="col-md-6">
-          <label class="form-label">Uang Muka *</label>
-          <div class="input-group">
-            <span class="input-group-text">Rp</span>
-            <input type="number" class="form-control no-spin" name="uang_muka" required placeholder="2000"
-              value="<?= $isEdit ? htmlspecialchars($mobilData['uang_muka']) : '' ?>">
-          </div>
+      </div>
+      <br>
+
+      <div class="col-md-6">
+        <label class="form-label">Uang Muka *</label>
+        <div class="input-group">
+          <span class="input-group-text">Rp</span>
+          <input type="number" class="form-control no-spin" name="uang_muka" required placeholder="2000"
+            value="<?= $isEdit ? htmlspecialchars($mobilData['uang_muka']) : '' ?>">
         </div>
       </div>
+
     </div>
   </div>
 
