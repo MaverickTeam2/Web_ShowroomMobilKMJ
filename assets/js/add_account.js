@@ -1,30 +1,136 @@
-document.getElementById("addAdminForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
+console.log('add_account.js LOADED');
 
-    const data = {
-        first_name: document.getElementById("first_name").value,
-        last_name: document.getElementById("last_name").value,
-        username: document.getElementById("username").value,
-        no_telf: document.getElementById("no_telf").value,
-        email: document.getElementById("email").value,
-        alamat: document.getElementById("alamat").value,
-        password: document.getElementById("password").value
-    };
+const API_CREATE_ACCOUNT = `${BASE_API_URL}/admin/create_manage_acc.php`;
 
-    const response = await fetch("../../api/admin/add_admin.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
 
-    const res = await response.json();
+// helper pesan
+function showAddAccountMessage(text, type) {
+  const msgBox = document.getElementById('addAccountMessage');
+  if (!msgBox) return;
 
-    if (res.status === "success") {
-        alert("Akun admin berhasil dibuat!");
-        window.location.href = "../../templates/index.php";
-    } else {
-        alert("Error: " + res.message);
+  if (!text) {
+    msgBox.innerHTML = '';
+    return;
+  }
+
+  const cls =
+    type === 'success' ? 'alert alert-success' :
+    type === 'danger'  ? 'alert alert-danger'  :
+                         'alert alert-secondary';
+
+  msgBox.innerHTML = `<div class="${cls}" role="alert">${text}</div>`;
+}
+
+// ========== PREVIEW FOTO (delegasi) ==========
+document.addEventListener('change', (e) => {
+  const input = e.target;
+  if (!(input instanceof HTMLInputElement)) return;
+  if (input.id !== 'photo') return;
+
+  const file = input.files && input.files[0];
+  const preview = document.getElementById('photoPreview');
+  if (!file || !preview) return;
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    preview.innerHTML =
+      `<img src="${ev.target.result}" class="w-100 h-100 object-fit-cover rounded-circle" />`;
+  };
+  reader.readAsDataURL(file);
+});
+
+// ========== SUBMIT FORM (delegasi) ==========
+document.addEventListener('submit', async (e) => {
+  const form = e.target;
+  if (!(form instanceof HTMLFormElement)) return;
+  if (form.id !== 'formAddAccount') return; // cuma form tambah akun
+
+  console.log('SUBMIT KE TANGKAP add_account.js', e.target);
+
+
+  e.preventDefault(); // << ini yang mencegah GET ?photo=...
+
+  const fullnameEl = document.getElementById('fullname');
+  const usernameEl = document.getElementById('username');
+  const passwordEl = document.getElementById('password');
+  const phoneEl    = document.getElementById('phone');
+  const emailEl    = document.getElementById('email');
+  const addressEl  = document.getElementById('address');
+  const photoInput = document.getElementById('photo');
+  const btnSubmit  = document.getElementById('btnSubmitAdd');
+
+  const full_name = fullnameEl.value.trim();
+  const username  = usernameEl.value.trim();
+  const password  = passwordEl.value;
+  const no_telp   = phoneEl.value.trim();
+  const email     = emailEl.value.trim();
+  const alamat    = addressEl.value.trim();
+
+  if (!full_name || !username || !password || !no_telp || !email || !alamat) {
+    showAddAccountMessage('Semua field wajib diisi.', 'danger');
+    return;
+  }
+
+  if (typeof BASE_API_URL === 'undefined') {
+    console.error('BASE_API_URL belum didefinisikan');
+    showAddAccountMessage('Konfigurasi API belum benar (BASE_API_URL tidak ditemukan).', 'danger');
+    return;
+  }
+
+  const fd = new FormData();
+  fd.append('full_name', full_name);
+  fd.append('username', username);
+  fd.append('password', password);
+  fd.append('no_telp', no_telp);
+  fd.append('email', email);
+  fd.append('alamat', alamat);
+  fd.append('role', 'admin');
+  fd.append('provider_type', 'local');
+
+  if (photoInput && photoInput.files[0]) {
+    // **nama field HARUS "avatar_file"** sesuai register.php
+    fd.append('avatar_file', photoInput.files[0]);
+  }
+
+  if (btnSubmit) {
+    btnSubmit.disabled = true;
+    btnSubmit.innerText = 'Menyimpan...';
+  }
+  showAddAccountMessage('', '');
+
+  try {
+    const res  = await fetch(API_CREATE_ACCOUNT, { method: 'POST', body: fd });
+    const raw  = await res.text();
+    let json   = {};
+    try { json = JSON.parse(raw); } catch (_) {}
+
+    console.log('REGISTER status:', res.status);
+    console.log('REGISTER raw:', raw);
+
+    const code = json.kode ?? json.code;
+if (!res.ok || (code !== 200 && code !== 201)) {
+  const msg = json.message || `Gagal menambah akun (status ${res.status}).`;
+  throw new Error(msg);
+}
+
+
+    showAddAccountMessage('Akun admin berhasil dibuat.', 'success');
+
+    setTimeout(() => {
+      if (typeof loadPage === 'function') {
+        loadPage('manajemen_account.php');
+      } else {
+        window.location.href = 'manajemen_account.php';
+      }
+    }, 1000);
+
+  } catch (err) {
+    console.error('REGISTER error:', err);
+    showAddAccountMessage(err.message || 'Terjadi kesalahan saat menyimpan akun.', 'danger');
+  } finally {
+    if (btnSubmit) {
+      btnSubmit.disabled = false;
+      btnSubmit.innerText = 'Simpan';
     }
+  }
 });

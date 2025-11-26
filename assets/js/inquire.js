@@ -2,9 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
   console.log('Inquire JS loaded');
 
   // === SESUAIKAN nama file API di sini ===
-  const API_URL = "http://localhost/API_kmj/admin/inquire_get_test.php";
-  // kalau nanti sudah fix nama filenya:
-  // const API_URL = "http://localhost/API_kmj/admin/inquire_get.php";
+  const API_URL = `${BASE_API_URL}/admin/inquire_get_test.php`;
+  const STATUS_API_INQUIRE = `${BASE_API_URL}/admin/inquire_update_status.php`;
 
   const tabs = document.querySelectorAll('.inquire-tab');
   const list = document.querySelector('.inquire-list');
@@ -61,15 +60,20 @@ document.addEventListener('DOMContentLoaded', function () {
         const data = res.data || [];
 
         if (!data.length) {
-          list.innerHTML = `<div class="text-muted">Belum ada inquiry</div>`;
+  list.innerHTML = `<div class="text-muted">Belum ada inquiry</div>`;
+
+        if (filter === 'all') {
           updateTabCounts(data);
+        }
           return;
         }
 
+        if (filter === 'all') {
         updateTabCounts(data);
+        }
 
         list.innerHTML = '';
-        data.forEach(row => {
+          data.forEach(row => {
           list.appendChild(createCard(row));
         });
       })
@@ -79,58 +83,121 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
-  function createCard(row) {
-    const wrapper = document.createElement('article');
-    wrapper.className = 'inquire-card';
-    wrapper.dataset.status = row.status; // pending / responded / closed / canceled
 
-    // kalau dari DB masih 'canceled', tampilin sebagai 'Closed'
-    let status = row.status;
-    if (status === 'canceled') status = 'closed';
+function createCard(row) {
+  const wrapper = document.createElement('article');
 
-    const statusText = status.charAt(0).toUpperCase() + status.slice(1);
+  // normalize status dari DB
+  let status = row.status === 'canceled' ? 'closed' : row.status;
+  wrapper.className = 'inquire-card';
+  wrapper.dataset.status = status;
 
-    let badgeClass = 'badge-closed';
-    if (status === 'pending') badgeClass = 'badge-pending';
-    else if (status === 'responded') badgeClass = 'badge-responded';
+  const statusText = status.charAt(0).toUpperCase() + status.slice(1);
+  let badgeClass = 'badge-closed';
+  if (status === 'pending') badgeClass = 'badge-pending';
+  else if (status === 'responded') badgeClass = 'badge-responded';
 
-    const waktuPendek = (row.waktu || '').slice(0, 5);
-    const waktuTampil =
-      row.tanggal && waktuPendek ? `${row.tanggal} ${waktuPendek}` : (row.tanggal || '');
+  const waktuPendek = (row.waktu || '').slice(0, 5);
+  const waktuTampil = row.tanggal && waktuPendek
+      ? `${row.tanggal} ${waktuPendek}`
+      : (row.tanggal || '');
 
-    wrapper.innerHTML = `
-      <div class="inquire-card-header">
-        <div>
-          <div class="name-row">
-            <span class="customer-name">${row.nama_user || row.kode_user || '-'}</span>
-            <span class="badge badge-type">Test Drive</span>
-          </div>
-          <span class="inquire-time">${waktuTampil}</span>
-        </div>
-        <span class="badge badge-status ${badgeClass}">${statusText}</span>
-      </div>
-
-      <div class="inquire-card-body">
-        <p><span class="meta-label">Email:</span> ${row.email_user || '-'}</p>
-        <p><span class="meta-label">Phone:</span> ${row.no_telp || '-'}</p>
-        <p><span class="meta-label">Vehicle:</span> ${row.nama_mobil || row.kode_mobil || '-'}</p>
-
-        <div class="inquire-message">-</div>
-
-        <div class="inquire-card-footer">
-          ${
-            status === 'pending'
-              ? `<button class="btn-respond">Respond</button>`
-              : status === 'responded'
-              ? `<button class="btn-mark-closed">Mark as Closed</button>`
-              : ``
-          }
-        </div>
+  // footer berbeda tergantung status
+  let footerHtml = '';
+  if (status === 'pending') {
+    footerHtml = `
+      <div class="inquire-card-footer">
+        <button class="btn-respond" data-id="${row.id_inquire}">Respond</button>
+        <button class="btn-icon btn-cancel" data-id="${row.id_inquire}" title="Tolak">✕</button>
       </div>
     `;
-
-    return wrapper;
+  } else if (status === 'responded') {
+    footerHtml = `
+      <div class="inquire-card-footer">
+        <button class="btn-mark-closed" data-id="${row.id_inquire}">Mark as Closed</button>
+      </div>
+    `;
   }
+
+  wrapper.innerHTML = `
+    <div class="inquire-card-header">
+      <div>
+        <div class="name-row">
+          <span class="customer-name">${row.nama_user || row.kode_user || '-'}</span>
+          <span class="badge badge-type">Test Drive</span>
+        </div>
+        <span class="inquire-time">${waktuTampil}</span>
+      </div>
+      <span class="badge badge-status ${badgeClass}">${statusText}</span>
+    </div>
+
+    <div class="inquire-card-body">
+      <p><span class="meta-label">Email:</span> ${row.email_user || '-'}</p>
+      <p><span class="meta-label">Phone:</span> ${row.no_telp || '-'}</p>
+      <p><span class="meta-label">Vehicle:</span> ${row.nama_mobil || row.kode_mobil || '-'}</p>
+
+      <div class="inquire-message">
+        ${row.note || '-'}
+      </div>
+
+      ${footerHtml}
+    </div>
+  `;
+
+  // pasang event handler tombol
+  const btnRespond = wrapper.querySelector('.btn-respond');
+  if (btnRespond) {
+    btnRespond.addEventListener('click', () => {
+      updateStatus(row.id_inquire, 'responded');
+    });
+  }
+
+  const btnCancel = wrapper.querySelector('.btn-cancel');
+  if (btnCancel) {
+    btnCancel.addEventListener('click', () => {
+      updateStatus(row.id_inquire, 'closed');
+    });
+  }
+
+  const btnMarkClosed = wrapper.querySelector('.btn-mark-closed');
+  if (btnMarkClosed) {
+    btnMarkClosed.addEventListener('click', () => {
+      updateStatus(row.id_inquire, 'closed');
+    });
+  }
+
+  return wrapper;
+}
+
+function updateStatus(id, newStatus) {
+  if (!confirm(`Ubah status menjadi ${newStatus}?`)) return;
+
+  fetch(STATUS_API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      id_inquire: id,
+      status: newStatus
+    })
+  })
+    .then(r => r.json())
+    .then(res => {
+      if (res.code !== 200) {
+        alert(res.message || 'Gagal mengubah status');
+        return;
+      }
+
+      // reload list sesuai tab aktif
+      const activeTab = document.querySelector('.inquire-tab.active');
+      const filter = activeTab ? activeTab.getAttribute('data-filter') : 'all';
+      loadCards(filter);
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Terjadi kesalahan saat mengubah status');
+    });
+}
+
 
   function updateTabCounts(data) {
     // mapping 'canceled' jadi 'closed'
