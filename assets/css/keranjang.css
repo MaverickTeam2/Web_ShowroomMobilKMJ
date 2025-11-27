@@ -1,0 +1,104 @@
+/* ================================
+   LAYOUT GLOBAL
+=================================== */
+.wishlist-layout {
+  width: 100%;
+  min-height: 70vh;
+}
+
+.wishlist-sidebar {
+  background: #fff;
+  padding: 20px 10px;
+  border-right: 1px solid #e5e7eb;
+  min-height: 100vh;
+}
+
+.wishlist-content {
+  padding: 20px 40px;
+}
+
+/* ================================
+   SIDEBAR TITLE
+=================================== */
+.wishlist-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+/* ================================
+   MENU ITEM
+=================================== */
+/* Biar teks menu tidak turun ke baris baru */
+.wishlist-menu-item span {
+  white-space: nowrap;
+}
+
+/* (opsional) sidebar sedikit diperlebar supaya teks leluasa */
+.wishlist-sidebar {
+  min-width: 210px;
+}
+
+.wishlist-menu-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #374151;
+  text-decoration: none;
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  position: relative;
+  transition: 0.2s;
+}
+
+.wishlist-menu-item i {
+  font-size: 16px;
+}
+
+/* Hover efek */
+.wishlist-menu-item:hover {
+  background: #f3f4f6;
+}
+
+/* ================================
+   ACTIVE ITEM (Garis biru kiri)
+=================================== */
+.wishlist-menu-item--active {
+  color: #2563eb !important;
+  font-weight: 600;
+  background: #eef6ff;
+}
+
+.wishlist-menu-item--active .wishlist-menu-indicator {
+  position: absolute;
+  left: 0;
+  width: 3px;
+  height: 70%;
+  background: #2563eb;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ================================
+   LOGOUT (Warna khusus)
+=================================== */
+.wishlist-menu-item--logout {
+  color: #ef4444;
+}
+
+.wishlist-menu-item--logout:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ================================
+   PEMBATAS GARIS
+=================================== */
+.wishlist-divider {
+  margin: 12px 0;
+  border-color: #e5e7eb;
+}

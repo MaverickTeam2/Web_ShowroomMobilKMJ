@@ -1,17 +1,31 @@
-/* Navbar link */
+/* ===== NAVBAR & FOOTER LINK ===== */
 .navbar-item,
 .navbar-link {
   text-decoration: none !important;
 }
 
-/* Footer link */
 .footer a {
   text-decoration: none !important;
 }
+/* ===== FOOTER KHUSUS KATALOG ===== */
+.page-katalog .footer {
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
+}
 
-/* Card */
+.page-katalog .footer ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.page-katalog .footer ul li {
+  margin-bottom: 0.25rem;
+}
+/* ===== CARD DASAR ===== */
 .card {
   border-radius: 12px;
+  border: none;
 }
 
 .card img {
@@ -21,32 +35,43 @@
   border-top-right-radius: 12px;
 }
 
-.card-title {
-  font-size: 16px;
-  font-weight: bold;
+/* card mobil */
+.car-card {
+  border: 1px solid #d0d0d0; /* garis abu-abu lebih gelap */
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-h4 {
-  color: #0568da;
+.car-card:hover {
+  transform: translateY(-4px);
 }
 
-h4 a {
-  text-decoration: none;
-  color: inherit;
+/* judul / nama mobil */
+.card-content .title {
+  color: #007bff !important;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 
-h3,
-h5 {
-  margin: 0;
+/* teks di dalam card kiri semua */
+.card-content {
+  text-align: left !important;
 }
 
-.hr-custom {
-  border: 0;
-  border-top: 4px solid #aaa;
-  margin: 1rem 0;
+.card-content p {
+  text-align: left !important;
+  color: #333;
+  margin-bottom: 4px;
 }
 
-/* Filter Header */
+/* ===== TOTAL MOBIL ===== */
+.totalMobil h5 {
+  color: #727272;
+  font-family: "Lucida Sans", sans-serif;
+}
+
+/* ===== FILTER SIDEBAR ===== */
 .filter-header {
   display: flex;
   justify-content: space-between;
@@ -59,41 +84,97 @@ h5 {
   font-size: 14px;
 }
 
-.row p {
-  color: #8b8b8b;
-  text-align: center;
-}
-
 .button-simpan,
 .button-aturUlang {
   text-align: center;
 }
 
-/* Total Mobil */
-.totalMobil h5 {
-  color: #727272;
-  font-family: "Lucida Sans", sans-serif;
-}
-
-/* Dropdown menu */
+/* ===== DROPDOWN MENU (titik tiga) ===== */
 .dropdown-menu {
   font-size: 14px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* kategori */
-/* Bungkus gambar agar bisa pakai position relative */
-.image-wrapper {
-  position: relative;
+/* tombol titik tiga bulat */
+.btn-titik3 {
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  border: none;
 }
 
-/* Posisi ikon favorit */
+.btn-titik3:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  background: #f9f9f9 !important;
+}
+
+.btn-titik3 i {
+  color: #444;
+  font-size: 16px;
+}
+
+/* posisi tombol titik tiga (kanan agak bawah di card) */
+.titik3 {
+  position: absolute;
+  top: 45%; /* geser-geser kalau mau lebih turun / naik */
+  right: 12px;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+/* ===== GAMBAR & BADGE ===== */
+
+/* bungkus gambar supaya status + heart bisa absolute */
+.image-wrapper {
+  position: relative;
+  display: block;
+}
+
+/* badge status ala "Harga turun" di pojok kiri atas gambar */
+.status-badge {
+  position: absolute;
+  top: 10px; /* ⬅️ sejajar love */
+  left: 10px;
+  background: #10b981;
+  color: white;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 999px;
+  z-index: 50;
+}
+
+.status-badge.available {
+  background: #10b981;
+}
+.status-badge.reserved {
+  background: #facc15;
+  color: #111;
+}
+.status-badge.sold {
+  background: #9ca3af;
+}
+.status-badge.shipping {
+  background: #38bdf8;
+}
+.status-badge.delivered {
+  background: #6366f1;
+}
+
+/* ikon favorit (hati) di pojok kanan atas gambar */
 .icon-favorite {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: white;
+  background: #ffffff;
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -105,24 +186,21 @@ h5 {
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-/* Efek hover */
 .icon-favorite:hover {
   transform: scale(1.1);
   color: red;
 }
 
-/* Warna default ikon */
 .icon-favorite i {
-  color: #e0e0e0; /* abu-abu lembut */
+  color: #e0e0e0;
   font-size: 16px;
 }
 
-/* Jika sudah difavoritkan (misal dengan JS tambahkan class .active) */
 .icon-favorite.active i {
   color: red;
 }
 
-/* Info */
+/* ===== INFO BAWAH (KM + TAHUN) ===== */
 .info {
   display: flex;
   align-items: center;
@@ -130,186 +208,32 @@ h5 {
 }
 
 .info img {
-  width: 35px;
-  height: 35px;
+  width: 20px;
+  height: 20px;
 }
 
-/* Form-check */
+/* ===== FILTER CHECKBOX ===== */
 .form-check-label {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   color: #8b8b8b;
 }
 
-.form-check-input {
-  margin-top: 8px;
+/* Geser grid card ke kiri */
+#catalog-content .row.g-4 {
+  margin-left: -20px; /* geser kiri 20 px */
 }
 
-/* Dropdown posisi */
-.dropdown {
-  position: absolute;
-  top: 90%;
-  right: 8px;
-  transform: translateY(-50%);
-}
-/* Posisi dan tampilan tombol titik tiga */
-.btn-titik3 {
-  border-radius: 50%; /* bulat */
-  width: 36px;
-  height: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #fff !important; /* latar putih */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* bayangan lembut */
-  transition: all 0.2s ease;
-  border: none; /* hilangkan border default */
+/* Supaya kartu pertama nempel kiri lebih rapih */
+#catalog-content .col-lg-4,
+#catalog-content .col-md-6,
+#catalog-content .col-sm-6 {
+  padding-left: 0;
 }
 
-/* efek hover */
-.btn-titik3:hover {
-  transform: scale(1.08);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-  background: #f9f9f9 !important;
-}
-
-/* ikon titik tiga */
-.btn-titik3 i {
-  color: #444;
-  font-size: 16px;
-}
-
-/* Posisi tombol titik tiga (kanan tengah dalam card) */
-.titik3 {
-  position: absolute;
-  top: 45%;
-  right: 10px;
-  transform: translateY(-50%);
-  z-index: 10;
-}
-
-/* === Atur ulang teks di dalam card-content === */
-.card-content {
-  text-align: left !important;
-}
-
-.card-content p {
-  text-align: left !important;
-  color: #333; /* biar lebih jelas */
-  margin-bottom: 4px;
-}
-
-/* === Nama mobil warna biru === */
-.card-content .title {
-  color: #007bff !important;
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-
-/* === Layout untuk card mobil === */
-.columns.is-multiline {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px; /* 40px = jarak atas-bawah, 30px = jarak kanan-kiri */
-  justify-content: flex-start;
-}
-
-/* === Setiap card === */
-.columns .column {
-  flex: 1 1 calc(25% - 12px); /* 4 kolom di layar besar */
-  max-width: calc(30% - 12px);
-  padding: 0; /* hilangkan padding default Bulma */
-  margin-left: -20px;
-  margin-bottom: -10px; /* <== Tambah jarak vertikal antar baris */
-}
-.section .columns {
-  margin-top: -50px;
-  margin-left: -30px;
-}
-
-/* === Card mobil === */
-.car-card {
-  width: 100%;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.2s ease;
-  position: relative;
-  border-radius: 12px;
-}
-
-.car-card:hover {
-  transform: translateY(-4px);
-}
-/* Desktop: flex row default, filter di kiri, cards di kanan */
-.row {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-/* Filter di kiri (desktop) */
-#sidebar-filter {
-  order: 0; /* urutan pertama */
-}
-
-/* Catalog cards di kanan (desktop) */
-#catalog-content {
-  order: 1; /* urutan kedua */
-}
-
-/* === Mobile/Tablet === */
+/* mobile: kasih jarak antara filter dan cards */
 @media (max-width: 768px) {
-  .row {
-    flex-direction: column; /* bikin vertikal */
-  }
-
   #sidebar-filter {
-    order: 0; /* filter tetap di atas */
-    width: 100%; /* full width */
-    margin-bottom: 20px; /* jarak ke card */
-  }
-
-  #catalog-content {
-    order: 1; /* card di bawah filter */
-    width: 100%; /* full width */
-  }
-
-  /* Setiap card full width di mobile */
-  #catalog-content .columns .column {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-}
-/* === RESPONSIVE === */
-
-/* Tablet (768px - 992px) 2 kolom */
-@media (max-width: 992px) {
-  .columns .column {
-    flex: 1 1 calc(50% - 12px);
-    max-width: calc(50% - 12px);
-  }
-}
-
-/* Mobile (<768px) 1 kolom & filter di atas */
-@media (max-width: 768px) {
-  .row {
-    display: flex;
-    flex-direction: column;
-  }
-
-  #sidebar-filter {
-    order: 0;
-    width: 100%;
     margin-bottom: 20px;
-  }
-
-  #catalog-content {
-    order: 1;
-    width: 100%;
-  }
-
-  #catalog-content .columns .column {
-    flex: 1 1 100%;
-    max-width: 100%;
   }
 }
