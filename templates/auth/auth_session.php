@@ -33,12 +33,13 @@ if (!$data || !is_array($data)) {
 // Simpan data user ke SESSION
 // ===============================
 
-$_SESSION['user_id']     = $data['kode_user'] ?? null;
-$_SESSION['full_name']   = $data['full_name'] ?? null;
-$_SESSION['email']       = $data['email'] ?? null;
-$_SESSION['role']        = $data['role'] ?? "customer";  
-$_SESSION['provider']    = $data['provider_type'] ?? "local";
-$_SESSION['login_time']  = time();
+$_SESSION['user_id'] = $data['kode_user'] ?? null;
+$_SESSION['kode_user'] = $data['kode_user'] ?? null;   // ⬅️ ini patokan ke DB
+$_SESSION['full_name'] = $data['full_name'] ?? null;
+$_SESSION['email'] = $data['email'] ?? null;
+$_SESSION['role'] = $data['role'] ?? "customer";
+$_SESSION['provider'] = $data['provider_type'] ?? "local";
+$_SESSION['login_time'] = time();
 
 // ===============================
 // Kirim respons sukses

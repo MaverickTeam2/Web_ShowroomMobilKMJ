@@ -179,6 +179,13 @@ if ($apiMobilResponse && isset($apiMobilResponse['success']) && $apiMobilRespons
         </button>
       </form>
 
+      <form action="report_penjualan_excel.php" method="GET" style="display:inline; margin-left: 5px;">
+        <button class="btn btn-success mb-3" type="submit">
+          Download Excel Transaksi
+        </button>
+      </form>
+
+
       <!-- Histori -->
       <div class="card border-0 shadow-sm rounded-3 mb-5">
         <div class="card-body">
@@ -260,6 +267,13 @@ if ($apiMobilResponse && isset($apiMobilResponse['success']) && $apiMobilRespons
           Download PDF Mobil
         </button>
       </form>
+
+      <form action="report_mobil_excel.php" method="GET" style="display:inline; margin-left: 5px;">
+        <button class="btn btn-success mb-3" type="submit">
+          Download Excel Mobil
+        </button>
+      </form>
+
 
       <div class="card border-0 shadow-sm rounded-3 mb-5">
         <div class="card-body">
