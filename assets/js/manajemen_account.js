@@ -26,9 +26,8 @@ function renderAccountCard(item) {
   const role       = (item.role || '').toLowerCase();
   const roleLabel  = role.charAt(0).toUpperCase() + role.slice(1);
   const isActive   = String(item.status) === '1';
-  const avatar     = item.avatar_url || '/images/user/profil_admin_1.png';
+  const avatar = `${BASE_API_URL}${item.avatar_url}`;
   const lastLogin  = buildLastLoginText(item);
-
   const badgeRoleClass = role === 'admin' ? 'badge-admin' : 'badge-owner';
   const statusClass    = isActive ? 'badge-aktif' : 'badge-nonaktif';
   const statusText     = isActive ? 'Aktif' : 'NonAktif';

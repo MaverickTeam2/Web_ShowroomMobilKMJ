@@ -1,4 +1,5 @@
 <?php 
+$kode_user = $_SESSION['kode_user'] ?? null;
 $title = "Tambah Transaksi";
 
 // Hanya layout (jika aman)

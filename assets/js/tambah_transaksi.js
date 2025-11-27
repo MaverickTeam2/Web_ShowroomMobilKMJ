@@ -244,7 +244,7 @@
         tipe_pembayaran: jenisPembayaran.value,
         harga_akhir: toNumber(dealPrice.value),
         kode_mobil: jenisMobil.value,
-        kode_user: "US001", //kalau ada session, ganti ini
+        kode_user: $_SESSION['kode_user'], 
         status: statusTransaksi.value, 
         note: note,
         nama_kredit: namaKredit,
