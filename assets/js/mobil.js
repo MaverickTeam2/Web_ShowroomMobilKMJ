@@ -37,9 +37,47 @@ function initMobilForm() {
       return;
     }
 
+    // ✅ CEK: minimal 1 fitur dipilih
+    const fiturCheckboxes = document.querySelectorAll('input[name="fitur[]"]');
+    const fiturError = document.getElementById("fiturError");
+
+    const anyChecked = Array.from(fiturCheckboxes).some((cb) => cb.checked);
+
+    if (!anyChecked) {
+      // kalau belum ada yang dipilih, jangan kirim ke API
+      if (fiturError) {
+        fiturError.textContent = "Pilih minimal 1 fitur atau spesifikasi mobil.";
+      }
+      if (fiturCheckboxes[0]) {
+        fiturCheckboxes[0].focus();
+      }
+      return; // ⛔ stop di sini
+    } else {
+      // kalau valid, bersihkan pesan error
+      if (fiturError) {
+        fiturError.textContent = "";
+      }
+    }
+
+    // kalau sudah lolos validasi, baru lanjut submit
+    // kalau sudah lolos validasi, baru lanjut submit
     isSubmitting = true;
 
     const formData = new FormData(this);
+
+    // 🔁 CEK LAGI: pastikan fitur[] benar-benar terkirim di FormData
+    const fiturValues = formData.getAll("fitur[]"); // ini baca semua nilai checkbox fitur
+    console.log("🔍 [mobil.js] fitur[] di FormData:", fiturValues);
+
+    if (!fiturValues || fiturValues.length === 0) {
+      // kalau entah kenapa kosong, jangan kirim ke API
+      const fiturError = document.getElementById("fiturError");
+      if (fiturError) {
+        fiturError.textContent = "Pilih minimal 1 fitur atau spesifikasi mobil.";
+      }
+      isSubmitting = false;
+      return;
+    }
 
     // (optional) debug: lihat apa saja yang dikirim
     console.log("📤 [mobil.js] Data siap dikirim:", Array.from(formData.entries()));
