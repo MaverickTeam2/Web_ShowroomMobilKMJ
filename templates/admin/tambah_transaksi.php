@@ -1,10 +1,10 @@
 <?php 
-$kode_user = $_SESSION['kode_user'] ?? null;
 $title = "Tambah Transaksi";
 
 // Hanya layout (jika aman)
 require_once 'partials/header.php';
 require_once 'partials/sidebar.php';
+$kode_user = $_SESSION['kode_user'] ?? null;
 
 // Wajib ada untuk API URL
 require_once '../../include/header.php';   // ← kalau ini tidak include DB
@@ -34,7 +34,7 @@ require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
 
     <!-- FORM TAMBAH TRANSAKSI -->
     <div class="content-area mt-4">
-      <form class="tambah-transaksi-form">
+      <form class="tambah-transaksi-form" data-kode-user="<?= htmlspecialchars($kode_user ?? '', ENT_QUOTES, 'UTF-8') ?>">
         <div class="card p-3 mb-4 informasi-pembelian">
           <h5 class="section-title mb-3">Informasi Pembelian</h5>
 
@@ -162,7 +162,9 @@ require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
   </main>
 </section> 
 
-<script>const BASE_API_URL = "<?= BASE_API_URL ?>";</script>
+<script>
+    const BASE_API_URL = "<?= BASE_API_URL ?>";
+</script>
 <script src="../../assets/js/tambah_transaksi.js"></script>
 
 </body>

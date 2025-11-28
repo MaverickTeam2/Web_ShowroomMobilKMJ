@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // === SESUAIKAN nama file API di sini ===
   const API_URL = `${BASE_API_URL}/admin/inquire_get_test.php`;
-  const STATUS_API_INQUIRE = `${BASE_API_URL}/admin/inquire_update_status.php`;
+  const STATUS_API_URL = `${BASE_API_URL}/admin/inquire_update_status.php`;
 
   const tabs = document.querySelectorAll('.inquire-tab');
   const list = document.querySelector('.inquire-list');
