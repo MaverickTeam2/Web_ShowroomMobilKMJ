@@ -1,9 +1,9 @@
 <?php
+session_start();
+
 $title = "Settings";
 include 'partials/header.php';
 include 'partials/sidebar.php';
-
-// Ambil data settings dari database
 require_once '../../db/koneksi.php';
 
 // Ambil data general settings
@@ -33,8 +33,16 @@ if (isset($_SESSION['kode_user'])) {
     }
 }
 
-// Default foto profil
-$fotoProfil = !empty($userData['avatar_url']) ? $userData['avatar_url'] : "../../assets/img/default-photo.png";
+// Default foto profil - akses dari API_KMJ
+if (!empty($userData['avatar_url'])) {
+    // Foto disimpan di API_KMJ/images/user/
+    // Akses via URL: http://localhost/API_KMJ/images/user/profil_xxx.jpg
+    $fotoProfil = 'http://localhost/API_KMJ' . $userData['avatar_url'];
+} else {
+    // Jika tidak ada avatar_url, gunakan placeholder dengan initial
+    $initial = isset($userData['username']) ? strtoupper(substr($userData['username'], 0, 1)) : 'U';
+    $fotoProfil = "https://via.placeholder.com/150/007bff/ffffff?text=" . $initial;
+}
 ?>
 
 <!-- CSS khusus halaman ini -->
@@ -154,7 +162,12 @@ $fotoProfil = !empty($userData['avatar_url']) ? $userData['avatar_url'] : "../..
             <div class="mb-4">
               <label class="form-label fw-semibold d-block mb-2">Profil Picture</label>
               <div class="d-flex align-items-center gap-3">
-                <img id="previewImage" src="<?php echo $fotoProfil; ?>" alt="Profile Picture" class="profile-pic" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                <img id="previewImage" 
+                     src="<?php echo htmlspecialchars($fotoProfil); ?>" 
+                     alt="Profile Picture" 
+                     class="profile-pic" 
+                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #e0e0e0;"
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/150/007bff/ffffff?text=<?php echo urlencode(isset($userData['username']) ? strtoupper(substr($userData['username'], 0, 1)) : 'U'); ?>';">
                 <div>
                   <button class="btn btn-outline-secondary btn-sm upload-btn" type="button"
                           onclick="document.getElementById('uploadLogo').click()">
@@ -162,7 +175,7 @@ $fotoProfil = !empty($userData['avatar_url']) ? $userData['avatar_url'] : "../..
                   </button>
                   <input type="file" id="uploadLogo" accept="image/*" hidden>
                   <p class="text-muted mt-2 mb-0" style="font-size: 0.9rem;">
-                    Upload logo Showroom anda (disarankan: 150×150px)
+                    Upload logo Showroom anda (disarankan: 300×300px, max 5MB)
                   </p>
                 </div>
               </div>
@@ -407,7 +420,6 @@ $fotoProfil = !empty($userData['avatar_url']) ? $userData['avatar_url'] : "../..
 
 <!-- JS khusus halaman ini -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../assets/js/setting_admin.js"></script>
 
 <?php 
