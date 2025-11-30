@@ -90,6 +90,8 @@ document.addEventListener('submit', async (e) => {
   if (photoInput && photoInput.files[0]) {
     // **nama field HARUS "avatar_file"** sesuai register.php
     fd.append('avatar_file', photoInput.files[0]);
+  }else{
+    fd.append('avatar_file', '');
   }
 
   if (btnSubmit) {

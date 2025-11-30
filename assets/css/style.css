@@ -1,4 +1,3 @@
-
 /* Sembunyikan dropdown default */
 .navbar-item.has-dropdown .navbar-dropdown {
   display: none;
@@ -11,11 +10,7 @@
 
 /* Background hero gradient*/
 .hero-bg {
-  background-image: linear-gradient(
-      rgba(0, 202, 234, 0.3), 
-      rgba(255, 255, 255, 0.6)
-    ),
-    url("../assets/img/sport/car.png"); 
+  background-image: linear-gradient(rgba(0, 202, 234, 0.3), rgba(255, 255, 255, 0.6)), url("../assets/img/sport/car.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -27,11 +22,10 @@
   height: auto;
 }
 
-
 /* Tabs mobil */
 /* Delete style default Bulma */
 .custom-tabs ul {
-  border-bottom: none; 
+  border-bottom: none;
 }
 
 /*Border Radius Custom*/
@@ -44,16 +38,16 @@
 /* Social Media Icons */
 /* Warna ikon sesuai brand */
 .youtube-icon {
-  color: #FF0000;
+  color: #ff0000;
 }
 .instagram-icon {
-  color: #C13584;
+  color: #c13584;
 }
 .facebook-icon {
   color: #3b5998;
 }
 .whatsapp-icon {
-  color: #25D366;
+  color: #25d366;
 }
 .tiktok-icon {
   color: #000000;
@@ -76,15 +70,15 @@
 }
 
 /* Footer */
-.footer{
+.footer {
   padding-bottom: 0px; /* jarak antara kolom footer dan bawah layar */
 }
 
 /* Jarak antar tulisan di kolom footer (Shop, Sell, Finance, About) */
 .footer .column ul li a {
   display: inline-block;
-  margin: 3px 0;   /* jarak atas-bawah antar tulisan */
-  padding: 2px 0;  
+  margin: 3px 0; /* jarak atas-bawah antar tulisan */
+  padding: 2px 0;
 }
 
 /* Tambahan biar lebih rapi */
@@ -101,11 +95,10 @@
   justify-content: space-between;
   height: 100%;
 }
-.footer .content{
+.footer .content {
   margin-top: 20px; /* jarak antara kolom footer dan copyright */
   padding-bottom: 20px; /* jarak antara kolom footer dan bawah layar */
 }
-
 
 /* ================== */
 /* Tambahan untuk Slider Mobil */
@@ -166,8 +159,12 @@
   z-index: 10;
 }
 
-.prev { left: 10px; }
-.next { right: 10px; }
+.prev {
+  left: 10px;
+}
+.next {
+  right: 10px;
+}
 
 .prev:hover,
 .next:hover {
@@ -175,7 +172,9 @@
 }
 
 /* === Navbar Right (sesuai mockup) === */
-.navbar { background: transparent; } /* tanpa gradient, biarkan bersih */
+.navbar {
+  background: transparent;
+} /* tanpa gradient, biarkan bersih */
 
 /* Rapikan jarak item kanan */
 .navbar-end .navbar-item {
@@ -187,7 +186,7 @@
 .store-location {
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 .store-location .icon {
   line-height: 1;
@@ -234,11 +233,13 @@
 .navbar .navbar-dropdown.is-right {
   right: 0;
   left: auto;
-  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 @media (max-width: 768px) {
-  .icon-only .icon i { font-size: 1.25rem; }
+  .icon-only .icon i {
+    font-size: 1.25rem;
+  }
 }
 
 .navbar .navbar-menu .navbar-start > .navbar-item,
@@ -247,9 +248,9 @@
   padding-right: 0.4rem !important;
 }
 
-.navbar, 
+.navbar,
 .navbar .container {
-  padding-left: 30px !important;  
+  padding-left: 30px !important;
   padding-right: 30px !important;
 }
 .navbar .container {
@@ -264,5 +265,88 @@
 .nav-search-wrap {
   padding-left: 30px;
   padding-right: 30px;
+}
+/* Biar tiap column jadi flex dan card bisa memenuhi tinggi column */
+.mobil-terbaru-columns .column {
+  display: flex;
+}
+
+/* Biar semua card tingginya sama */
+.mobil-terbaru-columns .car-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+}
+
+/* Bagian gambar ikut “mengisi” tinggi card */
+.mobil-terbaru-columns .car-card .card-image {
+  flex: 1;
+}
+/* Posisikan gambar di tengah */
+.mobil-terbaru-columns .car-card .card-image .image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Atur gambar + border */
+.mobil-terbaru-columns .car-card img {
+  max-width: 100%;
+  height: 200px; /* boleh disesuaikan */
+  object-fit: cover; /* biar proporsional */
+  border-radius: 18px; /* sudut foto agak membulat */
+  border: 4px solid #fff; /* border putih di foto */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); /* efek sedikit mengambang */
+  border: 1px solid #ccc; /* ← INI GARIS 1PX */
+}
+
+.dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 0 5px;
+  border-radius: 50%;
+  background-color: #d1d5db; /* abu muda */
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.dot.is-active {
+  background-color: #3b82f6; /* biru */
+}
+/* ============ FOOTER KHUSUS HALAMAN HOME ============ */
+.page-home footer.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  min-height: auto;
+}
+
+/* Kolom kategori home */
+.page-home footer.footer .columns {
+  margin-bottom: 15px;
+}
+
+/* Item di bawah judul */
+.page-home footer.footer ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.page-home footer.footer ul li {
+  margin-bottom: 5px;
+}
+
+/* Jarak area copyright */
+.page-home footer.footer .content {
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+}
+.tab-pane-mobil.is-hidden {
+  display: none;
 }
 

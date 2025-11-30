@@ -41,7 +41,7 @@
 
   const cekKtp = document.getElementById("cekKtp");
   const cekKk  = document.getElementById("cekKk");
-  const cekRek = document.getElementById("cekRek");
+  const cekRek = document.getElementById("cekRekening");
 
   const toNumMobil  = (v) => Number(v || 0);
   const toIDRMobil  = (n) => "Rp " + toNumMobil(n).toLocaleString("id-ID");
@@ -234,7 +234,8 @@ if (form) {
       kode_mobil: jenisMobil.value.trim(),
       status: statusTransaksi.value.trim(),
       note: noteInput ? noteInput.value.trim() : "",
-      kode_user: "US001", //hardcode sementara, nanti ganti dari session
+        // ⬇️ ambil dari PHP yang disuntik lewat window.CURRENT_USER
+      kode_user: window.CURRENT_USER?.kode_user ?? null,
       nama_kredit: namaKreditInput ? namaKreditInput.value.trim() : "",
 
       jaminan_ktp:      cekKtp?.checked ? 1 : 0,
@@ -265,10 +266,10 @@ if (form) {
         throw new Error("Response bukan JSON valid");
       }
 
-      if (!res.ok || json.code === "400") {
-        alert(json.message || "Gagal update transaksi");
-        return;
-      }
+    if (!res.ok || (json.code && json.code !== "200")) {
+      alert(json.message || "Gagal update transaksi");
+      return;
+    }
 
       alert("Transaksi berhasil diperbarui!");
       window.location.href = "transaksi.php";

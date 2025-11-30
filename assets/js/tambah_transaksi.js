@@ -213,6 +213,7 @@
   // ======================================================
 
   const form        = document.querySelector(".tambah-transaksi-form");
+  const kodeUserFromForm = form?.dataset.kodeUser || null;
   const namaPembeli = document.getElementById("namaPembeli");
   const noHp        = document.getElementById("noHp");
   const dealPrice   = document.getElementById("dealPrice");
@@ -221,7 +222,7 @@
   const statusTransaksi = document.getElementById("statusTransaksi");
   const cekKtp      = document.getElementById("cekKtp");
   const cekKk       = document.getElementById("cekKk");
-  const cekRek      = document.getElementById("cekRek");
+  const cekRek      = document.getElementById("cekRekening");
   const namaKredit  = document.getElementById("namaKredit");
 
 
@@ -244,10 +245,11 @@
         tipe_pembayaran: jenisPembayaran.value,
         harga_akhir: toNumber(dealPrice.value),
         kode_mobil: jenisMobil.value,
-        kode_user: "US001", //kalau ada session, ganti ini
         status: statusTransaksi.value, 
         note: note,
         nama_kredit: namaKredit,
+
+         kode_user: kodeUserFromForm,
 
         jaminan_ktp:      cekKtp?.checked ? 1 : 0,
         jaminan_kk:       cekKk?.checked ? 1 : 0,

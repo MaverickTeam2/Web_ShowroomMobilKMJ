@@ -1,12 +1,12 @@
 .card {
-  position: relative;   /* penting untuk absolute child */
+  position: relative; /* penting untuk absolute child */
   width: 295px;
-  font-family: 'lato' !important;
+  font-family: "lato" !important;
 }
 
 /* Gambar utama */
 .card-image {
-  position: relative;   /* parent untuk icon di atas gambar */
+  position: relative; /* parent untuk icon di atas gambar */
 }
 .card-image .img_main {
   display: block;
@@ -19,14 +19,14 @@
   position: absolute;
   top: 10px;
   right: 20px;
-  color: #FF0000;
+  color: #ff0000;
   font-size: 20px;
 }
 
 /* Info bagian bawah card */
 .info {
-  display: flex;          /* horizontal */
-  align-items: center;    /* tengah vertikal */
+  display: flex; /* horizontal */
+  align-items: center; /* tengah vertikal */
   gap: 5px;
 }
 .info img {
@@ -37,7 +37,7 @@
 /* Tombol titik 3 */
 .titik3 {
   position: absolute;
-  bottom: 215px;   /* muncul di bawah kanan card */
+  bottom: 215px; /* muncul di bawah kanan card */
   left: 220px;
 }
 
@@ -49,7 +49,7 @@
 /* Styling tombol titik 3 */
 .titik3 .button,
 .btn-titik3 {
-  width: 32px;        /* bulat sempurna */
+  width: 32px; /* bulat sempurna */
   height: 32px;
   border: none;
   background: white;
@@ -58,14 +58,13 @@
   align-items: center;
   justify-content: center;
   padding: 0;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
-.columns {
+.wishlist-cards .columns {
   display: flex;
   flex-wrap: wrap;
-  
   justify-content: space-around;
 }
 .card-content .title {
-  color:#0568DA !important;
+  color: #0568da !important;
 }

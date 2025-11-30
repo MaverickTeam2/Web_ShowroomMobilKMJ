@@ -1,362 +1,567 @@
 <?php
-// === Dummy data (sementara) ===
-$car = [
-    "title" => "TOYOTA NEW YARISH 1.5 AT TRID 2024",
-    "colors" => ["Black", "White", "Silver", "Red"],
-    "down_payment" => "10.000.000",
-    "installment" => "6.089.000",
-    "tenor" => 60,
-    "images" => [
-        "../assets/img/fullbody.png",
-        "../assets/img/kursi.png",
-        "../assets/img/kursi2.png",
-        "../assets/img/gatau.png",
-        "../assets/img/setir.png",
-        "../assets/img/samping.png",
-        "../assets/img/depan.png",
-        "../assets/img/mesin.png",
-        "../assets/img/belakang.png"
-    ],
-    "info" => [
-        "fuel" => "23 city/30 hwy Miles per gallon",
-        "engine" => "4-cyl, Gas, 2.4L",
-        "drive" => "Front Wheel Drive"
-    ],
-    "features" => [
-        "Apple CarPlay", "Cruise Control", "Bluetooth Technology",
-        "Rear View Camera", "Rear Defroster", "Cloth Seats",
-        "Lane Departure Warning", "Auxiliary Audio Input"
-    ],
-    "history" => "Mobil ini merupakan kendaraan bekas dengan kondisi masih layak pakai...",
-    "warranty" => [
-        "Jaminan Keaslian Dokumen",
-        "Jaminan Tidak Dialihkan Tanpa Sepengetahuan Penjual (untuk kredit)",
-        "Jaminan Kondisi Barang Setelah Serah Terima",
-        "Jaminan Penyelesaian Biaya Tambahan",
-        "Jaminan Finansial"
-    ]
+$title = "detail_mobil";
+
+require_once __DIR__ . '/../db/config_api.php';
+require_once __DIR__ . '/../db/api_client.php';
+require_once __DIR__ . '/../include/header.php';
+
+$kode = $_GET['kode'] ?? '';
+
+if (!$kode) {
+  die("Kode mobil tidak dikirim.");
+}
+
+// Panggil API detail
+$api = api_get('admin/web_mobil_detail.php?kode_mobil=' . urlencode($kode));
+
+if (!$api || !isset($api['success']) || !$api['success']) {
+  die("Gagal mengambil data mobil: " . ($api['message'] ?? 'Unknown error'));
+}
+
+$mobil = $api['mobil'] ?? null;
+$fitur = $api['fitur'] ?? [];
+$foto = $api['foto'] ?? [];
+$jaminan = $api['jaminan'] ?? []; // kalau kamu tambahkan di API
+
+if (!$mobil) {
+  die("Data mobil tidak ditemukan.");
+}
+
+// ========== Olah data untuk dipakai di view ==========
+$carTitle = $mobil['nama_mobil'] . ' ' . $mobil['tahun_mobil'];
+$downPayment = $mobil['uang_muka'] ?? 0;
+$installment = $mobil['angsuran'] ?? 0;
+$tenor = $mobil['tenor'] ?? 0;
+$warnaExt = $mobil['warna_exterior'] ?? '-';
+$warnaInt = $mobil['warna_interior'] ?? '-';
+$jenis = $mobil['jenis_kendaraan'] ?? '-';
+$drive = $mobil['sistem_penggerak'] ?? '-';
+$bahanBakar = $mobil['tipe_bahan_bakar'] ?? '-';
+$jarakTempuh = $mobil['jarak_tempuh'] ?? 0;
+$fullPrice = $mobil['full_prize'] ?? 0;
+
+// Foto: jadikan array URL
+$images = [];
+foreach ($foto as $f) {
+  $images[] = $f['nama_file']; // sudah full URL dari API
+}
+
+// Kalau tidak ada foto sama sekali
+if (empty($images)) {
+  $images[] = '../assets/img/no-image.jpg';
+}
+
+// Group fitur per kategori biar rapi
+$fiturByKategori = [];
+foreach ($fitur as $f) {
+  $kat = $f['nama_kategori'] ?? 'Lainnya';
+  if (!isset($fiturByKategori[$kat])) {
+    $fiturByKategori[$kat] = [];
+  }
+  $fiturByKategori[$kat][] = $f['nama_fitur'] ?? ('Fitur #' . $f['id_fitur']);
+}
+$kategoriIcon = [
+  'Keselamatan' => 'fa-shield-halved',
+  'Kenyamanan & Hiburan' => 'fa-music',
+  'Exterior' => 'fa-car-side',
+  'Fitur Tambahan' => 'fa-circle-plus',
+  'Lainnya' => 'fa-circle-info'
 ];
 
-// === Rekomendasi dummy ===
-$recommendations = [
-    [
-        "name" => "ABT XGT Audi R8 Street-Legal Race Car",
-        "price" => "7.998.000",
-        "dp" => "39.000.000",
-        "year" => 2017,
-        "km" => "120000 Km",
-        "image" => "https://media.audi.com/is/image/audi/nemo/models/r8.jpg"
-    ],
-    [
-        "name" => "BMW M8 Gran Coupe",
-        "price" => "7.998.000",
-        "dp" => "39.000.000",
-        "year" => 2021,
-        "km" => "120000 Km",
-        "image" => "https://media.whichcar.com.au/uploads/2025/02/bmw-m8.jpg"
-    ]
+// =====================
+// REKOMENDASI MOBIL
+// =====================
+$rekomendasi = [];
+
+// label status biar mirip di katalog
+$statusLabelMap = [
+  'available' => 'Available',
+  'reserved' => 'Reserved',
+  'sold' => 'Sold',
+  'shipping' => 'Shipping',
+  'delivered' => 'Delivered',
 ];
+
+// panggil API list mobil
+$apiList = api_get('admin/web_mobil_list.php');
+if ($apiList && !empty($apiList['success']) && $apiList['success']) {
+  $allCars = $apiList['data'] ?? [];
+
+  // cari "merk" mobil sekarang
+  // kalau di tabel kamu ada kolom merk_mobil / merek, bisa ganti:
+  // $currentBrand = $mobil['merk_mobil'] ?? $mobil['merek'] ?? ...
+  $currentBrand = $mobil['merek'] ?? $mobil['brand'] ?? strtok($mobil['nama_mobil'], ' ');
+
+  $sameBrand = [];
+  foreach ($allCars as $m) {
+    // jangan rekomendasikan dirinya sendiri
+    if (($m['kode_mobil'] ?? '') === ($mobil['kode_mobil'] ?? '')) {
+      continue;
+    }
+
+    // ambil brand dari data list
+    $brand = $m['merek'] ?? $m['brand'] ?? strtok($m['nama_mobil'], ' ');
+
+    if (strcasecmp($brand, $currentBrand) === 0) {
+      $sameBrand[] = $m;
+    }
+  }
+
+  // fungsi sort berdasarkan tahun mobil (paling baru dulu)
+  $sortByYearDesc = function (&$arr) {
+    usort($arr, function ($a, $b) {
+      return (int) ($b['tahun_mobil'] ?? 0) <=> (int) ($a['tahun_mobil'] ?? 0);
+    });
+  };
+
+  if (!empty($sameBrand)) {
+    // kalau ada merk sama, pakai itu
+    $sortByYearDesc($sameBrand);
+    $rekomendasi = array_slice($sameBrand, 0, 4);
+  } else {
+    // kalau tidak ada merk sama, pakai mobil paling baru
+    $sortByYearDesc($allCars);
+    $rekomendasi = array_slice($allCars, 0, 4);
+  }
+}
+
 ?>
 
 <!DOCTYPE html>
 <html lang="id" data-theme="light">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?= $car["title"]; ?></title>
-  
-  <!-- Bootstrap, Bulma, FontAwesome -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+  <title><?= htmlspecialchars($carTitle); ?></title>
+
+  <!-- CSS lib -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
   <!-- CSS custom -->
-  <link rel="stylesheet" href="../assets/css/detailmob.css">
+  <link rel="stylesheet" href="../assets/css/katalog2.css?v=<?= time(); ?>">
+  <link rel="stylesheet" href="../assets/css/detailmob.css?v=<?= time(); ?>">
+
 
 </head>
+
 <body>
+  <!-- Navbar -->
+  <?php include '../templates/navbar_footer/navbar.php'; ?>
 
+  <div class="container mt-4">
+    <a href="katalog.php" class="text-decoration-none mb-3 d-inline-block">← Kembali ke katalog</a>
+    <h3 class="fw-bold"><?= htmlspecialchars($carTitle); ?></h3>
 
-<!-- Header/Navbar -->
-<?php include '../templates/navbar_footer/navbar.php'; ?>
+    <!-- Warna -->
+    <div class="mb-3">
+      <span class="badge bg-light text-dark border me-2">
+        Exterior: <?= htmlspecialchars($warnaExt); ?>
+      </span>
+      <span class="badge bg-light text-dark border me-2">
+        Interior: <?= htmlspecialchars($warnaInt); ?>
+      </span>
+      <span class="badge bg-light text-dark border me-2">
+        <?= htmlspecialchars($jenis); ?>
+      </span>
+    </div>
 
-<div class="container mt-4">
-  <a href="../templates/katalog.php" class="text-decoration-none mb-3 d-inline-block">← Back</a>
-  <h3 class="fw-bold"><?= $car["title"]; ?></h3>
+    <!-- Harga -->
+    <div class="d-flex flex-wrap gap-3 mb-4">
+      <div><b>Harga OTR:</b> Rp <?= number_format($fullPrice, 0, ',', '.'); ?></div>
+      <div><b>DP:</b> Rp <?= number_format($downPayment, 0, ',', '.'); ?></div>
+      <div><b>Angsuran:</b> Rp <?= number_format($installment, 0, ',', '.'); ?> x <?= (int) $tenor; ?></div>
+    </div>
 
-  <!-- Warna -->
-  <div class="mb-3">
-    <?php foreach($car["colors"] as $color): ?>
-      <span class="badge bg-light text-dark border me-2"><?= $color; ?></span>
-    <?php endforeach; ?>
-  </div>
+    <!-- GALERI -->
+    <div class="gallery-container">
+      <!-- Tombol kiri -->
+      <button class="scroll-btn left">❮</button>
 
-  <!-- Harga -->
-  <div class="d-flex gap-3 mb-4">
-    <div><b>DP:</b> Rp. <?= $car["down_payment"]; ?></div>
-    <div><b>Angsuran:</b> Rp. <?= $car["installment"]; ?> x <?= $car["tenor"]; ?></div>
-  </div>
-
-<!-- GALERI -->
- <div class="gallery-container">
-   <!-- Tombol kiri -->
-  <button class="scroll-btn left">❮</button>
-
-  <div class="gallery-wrapper">
-    <div class="gallery-item">
-      
-      <!-- Foto besar -->
-      <div class="hero-image">
-        <img src="<?= $car['images'][0]; ?>" alt="">
-         <!-- Tab navigasi (kayak contoh gambar) -->
-          <div class="gallery-tabs">
-            <button class="tab active">Exterior 360°</button>
-            <button class="tab">Interior 360°</button>
-            <button class="tab">Key features</button>
+      <div class="gallery-wrapper">
+        <div class="gallery-item">
+          <!-- Foto besar -->
+          <div class="hero-image">
+            <img src="<?= htmlspecialchars($images[0]); ?>" alt="">
+            <!-- Tab navigasi -->
+            <div class="gallery-tabs">
+              <button class="tab active">Exterior</button>
+              <button class="tab">Interior</button>
+              <button class="tab">Key features</button>
+            </div>
           </div>
-      </div>
 
-      <!-- Foto kecil (2 baris) -->
-      <div class="sub-col">
-        <?php if(isset($car["images"][1])): ?>
-          <img src="<?= $car["images"][1]; ?>" alt="">
-        <?php endif; ?>
-        <?php if(isset($car["images"][2])): ?>
-          <img src="<?= $car["images"][2]; ?>" alt="">
-        <?php endif; ?>
-      </div>
-
-
-      <!-- Kolom kanan -->
-      <div class="sub-col">
-        <?php if(isset($car["images"][3])): ?>
-          <img src="<?= $car["images"][3]; ?>" alt="">
-        <?php endif; ?>
-        <?php if(isset($car["images"][4])): ?>
-          <img src="<?= $car["images"][4]; ?>" alt="">
-        <?php endif; ?>
-        </div>
-    </div>
-    
-  </div>
-    <!-- Tombol kanan -->
-  <button class="scroll-btn right">❯</button>
-</div>
-  
-
-<!-- ======= STICKY NAVBAR / TABS ======= -->
-<div class="sticky-tabs">
-  <div class="tabs-wrapper">
-    <button class="tab-item active" data-target="#info">Informasi</button>
-    <button class="tab-item" data-target="#features">Features & specs</button>
-    <button class="tab-item" data-target="#history">History & Inspection</button>
-    <button class="tab-item" data-target="#warranty">Warranty</button>
-  </div>
-</div>
-
-
- <!-- Informasi -->
-  <section id="info" class="container px-0 mt-4">
-  <h4 class="mt-4"><b>Informasi</b></h4>
-  <div class="row">
-    <div class="col-md-4">
-      <p><b>Bahan Bakar:</b> <?= $car["info"]["fuel"]; ?></p>
-    </div>
-    <div class="col-md-4">
-      <p><b>Mesin:</b> <?= $car["info"]["engine"]; ?></p>
-    </div>
-    <div class="col-md-4">
-      <p><b>Penggerak:</b> <?= $car["info"]["drive"]; ?></p>
-    </div>
-  </div>
-</section>
-
-    
-  <!-- Fitur & Spesifikasi -->
-  <section id="features" class="container px-0 mt-4">
-  <h4 class="fw-bold mb-3">Fitur & spesifikasi</h4>
-  <div class="row">
-    <div class="col-md-4">
-      <div class="d-flex align-items-center mb-2">
-        <i class="fa-brands fa-apple fa-lg me-2"></i>
-        <span>Apple CarPlay</span>
-      </div>
-      <div class="d-flex align-items-center mb-2">
-        <i class="fa-solid fa-camera fa-lg me-2"></i>
-        <span>Rear View Camera</span>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="d-flex align-items-center mb-2">
-        <i class="fa-solid fa-gauge-high fa-lg me-2"></i>
-        <span>Cruise Control</span>
-      </div>
-      <div class="d-flex align-items-center mb-2">
-        <i class="fa-solid fa-temperature-low fa-lg me-2"></i>
-        <span>Rear Defroster</span>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="d-flex align-items-center mb-2">
-        <i class="fa-brands fa-bluetooth fa-lg me-2"></i>
-        <span>Bluetooth Technology</span>
-      </div>
-      <div class="d-flex align-items-center mb-2">
-        <i class="fa-solid fa-chair fa-lg me-2"></i>
-        <span>Cloth Seats</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-  <!-- Riwayat -->
-   <div id="history" class="py-4">
-  <h4><b>Sejarah & Inspeksi</b></h4>
-  <p><?= $car["history"]; ?></p>
-
-  <!-- Tambahan card inspeksi -->
-  <div class="row mt-3">
-    <!-- Kolom kiri -->
-    <div class="col-md-6">
-      <div class="border rounded-lg divide-y">
-        <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
-          <div class="d-flex align-items-center gap-2">
-            <i class="fa-solid fa-check text-success"></i>
-            <span>1 Pemilik</span>
+          <!-- Foto kecil kiri -->
+          <div class="sub-col">
+            <?php if (isset($images[1])): ?>
+              <img src="<?= htmlspecialchars($images[1]); ?>" alt="" class="thumb-img">
+            <?php endif; ?>
+            <?php if (isset($images[2])): ?>
+              <img src<?= '="' . htmlspecialchars($images[2]) . '"'; ?> alt="" class="thumb-img">
+            <?php endif; ?>
           </div>
-          <i class="fa-regular fa-circle-info text-primary"></i>
-        </div>
 
-        <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
-          <div class="d-flex align-items-center gap-2">
-            <i class="fa-solid fa-check text-success"></i>
-            <span>Tidak ada kerusakan dalam kerangka</span>
-          </div>
-          <i class="fa-regular fa-circle-info text-primary"></i>
-        </div>
-
-        <div class="d-flex align-items-center justify-content-between p-3">
-          <div class="d-flex align-items-center gap-2">
-            <i class="fa-solid fa-check text-success"></i>
-            <span>Tidak ada masalah odometer</span>
-          </div>
-          <i class="fa-regular fa-circle-info text-primary"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-- Kolom kanan -->
-    <div class="col-md-6">
-      <div class="border rounded-lg divide-y">
-        <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
-          <div class="d-flex align-items-center gap-2">
-            <i class="fa-solid fa-check text-success"></i>
-            <span>1 Pemilik</span>
-          </div>
-          <i class="fa-regular fa-circle-info text-primary"></i>
-        </div>
-
-        <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
-          <div class="d-flex align-items-center gap-2">
-            <i class="fa-solid fa-check text-success"></i>
-            <span>Ban & roda diperiksa dengan 15 cara</span>
-          </div>
-          <i class="fa-regular fa-circle-info text-primary"></i>
-        </div>
-
-        <div class="d-flex align-items-center justify-content-between p-3">
-          <div class="d-flex align-items-center gap-2">
-            <i class="fa-solid fa-check text-success"></i>
-            <span>Interior dibersihkan secara mendalam</span>
-          </div>
-          <i class="fa-regular fa-circle-info text-primary"></i>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Bagian Jaminan -->
-<div id="warranty" class="py-4">
-  <h4><b>Jaminan</b></h4>
-  <div class="accordion" id="warrantyAccordion">
-    <?php 
-    // Dummy detail jaminan
-    $warrantyDetails = [
-      "Jaminan Keaslian Dokumen" => "Semua dokumen kendaraan dijamin asli dan sah menurut hukum yang berlaku.",
-      "Jaminan Tidak Dialihkan Tanpa Sepengetahuan Penjual (untuk kredit)" => "Kendaraan tidak dapat dialihkan atau dijual kembali tanpa persetujuan penjual selama masa kredit.",
-      "Jaminan Kondisi Barang Setelah Serah Terima" => "Kendaraan dalam kondisi baik sesuai pemeriksaan saat serah terima.",
-      "Jaminan Penyelesaian Biaya Tambahan" => "Semua biaya tambahan yang timbul akibat transaksi akan diselesaikan sesuai perjanjian.",
-      "Jaminan Finansial" => "Pembeli dengan ini menyatakan sanggup dan berkomitmen penuh untuk menanggung kewajiban finansial sesuai kesepakatan."
-    ];
-
-    // Dummy array jaminan (bisa ganti dengan $car["warranty"] dari DB)
-    $warrantyList = array_keys($warrantyDetails);
-
-    $i = 0; 
-    foreach($warrantyList as $w): 
-      $id = "collapse".$i; 
-    ?>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="heading<?= $i; ?>">
-          <button class="accordion-button collapsed" type="button" 
-                  data-bs-toggle="collapse" data-bs-target="#<?= $id; ?>" 
-                  aria-expanded="false" aria-controls="<?= $id; ?>">
-            <i class="bi bi-check2-circle text-success me-2"></i> <?= $w; ?>
-          </button>
-        </h2>
-        <div id="<?= $id; ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $i; ?>" data-bs-parent="#warrantyAccordion">
-          <div class="accordion-body">
-            <?= $warrantyDetails[$w] ?? "Detail jaminan ini akan ditambahkan nanti."; ?>
+          <!-- Foto kecil kanan -->
+          <div class="sub-col">
+            <?php if (isset($images[3])): ?>
+              <img src="<?= htmlspecialchars($images[3]); ?>" alt="" class="thumb-img">
+            <?php endif; ?>
+            <?php if (isset($images[4])): ?>
+              <img src="<?= htmlspecialchars($images[4]); ?>" alt="" class="thumb-img">
+            <?php endif; ?>
           </div>
         </div>
       </div>
-    <?php 
-      $i++; 
-    endforeach; 
-    ?>
-  </div>
-</div>
 
+      <!-- Tombol kanan -->
+      <button class="scroll-btn right">❯</button>
+    </div>
 
-  <!-- Rekomendasi -->
-  <h5 class="mt-4"><b>Direkomendasikan</b></h5>
-  <div class="row">
-    <?php foreach($recommendations as $rec): ?>
-    <div class="col-md-3">
-      <div class="card mb-3 position-relative">
-        <button class="btn btn-light position-absolute top-0 end-0 m-2">
-          <i class="fa-regular fa-heart"></i>
-        </button>
-        <img src="<?= $rec['image']; ?>" class="card-img-top" alt="<?= $rec['name']; ?>">
-        <div class="card-body">
-          <h6><?= $rec["name"]; ?></h6>
-          <p>Rp. <?= $rec["price"]; ?> x 60<br>
-          DP Rp. <?= $rec["dp"]; ?><br>
-          <?= $rec["km"]; ?> | <?= $rec["year"]; ?></p>
-        </div>
-        <button class="btn btn-light position-absolute bottom-0 end-0 m-2">
-          <
-        </button>
+    <!-- STICKY NAVBAR / TABS -->
+    <div class="sticky-tabs">
+      <div class="tabs-wrapper">
+        <button class="tab-item active" data-target="#info">Informasi</button>
+        <button class="tab-item" data-target="#features">Features & specs</button>
+        <button class="tab-item" data-target="#history">History & Inspection</button>
+        <button class="tab-item" data-target="#warranty">Warranty</button>
       </div>
     </div>
-    <?php endforeach; ?>
+
+    <!-- Informasi -->
+    <section id="info" class="container px-0 mt-4">
+      <h4 class="mt-4"><b>Informasi</b></h4>
+      <div class="row">
+        <div class="col-md-4">
+          <p><b>Bahan Bakar:</b> <?= htmlspecialchars($bahanBakar); ?></p>
+        </div>
+        <div class="col-md-4">
+          <p><b>Sistem Penggerak:</b> <?= htmlspecialchars($drive); ?></p>
+        </div>
+        <div class="col-md-4">
+          <p><b>Jarak Tempuh:</b> <?= number_format($jarakTempuh, 0, ',', '.'); ?> Km</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fitur & Spesifikasi -->
+    <!-- Fitur & Spesifikasi -->
+    <section id="features" class="container px-0 mt-4">
+      <h4 class="fw-bold mb-3">Fitur & spesifikasi</h4>
+
+      <?php if (empty($fiturByKategori)): ?>
+        <p class="text-muted">Belum ada fitur terdaftar untuk mobil ini.</p>
+      <?php else: ?>
+
+        <?php
+        $prioritasKategori = [
+          'Keselamatan',
+          'Kenyamanan & Hiburan',
+          'Exterior'
+        ];
+        ?>
+
+        <div class="row">
+
+          <?php foreach ($prioritasKategori as $kat): ?>
+            <?php if (!isset($fiturByKategori[$kat]))
+              continue; ?>
+
+            <?php
+            $items = $fiturByKategori[$kat];
+            $tigaPertama = array_slice($items, 0, 3);
+            $icon = $kategoriIcon[$kat] ?? 'fa-circle-info';
+            ?>
+
+            <div class="col-md-4 mb-4">
+
+              <h6 class="fw-bold mb-2">
+                <i class="fa-solid <?= $icon ?> me-2 text-primary"></i>
+                <?= htmlspecialchars($kat); ?>
+              </h6>
+
+              <ul class="mb-1">
+                <?php foreach ($tigaPertama as $namaFitur): ?>
+                  <li>
+                    <i class="fa-solid fa-check text-success me-1"></i>
+                    <?= htmlspecialchars($namaFitur); ?>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+
+              <?php if ($kat === 'Keselamatan'): ?>
+                <!-- Tombol showmore di bawah kolom Keselamatan -->
+                <button type="button" class="btn btn-outline-primary px-4 py-2 mt-2 fitur-showmore" data-bs-toggle="modal"
+                  data-bs-target="#fiturModal">
+                  <i class="fa-solid fa-list-check me-2"></i>
+                  Lihat semua fitur
+                </button>
+              <?php endif; ?>
+
+            </div>
+
+          <?php endforeach; ?>
+        </div>
+
+      <?php endif; ?>
+    </section>
+
+    <!-- Modal: Fitur Lengkap -->
+    <div class="modal fade" id="fiturModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable" style="max-width:550px;">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title fw-bold">Fitur & Spesifikasi Lengkap</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+
+            <?php foreach ($fiturByKategori as $kategori => $items): ?>
+              <div class="mb-3">
+                <h6 class="fw-bold mb-2"><?= htmlspecialchars($kategori); ?></h6>
+                <ul class="mb-0">
+                  <?php foreach ($items as $namaFitur): ?>
+                    <li>
+                      <i class="fa-solid fa-circle-check text-success me-1"></i>
+                      <?= htmlspecialchars($namaFitur); ?>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              </div>
+            <?php endforeach; ?>
+
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+    <!-- History (sementara statis / bisa nanti dari DB transaksi) -->
+    <!-- History (sementara statis / bisa nanti dari DB transaksi) -->
+    <div id="history" class="py-4">
+      <h4 class="fw-bold mb-3">Sejarah & Inspeksi</h4>
+      <p class="text-muted mb-3">
+        Setiap unit yang dipajang di katalog kami melalui proses pengecekan dasar berikut:
+      </p>
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fa-solid fa-gauge-high text-primary me-2"></i>
+              <strong>Cek Kilometer</strong>
+            </div>
+            <p class="mb-0 text-muted">
+              Pengecekan jarak tempuh dan kondisi pemakaian mobil secara keseluruhan.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fa-solid fa-file-shield text-success me-2"></i>
+              <strong>Dokumen & Legalitas</strong>
+            </div>
+            <p class="mb-0 text-muted">
+              STNK dan BPKB dipastikan sesuai dengan data kendaraan yang terdaftar.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fa-solid fa-stethoscope text-warning me-2"></i>
+              <strong>Inspeksi Visual</strong>
+            </div>
+            <p class="mb-0 text-muted">
+              Pengecekan eksterior & interior untuk melihat kondisi umum bodi dan kabin.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-3 text-muted">
+        Untuk hasil inspeksi detail, silakan hubungi tim sales kami.
+      </p>
+    </div>
+
+
+
+    <!-- Warranty / Jaminan -->
+    <!-- Warranty / Jaminan -->
+    <div class="row mt-4">
+
+      <!-- KIRI: JAMINAN -->
+      <div class="col-lg-8">
+        <div id="warranty" class="py-4">
+          <h4 class="fw-bold mb-3">Jaminan</h4>
+
+          <?php if (empty($jaminan)): ?>
+            <p class="text-muted">
+              Saat ini belum ada jaminan khusus yang terikat pada unit ini.
+              Silakan konsultasikan dengan tim sales kami untuk mengetahui opsi garansi.
+            </p>
+
+            <ul class="text-muted">
+              <li><i class="fa-solid fa-circle-check text-success me-1"></i> Opsi garansi mesin & transmisi</li>
+              <li><i class="fa-solid fa-circle-check text-success me-1"></i> Bantuan pengurusan administrasi kendaraan
+              </li>
+              <li><i class="fa-solid fa-circle-check text-success me-1"></i> Penjelasan detail kondisi unit</li>
+            </ul>
+
+          <?php else: ?>
+            <div class="accordion" id="warrantyAccordion">
+              <?php $i = 0;
+              foreach ($jaminan as $j):
+                $id = 'collapse' . $i; ?>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading<?= $i; ?>">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#<?= $id; ?>" aria-expanded="false" aria-controls="<?= $id; ?>">
+                      <?= htmlspecialchars($j['nama_jaminan']); ?>
+                    </button>
+                  </h2>
+                  <div id="<?= $id; ?>" class="accordion-collapse collapse" data-bs-parent="#warrantyAccordion">
+                    <div class="accordion-body">Detail jaminan sesuai showroom.</div>
+                  </div>
+                </div>
+                <?php $i++; endforeach; ?>
+            </div>
+          <?php endif; ?>
+
+        </div>
+      </div>
+
+      <!-- KANAN: CARD GET STARTED -->
+      <!-- KANAN: CARD GET STARTED -->
+      <div class="col-lg-4 booking-card-col">
+        <div class="card booking-card">
+          <div class="card-body">
+
+            <!-- BOX LOKASI BORDER BIRU -->
+            <div class="booking-location-box">
+              <div class="booking-location-icon">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+              <div>
+                <p class="booking-location-title mb-0">
+                  Tersedia di <?= htmlspecialchars($mobil['lokasi_showroom'] ?? 'Showroom Kami'); ?>
+                </p>
+                <span class="booking-location-sub">Reservasi gratis</span>
+              </div>
+            </div>
+
+            <!-- JUDUL & DESKRIPSI -->
+            <p class="booking-title mb-1">Test drive atau beli online</p>
+            <p class="booking-desc mb-3">
+              Reservasi mobil ini lalu lanjutkan proses secara online. Test drive dulu tanpa kewajiban membeli.
+            </p>
+
+            <!-- TOMBOL KUNING -->
+            <a href="#formBooking" class="booking-cta-btn w-100 text-center d-inline-block">
+              Get Started
+            </a>
+
+            <!-- FOOTER SHOWROOM -->
+            <p class="booking-footer mt-3 mb-0 text-center">
+              <?= htmlspecialchars($mobil['nama_showroom'] ?? 'Showroom utama'); ?>
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- REKOMENDASI MOBIL -->
+    <?php if (!empty($rekomendasi)): ?>
+      <div id="recommendation" class="py-4">
+        <h4 class="fw-bold mb-3">Rekomendasi untuk Anda</h4>
+
+        <div class="row g-3">
+          <?php foreach ($rekomendasi as $r): ?>
+            <?php
+            $imgR = !empty($r['foto']) ? $r['foto'] : '../assets/img/no-image.jpg';
+            $statusR = $r['status'] ?? 'available';
+            $statusLabelR = $statusLabelMap[$statusR] ?? ucfirst($statusR);
+            ?>
+            <div class="col-lg-3 col-md-4 col-6">
+              <div class="card car-card shadow-sm h-100">
+
+                <div class="card-image position-relative">
+                  <figure class="image image-wrapper mb-0">
+                    <img src="<?= htmlspecialchars($imgR); ?>" alt="<?= htmlspecialchars($r['nama_mobil'] ?? 'Mobil'); ?>"
+                      class="img_main card-img-top">
+                    <span class="status-badge <?= htmlspecialchars($statusR); ?>">
+                      <?= htmlspecialchars($statusLabelR); ?>
+                    </span>
+                  </figure>
+                </div>
+
+                <div class="card-content p-3">
+
+                  <!-- Nama mobil -->
+                  <a href="detail_mobil.php?kode=<?= urlencode($r['kode_mobil']); ?>"
+                    class="car-name-link text-decoration-none d-block mb-1">
+                    <p class="mb-1 fw-semibold">
+                      <?= htmlspecialchars($r['nama_mobil'] ?? 'Tanpa nama'); ?>
+                    </p>
+                  </a>
+
+                  <!-- Angsuran x tenor -->
+                  <p class="mb-1" style="font-size:15px; font-weight:700; color:#111827;">
+                    Rp <?= number_format($r['angsuran'] ?? 0, 0, ',', '.'); ?>
+                    <span style="font-weight:500;">
+                      x <?= htmlspecialchars($r['tenor'] ?? '-'); ?>
+                    </span>
+                  </p>
+
+                  <!-- DP -->
+                  <p class="mb-2" style="font-size:13px; font-weight:500; color:#4b5563;">
+                    DP Rp <?= number_format($r['dp'] ?? 0, 0, ',', '.'); ?>
+                  </p>
+
+                  <!-- KM & Tahun -->
+                  <div class="d-flex align-items-center gap-2" style="font-size:13px; color:#4b5563;">
+                    <span><?= number_format($r['jarak_tempuh'] ?? 0, 0, ',', '.'); ?> Km</span>
+                    <span class="mx-1">•</span>
+                    <span><?= htmlspecialchars($r['tahun_mobil'] ?? '-'); ?></span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    <?php endif; ?>
+
+
+
+
+    <!-- Rekomendasi: nanti bisa diganti dengan API lain / list mobil serupa -->
+    <!-- Untuk sekarang boleh kosong atau pakai dummy seperti punyamu -->
   </div>
-</div>
 
-
-
-
-<!-- Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Custom JS -->
-<script src="../assets/js/detail_mobil.js"></script>
-<!-- Footer -->
-<script src="../assets/js/footer.js" defer></script>
-
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/detail_mobil.js"></script>
+  <script src="../assets/js/footer.js" defer></script>
 </body>
+
 </html>
