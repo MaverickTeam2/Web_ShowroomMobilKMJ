@@ -52,11 +52,12 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
   <link rel="stylesheet" href="../assets/css/katalog2.css?v=<?= time(); ?>">
   <!-- ⬇⬇ TAMBAHKAN BARIS INI -->
   <link rel="stylesheet" href="../assets/css/wishlist_sidebar.css?v=<?= time(); ?>">
+  <link rel="stylesheet" href="../assets/css/wishlist_sidebar.css?v=<?= time(); ?>">
   <!-- ⬆⬆ -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 
-<body>
+<body class="page-wishlist">
 
   <?php include '../templates/navbar_footer/navbar.php'; ?>
   <?php
@@ -163,33 +164,33 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
 
                   <div class="card-content p-3">
                     <a href="../templates/detail_mobil.php?kode=<?= urlencode($m['kode_mobil']) ?>"
-                      class="text-decoration-none mb-2 d-inline-block" style="font-size:16px;">
+                      class="text-decoration-none mb-2 d-inline-block" style="font-size:25px;">
                       <p class="title is-5 mb-1">
                         <?= htmlspecialchars($m['nama_mobil'] ?? 'Tanpa Nama') ?>
                       </p>
                     </a>
 
-                    <p class="ansguran mb-1" style="font-size:16px; font-weight:700; color:#111827; margin-bottom:4px;">
+                    <p class="ansguran mb-1" style="font-size:23px; font-weight:700; color:#111827; margin-bottom:4px;">
                       Rp <?= number_format($m['angsuran'] ?? 0, 0, ',', '.') ?>
                       <span style="font-weight:600;">
                         x <?= htmlspecialchars($m['tenor'] ?? '-') ?>
                       </span>
                     </p>
 
-                    <p class="uang_dp mb-2" style="font-size:14px; font-weight:600; color:#111827; margin-bottom:6px;">
+                    <p class="uang_dp mb-2" style="font-size:20px; font-weight:600; color:#111827; margin-bottom:6px;">
                       Dp Rp <?= number_format($m['dp'] ?? 0, 0, ',', '.') ?>
                     </p>
 
                     <hr class="my-2">
 
                     <div class="info d-flex align-items-center gap-2">
-                      <i class="fa-regular fa-clock" style="font-size:14px;"></i>
-                      <span style="font-size: 14px">
+                      <i class="fa-regular fa-clock" style="font-size:25px;"></i>
+                      <span style="font-size: 20px">
                         <?= number_format($m['jarak_tempuh'] ?? 0, 0, ',', '.'); ?> Km
                       </span>
 
-                      <i class="fa-regular fa-calendar ms-3" style="font-size:14px;"></i>
-                      <span style="font-size: 14px">
+                      <i class="fa-regular fa-calendar ms-3" style="font-size:25px;"></i>
+                      <span style="font-size: 20px">
                         <?= htmlspecialchars($m['tahun_mobil'] ?? '-'); ?>
                       </span>
                     </div>

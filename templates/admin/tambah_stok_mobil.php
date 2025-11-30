@@ -33,7 +33,7 @@ if ($isEdit) {
 
   // isi data
   $mobilData = $data['mobil'];
-  $mobilFitur = $data['fitur'];
+  $mobilFitur = array_map('intval', array_column($data['fitur'], 'id_fitur'));
   $mobilFoto = $data['foto'];
 }
 

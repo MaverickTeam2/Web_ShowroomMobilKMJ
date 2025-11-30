@@ -521,7 +521,7 @@ $statusLabelMap = [
                               <i class="fa-brands fa-whatsapp me-2"></i> Hubungi Penjual
                             </a>
 
-                            <a href="#" class="dropdown-item">
+                            <a href="../templates/detail_mobil.php?kode=<?= urlencode($m['kode_mobil']) ?>" class="dropdown-item">
                               <i class="fa-solid fa-car me-2"></i> Fitur &amp; Spesifikasi
                             </a>
                           </div>

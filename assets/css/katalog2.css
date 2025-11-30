@@ -7,21 +7,38 @@
 .footer a {
   text-decoration: none !important;
 }
-/* ===== FOOTER KHUSUS KATALOG ===== */
-.page-katalog .footer {
+/* ==== FOOTER KHUSUS HALAMAN KATALOG ==== */
+
+/* Biar nggak tinggi tapi struktur Bulma tetap jalan */
+.page-katalog footer.footer {
+  display: flex; /* tetap flex */
+  flex-direction: column; /* isi ditumpuk vertikal */
+  justify-content: flex-start; /* JANGAN space-between */
+  min-height: auto; /* matikan min-height besar dari CSS global */
   padding-top: 1.5rem;
-  padding-bottom: 2rem;
+  padding-bottom: 1.5rem;
 }
 
-.page-katalog .footer ul {
+/* Kolom-kolom (Shop, Sell, Finance, About) */
+.page-katalog footer.footer .columns {
+  margin-bottom: 0.75rem; /* jarak kecil ke copyright */
+}
+
+/* Copyright (teks biru) */
+.page-katalog footer.footer .content {
+  margin-top: 0.75rem; /* kasih sedikit jarak dari kolom */
+}
+/* Biar item di bawah judul footer lurus ke kiri dengan judulnya */
+.page-katalog footer.footer ul {
   list-style: none;
-  padding-left: 0;
+  padding-left: 0; /* hilangkan padding bawaan browser */
   margin: 0;
 }
 
-.page-katalog .footer ul li {
-  margin-bottom: 0.25rem;
+.page-katalog footer.footer ul li {
+  margin-bottom: 0.25rem; /* jarak antar item, opsional */
 }
+
 /* ===== CARD DASAR ===== */
 .card {
   border-radius: 12px;
