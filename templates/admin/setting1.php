@@ -2,9 +2,42 @@
 $title = "Settings";
 include 'partials/header.php';
 include 'partials/sidebar.php';
+
+// Ambil data settings dari database
+require_once '../../db/koneksi.php';
+
+// Ambil data general settings
+$generalSettings = [
+    'showroom_status' => 0,
+    'jual_mobil' => 0,
+    'schedule_pelanggan' => 1
+];
+
+$query = "SELECT showroom_status, jual_mobil, schedule_pelanggan FROM showroom_general LIMIT 1";
+$result = $conn->query($query);
+if ($result && $result->num_rows > 0) {
+    $generalSettings = $result->fetch_assoc();
+}
+
+// Ambil data user untuk account settings
+$userData = [];
+if (isset($_SESSION['kode_user'])) {
+    $kode_user = $_SESSION['kode_user'];
+    $userQuery = "SELECT username, email, full_name, no_telp, avatar_url FROM users WHERE kode_user = ?";
+    $stmt = $conn->prepare($userQuery);
+    $stmt->bind_param('s', $kode_user);
+    $stmt->execute();
+    $userResult = $stmt->get_result();
+    if ($userResult->num_rows > 0) {
+        $userData = $userResult->fetch_assoc();
+    }
+}
+
+// Default foto profil
+$fotoProfil = !empty($userData['avatar_url']) ? $userData['avatar_url'] : "../../assets/img/default-photo.png";
 ?>
 
-<!-- CSS khusus halaman ini (praktis). Idealnya taruh di header.php -->
+<!-- CSS khusus halaman ini -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
 <link rel="stylesheet" href="../../assets/css/admin/setting.css">
 
@@ -14,18 +47,6 @@ include 'partials/sidebar.php';
   </nav>
 
   <main class="p-4">
-
-<?php
-// === Data user contoh (boleh ganti dari session/DB kamu) ===
-$user = [
-  "nama" => "Herdi",
-  "email" => "herdi@example.com",
-  "foto" => "" // kosong artinya belum upload
-];
-
-// Default foto profil
-$fotoProfil = !empty($user["foto"]) ? $user["foto"] : "../../assets/img/default-photo.png";
-?>
 
     <!-- HEADER TITLE / BREADCRUMB -->
     <div class="head-title d-flex justify-content-between align-items-center">
@@ -91,7 +112,8 @@ $fotoProfil = !empty($user["foto"]) ? $user["foto"] : "../../assets/img/default-
               <p>Manual buka atau tutup showroom online anda untuk pelanggan</p>
             </div>
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="showroomStatus" checked>
+              <input class="form-check-input" type="checkbox" id="showroomStatus" 
+                     <?php echo $generalSettings['showroom_status'] == 1 ? 'checked' : ''; ?>>
             </div>
           </div>
 
@@ -101,7 +123,8 @@ $fotoProfil = !empty($user["foto"]) ? $user["foto"] : "../../assets/img/default-
               <p>Manual buka atau tutup untuk pelanggan menjual mobil</p>
             </div>
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="sellCarStatus" checked>
+              <input class="form-check-input" type="checkbox" id="sellCarStatus" 
+                     <?php echo $generalSettings['jual_mobil'] == 1 ? 'checked' : ''; ?>>
             </div>
           </div>
 
@@ -111,7 +134,8 @@ $fotoProfil = !empty($user["foto"]) ? $user["foto"] : "../../assets/img/default-
               <p>Manual buka atau tutup untuk pelanggan membuat Schedule</p>
             </div>
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="scheduleStatus" checked>
+              <input class="form-check-input" type="checkbox" id="scheduleStatus" 
+                     <?php echo $generalSettings['schedule_pelanggan'] == 1 ? 'checked' : ''; ?>>
             </div>
           </div>
         </div>
@@ -123,14 +147,14 @@ $fotoProfil = !empty($user["foto"]) ? $user["foto"] : "../../assets/img/default-
             <div class="setting-desc text-secondary">Kelola profil akun dan ubah password di sini.</div>
           </div>
 
-          <form action="save_account.php" method="POST" enctype="multipart/form-data">
+          <form id="accountForm">
             <input type="hidden" name="profile_image" id="profile_image">
 
             <!-- PROFIL PICTURE -->
             <div class="mb-4">
               <label class="form-label fw-semibold d-block mb-2">Profil Picture</label>
               <div class="d-flex align-items-center gap-3">
-                <img id="previewImage" src="<?php echo $fotoProfil; ?>" alt="Profile Picture" class="profile-pic">
+                <img id="previewImage" src="<?php echo $fotoProfil; ?>" alt="Profile Picture" class="profile-pic" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
                 <div>
                   <button class="btn btn-outline-secondary btn-sm upload-btn" type="button"
                           onclick="document.getElementById('uploadLogo').click()">
@@ -147,19 +171,25 @@ $fotoProfil = !empty($user["foto"]) ? $user["foto"] : "../../assets/img/default-
             <!-- FULL NAME -->
             <div class="mb-3">
               <label class="form-label fw-semibold d-block mb-2">Full Name</label>
-              <input type="text" class="form-control" name="fullname" placeholder="Masukkan nama lengkap">
+              <input type="text" class="form-control" name="fullname" 
+                     value="<?php echo htmlspecialchars($userData['full_name'] ?? ''); ?>" 
+                     placeholder="Masukkan nama lengkap">
             </div>
 
             <!-- USERNAME -->
             <div class="mb-3">
               <label class="form-label fw-semibold d-block mb-2">Username</label>
-              <input type="text" class="form-control" name="username" placeholder="Masukkan username">
+              <input type="text" class="form-control" name="username" 
+                     value="<?php echo htmlspecialchars($userData['username'] ?? ''); ?>" 
+                     placeholder="Masukkan username">
             </div>
 
             <!-- NO TELEPHONE -->
             <div class="mb-4">
               <label class="form-label fw-semibold d-block mb-2">No Telephone</label>
-              <input type="text" class="form-control" name="phone" placeholder="Masukkan nomor telepon">
+              <input type="text" class="form-control" name="phone" 
+                     value="<?php echo htmlspecialchars($userData['no_telp'] ?? ''); ?>" 
+                     placeholder="Masukkan nomor telepon">
             </div>
 
             <hr class="my-4">
@@ -272,7 +302,7 @@ $fotoProfil = !empty($user["foto"]) ? $user["foto"] : "../../assets/img/default-
                 <i class="bx bx-time text-primary fs-4"></i>
                 <div>
                   <div class="fw-semibold">Last Backup</div>
-                  <div class="text-secondary" style="font-size: 14px;">15 Januari 2025 pukul 03.00</div>
+                  <div class="text-secondary" style="font-size: 14px;">Belum ada backup</div>
                 </div>
               </div>
             </div>
@@ -282,7 +312,7 @@ $fotoProfil = !empty($user["foto"]) ? $user["foto"] : "../../assets/img/default-
                 <i class="bx bx-hdd text-primary fs-4"></i>
                 <div>
                   <div class="fw-semibold">Backup Size</div>
-                  <div class="text-secondary" style="font-size: 14px;">245 MB</div>
+                  <div class="text-secondary" style="font-size: 14px;">0 MB</div>
                 </div>
               </div>
             </div>
@@ -360,8 +390,8 @@ $fotoProfil = !empty($user["foto"]) ? $user["foto"] : "../../assets/img/default-
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body d-flex flex-column align-items-center justify-content-center">
-            <div class="cropper-container-wrapper">
-              <img id="imageToCrop" alt="Image to crop">
+            <div class="cropper-container-wrapper" style="max-width: 100%; max-height: 400px;">
+              <img id="imageToCrop" alt="Image to crop" style="max-width: 100%;">
             </div>
           </div>
           <div class="modal-footer justify-content-center">
@@ -375,8 +405,12 @@ $fotoProfil = !empty($user["foto"]) ? $user["foto"] : "../../assets/img/default-
   </main>
 </section>
 
-<!-- JS khusus halaman ini (harus sebelum footer karena footer menutup </body>) -->
+<!-- JS khusus halaman ini -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-<script src="../../assets/js/setting_admin.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../assets/js/setting_admin.js"></script>
 
-<?php include 'partials/footer.php'; ?>
+<?php 
+$conn->close();
+include 'partials/footer.php'; 
+?>
