@@ -1,0 +1,154 @@
+.account-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.account-card-top {
+  display:flex;
+  gap:24px;
+  margin-bottom:16px;
+}
+
+.account-avatar {
+  width:96px;
+  height:96px;
+  border-radius:50%;
+  object-fit:cover;
+  flex-shrink:0;
+}
+
+.account-name {
+  font-size:1.25rem;
+  font-weight:800;
+  margin:0 0 6px 0;
+}
+
+.account-email {
+  color:#555;
+}
+
+.account-login {
+  color:#888;
+  font-size:.95rem;
+}
+
+.account-card-bottom {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:auto;
+}
+
+.account-badges {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+/* Badge role */
+.badge-role {
+  padding:8px 16px;
+  border-radius:25px;
+  font-size:.9rem;
+  font-weight:600;
+}
+
+.badge-admin {
+  background:#FFE5E5;
+  color:#E74C3C;
+}
+
+.badge-owner {
+  background:#E3F2FD;
+  color:#2196F3;
+}
+
+/* Badge status */
+.badge-status {
+  min-width:110px;
+  text-align:center;
+  padding:8px 16px;
+  border-radius:25px;
+  font-weight:600;
+}
+
+.badge-aktif {
+  background:#E8F5E9;
+  color:#4CAF50;
+}
+
+.badge-nonaktif {
+  background:#FFE5E5;
+  color:#E74C3C;
+}
+
+/* Toggle switch */
+.toggle-switch {
+  position:relative;
+  width:64px;
+  height:32px;
+  flex-shrink:0;
+}
+
+.toggle-switch input {
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.toggle-slider {
+  position:absolute;
+  inset:0;
+  border-radius:34px;
+  background:#E74C3C;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.toggle-slider:before {
+  content:"";
+  position:absolute;
+  height:24px;
+  width:24px;
+  left:4px;
+  bottom:4px;
+  background:#fff;
+  border-radius:50%;
+  transition:.25s;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background:#4CAF50;
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(32px);
+}
+
+/* Edit button */
+.btn-edit {
+  color:#4169E1;
+  text-decoration:none;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:8px;
+  transition:background .2s;
+}
+
+.btn-edit:hover {
+  background:#f0f4ff;
+}
+
+/* Tombol tambah akun non-owner */
+.btn-disabled {
+  opacity: .6;
+  cursor: not-allowed !important;
+}

@@ -5,6 +5,8 @@ $title = "Edit Transaksi";
 require_once 'partials/header.php';
 require_once 'partials/sidebar.php';
 
+$kode_user = $_SESSION['kode_user'] ?? null;
+
 // Wajib ada untuk API URL
 require_once '../../include/header.php';   // ← kalau ini tidak include DB
 require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
@@ -161,7 +163,16 @@ require_once '../../db/config_api.php';    // ← WAJIB untuk BASE_API_URL
   </main>
 </section> 
 
-<script>const BASE_API_URL = "<?= BASE_API_URL ?>";</script>
+<script>
+  const BASE_API_URL = "<?= BASE_API_URL ?>";
+
+  // kirim kode_user dari PHP (session) ke JavaScript
+  window.CURRENT_USER = {
+    kode_user: <?= json_encode($kode_user) ?>
+  };
+
+  console.log("CURRENT_USER di PHP -> JS:", window.CURRENT_USER);
+</script>
 <script src="../../assets/js/edit_transaksi.js"></script>
 
 </body>

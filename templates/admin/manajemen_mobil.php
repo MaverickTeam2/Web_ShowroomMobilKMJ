@@ -636,6 +636,7 @@ if (!$api['success']) {
       }
 
       // ====== isi fitur ======
+      // ====== isi fitur ======
       const fiturWrap = document.getElementById("detailFitur");
       fiturWrap.innerHTML = "";
 
@@ -648,9 +649,11 @@ if (!$api['success']) {
     </div>
   `;
       } else {
-        fitur.forEach(id => {
+        fitur.forEach(f => {
+          const id = parseInt(f.id_fitur, 10); // AMBIL ID FITUR DARI OBJECT
+
           const col = document.createElement("div");
-          col.className = "col-md-4 col-sm-6"; // md: 3 per baris, sm: 2 per baris
+          col.className = "col-md-4 col-sm-6";
 
           col.innerHTML = `
       <div 
@@ -661,10 +664,11 @@ if (!$api['success']) {
         <span>${FITUR_MAP[id] || ("Fitur ID " + id)}</span>
       </div>
     `;
-
+          
           fiturWrap.appendChild(col);
         });
       }
+
 
       // ====== tampilkan modal ======
       const modalEl = document.getElementById("detailMobilModal");
