@@ -143,7 +143,7 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
                     $fileName = basename($m['foto']); // contoh: mobil_6925be72e11da4.72202219.jpg
               
                     // susun ulang URL yang benar (samain dengan struktur folder API kamu)
-                    $img = 'http://localhost:80/API_kmj/images/mobil/' . $fileName;
+                    $img = BASE_API_URL . '/images/mobil/' . $fileName;
                   }
 
                   $status = $m['status'] ?? 'available';

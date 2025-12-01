@@ -136,14 +136,15 @@ if ($apiList && !empty($apiList['success']) && $apiList['success']) {
   <title><?= htmlspecialchars($carTitle); ?></title>
 
   <!-- CSS lib -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
   <!-- CSS custom -->
-  <link rel="stylesheet" href="../assets/css/detailmob.css?v=<?= time(); ?>">
   <link rel="stylesheet" href="../assets/css/katalog2.css?v=<?= time(); ?>">
+  <link rel="stylesheet" href="../assets/css/detailmob.css?v=<?= time(); ?>">
+
 
 </head>
 
@@ -403,47 +404,90 @@ if ($apiList && !empty($apiList['success']) && $apiList['success']) {
 
     <!-- Warranty / Jaminan -->
     <!-- Warranty / Jaminan -->
-    <div id="warranty" class="py-4">
-      <h4 class="fw-bold mb-3">Jaminan</h4>
+    <div class="row mt-4">
 
-      <?php if (empty($jaminan)): ?>
-        <p class="text-muted">
-          Saat ini belum ada jaminan khusus yang terikat pada unit ini.
-          Silakan konsultasikan dengan tim sales kami untuk mengetahui opsi garansi dan perlindungan yang tersedia.
-        </p>
+      <!-- KIRI: JAMINAN -->
+      <div class="col-lg-8">
+        <div id="warranty" class="py-4">
+          <h4 class="fw-bold mb-3">Jaminan</h4>
 
-        <ul class="text-muted">
-          <li><i class="fa-solid fa-circle-check text-success me-1"></i> Opsi garansi mesin & transmisi (sesuai kebijakan
-            showroom)</li>
-          <li><i class="fa-solid fa-circle-check text-success me-1"></i> Bantuan pengurusan administrasi kendaraan</li>
-          <li><i class="fa-solid fa-circle-check text-success me-1"></i> Penjelasan detail kondisi unit sebelum transaksi
-          </li>
-        </ul>
+          <?php if (empty($jaminan)): ?>
+            <p class="text-muted">
+              Saat ini belum ada jaminan khusus yang terikat pada unit ini.
+              Silakan konsultasikan dengan tim sales kami untuk mengetahui opsi garansi.
+            </p>
 
-      <?php else: ?>
-        <div class="accordion" id="warrantyAccordion">
-          <?php $i = 0;
-          foreach ($jaminan as $j):
-            $id = 'collapse' . $i; ?>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="heading<?= $i; ?>">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#<?= $id; ?>" aria-expanded="false" aria-controls="<?= $id; ?>">
-                  <i class="bi bi-check2-circle text-success me-2"></i>
-                  <?= htmlspecialchars($j['nama_jaminan']); ?>
-                </button>
-              </h2>
-              <div id="<?= $id; ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $i; ?>"
-                data-bs-parent="#warrantyAccordion">
-                <div class="accordion-body">
-                  Detail jaminan bisa diisi sesuai kebijakan showroom.
+            <ul class="text-muted">
+              <li><i class="fa-solid fa-circle-check text-success me-1"></i> Opsi garansi mesin & transmisi</li>
+              <li><i class="fa-solid fa-circle-check text-success me-1"></i> Bantuan pengurusan administrasi kendaraan
+              </li>
+              <li><i class="fa-solid fa-circle-check text-success me-1"></i> Penjelasan detail kondisi unit</li>
+            </ul>
+
+          <?php else: ?>
+            <div class="accordion" id="warrantyAccordion">
+              <?php $i = 0;
+              foreach ($jaminan as $j):
+                $id = 'collapse' . $i; ?>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading<?= $i; ?>">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#<?= $id; ?>" aria-expanded="false" aria-controls="<?= $id; ?>">
+                      <?= htmlspecialchars($j['nama_jaminan']); ?>
+                    </button>
+                  </h2>
+                  <div id="<?= $id; ?>" class="accordion-collapse collapse" data-bs-parent="#warrantyAccordion">
+                    <div class="accordion-body">Detail jaminan sesuai showroom.</div>
+                  </div>
                 </div>
+                <?php $i++; endforeach; ?>
+            </div>
+          <?php endif; ?>
+
+        </div>
+      </div>
+
+      <!-- KANAN: CARD GET STARTED -->
+      <!-- KANAN: CARD GET STARTED -->
+      <div class="col-lg-4 booking-card-col">
+        <div class="card booking-card">
+          <div class="card-body">
+
+            <!-- BOX LOKASI BORDER BIRU -->
+            <div class="booking-location-box">
+              <div class="booking-location-icon">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+              <div>
+                <p class="booking-location-title mb-0">
+                  Tersedia di <?= htmlspecialchars($mobil['lokasi_showroom'] ?? 'Showroom Kami'); ?>
+                </p>
+                <span class="booking-location-sub">Reservasi gratis</span>
               </div>
             </div>
-            <?php $i++; endforeach; ?>
+
+            <!-- JUDUL & DESKRIPSI -->
+            <p class="booking-title mb-1">Test drive atau beli online</p>
+            <p class="booking-desc mb-3">
+              Reservasi mobil ini lalu lanjutkan proses secara online. Test drive dulu tanpa kewajiban membeli.
+            </p>
+
+            <!-- TOMBOL KUNING -->
+            <a href="#formBooking" class="booking-cta-btn w-100 text-center d-inline-block">
+              Get Started
+            </a>
+
+            <!-- FOOTER SHOWROOM -->
+            <p class="booking-footer mt-3 mb-0 text-center">
+              <?= htmlspecialchars($mobil['nama_showroom'] ?? 'Showroom utama'); ?>
+            </p>
+          </div>
         </div>
-      <?php endif; ?>
+      </div>
+
+
     </div>
+
     <!-- REKOMENDASI MOBIL -->
     <?php if (!empty($rekomendasi)): ?>
       <div id="recommendation" class="py-4">
@@ -473,7 +517,7 @@ if ($apiList && !empty($apiList['success']) && $apiList['success']) {
 
                   <!-- Nama mobil -->
                   <a href="detail_mobil.php?kode=<?= urlencode($r['kode_mobil']); ?>"
-                    class="text-decoration-none d-block mb-1" style="font-size:16px;">
+                    class="car-name-link text-decoration-none d-block mb-1">
                     <p class="mb-1 fw-semibold">
                       <?= htmlspecialchars($r['nama_mobil'] ?? 'Tanpa nama'); ?>
                     </p>

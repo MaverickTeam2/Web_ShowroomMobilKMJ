@@ -9,7 +9,13 @@ body {
 .accordion {
   margin-top: 20px;
 }
+.accordion-button:not(.collapsed) {
+  background-color: #e9ecef !important; /* abu muda */
+  color: #1a1a1a !important;
+  box-shadow: none !important;
+}
+
 .accordion-body {
-  background-color: #0A154A;
-  color: white;
+  background: #fafafa !important;
+  color: #333;
 }
