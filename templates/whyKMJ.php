@@ -1,162 +1,196 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-  <head>
-    <meta charset="UTF-8" />
-    <!-- Import Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!--Import Font Awesome-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--Import Bulma CSS-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <!--Import Custom CSS-->
-    <link rel="stylesheet" href="../assets/css/style.css" />
-    <link rel="stylesheet" href="../assets/css/why.css" />
-    <!--Import Navbar Burger Script-->
-    <script src="../assets/js/navbar_burger.js" defer></script>
-    <!-- font lato -->
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/Logo_KMJ_YB2.ico " />
-    <title>KMJ</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <!-- Import Bootstrap-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!--Import Font Awesome-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--Import Bulma CSS-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!--Import Custom CSS-->
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/why.css" />
+  <!--Import Navbar Burger Script-->
+  <script src="../assets/js/navbar_burger.js" defer></script>
+  <!-- font lato -->
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
 
-  <body>
-    <!-- Navbar-->
-    <?php include '../templates/navbar_footer/navbar.php'; ?>
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../assets/img/Logo_KMJ_YB2.ico " />
+  <title>KMJ</title>
+</head>
 
-    <!-- Container Hero Section-->
-    <section class="hero is-fullheight-with-navbar p-4 m">
-      <div class="hero-body">
-        <div class="container">
-          <div class="columns is-vcentered">
-            <!-- Kolom teks -->
-            <div class="column is-half">
-              <h1 class="title has-text-black">
-                So, Kenapa <br />
-                di KMJ?
-              </h1>
-              <p class="subtitle has-text-black">Karena kami bikin beli mobil jadi pengalaman menyenangkan.</p>
-            </div>
+<body>
+  <!-- Navbar-->
+  <?php include '../templates/navbar_footer/navbar.php'; ?>
 
-            <!-- Kolom gambar -->
-            <div class="column is-half has-text-centered">
-              <a href="../templates/katalog.php" class="is-rounded">
-                <img src="../assets/img/sport car.png" alt="Car" class="car-img" />
-              </a>
-            </div>
+  <!-- Container Hero Section-->
+  <section class="hero is-fullheight-with-navbar p-4 m">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-vcentered">
+          <!-- Kolom teks -->
+          <div class="column is-half">
+            <h1 class="title has-text-black">
+              So, Kenapa <br />
+              di KMJ?
+            </h1>
+            <p class="subtitle has-text-black">Karena kami bikin beli mobil jadi pengalaman menyenangkan.</p>
+          </div>
+
+          <!-- Kolom gambar -->
+          <div class="column is-half has-text-centered">
+            <a href="../templates/katalog.php" class="is-rounded">
+              <img src="../assets/img/sport car.png" alt="Car" class="car-img" />
+            </a>
           </div>
         </div>
-      </div>
-    </section>
-    <!-- End Container Hero Section -->
-
-    <section>
-      <div class="halaman2">
-        <h1 class="title has-text-black has-text-centered responsive-title">Kami Percaya</h1>
-        <div class="container mt-3">
-          <div class="row">
-            <div class="col-6 col-md-3">
-              <div class="alert alert-primary custom-alert" role="alert">A simple primary alert—check it out!</div>
-            </div>
-            <div class="col-6 col-md-3">
-              <div class="alert alert-secondary custom-alert" role="alert">A simple secondary alert—check it out!</div>
-            </div>
-            <div class="col-6 col-md-3">
-              <div class="alert alert-success custom-alert" role="alert">A simple success alert—check it out!</div>
-            </div>
-            <div class="col-6 col-md-3">
-              <div class="alert alert-danger custom-alert" role="alert">A simple danger alert—check it out!</div>
-            </div>
-            <div class="col-6 col-md-3">
-              <div class="alert alert-warning custom-alert" role="alert">A simple warning alert—check it out!</div>
-            </div>
-            <div class="col-6 col-md-3">
-              <div class="alert alert-info custom-alert" role="alert">A simple info alert—check it out!</div>
-            </div>
-            <div class="col-6 col-md-3">
-              <div class="alert alert-light custom-alert" role="alert">A simple light alert—check it out!</div>
-            </div>
-            <div class="col-6 col-md-3">
-              <div class="alert alert-dark custom-alert" role="alert">A simple dark alert—check it out!</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="halaman3">
-        <h1 class="title has-text-black has-text-centered responsive-title">Kami memudahkan anda <br />dalam berbelanja</h1>
-        <div id="carouselExampleCaptions" class="carousel slide">
-          <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-          </div>
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img src="../assets/img/memudahkan.jpg" class="d-block w-100" alt="..." />
-              <div class="carousel-caption">
-                <h5>Kami Memudahkan Anda Berbelanjal</h5>
-                <p>Proses cepat, aman, dan transparan untuk mobil impian Anda.</p>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <img src="../assets/img/toko.jpg" class="d-block w-100" alt="..." />
-              <div class="carousel-caption">
-                <h5>Pilihan Mobil Lengkap</h5>
-                <p>Mobil bekas berkualitas sesuai kebutuhan Anda.</p>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <img src="../assets/img/pelayanan.jpg" class="d-block w-100" alt="..." />
-              <div class="carousel-caption">
-                <h5>Pelayanan Terpercaya</h5>
-                <p>Tim ramah, harga bersaing, dan kualitas terjamin di setiap mobil</p>
-              </div>
-            </div>
-          </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-  <section>
-  <div class="halaman4">
-    <div class="container container-custom">
-      <h1 class="title-custom">Faktanya, kita sangat mendukung mobil kita, <br />sehingga Anda mendapatkan:</h1>
-      <div class="line-item">
-        Laporan riwayat Experian Autocheck yang terperinci
-        <i class="fas fa-check check-icon"></i>
-      </div>
-      <div class="line-item">
-        Inspeksi 125 titik
-        <i class="fas fa-check check-icon"></i>
-      </div>
-      <div class="line-item">
-        Garansi uang kembali 10 hari
-        <i class="fas fa-check check-icon"></i>
-      </div>
-      <div class="line-item">
-        Garansi terbatas 90 hari/4.000 mil (mana saja yang tercapai lebih dulu)
-        <i class="fas fa-check check-icon"></i>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+  <!-- End Container Hero Section -->
+
+  <section>
+    <div class="halaman2">
+      <h1 class="title has-text-black has-text-centered responsive-title">Kami Percaya</h1>
+      <div class="container mt-3">
+        <div class="row">
+
+          <div class="col-6 col-md-3">
+            <div class="alert custom-alert" style="background:#f1f8ff; border-left:4px solid #0d6efd;">
+              Transparansi Tanpa Rekayasa
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="alert custom-alert" style="background:#fff7e6; border-left:4px solid #ffb300;">
+              Kualitas Mobil Adalah Prioritas
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="alert custom-alert" style="background:#e9ffe6; border-left:4px solid #28a745;">
+              Pengalaman Belanja Menyenangkan
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="alert custom-alert" style="background:#fff3f3; border-left:4px solid #dc3545;">
+              Harga Jujur & Kompetitif
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="alert custom-alert" style="background:#f0f0ff; border-left:4px solid #6f42c1;">
+              Pelayanan Ramah & Profesional
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="alert custom-alert" style="background:#e6ffff; border-left:4px solid #17a2b8;">
+              Keamanan Transaksi Terjamin
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="alert custom-alert" style="background:#fffbe6; border-left:4px solid #ffc107;">
+              After-Sales Bertanggung Jawab
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="alert custom-alert" style="background:#e9fbe7; border-left:4px solid #198754;">
+              Komitmen Memberi Mobil Terbaik
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="halaman3">
+      <h1 class="title has-text-black has-text-centered responsive-title">Kami memudahkan anda <br />dalam berbelanja
+      </h1>
+      <div id="carouselExampleCaptions" class="carousel slide">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+            aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="../assets/img/memudahkan.jpg" class="d-block w-100" alt="..." />
+            <div class="carousel-caption">
+              <h5>Kami Memudahkan Anda Berbelanjal</h5>
+              <p>Proses cepat, aman, dan transparan untuk mobil impian Anda.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="../assets/img/toko.jpg" class="d-block w-100" alt="..." />
+            <div class="carousel-caption">
+              <h5>Pilihan Mobil Lengkap</h5>
+              <p>Mobil bekas berkualitas sesuai kebutuhan Anda.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="../assets/img/pelayanan.jpg" class="d-block w-100" alt="..." />
+            <div class="carousel-caption">
+              <h5>Pelayanan Terpercaya</h5>
+              <p>Tim ramah, harga bersaing, dan kualitas terjamin di setiap mobil</p>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+          data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+          data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="halaman4">
+      <div class="container container-custom">
+        <h1 class="title-custom">Faktanya, kita sangat mendukung mobil kita, <br />sehingga Anda mendapatkan:</h1>
+        <div class="line-item">
+          Laporan riwayat Experian Autocheck yang terperinci
+          <i class="fas fa-check check-icon"></i>
+        </div>
+        <div class="line-item">
+          Inspeksi 125 titik
+          <i class="fas fa-check check-icon"></i>
+        </div>
+        <div class="line-item">
+          Garansi uang kembali 10 hari
+          <i class="fas fa-check check-icon"></i>
+        </div>
+        <div class="line-item">
+          Garansi terbatas 90 hari/4.000 mil (mana saja yang tercapai lebih dulu)
+          <i class="fas fa-check check-icon"></i>
+        </div>
+      </div>
+    </div>
+  </section>
 
 
-    <!-- Footer -->
-    <script src="../assets/js/footer.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+  <!-- Footer -->
+  <script src="../assets/js/footer.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>

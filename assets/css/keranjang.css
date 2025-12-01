@@ -7,14 +7,15 @@
 }
 
 .wishlist-sidebar {
-  background: #fff;
-  padding: 20px 10px;
+  background: #ffffff;
+  padding: 20px 14px;
   border-right: 1px solid #e5e7eb;
   min-height: 100vh;
+  min-width: 210px;
 }
 
 .wishlist-content {
-  padding: 20px 40px;
+  padding: 24px 40px;
 }
 
 /* ================================
@@ -31,14 +32,8 @@
 /* ================================
    MENU ITEM
 =================================== */
-/* Biar teks menu tidak turun ke baris baru */
 .wishlist-menu-item span {
   white-space: nowrap;
-}
-
-/* (opsional) sidebar sedikit diperlebar supaya teks leluasa */
-.wishlist-sidebar {
-  min-width: 210px;
 }
 
 .wishlist-menu-item {
@@ -50,10 +45,11 @@
   color: #374151;
   text-decoration: none;
   width: 100%;
-  border-radius: 6px;
+  border-radius: 8px;
   margin-bottom: 4px;
   position: relative;
-  transition: 0.2s;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+  gap: 6px;
 }
 
 .wishlist-menu-item i {
@@ -101,4 +97,227 @@
 .wishlist-divider {
   margin: 12px 0;
   border-color: #e5e7eb;
+}
+
+/* =================================
+   KONTEN: JUDUL & SECTION HEADER
+=================================== */
+.page-greeting {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.section-header {
+  margin-top: 4px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.section-link {
+  font-size: 13px;
+  text-decoration: none;
+  color: #2563eb;
+}
+
+.section-link:hover {
+  text-decoration: underline;
+}
+
+/* =================================
+   CARD MOBIL (recently viewed / keranjang)
+=================================== */
+.recent-cars-row {
+  padding-bottom: 4px;
+}
+
+.car-card {
+  border-radius: 18px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.car-card-image-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.car-card-image-wrapper img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.car-card-fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background-color: #ffffff;
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+  cursor: pointer;
+}
+
+.car-card-fav-btn i {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.car-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.car-card-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.car-card-price .text-muted {
+  font-weight: 400;
+}
+
+.car-card-subtext {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.car-card-meta {
+  font-size: 12px;
+  color: #4b5563;
+}
+
+/* =================================
+   PANEL KANAN – Mulai Belanja
+=================================== */
+.start-panel {
+  border-radius: 20px;
+}
+
+.start-panel-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.start-panel-text {
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.start-panel-link {
+  font-size: 13px;
+  color: #2563eb;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.start-panel-link i {
+  font-size: 14px;
+}
+
+.start-panel-link:hover {
+  text-decoration: underline;
+}
+
+.start-panel-cta {
+  border-radius: 999px;
+}
+
+/* =================================
+   JANJI TEMU
+=================================== */
+.appointment-card {
+  border-radius: 18px;
+  background-color: #ffffff;
+}
+
+.appointment-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.appointment-date {
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.appointment-link {
+  font-size: 13px;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.appointment-link:hover {
+  text-decoration: underline;
+}
+
+.appointment-status {
+  font-size: 11px;
+  padding: 4px 10px;
+}
+
+.appointment-status-cancelled {
+  background-color: #fef2f2;
+  color: #b91c1c;
+}
+
+.appointment-status-active {
+  background-color: #ecfdf3;
+  color: #166534;
+}
+
+.car-card-link {
+  display: block;
+}
+
+.car-card-link:hover .car-card {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* supaya button love tetap jadi cursor pointer, bukan ikut "tangan" link */
+.car-card-fav-btn {
+  cursor: pointer;
+}
+
+
+/* =================================
+   RESPONSIVE
+=================================== */
+@media (max-width: 991.98px) {
+  .wishlist-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .wishlist-sidebar {
+    min-height: auto;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .recent-cars-row {
+    margin-right: -1rem;
+  }
+
+  .car-card-image-wrapper img {
+    height: 130px;
+  }
 }

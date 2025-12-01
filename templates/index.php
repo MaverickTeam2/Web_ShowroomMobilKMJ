@@ -15,9 +15,6 @@ if ($mobil_api && isset($mobil_api['code']) && $mobil_api['code'] == 200 && isse
 
 // Karena di SQL sudah ORDER BY m.created_at DESC,
 // di sini kita cukup ambil 3 data pertama saja
-// 3 mobil terbaru (sudah ada)
-$latest_mobil = array_slice($mobil_list, 0, 3);
-// 3 mobil terbaru (sudah ada)
 $latest_mobil = array_slice($mobil_list, 0, 3);
 
 // ========== FAVORIT USER ==========
@@ -38,6 +35,23 @@ if ($kodeUser) {
 // contoh: ambil 3 mobil setelah 3 pertama (kalau ada)
 $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
 
+/**
+ * Helper: bangun URL gambar mobil dari data API
+ * Wajib pakai BASE_API_URL dari config_api.php
+ */
+function get_mobil_image_url($foto)
+{
+  // kalau kosong → pakai placeholder lokal
+  if (empty($foto)) {
+    return '../assets/img/placeholder-car.jpg';
+  }
+
+  // API kadang kirim path jelek / lengkap → ambil nama file saja
+  $fileName = basename($foto); // contoh: mobil_6925be72e11da4.72202219.jpg
+
+  // susun ulang pakai base API
+  return BASE_API_URL . '/images/mobil/' . $fileName;
+}
 
 ?>
 <!DOCTYPE html>
@@ -98,7 +112,6 @@ $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
   <!-- End Container Hero Section -->
 
   <!-- Popular Cars Section -->
-  <!-- Popular Cars Section -->
   <section class="section">
     <div class="container">
 
@@ -113,29 +126,27 @@ $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
         </ul>
       </div>
 
-
-      <!-- Car Cards -->
-      <!-- Car Cards -->
       <!-- PANE: TERBARU -->
       <div id="tab-terbaru" class="tab-pane-mobil">
         <div class="columns is-multiline mobil-terbaru-columns" style="
-    background-image: url('../assets/img/Background.jpg');
-    background-size: cover;
-    background-position: center;
-    padding: 50px;
-    border-radius: 30px;
-  ">
+          background-image: url('../assets/img/Background.jpg');
+          background-size: cover;
+          background-position: center;
+          padding: 50px;
+          border-radius: 30px;
+        ">
           <?php foreach ($latest_mobil as $m): ?>
             <div class="column is-one-third">
               <div class="card car-card">
                 <div class="card-image">
                   <figure class="image">
-                    <img src="<?= htmlspecialchars($m['foto'] ?? '../assets/img/placeholder-car.jpg') ?>"
-                      alt="<?= htmlspecialchars($m['nama_mobil']) ?>">
+                    <img
+                      src="<?= htmlspecialchars(get_mobil_image_url($m['foto'] ?? '')) ?>"
+                      alt="<?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil') ?>">
                   </figure>
                 </div>
                 <div class="card-content">
-                  <p class="title is-5"><?= htmlspecialchars($m['nama_mobil']) ?></p>
+                  <p class="title is-5"><?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil') ?></p>
                   <p class="subtitle is-6">
                     Rp <?= number_format($m['full_prize'] ?? 0, 0, ',', '.') ?>
                   </p>
@@ -149,12 +160,12 @@ $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
       <!-- PANE: FAVORIT -->
       <div id="tab-favorit" class="tab-pane-mobil is-hidden">
         <div class="columns is-multiline mobil-terbaru-columns" style="
-    background-image: url('../assets/img/Background.jpg');
-    background-size: cover;
-    background-position: center;
-    padding: 50px;
-    border-radius: 30px;
-  ">
+          background-image: url('../assets/img/Background.jpg');
+          background-size: cover;
+          background-position: center;
+          padding: 50px;
+          border-radius: 30px;
+        ">
           <?php if (empty($favorit_mobil)): ?>
             <div class="column has-text-centered">
               <p class="has-text-grey">Belum ada mobil favorit.</p>
@@ -165,12 +176,13 @@ $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
                 <div class="card car-card">
                   <div class="card-image">
                     <figure class="image">
-                      <img src="<?= htmlspecialchars($m['foto'] ?? '../../assets/img/placeholder-car.jpg') ?>"
-                        alt="<?= htmlspecialchars($m['nama_mobil']) ?>">
+                      <img
+                        src="<?= htmlspecialchars(get_mobil_image_url($m['foto'] ?? '')) ?>"
+                        alt="<?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil') ?>">
                     </figure>
                   </div>
                   <div class="card-content">
-                    <p class="title is-5"><?= htmlspecialchars($m['nama_mobil']) ?></p>
+                    <p class="title is-5"><?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil') ?></p>
                     <p class="subtitle is-6">
                       Angsuran Rp <?= number_format($m['angsuran'] ?? 0, 0, ',', '.') ?>/bulan
                     </p>
@@ -185,12 +197,12 @@ $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
       <!-- PANE: REKOMENDASI -->
       <div id="tab-rekomendasi" class="tab-pane-mobil is-hidden">
         <div class="columns is-multiline mobil-terbaru-columns" style="
-    background-image: url('../assets/img/Background.jpg');
-    background-size: cover;
-    background-position: center;
-    padding: 50px;
-    border-radius: 30px;
-  ">
+          background-image: url('../assets/img/Background.jpg');
+          background-size: cover;
+          background-position: center;
+          padding: 50px;
+          border-radius: 30px;
+        ">
           <?php if (empty($rekomendasi_mobil)): ?>
             <div class="column has-text-centered">
               <p class="has-text-grey">Belum ada rekomendasi mobil.</p>
@@ -201,12 +213,13 @@ $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
                 <div class="card car-card">
                   <div class="card-image">
                     <figure class="image">
-                      <img src="<?= htmlspecialchars($m['foto'] ?? '../assets/img/placeholder-car.jpg') ?>"
-                        alt="<?= htmlspecialchars($m['nama_mobil']) ?>">
+                      <img
+                        src="<?= htmlspecialchars(get_mobil_image_url($m['foto'] ?? '')) ?>"
+                        alt="<?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil') ?>">
                     </figure>
                   </div>
                   <div class="card-content">
-                    <p class="title is-5"><?= htmlspecialchars($m['nama_mobil']) ?></p>
+                    <p class="title is-5"><?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil') ?></p>
                     <p class="subtitle is-6">
                       Rp <?= number_format($m['full_prize'] ?? 0, 0, ',', '.') ?>
                     </p>
@@ -218,12 +231,8 @@ $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
         </div>
       </div>
 
-
+    </div>
   </section>
-  <!-- End Popular Cars Section -->
-
-
-
   <!-- End Popular Cars Section -->
 
   <!-- Services Section -->
@@ -238,7 +247,8 @@ $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
           <h3 class="subtitle mt-2">Kualitas Terjamin</h3>
           <p>
             Setiap kendaraan telah melalui proses inspeksi menyeluruh untuk memastikan kondisinya terbaik dan siap
-            digunakan. </p>
+            digunakan.
+          </p>
         </div>
         <div class="column is-one-third has-text-centered">
           <span class="icon is-large">
@@ -264,18 +274,12 @@ $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
   </section>
   <!-- End Services Section -->
 
-
-  <!-- End Testimoni Section -->
-
   <!--Section Driver-->
   <section class="section">
     <div class="container has-text-centered">
       <h2 class="title is-3">Dipercaya Pelanggan Selama Lebih dari 30 Tahun</h2>
 
-      <!-- Foto Customer -->
-      <!-- Foto Customer 3 per slide -->
       <div class="customer-slider">
-
         <!-- Slide 1 -->
         <div class="columns is-centered mt-5 customer-slide">
           <div class="column is-one-third">
@@ -342,12 +346,8 @@ $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
             </figure>
           </div>
         </div>
-
       </div>
 
-
-
-      <!-- Dots indikator (simulasi slider/carousel) -->
       <div class="mt-3 has-text-centered">
         <span class="dot is-active"></span>
         <span class="dot"></span>
@@ -377,7 +377,7 @@ $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
         dot.addEventListener("click", () => showSlide(i));
       });
 
-      showSlide(0); // tampilkan slide pertama
+      showSlide(0);
     });
   </script>
 
@@ -388,13 +388,11 @@ $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
 
       tabItems.forEach(li => {
         li.addEventListener('click', () => {
-          // aktifkan tab
           tabItems.forEach(item => item.classList.remove('is-active'));
           li.classList.add('is-active');
 
           const targetId = li.dataset.target;
 
-          // tampilkan pane yang sesuai
           panes.forEach(pane => {
             if (pane.id === targetId) {
               pane.classList.remove('is-hidden');
@@ -406,9 +404,6 @@ $rekomendasi_mobil = array_slice($mobil_list, 3, 3);
       });
     });
   </script>
-
-
-
 
   <!-- Footer -->
   <script src="../assets/js/footer.js" defer></script>

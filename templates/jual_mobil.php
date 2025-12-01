@@ -86,7 +86,7 @@ $faqs = [
             <!-- Kolom teks -->
             <div class="column is-half">
               <h1 class="title is-size-1 has-text-black">
-                FIND AND BUY IT ONLINE
+                Temukan dan Beli Mobilmu Secara Online
               </h1>
             </div>
             <!-- Kolom gambar -->
@@ -104,10 +104,10 @@ $faqs = [
       <div class="container">
         <div class="columns is-centered">
           <div class="column is-half has-text-centered">
-            <h2 class="title is-size-3 has-text-black">1. Choose.</h2>
+            <h2 class="title is-size-3 has-text-black">1. Pilih Mobilnya.</h2>
             <p class="subtitle is-size-5 has-text-black">
-              Once you find a car to buy, decide how you want it. We'll continue
-              chat you to talk next steps.
+              Setelah menemukan mobil yang kamu inginkan, pilih cara pembeliannya. Tim kami akan menghubungimu untuk
+              langkah selanjutnya.
             </p>
           </div>
         </div>
@@ -121,8 +121,9 @@ $faqs = [
                 <span class="icon is-large">
                   <i class="fas fa-globe fa-2x"></i>
                 </span>
-                <h3 class="title is-size-4">Buy Online</h3>
-                <p class="subtitle is-size-6">Order your car online and get it delivered to your door.</p>
+                <h3 class="title is-size-4">Beli Online</h3>
+                <p class="subtitle is-size-6">Pesan mobilmu secara online dan kami akan mengirimkannya langsung ke
+                  alamatmu.</p>
                 <a href="https://wa.me/6281234567890" target="_blank" class="button is-success is-fullwidth mt-3">
                   <span class="icon"><i class="fab fa-whatsapp"></i></span>
                   <span>Chat WhatsApp</span>
@@ -139,8 +140,9 @@ $faqs = [
                 <span class="icon is-large">
                   <i class="fas fa-store fa-2x"></i>
                 </span>
-                <h3 class="title is-size-4">Buy at Dealer</h3>
-                <p class="subtitle is-size-6">Visit our showroom and buy directly from our dealer.</p>
+                <h3 class="title is-size-4">Beli di Dealer</h3>
+                <p class="subtitle is-size-6">Kunjungi showroom kami dan lakukan pembelian langsung bersama tim dealer.
+                </p>
                 <a href="https://maps.google.com/?q=Showroom+KMJ" target="_blank"
                   class="button is-link is-fullwidth mt-3">
                   <span class="icon"><i class="fas fa-map-marker-alt"></i></span>
@@ -158,12 +160,14 @@ $faqs = [
       <div class="container">
         <div class="columns is-vcentered is-half">
           <div class="column is-half">
-            <h2 class="title is-size-3 has-text-black">2. Chat & Buy. We provide remote support along way</h2>
+            <h2 class="title is-size-3 has-text-black">2. Chat & Beli — Kami siap bantu dari mana saja</h2>
+            <p>Tim kami akan mendampingi kamu melalui chat untuk menjelaskan proses, cek ketersediaan mobil, hingga
+              membantu transaksi.</p>
           </div>
           <!-- Kolom gambar-->
           <div class="column is-half has-text-centered">
             <figure class="image is-4by3">
-              <img src="../assets/img/sport car.png" alt="Chat and Buy" style="width: 630px; max-width: auto;" />
+              <img src="../assets/img/jual_mobil-1.avif" alt="Chat and Buy" style="width: 630px; max-width: auto;" />
             </figure>
           </div>
         </div>
@@ -178,13 +182,14 @@ $faqs = [
           <!-- Kolom gambar-->
           <div class="column is-half has-text-centered">
             <figure class="image is-4by3">
-              <img
-                src="https://hips.hearstapps.com/hmg-prod/images/koenigsegg-regera-mmp-1-1591115837.jpg?crop=0.779xw:0.660xh;0.0945xw,0.230xh&resize=1200:*"
-                alt="Chat and Buy" style="width: 630px; max-width: auto;" />
+
+              <img src="../assets/img/jual_mobil-2.avif" alt="Chat and Buy" style="width: 630px; max-width: auto;" />
+
             </figure>
           </div>
           <div class="column is-half">
-            <h2 class="title is-size-3 has-text-black">3. Confirm your purchase and continou in our store</h2>
+            <h2 class="title is-size-3 has-text-black">3. Konfirmasi Pembelian di Showroom</h2>
+            <p>Setelah semuanya sesuai, kunjungi showroom kami untuk proses konfirmasi dan penyelesaian pembelian.</p>
           </div>
         </div>
       </div>
@@ -217,138 +222,131 @@ $faqs = [
 
 
     <!-- ================== LANGKAH 1 ================== -->
-<section class="section pt-0 pb-5">
-  <div class="container">
-    <div class="row align-items-center g-4">
+    <section class="section pt-0 pb-5">
+      <div class="container">
+        <div class="row align-items-center g-4">
 
-      <!-- Gambar kiri -->
-      <div class="col-lg-6 order-lg-1 order-1">
-        <div class="card border-0 shadow-lg rounded-4 overflow-hidden h-100">
-          <div class="position-relative" style="background: linear-gradient(135deg,#0f172a,#1d4ed8);">
+          <!-- Gambar kiri -->
+          <div class="col-lg-6 order-lg-1 order-1">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden h-100">
+              <div class="position-relative" style="background: linear-gradient(135deg,#0f172a,#1d4ed8);">
 
-            <img src="../assets/img/sport car.png"
-                 class="img-fluid w-100"
-                 style="opacity:.9; mix-blend-mode:screen;"
-                 alt="Hubungi Kami">
+                <img src="../assets/img/sport car.png" class="img-fluid w-100"
+                  style="opacity:.9; mix-blend-mode:screen;" alt="Hubungi Kami">
 
-            <!-- Chat Bubble -->
-            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-3">
+                <!-- Chat Bubble -->
+                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-3">
 
-              <div class="bg-white bg-opacity-90 rounded-3 p-2 mb-2 shadow-sm" style="max-width:85%;">
-                <div class="d-flex align-items-center mb-1">
-                  <div class="rounded-circle bg-success d-flex justify-content-center align-items-center me-2"
-                       style="width:22px; height:22px;">
-                    <i class="fab fa-whatsapp text-white" style="font-size:12px;"></i>
+                  <div class="bg-white bg-opacity-90 rounded-3 p-2 mb-2 shadow-sm" style="max-width:85%;">
+                    <div class="d-flex align-items-center mb-1">
+                      <div class="rounded-circle bg-success d-flex justify-content-center align-items-center me-2"
+                        style="width:22px; height:22px;">
+                        <i class="fab fa-whatsapp text-white" style="font-size:12px;"></i>
+                      </div>
+                      <span class="fw-semibold small">KMJ Support</span>
+                    </div>
+                    <p class="mb-0 small text-muted">Halo, kak! Mau jual mobil? Kirim detailnya di sini ya 😊</p>
                   </div>
-                  <span class="fw-semibold small">KMJ Support</span>
+
+                  <div class="ms-auto bg-primary text-white rounded-3 p-2 small shadow-sm" style="max-width:75%;">
+                    Saya mau jual mobil kak, bisa dibantu prosesnya?
+                  </div>
+
                 </div>
-                <p class="mb-0 small text-muted">Halo, kak! Mau jual mobil? Kirim detailnya di sini ya 😊</p>
-              </div>
 
-              <div class="ms-auto bg-primary text-white rounded-3 p-2 small shadow-sm"
-                   style="max-width:75%;">
-                Saya mau jual mobil kak, bisa dibantu prosesnya?
               </div>
-
             </div>
-
           </div>
+
+          <!-- Teks kanan -->
+          <div class="col-lg-6 order-lg-2 order-2">
+            <span class="text-uppercase fw-semibold text-primary small">Langkah 1</span>
+            <h2 class="fw-bold fs-3 mt-2 mb-3">Hubungi Kami</h2>
+
+            <p class="text-muted mb-2">
+              Mulai proses penjualan hanya dengan menghubungi tim kami.
+              Tidak perlu mengisi form apa pun — cukup chat saja.
+            </p>
+
+            <p class="text-muted mb-4">
+              Kami akan menjelaskan proses, estimasi harga, dan jadwal inspeksi sesuai kenyamananmu.
+            </p>
+
+            <a href="https://wa.me/6281234567890" target="_blank"
+              class="btn btn-success btn-lg d-inline-flex align-items-center px-4">
+              <i class="fab fa-whatsapp me-2"></i>Chat via WhatsApp
+            </a>
+
+            <div class="d-flex align-items-center gap-2 mt-3 text-muted small">
+              <i class="fa-regular fa-clock"></i>
+              <span>Respon cepat pada jam kerja</span>
+            </div>
+          </div>
+
         </div>
       </div>
+    </section>
 
-      <!-- Teks kanan -->
-      <div class="col-lg-6 order-lg-2 order-2">
-        <span class="text-uppercase fw-semibold text-primary small">Langkah 1</span>
-        <h2 class="fw-bold fs-3 mt-2 mb-3">Hubungi Kami</h2>
 
-        <p class="text-muted mb-2">
-          Mulai proses penjualan hanya dengan menghubungi tim kami.
-          Tidak perlu mengisi form apa pun — cukup chat saja.
-        </p>
+    <!-- ================== LANGKAH 2 ================== -->
+    <section class="section py-5">
+      <div class="container">
+        <div class="row align-items-center g-4">
 
-        <p class="text-muted mb-4">
-          Kami akan menjelaskan proses, estimasi harga, dan jadwal inspeksi sesuai kenyamananmu.
-        </p>
+          <!-- Teks kiri -->
+          <div class="col-lg-6 order-lg-1 order-2">
+            <span class="text-uppercase fw-semibold text-primary small">Langkah 2</span>
+            <h2 class="fw-bold fs-3 mt-2 mb-3">Chat & Konsultasi</h2>
 
-        <a href="https://wa.me/6281234567890" target="_blank"
-           class="btn btn-success btn-lg d-inline-flex align-items-center px-4">
-          <i class="fab fa-whatsapp me-2"></i>Chat via WhatsApp
-        </a>
+            <p class="text-muted">
+              Setelah kamu menghubungi kami, tim akan melakukan pengecekan singkat
+              melalui chat atau telepon.
+            </p>
 
-        <div class="d-flex align-items-center gap-2 mt-3 text-muted small">
-          <i class="fa-regular fa-clock"></i>
-          <span>Respon cepat pada jam kerja</span>
+            <p class="text-muted mb-4">
+              Kamu bisa menanyakan harga, proses administrasi, estimasi waktu jual,
+              hingga tips agar mobilmu cepat terjual.
+            </p>
+          </div>
+
+          <!-- Gambar kanan -->
+          <div class="col-lg-6 order-lg-2 order-1 text-center">
+            <img src="../assets/img/jual_mobil-1.avif" class="img-fluid rounded-4 shadow-sm w-100" alt="Chat & Konsultasi">
+          </div>
+
         </div>
       </div>
-
-    </div>
-  </div>
-</section>
+    </section>
 
 
-<!-- ================== LANGKAH 2 ================== -->
-<section class="section py-5">
-  <div class="container">
-    <div class="row align-items-center g-4">
+    <!-- ================== LANGKAH 3 ================== -->
+    <section class="section py-5">
+      <div class="container">
+        <div class="row align-items-center g-4">
 
-      <!-- Teks kiri -->
-      <div class="col-lg-6 order-lg-1 order-2">
-        <span class="text-uppercase fw-semibold text-primary small">Langkah 2</span>
-        <h2 class="fw-bold fs-3 mt-2 mb-3">Chat & Konsultasi</h2>
+          <!-- Gambar kiri -->
+          <div class="col-lg-6 order-lg-1 order-1 text-center">
+            <img src="../assets/img/jual_mobil-2.avif" class="img-fluid rounded-4 shadow-sm w-100" alt="Inspeksi & Deal">
+          </div>
 
-        <p class="text-muted">
-          Setelah kamu menghubungi kami, tim akan melakukan pengecekan singkat
-          melalui chat atau telepon.
-        </p>
+          <!-- Teks kanan -->
+          <div class="col-lg-6 order-lg-2 order-2">
+            <span class="text-uppercase fw-semibold text-primary small">Langkah 3</span>
+            <h2 class="fw-bold fs-3 mt-2 mb-3">Inspeksi & Deal di Showroom</h2>
 
-        <p class="text-muted mb-4">
-          Kamu bisa menanyakan harga, proses administrasi, estimasi waktu jual,
-          hingga tips agar mobilmu cepat terjual.
-        </p>
+            <p class="text-muted">
+              Kunjungi showroom untuk pengecekan kondisi mobil secara langsung oleh tim kami.
+            </p>
+
+            <p class="text-muted mb-0">
+              Setelah inspeksi selesai, proses negosiasi & pembayaran bisa langsung diselesaikan
+              secara aman dan transparan.
+            </p>
+          </div>
+
+        </div>
       </div>
-
-      <!-- Gambar kanan -->
-      <div class="col-lg-6 order-lg-2 order-1 text-center">
-        <img src="../assets/img/car-step2.jpg"
-             class="img-fluid rounded-4 shadow-sm w-100"
-             alt="Chat & Konsultasi">
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ================== LANGKAH 3 ================== -->
-<section class="section py-5">
-  <div class="container">
-    <div class="row align-items-center g-4">
-
-      <!-- Gambar kiri -->
-      <div class="col-lg-6 order-lg-1 order-1 text-center">
-        <img src="../assets/img/car-step3.jpg"
-             class="img-fluid rounded-4 shadow-sm w-100"
-             alt="Inspeksi & Deal">
-      </div>
-
-      <!-- Teks kanan -->
-      <div class="col-lg-6 order-lg-2 order-2">
-        <span class="text-uppercase fw-semibold text-primary small">Langkah 3</span>
-        <h2 class="fw-bold fs-3 mt-2 mb-3">Inspeksi & Deal di Showroom</h2>
-
-        <p class="text-muted">
-          Kunjungi showroom untuk pengecekan kondisi mobil secara langsung oleh tim kami.
-        </p>
-
-        <p class="text-muted mb-0">
-          Setelah inspeksi selesai, proses negosiasi & pembayaran bisa langsung diselesaikan
-          secara aman dan transparan.
-        </p>
-      </div>
-
-    </div>
-  </div>
-</section>
+    </section>
 
 
   </div>
