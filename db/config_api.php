@@ -10,8 +10,8 @@ if (
 ) {
 
     // Ganti dengan alamat API lokal kamu
-    define('BASE_API_URL', 'http://192.168.1.41:80/API_kmj');
-    define('IMAGE_URL', 'http://192.168.1.41:80/API_kmj');
+    define('BASE_API_URL', 'http://10.173.89.15:80/API_kmj');
+    define('IMAGE_URL', 'http://10.173.89.15:80/API_kmj');
 
 } else {
     // PRODUKSI (Hosting)

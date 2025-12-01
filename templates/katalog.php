@@ -1,117 +1,27 @@
 <?php
+// SETUP API DULU
 
-// Contoh data mobil (ini bisa diganti query dari database MySQL)
-$mobil = [
-  [
-    "nama" => "ABT XGT Audi R8 Street-Legal Race Car",
-    "harga" => "Rp 799.000.000",
-    "tahun" => "2021",
-    "totalKredit" => "60",
-    "dp" => "Rp. 60.000.000",
-    "kecepatan" => "12.000 km",
-    "gambar" => "../assets/img/1.jpg"
-  ],
-  [
-    "nama" => "Porsche 911 GT3 RS Color Option",
-    "harga" => "Rp 1.299.000.000",
-    "tahun" => "2020",
-    "totalKredit" => "48",
-    "dp" => "Rp 37.000.000",
-    "kecepatan" => "19.000 km",
-    "gambar" => "../assets/img/2.jpg"
-  ],
-  [
-    "nama" => "Buggati Tourbillon Widebody Kit",
-    "harga" => "Rp 2.000.000.000",
-    "tahun" => "2022",
-    "totalKredit" => "60",
-    "dp" => "Rp 98.000.000",
-    "kecepatan" => "10.000 km",
-    "gambar" => "../assets/img/3.jpg"
-  ],
-  [
-    "nama" => "ABT XGT Audi R8 Street-Legal Race Car",
-    "harga" => "Rp 799.000.000",
-    "tahun" => "2021",
-    "totalKredit" => "60",
-    "dp" => "Rp. 60.000.000",
-    "kecepatan" => "12.000 km",
-    "gambar" => "../assets/img/4.jpg"
-  ],
-  [
-    "nama" => "Porsche 911 GT3 RS Color Option",
-    "harga" => "Rp 1.299.000.000",
-    "tahun" => "2020",
-    "totalKredit" => "48",
-    "dp" => "Rp 37.000.000",
-    "kecepatan" => "19.000 km",
-    "gambar" => "../assets/img/5.jpg"
-  ],
-  [
-    "nama" => "Buggati Tourbillon Widebody Kit",
-    "harga" => "Rp 2.000.000.000",
-    "tahun" => "2022",
-    "totalKredit" => "60",
-    "dp" => "Rp 98.000.000",
-    "kecepatan" => "10.000 km",
-    "gambar" => "../assets/img/6.jpg"
-  ],
-  [
-    "nama" => "ABT XGT Audi R8 Street-Legal Race Car",
-    "harga" => "Rp 799.000.000",
-    "tahun" => "2021",
-    "totalKredit" => "60",
-    "dp" => "Rp. 60.000.000",
-    "kecepatan" => "12.000 km",
-    "gambar" => "../assets/img/7.jpg"
-  ],
-  [
-    "nama" => "Porsche 911 GT3 RS Color Option",
-    "harga" => "Rp 1.299.000.000",
-    "tahun" => "2020",
-    "totalKredit" => "48",
-    "dp" => "Rp 37.000.000",
-    "kecepatan" => "19.000 km",
-    "gambar" => "../assets/img/8.jpg"
-  ],
-  [
-    "nama" => "Buggati Tourbillon Widebody Kit",
-    "harga" => "Rp 2.000.000.000",
-    "tahun" => "2022",
-    "totalKredit" => "60",
-    "dp" => "Rp 98.000.000",
-    "kecepatan" => "10.000 km",
-    "gambar" => "../assets/img/9.jpg"
-  ],
-  [
-    "nama" => "ABT XGT Audi R8 Street-Legal Race Car",
-    "harga" => "Rp 799.000.000",
-    "tahun" => "2021",
-    "totalKredit" => "60",
-    "dp" => "Rp. 60.000.000",
-    "kecepatan" => "12.000 km",
-    "gambar" => "../assets/img/10.jpg"
-  ],
-  [
-    "nama" => "Porsche 911 GT3 RS Color Option",
-    "harga" => "Rp 1.299.000.000",
-    "tahun" => "2020",
-    "totalKredit" => "48",
-    "dp" => "Rp 37.000.000",
-    "kecepatan" => "19.000 km",
-    "gambar" => "../assets/img/11.jpg"
-  ],
-  [
-    "nama" => "Buggati Tourbillon Widebody Kit",
-    "harga" => "Rp 2.000.000.000",
-    "tahun" => "2022",
-    "totalKredit" => "60",
-    "dp" => "Rp 98.000.000",
-    "kecepatan" => "10.000 km",
-    "gambar" => "../assets/img/12.jpg"
-  ],
-];
+$title = "katalog";
+
+// path disesuaikan karena katalog.php ada di root WEB_SHOWROOMMOBILKMJ
+require_once __DIR__ . '/../db/config_api.php';
+require_once __DIR__ . '/../db/api_client.php';
+require_once __DIR__ . '/../include/header.php'; // kalau mau pakai konstanta JS juga
+
+// PANGGIL API
+$api = api_get('admin/web_mobil_list.php'); // atau 'user/routes/cars.php' kalau kamu sudah pakai route user
+
+// Bikin pengecekan defensif (aman)
+if (!$api || !isset($api['success']) || !$api['success']) {
+  $mobil = [];
+} else {
+  $mobil = $api['data'] ?? [];
+}
+
+// TOTAL MOBIL
 $jumlahMobil = count($mobil);
+
+// BAHAN BAKAR (ini boleh tetap static dulu)
 $bahanBakar = [
   "Diesel" => 660,
   "Electric" => 1897,
@@ -119,7 +29,15 @@ $bahanBakar = [
   "Hybrid" => 2915,
   "Plug-In Hybrid" => 1256
 ];
+$statusLabelMap = [
+  'available' => 'Available',
+  'reserved' => 'Reserved',
+  'sold' => 'Sold',
+  'shipping' => 'Shipping',
+  'delivered' => 'Delivered',
+];
 ?>
+
 <!DOCTYPE html>
 <html lang="id" data-theme="light">
 
@@ -134,7 +52,8 @@ $bahanBakar = [
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <!--Import Custom CSS-->
   <link rel="stylesheet" href="../assets/css/style.css" />
-  <link rel="stylesheet" href="../assets/css/katalog2.css">
+  <link rel="stylesheet" href="../assets/css/katalog2.css?v=<?= time(); ?>">
+  <link rel="stylesheet" href="../assets/css/wishlist_sidebar.css?v=<?= time(); ?>">
   <!-- Tambahkan Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <!-- icon -->
@@ -144,9 +63,54 @@ $bahanBakar = [
 
 </head>
 
-<body>
+<body class="page-katalog">
   <!-- navbar -->
   <?php include '../templates/navbar_footer/navbar.php'; ?>
+  <?php
+  // Setelah navbar di-include, navbar.php sudah memanggil session_start()
+  
+  // Anggap user "login" kalau minimal nama lengkapnya ada di session
+// (navbar juga pakai full_name untuk nampilkan "maida")
+  $isLoggedIn = isset($_SESSION['full_name']);
+
+  // Ambil kode user dari session kalau ada (boleh user_id atau kode_user)
+  $kodeUser = $_SESSION['user_id'] ?? ($_SESSION['kode_user'] ?? '');
+
+  // Data lain hanya buat info
+  $fullName = $_SESSION['full_name'] ?? '';
+  $email = $_SESSION['email'] ?? '';
+  ?>
+  <?php
+  // =======================
+// AMBIL DATA FAVORIT USER
+// =======================
+  
+  $favoritMobil = []; // array untuk menampung kode_mobil yang difavoritkan user ini
+  
+  if (!empty($kodeUser)) {
+    $favApi = api_get('user/routes/favorites.php?kode_user=' . urlencode($kodeUser));
+
+    if ($favApi && isset($favApi['success']) && $favApi['success']) {
+      // ambil hanya kolom kode_mobil menjadi array sederhana
+      // contoh: ['MOB001', 'MOB005', ...]
+      $favoritMobil = array_column($favApi['data'], 'kode_mobil');
+    }
+  }
+  ?>
+  <script>
+    // dipakai di script favorit
+    const IS_LOGGED_IN = <?= $isLoggedIn ? 'true' : 'false' ?>;
+
+    const CURRENT_USER = {
+      kode_user: "<?= $kodeUser ?>",
+      full_name: "<?= addslashes($fullName) ?>",
+      email: "<?= addslashes($email) ?>"
+    };
+
+    console.log("IS_LOGGED_IN =", IS_LOGGED_IN, "CURRENT_USER =", CURRENT_USER);
+  </script>
+
+
 
   <!-- Card Container -->
   <div class="container-fluid">
@@ -431,73 +395,150 @@ $bahanBakar = [
 
       <!-- Konten Daftar Mobil -->
       <main class="col-lg-9 col-md-8 col-12 order-1 order-md-1" id="catalog-content">
-        <div class="totalMobil mb-4">
-          <h5>Total <?= $jumlahMobil; ?> Mobil Tersedia</h5>
+        <div class="comparison-header d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <span class="comparison-count">
+              <h5>Total <?= $jumlahMobil; ?> Mobil Tersedia</h5>
+            </span>
+          </div>
+
+          <div class="comparison-toggle d-flex align-items-center">
+            <span class="me-2">Perbandingan</span>
+            <div class="form-check form-switch m-0">
+              <input class="form-check-input" type="checkbox" id="togglePerbandingan">
+            </div>
+          </div>
         </div>
-
         <section class="section">
-          <div class="columns is-multiline is-justify-content-left">
+          <div class="row g-4">
+            <?php if (empty($mobil)): ?>
+              <div class="col-12 text-center text-muted py-5">
+                Belum ada data mobil.
+              </div>
+            <?php else: ?>
+              <?php foreach ($mobil as $m): ?>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                  <div class="card car-card shadow-sm h-100">
 
-            <?php foreach ($mobil as $m): ?>
-              <div class="column">
-                <div class="card car-card">
-                  <div class="card-image">
-                    <figure class="image image-wrapper">
-                      <img src="<?= $m['gambar']; ?>" alt="<?= $m['nama']; ?>" class="img_main" />
-                      <span class="icon-favorite"><i class="fa-solid fa-heart"></i></span>
-                    </figure>
-                  </div>
+                    <?php
+                    // gambar: dari API (full URL) atau fallback
+                    $img = !empty($m['foto'])
+                      ? $m['foto']
+                      : '../assets/img/no-image.jpg';
 
-                  <div class="card-content">
-                    <a href="../templates/detail_mobil.php" class="text-decoration-none mb-3 d-inline-block">
-                      <p class="title is-5"><?= $m['nama']; ?></p>
-                    </a>
-                    <p class="ansguran"><?= $m['harga']; ?> x <?= $m['totalKredit']; ?></p>
-                    <p class="uang_dp"><?= $m['dp']; ?></p>
-                    <hr>
+                    // STATUS per mobil
+                    $status = $m['status'] ?? 'available';
+                    $statusLabel = $statusLabelMap[$status] ?? $status;
+                    ?>
+                    <div class="card-image position-relative">
+                      <figure class="image image-wrapper mb-0">
+                        <img src="<?= $img ?>" alt="<?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil Tanpa Nama') ?>"
+                          class="img_main card-img-top">
 
-                    <div class="info">
-                      <img src="../assets/img/kecepatan.jpg" alt="">
-                      <span style="font-size: 15px"><?= $m['kecepatan']; ?></span>
-                      <img src="../assets/img/kalender.jpg" alt="">
-                      <span style="font-size: 20px"><?= $m['tahun']; ?></span>
+                        <!-- STATUS di dalam gambar, pojok kiri atas -->
+                        <span class="status-badge <?= htmlspecialchars($status) ?>">
+                          <?= htmlspecialchars($statusLabel); ?>
+                        </span>
+
+                        <!-- Favorite, pojok kanan atas -->
+                        <?php
+                        // cek apakah mobil ini ada di daftar favorit user
+                        $isFavorit = in_array($m['kode_mobil'], $favoritMobil ?? []);
+                        ?>
+                        <span class="icon-favorite <?= $isFavorit ? 'active' : '' ?>"
+                          data-kode-mobil="<?= htmlspecialchars($m['kode_mobil']) ?>">
+                          <i class="fa-solid fa-heart"></i>
+                        </span>
+
+                      </figure>
                     </div>
 
-                    <div class="titik3 dropdown is-right is-hoverable">
-                      <div class="dropdown-trigger">
-                        <button class="button is-white btn-titik3" aria-haspopup="true" aria-controls="dropdown-menu">
-                          <span class="icon is-small">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                          </span>
-                        </button>
-                      </div>
-                      <div class="dropdown-menu" role="menu">
-                        <div class="dropdown-content">
-                          <a href="#" class="dropdown-item"><i class="fa-solid fa-trash"></i> Hapus dari favorit</a>
-                          <a href="../templates/perbandingan.php" class="dropdown-item"><i class="fa-solid fa-shuffle me-2"></i> Bandingkan</a>
-                          <a href="#" class="dropdown-item"><i class="fa-solid fa-share me-2"></i> Bagikan</a>
-                          <!----- WhatsApp Contact Link -->
-                          <?php
-                          $nomor_wa = "6281234567890";
-                          $pesan = urlencode("Halo, apakah mobil " . $m['nama'] . " masih tersedia?");
-                          ?>
-                          <a href="https://wa.me/<?= $nomor_wa ?>?text=<?= $pesan ?>" target="_blank"
-                            class="dropdown-item">
-                            <i class="fa-brands fa-whatsapp me-2"></i> Hubungi Penjual
-                          </a>
+                    <div class="card-content p-3">
 
-                          <a href="#" class="dropdown-item"><i class="fa-solid fa-car me-2"></i> Fitur & Spesifikasi</a>
+                      <!-- NAMA MOBIL -->
+                      <a href="../templates/detail_mobil.php?kode=<?= urlencode($m['kode_mobil']) ?>"
+                        class="text-decoration-none mb-2 d-inline-block" style="font-size:25px;">
+                        <p class="title is-5 mb-1">
+                          <?= htmlspecialchars($m['nama_mobil'] ?? 'Tanpa Nama') ?>
+                        </p>
+                      </a>
+
+                      <!-- ANGSURAN x TENOR -->
+                      <p class="ansguran mb-1" style="font-size:25px; font-weight:700; color:#111827; margin-bottom:4px;">
+                        Rp <?= number_format($m['angsuran'] ?? 0, 0, ',', '.') ?>
+                        <span style="font-weight:600;">
+                          x <?= htmlspecialchars($m['tenor'] ?? '-') ?>
+                        </span>
+                      </p>
+
+                      <p class="uang_dp mb-2" style="font-size:20px; font-weight:600; color:#111827; margin-bottom:6px;">
+                        Dp Rp <?= number_format($m['dp'] ?? 0, 0, ',', '.') ?>
+                      </p>
+
+
+                      <hr class="my-2">
+
+                      <!-- KM & TAHUN -->
+                      <div class="info d-flex align-items-center gap-2">
+                        <img src="../assets/img/kecepatan.jpg" alt="" style="width:30px;height:30px;">
+                        <span style="font-size: 20px">
+                          <?= number_format($m['jarak_tempuh'] ?? 0, 0, ',', '.'); ?> Km
+                        </span>
+
+                        <img src="../assets/img/kalender.jpg" alt="" class="ms-3" style="width:40px;height:40px;">
+                        <span style="font-size: 20px">
+                          <?= htmlspecialchars($m['tahun_mobil'] ?? '-'); ?>
+                        </span>
+                      </div>
+
+                      <!-- TITIK 3 DROPDOWN -->
+                      <div class="titik3 dropdown is-right is-hoverable mt-2">
+                        <div class="dropdown-trigger">
+                          <button class="button is-white btn-titik3" aria-haspopup="true" aria-controls="dropdown-menu">
+                            <span class="icon is-small">
+                              <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </span>
+                          </button>
+                        </div>
+                        <div class="dropdown-menu" role="menu">
+                          <div class="dropdown-content">
+                            <a href="#" class="dropdown-item">
+                              <i class="fa-solid fa-trash"></i> Hapus dari favorit
+                            </a>
+                            <a href="../templates/perbandingan.php" class="dropdown-item">
+                              <i class="fa-solid fa-shuffle me-2"></i> Bandingkan
+                            </a>
+                            <a href="#" class="dropdown-item">
+                              <i class="fa-solid fa-share me-2"></i> Bagikan
+                            </a>
+
+                            <?php
+                            $nomor_wa = "6281234567890";
+                            $pesan = urlencode("Halo, apakah mobil " . ($m['nama_mobil'] ?? '') . " masih tersedia?");
+                            ?>
+                            <a href="https://wa.me/<?= $nomor_wa ?>?text=<?= $pesan ?>" target="_blank"
+                              class="dropdown-item">
+                              <i class="fa-brands fa-whatsapp me-2"></i> Hubungi Penjual
+                            </a>
+
+                            <a href="../templates/detail_mobil.php?kode=<?= urlencode($m['kode_mobil']) ?>" class="dropdown-item">
+                              <i class="fa-solid fa-car me-2"></i> Fitur &amp; Spesifikasi
+                            </a>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                  </div>
-                </div>
-              </div>
-            <?php endforeach; ?>
+                    </div> <!-- /.card-content -->
+                  </div> <!-- /.card -->
+                </div> <!-- /.col -->
+              <?php endforeach; ?>
 
+
+
+            <?php endif; ?>
           </div>
         </section>
+
       </main>
 
 
@@ -505,11 +546,56 @@ $bahanBakar = [
   </div>
   <script>
     document.querySelectorAll('.icon-favorite').forEach(icon => {
-      icon.addEventListener('click', () => {
-        icon.classList.toggle('active');
+      icon.addEventListener('click', async () => {
+        const kodeMobil = icon.dataset.kodeMobil;
+
+        // ========== 1. Cek sudah login atau belum ==========
+        // ========== 1. Cek sudah login atau belum ==========
+        if (!IS_LOGGED_IN) {
+          const go = confirm('Kamu harus login dulu untuk menambahkan ke favorit. Pergi ke halaman login?');
+          if (go) {
+            const currentUrl = window.location.pathname + window.location.search;
+            window.location.href = '/web_showroommobilKMJ/templates/auth/auth.php?redirect='
+              + encodeURIComponent(currentUrl);
+          }
+          return;
+        }
+
+
+        // ========== 2. Tentukan action: add / remove ==========
+        const isActive = icon.classList.contains('active');
+        const action = isActive ? 'remove' : 'add';
+
+        try {
+          const res = await fetch(BASE_API_URL + '/user/routes/favorites.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              kode_user: CURRENT_USER.kode_user,
+              kode_mobil: kodeMobil,
+              action: action
+            })
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            // toggle tampilan love
+            icon.classList.toggle('active');
+          } else {
+            alert(data.message || 'Gagal mengubah data favorite');
+          }
+        } catch (err) {
+          console.error(err);
+          alert('Terjadi kesalahan koneksi ke server.');
+        }
       });
     });
   </script>
+
+
 
   <!-- footer -->
   <script src="../assets/js/footer.js"></script>

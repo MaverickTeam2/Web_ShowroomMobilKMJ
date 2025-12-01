@@ -44,5 +44,5 @@ require_once '../../db/config_api.php'; // kalau belum dipakai, tetap boleh
 
 <?php include 'partials/footer.php'; ?>
 
-<script src="../../assets/js/inquire.js?v=2"></script>
+<script src="../../assets/js/inquire.js?v=3"></script>
 

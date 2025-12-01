@@ -33,6 +33,10 @@ if ($isEdit) {
 
   // isi data
   $mobilData = $data['mobil'];
+<<<<<<< HEAD
+=======
+  $mobilFitur = array_map('intval', array_column($data['fitur'], 'id_fitur'));
+>>>>>>> 826c8ae43c19f9bcef54d1e909db0b8a6ccb87a7
   $mobilFoto = $data['foto'];
   $mobilFitur = [];
   if (!empty($data['fitur'])) {
@@ -67,7 +71,6 @@ if ($isEdit) {
 </div>
 <form id="formMobil" class="form-no-border" method="POST" enctype="multipart/form-data">
 
-  <input type="hidden" name="kode_user" value="US001">
   <?php if ($isEdit): ?>
     <input type="hidden" name="update" value="1">
     <input type="hidden" name="kode_mobil" value="<?= htmlspecialchars($kodeEdit) ?>">
@@ -346,6 +349,7 @@ if ($isEdit) {
         <label class="form-check"><input type="checkbox" name="fitur[]" value="42" <?= $isEdit && in_array(42, $mobilFitur) ? 'checked' : '' ?>> Tire Pressure Monitoring</label>
       </div>
     </div>
+    <div id="fiturError" class="text-danger small mt-2"></div>
 
     <!-- ================= STATUS MOBIL ================= -->
     <div class="card p-4 shadow-sm mb-4">
@@ -583,16 +587,4 @@ if ($is_direct) {
       });
     });
   })();
-</script>
-
-<!-- untuk input number supaya tidak bisa menginputkan text  -->
-<script>
-  document.querySelectorAll('input[type=number]').forEach(function (input) {
-    input.addEventListener('input', function () {
-      this.value = this.value.replace(/\D/g, '');
-    });
-    input.addEventListener('paste', function (e) {
-      e.preventDefault();
-    });
-  });
 </script>
