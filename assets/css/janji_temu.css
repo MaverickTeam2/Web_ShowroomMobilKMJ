@@ -1,0 +1,382 @@
+/* ============================
+   GLOBAL PAGE
+============================ */
+.page-appointment {
+  background: #ffffff;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ============================
+   TOP NAV FULLSCREEN
+============================ */
+.appointment-topnav {
+  width: 100%;
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.appointment-topnav-inner {
+  max-width: 1200px;
+  height: 64px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.appointment-logo {
+  height: 30px;
+  width: auto;
+  object-fit: contain;
+}
+
+.appointment-topnav-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+}
+
+/* ============================
+   WRAPPER UTAMA
+============================ */
+.appointment-main-wrapper {
+  padding-top: 24px;
+  padding-bottom: 40px;
+}
+
+.appointment-container {
+  max-width: 1180px;
+}
+
+/* HEADER CAR */
+.appointment-car-thumb {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.appointment-main-card {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+/* ============================
+   SIDEBAR STEPPER
+============================ */
+.appointment-sidebar-inner {
+  padding: 22px 20px;
+  background: #fafafa;
+  height: 100%;
+}
+
+.appointment-sidebar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.appointment-steps {
+  margin-top: 8px;
+}
+
+.appointment-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.appointment-step-item .step-label {
+  line-height: 1.3;
+}
+
+.step-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 2px solid #d1d5db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  background: #ffffff;
+  color: #4b5563;
+}
+
+.step-circle--active {
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.step-circle--done {
+  border-color: #16a34a;
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.appointment-step-item.active .step-label {
+  color: #111827;
+  font-weight: 600;
+}
+
+.appointment-step-item.done .step-label {
+  color: #4b5563;
+}
+
+/* ============================
+   KONTEN KANAN
+============================ */
+.appointment-content {
+  padding: 24px 26px;
+}
+
+.appointment-heading {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.appointment-subheading {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* panel tiap step */
+.appointment-step-panel {
+  /* di-hide pakai .d-none dari bootstrap lewat JS */
+}
+
+/* ============================
+   CHOICE CARD (opsi radio)
+============================ */
+.choice-card {
+  display: block;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 10px 16px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  background: #ffffff;
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+
+.choice-card-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.choice-card input[type="radio"] {
+  display: none;
+}
+
+.choice-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: #e5f0ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.choice-avatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.choice-title {
+  font-weight: 600;
+  font-size: 15px;
+  color: #111827;
+}
+
+.choice-desc {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.choice-card:hover {
+  border-color: #c4d3ff;
+  box-shadow: 0 6px 22px rgba(15, 23, 42, 0.08);
+}
+
+/* state aktif (JS kasih class .choice-card--active) */
+.choice-card--active {
+  border-color: #2563eb;
+  background: #f3f6ff;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.18);
+}
+
+.choice-card--active .choice-icon {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.choice-card--active .choice-title {
+  color: #1d4ed8;
+}
+
+/* ============================
+   INPUT TANGGAL / WAKTU / DLL
+============================ */
+.appointment-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.appointment-input {
+  border-radius: 999px;
+  border-color: #d1d5db;
+  font-size: 14px;
+}
+
+.appointment-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+}
+
+textarea.appointment-input {
+  border-radius: 16px;
+}
+
+/* ============================
+   REVIEW CARD (STEP 3)
+============================ */
+.appointment-review-card {
+  border-radius: 18px;
+  border: 1px solid #d1d5db;
+}
+
+.appointment-badge {
+  background: #e5f0ff;
+  color: #1d4ed8;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.appointment-review-dealer {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.appointment-review-thumb img {
+  width: 90px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.appointment-review-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.appointment-review-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.appointment-review-price span {
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.appointment-review-dp {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.appointment-review-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.appointment-review-datetime-text {
+  font-size: 14px;
+  color: #1d4ed8;
+}
+
+/* ============================
+   FOOTER & BUTTONS
+============================ */
+.appointment-bottom-note {
+  font-size: 11px;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
+  padding: 10px 18px 14px;
+}
+
+.appointment-footer .btn-primary,
+.btn.btn-primary.appointment-btn-next {
+  border-radius: 999px;
+  padding: 8px 26px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #2563eb, #0046c7);
+  border: none;
+}
+
+.appointment-footer .btn-primary:hover,
+.btn.btn-primary.appointment-btn-next:hover {
+  background: linear-gradient(90deg, #1d4ed8, #0037a3);
+}
+
+.appointment-link-back {
+  font-size: 14px;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.appointment-link-back:hover {
+  text-decoration: underline;
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+@media (max-width: 767.98px) {
+  .appointment-main-card {
+    border-radius: 0;
+  }
+
+  .appointment-sidebar-inner {
+    padding: 16px 16px 8px;
+  }
+
+  .appointment-content {
+    padding: 18px 16px 24px;
+  }
+
+  .appointment-heading {
+    font-size: 19px;
+  }
+
+  .appointment-topnav-inner {
+    padding: 0 16px;
+  }
+}

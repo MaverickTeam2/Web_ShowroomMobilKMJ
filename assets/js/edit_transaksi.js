@@ -1,8 +1,8 @@
 (() => {
   console.log("📄 edit_transaksi.js aktif");
 
-  const API_GET_TRANSAKSI = `${BASE_API_URL}/admin/transaksi_get.php`;
-  const API_GET_MOBIL     = `${BASE_API_URL}/admin/mobil_get.php`;
+  const API_GET_TRANSAKSI  = `${BASE_API_URL}/admin/transaksi_get.php`;
+  const API_GET_MOBIL      = `${BASE_API_URL}/admin/mobil_get.php`;
   const API_POST_TRANSAKSI = `${BASE_API_URL}/admin/transaksi_post.php`;
 
   const path = window.location.pathname;
@@ -37,7 +37,6 @@
   const statusTransaksi = document.getElementById("statusTransaksi");
   const form            = document.querySelector(".tambah-transaksi-form");
   const namaKreditInput = document.getElementById("namaKredit");
-
 
   const cekKtp = document.getElementById("cekKtp");
   const cekKk  = document.getElementById("cekKk");
@@ -166,6 +165,52 @@
     });
   }
 
+  // ======================================================
+  // 🧪 HELPER VALIDASI (reuse dengan tambah_transaksi)
+  // ======================================================
+
+  const toNumber = (str) =>
+    Number(String(str || "0").replace(/\D/g, ""));
+
+  function validateName(name) {
+    if (!name || name.trim().length < 3) {
+      return "Nama pembeli minimal 3 karakter.";
+    }
+    if (!/^[a-zA-Z\s'.-]+$/.test(name)) {
+      return "Nama pembeli hanya boleh berisi huruf dan spasi.";
+    }
+    return null;
+  }
+
+  function validatePhone(phone) {
+    if (!phone) return "Nomor HP wajib diisi.";
+
+    if (!/^[0-9]+$/.test(phone)) {
+      return "Nomor HP tidak boleh mengandung huruf atau simbol.";
+    }
+    if (!phone.startsWith("08")) {
+      return "Nomor HP harus dimulai dengan 08 (bukan +62).";
+    }
+    if (phone.length < 10 || phone.length > 13) {
+      return "Nomor HP harus 10–13 digit.";
+    }
+    return null;
+  }
+
+  function validatePrice(num, label) {
+    if (isNaN(num) || num <= 0) {
+      return `${label} harus berupa angka dan lebih dari 0.`;
+    }
+    return null;
+  }
+
+  function validateNote(note) {
+    if (note.length > 255) {
+      return "Catatan maksimal 255 karakter.";
+    }
+    return null;
+  }
+
   // ============= LOAD DETAIL TRANSAKSI (prefill form) =============
   async function loadTransaksiDetail() {
     try {
@@ -219,65 +264,111 @@
   // panggil saat halaman dibuka
   loadTransaksiDetail().catch((e) => console.error(e));
 
-//SUBMIT UPDATE TRANSAKSI
-if (form) {
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  // ======================================================
+  // 🚀 SUBMIT UPDATE TRANSAKSI
+  // ======================================================
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const payload = {
-      action: "update",
-      kode_transaksi: kodeTransaksi,
-      nama_pembeli: namaPembeli.value.trim(),
-      no_hp: noHp.value.trim(),
-      tipe_pembayaran: jenisPembayaran.value.trim(),
-      harga_akhir: Number(String(dealPrice.value).replace(/\D/g, "")),
-      kode_mobil: jenisMobil.value.trim(),
-      status: statusTransaksi.value.trim(),
-      note: noteInput ? noteInput.value.trim() : "",
-        // ⬇️ ambil dari PHP yang disuntik lewat window.CURRENT_USER
-      kode_user: window.CURRENT_USER?.kode_user ?? null,
-      nama_kredit: namaKreditInput ? namaKreditInput.value.trim() : "",
+      const namaVal   = namaPembeli.value.trim();
+      const noHpVal   = noHp.value.trim();
+      const dealNum   = toNumber(dealPrice.value);
+      const noteVal   = noteInput ? noteInput.value.trim() : "";
+      const namaKred  = namaKreditInput ? namaKreditInput.value.trim() : "";
+      const tipeBayar = (jenisPembayaran?.value || "").toLowerCase();
 
-      jaminan_ktp:      cekKtp?.checked ? 1 : 0,
-      jaminan_kk:       cekKk?.checked ? 1 : 0,
-      jaminan_rekening: cekRek?.checked ? 1 : 0,
-    };
-
-
-    console.log("📤 Payload UPDATE:", payload);
-
-    try {
-      const res = await fetch(API_POST_TRANSAKSI, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      const text = await res.text();
-      console.log("📥 RAW RESPONSE UPDATE:", text);
-
-      let json;
-      try {
-        json = JSON.parse(text);
-      } catch (err) {
-        throw new Error("Response bukan JSON valid");
+      const errName = validateName(namaVal);
+      if (errName) {
+        alert(errName);
+        return;
       }
 
-    if (!res.ok || (json.code && json.code !== "200")) {
-      alert(json.message || "Gagal update transaksi");
-      return;
-    }
+      const errPhone = validatePhone(noHpVal);
+      if (errPhone) {
+        alert(errPhone);
+        return;
+      }
 
-      alert("Transaksi berhasil diperbarui!");
-      window.location.href = "transaksi.php";
-    } catch (err) {
-      console.error("❌ ERROR UPDATE:", err);
-      alert("Terjadi kesalahan saat update transaksi.");
-    }
-  });
-}
+      const errPrice = validatePrice(dealNum, "Deal Price");
+      if (errPrice) {
+        alert(errPrice);
+        return;
+      }
 
+      if (!jenisMobil || !jenisMobil.value) {
+        alert("Jenis mobil harus dipilih.");
+        return;
+      }
+
+      const errNote = validateNote(noteVal);
+      if (errNote) {
+        alert(errNote);
+        return;
+      }
+
+      if (tipeBayar === "kredit") {
+        if (!cekKtp?.checked && !cekKk?.checked && !cekRek?.checked) {
+          alert("Minimal pilih 1 jaminan untuk pembayaran kredit.");
+          return;
+        }
+        if (!namaKred) {
+          alert("Nama kredit wajib diisi untuk pembayaran kredit.");
+          return;
+        }
+      }
+
+      const payload = {
+        action: "update",
+        kode_transaksi: kodeTransaksi,
+        nama_pembeli: namaVal,
+        no_hp: noHpVal,
+        tipe_pembayaran: jenisPembayaran.value.trim(),
+        harga_akhir: dealNum,
+        kode_mobil: jenisMobil.value.trim(),
+        status: statusTransaksi.value.trim(),
+        note: noteVal,
+        // ambil dari PHP yang disuntik lewat window.CURRENT_USER
+        kode_user: window.CURRENT_USER?.kode_user ?? null,
+        nama_kredit: namaKred,
+        jaminan_ktp:      cekKtp?.checked ? 1 : 0,
+        jaminan_kk:       cekKk?.checked ? 1 : 0,
+        jaminan_rekening: cekRek?.checked ? 1 : 0,
+      };
+
+      console.log("📤 Payload UPDATE:", payload);
+
+      try {
+        const res = await fetch(API_POST_TRANSAKSI, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const text = await res.text();
+        console.log("📥 RAW RESPONSE UPDATE:", text);
+
+        let json;
+        try {
+          json = JSON.parse(text);
+        } catch (err) {
+          throw new Error("Response bukan JSON valid");
+        }
+
+        if (!res.ok || (json.code && json.code !== "200")) {
+          alert(json.message || "Gagal update transaksi");
+          return;
+        }
+
+        alert("Transaksi berhasil diperbarui!");
+        window.location.href = "transaksi.php";
+      } catch (err) {
+        console.error("❌ ERROR UPDATE:", err);
+        alert("Terjadi kesalahan saat update transaksi.");
+      }
+    });
+  }
 })();
