@@ -5,6 +5,10 @@ require_once __DIR__ . '/../db/config_api.php';
 require_once __DIR__ . '/../db/api_client.php';
 require_once __DIR__ . '/../include/header.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $kode = $_GET['kode'] ?? '';
 
 if (!$kode) {
@@ -51,6 +55,39 @@ if (empty($images)) {
   $images[] = '../assets/img/no-image.jpg';
 }
 
+// =====================
+// RECENTLY VIEWED (simpan ke session)
+// ===================== NURIL ====================
+$recent = $_SESSION['recently_viewed'] ?? [];
+$MAX_RECENT = 7; // batas tampilan
+
+$newItem = [
+    'kode_mobil'   => $mobil['kode_mobil']   ?? '',
+    'nama_mobil'   => $mobil['nama_mobil']   ?? '',
+    'foto'         => $images[0]             ?? '../assets/img/no-image.jpg',
+    'angsuran'     => $mobil['angsuran']     ?? 0,
+    'tenor'        => $mobil['tenor']        ?? 0,
+    'dp'           => $mobil['uang_muka']    ?? 0,
+    'jarak_tempuh' => $mobil['jarak_tempuh'] ?? 0,
+    'tahun_mobil'  => $mobil['tahun_mobil']  ?? '',
+];
+
+// hapus mobil yang sama (agar tidak duplikat)
+$recent = array_filter($recent, function ($item) use ($newItem) {
+    return ($item['kode_mobil'] ?? '') !== $newItem['kode_mobil'];
+});
+
+// tambahkan di urutan paling awal
+array_unshift($recent, $newItem);
+
+// potong list agar hanya menyimpan max 7
+$recent = array_slice($recent, 0, $MAX_RECENT);
+
+// simpan kembali ke session
+$_SESSION['recently_viewed'] = $recent;
+
+//===============NURIL END =====================
+
 // Group fitur per kategori biar rapi
 $fiturByKategori = [];
 foreach ($fitur as $f) {
@@ -60,6 +97,8 @@ foreach ($fitur as $f) {
   }
   $fiturByKategori[$kat][] = $f['nama_fitur'] ?? ('Fitur #' . $f['id_fitur']);
 }
+
+
 $kategoriIcon = [
   'Keselamatan' => 'fa-shield-halved',
   'Kenyamanan & Hiburan' => 'fa-music',
@@ -473,9 +512,22 @@ if ($apiList && !empty($apiList['success']) && $apiList['success']) {
             </p>
 
             <!-- TOMBOL KUNING -->
-            <a href="#formBooking" class="booking-cta-btn w-100 text-center d-inline-block">
-              Get Started
-            </a>
+            <?php if (($mobil['status'] ?? 'available') === 'available'): ?>
+  <a
+    href="janji_temu.php?kode=<?= urlencode($mobil['kode_mobil']); ?>"
+    class="booking-cta-btn w-100 text-center d-inline-block"
+  >
+    Get Started
+  </a>
+<?php else: ?>
+  <span
+    class="booking-cta-btn w-100 text-center d-inline-block"
+    style="background:#d1d5db; cursor:not-allowed;"
+  >
+    Tidak tersedia
+  </span>
+<?php endif; ?>
+
 
             <!-- FOOTER SHOWROOM -->
             <p class="booking-footer mt-3 mb-0 text-center">

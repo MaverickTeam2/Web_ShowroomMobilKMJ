@@ -25,7 +25,6 @@
   const fieldNamaKredit = document.getElementById("field-nama-kredit");
   const namaKreditInput = document.getElementById("namaKredit");
 
-
   const toNumMobil  = (v) => Number(v || 0);
   const toIDRMobil  = (n) => "Rp " + toNumMobil(n).toLocaleString("id-ID");
   const showPrev    = () => mobilPreview && mobilPreview.classList.remove("d-none");
@@ -106,37 +105,10 @@
   // 🔍 AMBIL DETAIL MOBIL + FOTO UNTUK PREVIEW
   // ======================================================
   async function handleMobilChange() {
-  const idMobil = (jenisMobil && jenisMobil.value ? jenisMobil.value : "").trim();
+    const idMobil = (jenisMobil && jenisMobil.value ? jenisMobil.value : "").trim();
 
-  // kalau belum pilih apa-apa
-  if (!idMobil) {
-    hidePrev();
-    setTipe("-");
-    if (fullPrice) fullPrice.value = "";
-    if (dealPrice) dealPrice.value = "";
-    return;
-  }
-
-  try {
-    const res = await fetch(
-      `${API_GET_MOBIL}?id=${encodeURIComponent(idMobil)}`,
-      { headers: { Accept: "application/json" } }
-    );
-
-    const raw = await res.text();
-    let data;
-
-    try {
-      data = JSON.parse(raw);
-    } catch (e) {
-      console.error("❌ Detail mobil bukan JSON valid:", raw);
-      throw new Error("Response detail mobil bukan JSON valid: " + raw.slice(0, 150));
-    }
-
-    console.log("📦 Data mobil:", data);
-
-    // kalau status bukan ok
-    if (!data || data.code !== "200") {
+    // kalau belum pilih apa-apa
+    if (!idMobil) {
       hidePrev();
       setTipe("-");
       if (fullPrice) fullPrice.value = "";
@@ -144,55 +116,78 @@
       return;
     }
 
-    // ==== SET PREVIEW MOBIL ====
-    if (mobilImage)   mobilImage.src          = buildFotoUrl(data.foto);
-    if (mobilNama)    mobilNama.textContent   = data.nama_mobil || "-";
+    try {
+      const res = await fetch(
+        `${API_GET_MOBIL}?id=${encodeURIComponent(idMobil)}`,
+        { headers: { Accept: "application/json" } }
+      );
 
-    // Rp. 7.998.000 x 60
-    if (mobilHarga) {
-      if (data.angsuran && data.tenor) {
-        mobilHarga.textContent = `${toIDRMobil(data.angsuran)} x ${data.tenor}`;
-      } else {
-        mobilHarga.textContent = "-";
+      const raw = await res.text();
+      let data;
+
+      try {
+        data = JSON.parse(raw);
+      } catch (e) {
+        console.error("❌ Detail mobil bukan JSON valid:", raw);
+        throw new Error("Response detail mobil bukan JSON valid: " + raw.slice(0, 150));
       }
+
+      console.log("📦 Data mobil:", data);
+
+      // kalau status bukan ok
+      if (!data || data.code !== "200") {
+        hidePrev();
+        setTipe("-");
+        if (fullPrice) fullPrice.value = "";
+        if (dealPrice) dealPrice.value = "";
+        return;
+      }
+
+      // ==== SET PREVIEW MOBIL ====
+      if (mobilImage)   mobilImage.src          = buildFotoUrl(data.foto);
+      if (mobilNama)    mobilNama.textContent   = data.nama_mobil || "-";
+
+      if (mobilHarga) {
+        if (data.angsuran && data.tenor) {
+          mobilHarga.textContent = `${toIDRMobil(data.angsuran)} x ${data.tenor}`;
+        } else {
+          mobilHarga.textContent = "-";
+        }
+      }
+
+      if (mobilDetail) {
+        mobilDetail.textContent = data.dp
+          ? `Dp ${toIDRMobil(data.dp)}`
+          : "-";
+      }
+
+      if (mobilKm)      mobilKm.textContent     = `${toNumMobil(data.km).toLocaleString("id-ID")} Km`;
+      if (mobilTahun)   mobilTahun.textContent  = data.tahun || "-";
+
+      setTipe(data.tipe || "-");
+
+      // ==== ISI OTOMATIS FULL PRICE & DEAL PRICE ====
+      if (fullPrice) {
+        fullPrice.value = data.full_price
+          ? toIDRMobil(data.full_price)
+          : "";
+      }
+
+      if (dealPrice) {
+        dealPrice.value = data.full_price
+          ? toIDRMobil(data.full_price)
+          : "";
+      }
+
+      showPrev();
+    } catch (err) {
+      console.error("❌ Gagal ambil data mobil:", err);
+      hidePrev();
+      setTipe("-");
+      if (fullPrice) fullPrice.value = "";
+      if (dealPrice) dealPrice.value = "";
     }
-
-    // Dp Rp. 39.000.000
-    if (mobilDetail) {
-      mobilDetail.textContent = data.dp
-        ? `Dp ${toIDRMobil(data.dp)}`
-        : "-";
-    }
-
-    if (mobilKm)      mobilKm.textContent     = `${toNumMobil(data.km).toLocaleString("id-ID")} Km`;
-    if (mobilTahun)   mobilTahun.textContent  = data.tahun || "-";
-
-    setTipe(data.tipe || "-");
-
-    // ==== ISI OTOMATIS FULL PRICE & DEAL PRICE ====
-    if (fullPrice) {
-      fullPrice.value = data.full_price
-        ? toIDRMobil(data.full_price)
-        : "";
-    }
-
-    // kalau mau deal price default = full price
-    if (dealPrice) {
-      dealPrice.value = data.full_price
-        ? toIDRMobil(data.full_price)
-        : "";
-    }
-
-    showPrev();
-  } catch (err) {
-    console.error("❌ Gagal ambil data mobil:", err);
-    hidePrev();
-    setTipe("-");
-    if (fullPrice) fullPrice.value = "";
-    if (dealPrice) dealPrice.value = "";
   }
-}
-
 
   function setTipe(v) {
     if (!tipeMobilInput) return;
@@ -209,7 +204,7 @@
   }
 
   // ======================================================
-  // 🚀 SUBMIT FORM → API create transaksi (POST)
+  // 🧪 HELPER VALIDASI
   // ======================================================
 
   const form        = document.querySelector(".tambah-transaksi-form");
@@ -217,40 +212,124 @@
   const namaPembeli = document.getElementById("namaPembeli");
   const noHp        = document.getElementById("noHp");
   const dealPrice   = document.getElementById("dealPrice");
-  const fullPrice = document.getElementById("fullPrice");
-  const noteInput   = document.getElementById("catatan"); 
+  const fullPrice   = document.getElementById("fullPrice");
+  const noteInput   = document.getElementById("catatan");
   const statusTransaksi = document.getElementById("statusTransaksi");
   const cekKtp      = document.getElementById("cekKtp");
   const cekKk       = document.getElementById("cekKk");
   const cekRek      = document.getElementById("cekRekening");
   const namaKredit  = document.getElementById("namaKredit");
 
-
-
   const toNumber = (str) =>
     Number(String(str || "0").replace(/\D/g, ""));
+
+  function validateName(name) {
+    if (!name || name.trim().length < 3) {
+      return "Nama pembeli minimal 3 karakter.";
+    }
+    if (!/^[a-zA-Z\s'.-]+$/.test(name)) {
+      return "Nama pembeli hanya boleh berisi huruf dan spasi.";
+    }
+    return null;
+  }
+
+  function validatePhone(phone) {
+    if (!phone) return "Nomor HP wajib diisi.";
+
+    if (!/^[0-9]+$/.test(phone)) {
+      return "Nomor HP tidak boleh mengandung huruf atau simbol.";
+    }
+    if (!phone.startsWith("08")) {
+      return "Nomor HP harus dimulai dengan 08 (bukan +62).";
+    }
+    if (phone.length < 10 || phone.length > 13) {
+      return "Nomor HP harus 10–13 digit.";
+    }
+    return null;
+  }
+
+  function validatePrice(num, label) {
+    if (isNaN(num) || num <= 0) {
+      return `${label} harus berupa angka dan lebih dari 0.`;
+    }
+    return null;
+  }
+
+  function validateNote(note) {
+    if (note.length > 255) {
+      return "Catatan maksimal 255 karakter.";
+    }
+    return null;
+  }
+
+  // ======================================================
+  // 🚀 SUBMIT FORM → API create transaksi (POST)
+  // ======================================================
 
   if (form) {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const note = (noteInput?.value || "").trim();
-      const namaKredit = (namaKreditInput?.value || "").trim();
+      // ===== VALIDASI INPUT =====
+      const namaVal  = namaPembeli.value.trim();
+      const noHpVal  = noHp.value.trim();
+      const dealNum  = toNumber(dealPrice.value);
+      const noteVal  = (noteInput?.value || "").trim();
+      const namaKred = (namaKreditInput?.value || "").trim();
+      const tipeBayar = (jenisPembayaran?.value || "").toLowerCase();
 
+      const errName = validateName(namaVal);
+      if (errName) {
+        alert(errName);
+        return;
+      }
 
+      const errPhone = validatePhone(noHpVal);
+      if (errPhone) {
+        alert(errPhone);
+        return;
+      }
+
+      const errPrice = validatePrice(dealNum, "Deal Price");
+      if (errPrice) {
+        alert(errPrice);
+        return;
+      }
+
+      if (!jenisMobil || !jenisMobil.value) {
+        alert("Silakan pilih jenis mobil terlebih dahulu.");
+        return;
+      }
+
+      const errNote = validateNote(noteVal);
+      if (errNote) {
+        alert(errNote);
+        return;
+      }
+
+      if (tipeBayar === "kredit") {
+        if (!cekKtp?.checked && !cekKk?.checked && !cekRek?.checked) {
+          alert("Minimal pilih 1 jaminan untuk pembayaran kredit.");
+          return;
+        }
+        if (!namaKred) {
+          alert("Nama kredit wajib diisi untuk pembayaran kredit.");
+          return;
+        }
+      }
+
+      // ===== SUSUN PAYLOAD =====
       const payload = {
         action: "create",
-        nama_pembeli: namaPembeli.value.trim(),
-        no_hp: noHp.value.trim(),
+        nama_pembeli: namaVal,
+        no_hp: noHpVal,
         tipe_pembayaran: jenisPembayaran.value,
-        harga_akhir: toNumber(dealPrice.value),
+        harga_akhir: dealNum,
         kode_mobil: jenisMobil.value,
-        status: statusTransaksi.value, 
-        note: note,
-        nama_kredit: namaKredit,
-
-         kode_user: kodeUserFromForm,
-
+        status: statusTransaksi ? statusTransaksi.value : "pending",
+        note: noteVal,
+        nama_kredit: namaKred,
+        kode_user: kodeUserFromForm,
         jaminan_ktp:      cekKtp?.checked ? 1 : 0,
         jaminan_kk:       cekKk?.checked ? 1 : 0,
         jaminan_rekening: cekRek?.checked ? 1 : 0,
