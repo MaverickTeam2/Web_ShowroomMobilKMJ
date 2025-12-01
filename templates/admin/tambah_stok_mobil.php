@@ -33,8 +33,17 @@ if ($isEdit) {
 
   // isi data
   $mobilData = $data['mobil'];
-  $mobilFitur = $data['fitur'];
   $mobilFoto = $data['foto'];
+  $mobilFitur = [];
+  if (!empty($data['fitur'])) {
+    foreach ($data['fitur'] as $f) {
+        if (is_array($f)) {
+            $mobilFitur[] = (int) ($f['id_fitur'] ?? 0);
+        } else if (is_object($f)) {
+            $mobilFitur[] = (int) ($f->id_fitur ?? 0);
+        }
+    }
+}
 }
 
 

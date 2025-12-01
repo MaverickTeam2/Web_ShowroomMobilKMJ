@@ -648,11 +648,14 @@ if (!$api['success']) {
     </div>
   `;
       } else {
-        fitur.forEach(id => {
-          const col = document.createElement("div");
-          col.className = "col-md-4 col-sm-6"; // md: 3 per baris, sm: 2 per baris
+        fitur.forEach(f => {
+    // Ambil id fitur dari objek
+    const id = f.id_fitur || f.id || parseInt(f);
 
-          col.innerHTML = `
+    const col = document.createElement("div");
+    col.className = "col-md-4 col-sm-6";
+
+    col.innerHTML = `
       <div 
         class="alert alert-info d-flex align-items-center py-2 px-3 mb-0"
         style="font-size:16px; font-weight:600; border-radius:10px;"
@@ -662,8 +665,8 @@ if (!$api['success']) {
       </div>
     `;
 
-          fiturWrap.appendChild(col);
-        });
+    fiturWrap.appendChild(col);
+});
       }
 
       // ====== tampilkan modal ======
