@@ -59,13 +59,38 @@ function initMobilForm() {
       }
     }
 
-    // kalau sudah lolos validasi, baru lanjut submit
+    // ✅ CEK: User sudah login atau belum
+    // ✅ CEK: User sudah login atau belum
+let kodeUser = null;
+
+// 1) Pakai variabel global dari PHP (diisi di manajemen_mobil.php / tambah_stok_mobil.php)
+if (typeof window !== "undefined" && window.KMJ_KODE_USER) {
+  kodeUser = window.KMJ_KODE_USER;
+}
+
+// ❌ JANGAN fallback ke storage lagi di kasus ini
+// (supaya nggak ketarik US001 dari localStorage lama)
+
+// kalau tetap kosong → anggap belum login
+if (!kodeUser) {
+  alert("⚠️ Session login tidak ditemukan. Silakan login ulang.");
+  console.error("❌ [mobil.js] kode_user tidak ditemukan (KMJ_KODE_USER kosong)");
+  window.location.href = "../../auth/auth.php"; // atau login.php, sesuaikan
+  return;
+}
+
+console.log("✅ [mobil.js] kode_user ditemukan dari PHP:", kodeUser);
+
+
     // kalau sudah lolos validasi, baru lanjut submit
     isSubmitting = true;
 
     const formData = new FormData(this);
+    
+    // ✅ TAMBAHKAN kode_user ke FormData
+    formData.append('kode_user', kodeUser);
+    console.log("📦 [mobil.js] kode_user ditambahkan ke FormData:", kodeUser);
 
-<<<<<<< HEAD
     // ✅ ========== HANDLER FOTO TAMBAHAN (WEB) ==========
     const fotoTambahanInput = document.querySelector('input[name="foto_tambahan[]"]');
     
@@ -105,24 +130,6 @@ function initMobilForm() {
         console.log(`  ${pair[0]}: ${pair[1]}`);
       }
     }
-=======
-    // 🔁 CEK LAGI: pastikan fitur[] benar-benar terkirim di FormData
-    const fiturValues = formData.getAll("fitur[]"); // ini baca semua nilai checkbox fitur
-    console.log("🔍 [mobil.js] fitur[] di FormData:", fiturValues);
-
-    if (!fiturValues || fiturValues.length === 0) {
-      // kalau entah kenapa kosong, jangan kirim ke API
-      const fiturError = document.getElementById("fiturError");
-      if (fiturError) {
-        fiturError.textContent = "Pilih minimal 1 fitur atau spesifikasi mobil.";
-      }
-      isSubmitting = false;
-      return;
-    }
-
-    // (optional) debug: lihat apa saja yang dikirim
-    console.log("📤 [mobil.js] Data siap dikirim:", Array.from(formData.entries()));
->>>>>>> 826c8ae43c19f9bcef54d1e909db0b8a6ccb87a7
 
     try {
       const url = `${BASE_API_URL}/admin/mobil_tambah.php`;
@@ -130,7 +137,7 @@ function initMobilForm() {
 
       const response = await fetch(url, {
         method: "POST",
-        body: formData,
+        body: formData, // ✅ PERBAIKAN: Supaya session cookie terkirim
       });
 
       console.log("📡 [mobil.js] HTTP status:", response.status);
@@ -292,7 +299,7 @@ dropzones.forEach((dz) => {
 // MODE EDIT - Load Foto Lama
 // =========================
 if (window.existingMobilFoto) {
-  console.log("🔄 [mobil.js] Mode EDIT terdeteksi — load foto lama...");
+  console.log("📄 [mobil.js] Mode EDIT terdeteksi — load foto lama...");
   console.log("📷 [mobil.js] Foto existing:", window.existingMobilFoto);
 
   window.existingMobilFoto.forEach((f) => {

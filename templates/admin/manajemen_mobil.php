@@ -1,6 +1,11 @@
 <?php
 $title = "manajemen_mobil";
 
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+$kodeUserSession = $_SESSION['kode_user'] ?? null;
+
 include '../../db/config_api.php';
 include '../../db/api_client.php';   // ⬅️ PENTING: pakai API_Client
 include 'partials/header.php';
@@ -9,6 +14,7 @@ include '../../include/header.php';
 
 $api = api_get('admin/web_mobil_list.php');
 
+
 if (!$api['success']) {
   $mobils = [];
 } else {
@@ -16,7 +22,11 @@ if (!$api['success']) {
 }
 ?>
 
-
+<script>
+  // Global kode user untuk halaman manajemen (mode non-SPA)
+  window.KMJ_KODE_USER = <?= json_encode($kodeUserSession) ?>;
+  console.log('[manajemen_mobil.php] KMJ_KODE_USER dari PHP:', window.KMJ_KODE_USER);
+</script>
 <section id="content">
   <nav>
     <i class='bx bx-menu'></i>
@@ -650,15 +660,8 @@ if (!$api['success']) {
   `;
       } else {
         fitur.forEach(f => {
-<<<<<<< HEAD
     // Ambil id fitur dari objek
     const id = f.id_fitur || f.id || parseInt(f);
-=======
-          const id = parseInt(f.id_fitur, 10); // AMBIL ID FITUR DARI OBJECT
-
-          const col = document.createElement("div");
-          col.className = "col-md-4 col-sm-6";
->>>>>>> 826c8ae43c19f9bcef54d1e909db0b8a6ccb87a7
 
     const col = document.createElement("div");
     col.className = "col-md-4 col-sm-6";
@@ -672,15 +675,9 @@ if (!$api['success']) {
         <span>${FITUR_MAP[id] || ("Fitur ID " + id)}</span>
       </div>
     `;
-<<<<<<< HEAD
 
     fiturWrap.appendChild(col);
 });
-=======
-          
-          fiturWrap.appendChild(col);
-        });
->>>>>>> 826c8ae43c19f9bcef54d1e909db0b8a6ccb87a7
       }
 
 

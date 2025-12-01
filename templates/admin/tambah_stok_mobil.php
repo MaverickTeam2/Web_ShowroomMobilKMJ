@@ -18,7 +18,14 @@ if ($is_direct) {
   include '../../db/config_api.php';   // ← supaya IMAGE_URL bisa dipakai
 }
 
+// ✅ Ambil kode_user dari SESSION (login via auth_session.php)
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+$kodeUserSession = $_SESSION['kode_user'] ?? null;
+
 $kodeEdit = $_GET['kode'] ?? null;
+
 $isEdit = !empty($kodeEdit);
 
 if ($isEdit) {
@@ -33,10 +40,7 @@ if ($isEdit) {
 
   // isi data
   $mobilData = $data['mobil'];
-<<<<<<< HEAD
-=======
   $mobilFitur = array_map('intval', array_column($data['fitur'], 'id_fitur'));
->>>>>>> 826c8ae43c19f9bcef54d1e909db0b8a6ccb87a7
   $mobilFoto = $data['foto'];
   $mobilFitur = [];
   if (!empty($data['fitur'])) {
@@ -53,6 +57,11 @@ if ($isEdit) {
 
 
 ?>
+<script data-page-script="true">
+  window.KMJ_KODE_USER = <?= json_encode($kodeUserSession) ?>;
+  console.log('[tambah_stok_mobil.php] KMJ_KODE_USER dari PHP:', window.KMJ_KODE_USER);
+</script>
+
 <link rel="stylesheet" href="../../assets/css/admin/tambah_stok_mobil.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
