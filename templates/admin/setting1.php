@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 $title = "Settings";
 include 'partials/header.php';

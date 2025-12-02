@@ -1,253 +1,148 @@
-<?php include '../templates/navbar_footer/navbar.php'; ?>
-
+<?php
+// =======================================
+// Ambil parameter dari URL
+// Hanya pakai KODE MOBIL (car1 & car2)
+// =======================================
+$car1Code = isset($_GET['car1']) ? $_GET['car1'] : '';
+$car2Code = isset($_GET['car2']) ? $_GET['car2'] : '';
+?>
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Import Bulma-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
-  <!--Import Font Awesome-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <!--import css Perbandingan-->
   <link rel="stylesheet" href="../assets/css/perbandingan.css" />
-  <!--Import Custom CSS-->
-  <link rel="stylesheet" href="../assets/css/style.css" />
-
   <title>Perbandingan Mobil</title>
 </head>
-
 <body>
-  <section class="section">
-    <div class="container">
-      <div class="columns is-centered">
-        <div class="column is-half has-text-centered">
-          <h1 class="title is-4">Perbandingan Mobil</h1>
-        </div>
+
+<!--
+  data-car1 & data-car2 dipakai perbandingan.js
+  supaya bisa langsung tau kode mobil mana yg mau dibandingkan.
+-->
+<section
+  class="section compare-section"
+  data-car1="<?php echo htmlspecialchars($car1Code); ?>"
+  data-car2="<?php echo htmlspecialchars($car2Code); ?>"
+>
+  <div class="container is-fluid">
+
+    <!-- ===== HEADER + INFO MOBIL (STICKY) ===== -->
+    <header class="compare-header-sticky">
+
+      <!-- Bar atas: back + title -->
+      <div class="compare-header-bar">
+        <a href="../templates/katalog.php" class="compare-back-link">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Kembali ke daftar mobil</span>
+        </a>
+        <h1 class="compare-header-title">Perbandingan Mobil</h1>
       </div>
 
-      <div class="columns is-variable is-6 is-multiline has-text-centered">
-        <div class="column is-half">
-          <div class="card" style="max-width: 480px; margin: 0 auto">
-            <div class="card-image">
-              <figure class="image" style="margin: 0">
-                <img
-                  src="https://hips.hearstapps.com/hmg-prod/images/koenigsegg-regera-mmp-1-1591115837.jpg?crop=0.779xw:0.660xh;0.0945xw,0.230xh&resize=1200:*"
-                  alt="Koenigsegg Regera" style="
-                      width: 100%;
-                      height: auto;
-                      border: none;
-                      box-shadow: none;
-                    " />
-              </figure>
-            </div>
-            <div class="card-content" style="padding-top: 1rem">
-              <p class="title is-5 mt-3">Koenigsegg Regera</p>
-              <button class="button is-info is-rounded mt-3" style="
-                    background: linear-gradient(
-                      90deg,
-                      #00c6ff 0%,
-                      #0072ff 100%
-                    );
-                    color: #fff;
-                    border: none;
-                  ">
-                Ubah
-              </button>
+      <!-- Kartu informasi 2 mobil -->
+      <div class="compare-info-wrapper">
+        <div class="compare-info-row">
+          <div class="compare-info-col" data-car="1">
+            <h2 class="compare-info-title" id="car1-title">
+              <!-- Placeholder, nanti di-override JS dari API -->
+              Memuat mobil 1...
+            </h2>
+            <p class="compare-info-sub" id="car1-subtitle">
+              Tipe / tahun mobil 1
+            </p>
+            <div class="compare-info-actions">
+              <button class="btn-compare-primary">Reservasi</button>
+              <button class="btn-compare-outline">Lihat detail</button>
             </div>
           </div>
-        </div>
-        <div class="column is-half">
-          <div class="card" style="max-width: 480px; margin: 0 auto">
-            <div class="card-image">
-              <figure class="image" style="margin: 0">
-                <img src="https://www.topgear.com/sites/default/files/cars-car/image/2016/08/rh_huayrabc-67.jpg"
-                  alt="Pagani Huayra" style="
-                      width: 100%;
-                      height: auto;
-                      border: none;
-                      box-shadow: none;
-                    " />
-              </figure>
-            </div>
-            <div class="card-content" style="padding-top: 1rem">
-              <p class="title is-5 mt-3">Pagani Huayra</p>
-              <button class="button is-danger is-rounded mt-3" style="
-                    background: linear-gradient(
-                      90deg,
-                      #ff512f 0%,
-                      #dd2476 100%
-                    );
-                    color: #fff;
-                    border: none;
-                  ">
-                Ubah
-              </button>
+
+          <div class="compare-info-col" data-car="2">
+            <h2 class="compare-info-title" id="car2-title">
+              <!-- Placeholder, nanti di-override JS dari API -->
+              Memuat mobil 2...
+            </h2>
+            <p class="compare-info-sub" id="car2-subtitle">
+              Tipe / tahun mobil 2
+            </p>
+            <div class="compare-info-actions">
+              <button class="btn-compare-primary">Reservasi</button>
+              <button class="btn-compare-outline">Lihat detail</button>
             </div>
           </div>
         </div>
       </div>
+    </header>
 
-      <div class="has-text-centered mt-5">
-        <button class="button is-link is-rounded" id="comparePhotosBtn">
-          Bandingkan Foto
-        </button>
+    <!-- ===== FOTO MOBIL (2 KOLOM) ===== -->
+    <div class="compare-photo-row">
+      <div class="compare-photo-col">
+        <img
+          id="car1-photo"
+          src=""  <!-- nanti diisi dari API lewat JS -->
+          alt="Foto mobil 1"
+        />
       </div>
-
-      <div class="tabs is-centered is-boxed mt-5" id="comparisonTabs">
-        <ul>
-          <li><a href="#highlight">Highlight</a></li>
-          <li><a href="#kesamaan">Kesamaan</a></li>
-          <li><a href="#perbedaan">Perbedaan</a></li>
-          <li><a href="#spesifikasi">Spesifikasi</a></li>
-        </ul>
+      <div class="compare-photo-col">
+        <img
+          id="car2-photo"
+          src=""  <!-- nanti diisi dari API lewat JS -->
+          alt="Foto mobil 2"
+        />
       </div>
-
-      <!-- Highlight -->
-      <h2 class="title is-5 mt-6" id="highlight">Highlight</h2>
-
-      <h3 class="subtitle is-6">Wishlist</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>10 disukai</td>
-          <td>14 disukai</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Harga</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>Rp 6.089.000 × 60</td>
-          <td>Rp 6.089.000 × 60</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Jarak Tempuh</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>N/A</td>
-          <td>N/A</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Kendaraan Sebelumnya</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>Kendaraan sewa</td>
-          <td>Tidak ada</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Warna</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>Putih, Silver</td>
-          <td>Hitam, Merah</td>
-        </tr>
-      </table>
-
-      <!-- Kesamaan -->
-      <h2 class="title is-5 mt-6" id="kesamaan">Kesamaan</h2>
-      <h3 class="subtitle is-6">ABS</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>✔ Ya</td>
-          <td>✔ Ya</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Bluetooth</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>✔ Ya</td>
-          <td>✔ Ya</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Rear Camera</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>✔ Ya</td>
-          <td>✔ Ya</td>
-        </tr>
-      </table>
-
-      <!-- Perbedaan -->
-      <h2 class="title is-5 mt-6" id="perbedaan">Perbedaan</h2>
-      <h3 class="subtitle is-6">Power Window</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>✗ Tidak</td>
-          <td>✔ Ya</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Power Mirror</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>✗ Tidak</td>
-          <td>✔ Ya</td>
-        </tr>
-      </table>
-
-      <!-- Spesifikasi -->
-      <h2 class="title is-5 mt-6" id="spesifikasi">Spesifikasi</h2>
-      <h3 class="subtitle is-6">Body</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>Extended Cab</td>
-          <td>Sedan</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Transmisi</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>Automatic</td>
-          <td>Automatic</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Mesin</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>2.5 Liter</td>
-          <td>2.0 Liter</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Bahan Bakar</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>Bensin</td>
-          <td>Bensin</td>
-        </tr>
-      </table>
     </div>
-  </section>
-  <div style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        opacity: 85%;
-      ">
-    <button id="backToTop" class="button is-link is-small" style="
-          position: fixed;
-          bottom: 30px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: none;
-          z-index: 1000;
-        ">
-      Back to Top
-    </button>
+
+    <!-- ===== TAB ===== -->
+    <div class="tabs is-centered is-boxed compare-tabs" id="comparisonTabs">
+      <ul>
+        <li class="is-active" data-tab="highlight"><a>Highlight</a></li>
+        <li data-tab="kesamaan"><a>Kesamaan</a></li>
+        <li data-tab="perbedaan"><a>Perbedaan</a></li>
+        <li data-tab="spesifikasi"><a>Spesifikasi</a></li>
+      </ul>
+    </div>
+
+    <!-- ===== HIGHLIGHT ===== -->
+    <div class="comparison-section" id="tab-highlight">
+      <h2 class="section-title">Highlight</h2>
+      <!-- diisi penuh lewat API (JS) -->
+      <div class="compare-feature-group" id="highlight-group"></div>
+    </div>
+
+    <!-- ===== KESAMAAN ===== -->
+    <div class="comparison-section" id="tab-kesamaan">
+      <h2 class="section-title">Kesamaan</h2>
+      <!-- diisi JS dari API -->
+      <div class="compare-feature-group" id="similarities-group"></div>
+    </div>
+
+    <!-- ===== PERBEDAAN ===== -->
+    <div class="comparison-section" id="tab-perbedaan">
+      <h2 class="section-title">Perbedaan</h2>
+      <!-- diisi JS dari API -->
+      <div class="compare-feature-group" id="differences-group"></div>
+    </div>
+
+    <!-- ===== SPESIFIKASI ===== -->
+    <div class="comparison-section" id="tab-spesifikasi">
+      <h2 class="section-title">Spesifikasi</h2>
+      <!-- diisi JS dari API -->
+      <div class="compare-feature-group" id="specs-group"></div>
+    </div>
+
   </div>
-  <!--Import perbandingan JS-->
-  <script src="../assets/js/perbandingan.js"></script>
+</section>
 
-  <!--Import Footer-->
-  <script src="../assets/js/footer.js"></script>
+<!-- Tombol back to top -->
+<div style="display:flex;justify-content:center;align-items:center;opacity:85%;">
+  <button id="backToTop" class="button is-link is-small"
+          style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:none;z-index:1000;">
+    Back to Top
+  </button>
+</div>
+
+<script src="../assets/js/perbandingan.js"></script>
+<script src="../assets/js/footer.js"></script>
 </body>
-
 </html>
