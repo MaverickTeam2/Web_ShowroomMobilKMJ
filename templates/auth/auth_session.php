@@ -34,7 +34,7 @@ if (!$data || !is_array($data)) {
 // ===============================
 
 $_SESSION['user_id'] = $data['kode_user'] ?? null;
-$_SESSION['kode_user'] = $data['kode_user'] ?? null;   // ⬅️ ini patokan ke DB
+$_SESSION['kode_user'] = $data['kode_user'] ?? null;
 $_SESSION['full_name'] = $data['full_name'] ?? null;
 $_SESSION['email'] = $data['email'] ?? null;
 $_SESSION['role'] = $data['role'] ?? "customer";
@@ -44,6 +44,16 @@ $_SESSION['login_time'] = time();
 // ===============================
 // Kirim respons sukses
 // ===============================
+
+$id = session_id();
+setcookie("session_user", $id, [
+    "expires" => time() + 86400,
+    "path" => "/",
+    "secure" => true,
+    "httponly" => true,
+    "samesite" => "None"
+]);
+
 
 echo json_encode([
     "status" => "success",

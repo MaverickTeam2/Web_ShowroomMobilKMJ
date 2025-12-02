@@ -1,62 +1,89 @@
 <?php
-// Cek apakah file ini dibuka langsung di browser (bukan via fetch)
+// Mulai session dulu, sebelum ada output
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// Cek akses file
 $is_direct = (basename($_SERVER['SCRIPT_FILENAME']) == basename(__FILE__));
 
 if ($is_direct) {
   $title = 'tambah_stok_mobil';
-}
-
-if ($is_direct) {
-  include '../../db/config_api.php';   // ← penting
-  include '../../include/header.php';  // ← buat BASE_API_URL & IMAGE_URL di JS
+  include '../../db/config_api.php';
+  include '../../include/header.php';
   include 'partials/header.php';
   include 'partials/sidebar.php';
   echo '<section id="content"><nav><i class="bx bx-menu"></i></nav><main id="main-content" class="p-4">';
 } else {
-  // kalau dimuat via fetch dari manajemen_mobil.php
   include '../../db/koneksi.php';
-  include '../../db/config_api.php';   // ← supaya IMAGE_URL bisa dipakai
+  include '../../db/config_api.php';
 }
 
-// ✅ Ambil kode_user dari SESSION (login via auth_session.php)
-if (session_status() === PHP_SESSION_NONE) {
-  session_start();
-}
+// Ambil session user
 $kodeUserSession = $_SESSION['kode_user'] ?? null;
 
-$kodeEdit = $_GET['kode'] ?? null;
+// Ambil kode mobil edit (jika ada)
+$kodeEdit = isset($_GET['kode']) && $_GET['kode'] !== '' ? $_GET['kode'] : null;
+$isEdit   = !empty($kodeEdit);
 
-$isEdit = !empty($kodeEdit);
+// DEBUG: Tampilkan info edit mode
+echo "<!-- DEBUG MODE: isEdit = " . ($isEdit ? 'TRUE' : 'FALSE') . ", kodeEdit = " . ($kodeEdit ?? 'NULL') . " -->";
+
+$mobilData  = [];
+$mobilFitur = [];
+$mobilFoto  = [];
 
 if ($isEdit) {
-
-
   require_once '../../db/api_client.php';
+
+  echo "<!-- DEBUG: Memanggil API dengan kode: $kodeEdit -->";
+  
   $data = api_get("admin/web_mobil_detail.php?kode_mobil=$kodeEdit");
 
-  if (!$data['success']) {
-    die("Gagal mengambil data dari API");
+  echo "<!-- DEBUG: Response API: " . json_encode($data) . " -->";
+
+  if (!isset($data['success']) || !$data['success']) {
+    die("<h3 style='color:red'>Gagal mengambil data mobil! Pastikan API jalan.</h3>");
   }
 
-  // isi data
+  if (!isset($data['mobil'])) {
+    die("<h3 style='color:red'>Format API tidak sesuai!</h3>");
+  }
+
   $mobilData = $data['mobil'];
-  $mobilFitur = array_map('intval', array_column($data['fitur'], 'id_fitur'));
-  $mobilFoto = $data['foto'];
-  $mobilFitur = [];
-  if (!empty($data['fitur'])) {
+
+  // Ambil fitur
+  if (!empty($data['fitur']) && is_array($data['fitur'])) {
     foreach ($data['fitur'] as $f) {
-        if (is_array($f)) {
-            $mobilFitur[] = (int) ($f['id_fitur'] ?? 0);
-        } else if (is_object($f)) {
-            $mobilFitur[] = (int) ($f->id_fitur ?? 0);
-        }
+      $mobilFitur[] = (int) ($f['id_fitur'] ?? $f->id_fitur ?? 0);
     }
+    $mobilFitur = array_unique($mobilFitur);
+  }
+
+  // Fix path foto
+  if (!empty($data['foto']) && is_array($data['foto'])) {
+    echo "<!-- DEBUG: Jumlah foto dari API: " . count($data['foto']) . " -->";
+    
+    foreach ($data['foto'] as &$f) {
+      if (!empty($f['file_path'])) {
+        $f['file_path'] = str_replace('\\', '/', $f['file_path']);
+      }
+    }
+    unset($f);
+    $mobilFoto = $data['foto'];
+    
+    // DEBUG: Tampilkan struktur data foto
+    echo "<!-- DEBUG FOTO DATA: " . json_encode($mobilFoto, JSON_PRETTY_PRINT) . " -->";
+  } else {
+    echo "<!-- DEBUG: TIDAK ADA DATA FOTO atau bukan array -->";
+  }
+  
+  echo "<!-- DEBUG: mobilFoto final = " . json_encode($mobilFoto) . " -->";
+} else {
+  echo "<!-- DEBUG: Bukan mode edit, tidak memanggil API -->";
 }
-}
-
-
-
 ?>
+
 <script data-page-script="true">
   window.KMJ_KODE_USER = <?= json_encode($kodeUserSession) ?>;
   console.log('[tambah_stok_mobil.php] KMJ_KODE_USER dari PHP:', window.KMJ_KODE_USER);
@@ -143,6 +170,7 @@ if ($isEdit) {
     </div>
   </div>
 
+
   <!-- ================= Informasi Mobil ================= -->
   <div class="card p-4 shadow-sm mb-4">
     <h5 class="section-title mb-3">Informasi Mobil</h5>
@@ -216,6 +244,8 @@ if ($isEdit) {
           </option>
           <option value="Listrik" <?= $isEdit && $mobilData['tipe_bahan_bakar'] === 'Listrik' ? 'selected' : '' ?>>Listrik
           </option>
+          <option value="Hybrid" <?= $isEdit && $mobilData['tipe_bahan_bakar'] === 'Hybrid' ? 'selected' : '' ?>>Hybrid
+          </option>
         </select>
       </div>
 
@@ -229,6 +259,7 @@ if ($isEdit) {
             Drive)</option>
           <option value="AWD (All Wheel Drive)" <?= $isEdit && $mobilData['sistem_penggerak'] === 'AWD (All Wheel Drive)' ? 'selected' : '' ?>>AWD (All Wheel
             Drive)</option>
+            <option value="4WD (Four Wheel Drive)" <?= $isEdit && $mobilData['sistem_penggerak'] === '4WD (Four Wheel Drive)' ? 'selected' : '' ?>>4WD (Four Wheel Drive)</option>
         </select>
       </div>
 
@@ -407,14 +438,43 @@ if ($is_direct) {
   include 'partials/footer.php';
 }
 ?>
+
+<!-- ALWAYS OUTPUT THIS SCRIPT (even if not edit mode) -->
+<script>
+  console.log('=== DIAGNOSTIC INFO ===');
+  console.log('Current URL:', window.location.href);
+  console.log('URL Search Params:', window.location.search);
+  
+  // Parse kode from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const kodeFromUrl = urlParams.get('kode');
+  console.log('Kode dari URL:', kodeFromUrl);
+  console.log('Is Edit Mode?', kodeFromUrl ? 'YES' : 'NO');
+</script>
+
 <?php if ($isEdit): ?>
-  <script data-page-script="true">
-    window.existingMobilFoto = <?= json_encode($mobilFoto) ?>;
-    console.log('[EDIT] existingMobilFoto dari PHP:', window.existingMobilFoto);
-  </script>
+<script>
+  console.log('=== PHP EDIT MODE DETECTED ===');
+  console.log('$isEdit =', <?= json_encode($isEdit) ?>);
+  console.log('$kodeEdit =', <?= json_encode($kodeEdit) ?>);
+  
+  window.existingPhotos = <?= json_encode($mobilFoto) ?>;
+  console.log('[Edit Mode] Data foto dari PHP:', window.existingPhotos);
+  console.log('[Edit Mode] Jumlah foto:', window.existingPhotos ? window.existingPhotos.length : 0);
+  console.log('[Edit Mode] IMAGE_URL:', '<?= IMAGE_URL ?>');
+</script>
+<?php else: ?>
+<script>
+  console.log('=== PHP SAYS: NOT EDIT MODE ===');
+  console.log('Possible reasons:');
+  console.log('1. No ?kode= parameter in URL');
+  console.log('2. Empty kode value');
+  console.log('3. $isEdit evaluated to false');
+</script>
 <?php endif; ?>
 
-
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script src="../../assets/js/mobil.js"></script>
 
 <!-- untuk tahun  -->
@@ -438,38 +498,31 @@ if ($is_direct) {
     let decadeStart = Math.floor(selected / 10) * 10;
 
     function render() {
-      const maxYear = 2025; // tahun maksimal yang boleh dipilih
-
+      const maxYear = 2025;
       rangeEl.textContent = `${decadeStart} - ${decadeStart + 9}`;
       grid.innerHTML = '';
 
       for (let y = decadeStart - 1; y <= decadeStart + 10; y++) {
         const btn = document.createElement('button');
         btn.type = 'button';
-
-        // default class
         btn.className = 'yp-year';
 
-        // warna abu (muted) kalau di luar 1 dekade
         if (y < decadeStart || y > decadeStart + 9) {
           btn.classList.add('muted');
         }
 
-        // blokir jika di atas max year
         if (y > maxYear) {
-          btn.classList.add('muted');   // warna abu
-          btn.classList.add('disabled'); // nanti CSS-nya kita buat
+          btn.classList.add('muted');
+          btn.classList.add('disabled');
           btn.disabled = true;
         }
 
-        // selected styling
         if (y === selected) {
           btn.classList.add('selected');
         }
 
         btn.textContent = y;
 
-        // klik normal (hanya kalau y <= maxYear)
         if (y <= maxYear) {
           btn.addEventListener('click', () => {
             selected = y;
@@ -483,7 +536,6 @@ if ($is_direct) {
     }
 
     function show() {
-      // set dekade berdasar nilai saat ini / tahun sekarang
       if (/^\d{4}$/.test(input.value)) {
         selected = parseInt(input.value, 10);
         decadeStart = Math.floor(selected / 10) * 10;
@@ -494,7 +546,6 @@ if ($is_direct) {
       render();
       panel.hidden = false;
 
-      // kalau mepet bawah layar, tampilkan ke atas
       const rect = panel.getBoundingClientRect();
       if (rect.bottom > window.innerHeight) {
         panel.style.top = 'auto';
@@ -508,20 +559,16 @@ if ($is_direct) {
       panel.style.bottom = 'auto';
     }
 
-    // buka panel saat klik input atau tombol ▾
     input.addEventListener('click', function (e) { e.stopPropagation(); show(); });
     toggle.addEventListener('click', function (e) { e.stopPropagation(); panel.hidden ? show() : hide(); });
-
     prevBtn.addEventListener('click', function (e) { e.stopPropagation(); decadeStart -= 10; render(); });
     nextBtn.addEventListener('click', function (e) { e.stopPropagation(); decadeStart += 10; render(); });
 
-    // klik di luar menutup panel
     document.addEventListener('click', function (e) {
       if (panel.hidden) return;
       if (!panel.contains(e.target) && e.target !== input && e.target !== toggle) { hide(); }
     });
 
-    // keyboard
     input.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') { e.preventDefault(); show(); }
       if (e.key === 'Escape') { hide(); }
@@ -529,8 +576,7 @@ if ($is_direct) {
   })();
 </script>
 
-
-<!-- Foto -->
+<!-- Preview Foto (New Upload) -->
 <script data-page-script="true">
   (function () {
     console.log('[previewFoto] script dijalankan');
@@ -543,30 +589,22 @@ if ($is_direct) {
       const sub = dz.querySelector('.dz-sub');
       const preview = dz.querySelector('.dz-preview-img');
 
-      console.log(`[previewFoto] setup #${idx}`, { dz, input, sub, preview });
-
       if (!input || !preview) return;
-
-
 
       input.addEventListener('change', () => {
         console.log('[previewFoto] change pada', input.name, 'jumlah file:', input.files.length);
 
-        // kosongkan preview dulu
         preview.innerHTML = '';
 
         if (!input.files || input.files.length === 0) {
-          // kalau nggak ada file, munculkan lagi subtitle
           if (sub) sub.style.display = '';
           return;
         }
 
-        // kalau ada file, sembunyikan subtitle biar nggak ramai
         if (sub) sub.style.display = 'none';
 
         if (input.multiple) {
-          // foto_tambahan[]: bisa banyak
-          const maxThumb = 4; // contoh: tampilkan max 4 thumbnail
+          const maxThumb = 4;
           const files = Array.from(input.files);
 
           files.slice(0, maxThumb).forEach(file => {
@@ -584,7 +622,6 @@ if ($is_direct) {
             preview.appendChild(more);
           }
         } else {
-          // single file: 360, depan, belakang, samping
           const file = input.files[0];
           if (!file) return;
 
@@ -596,4 +633,151 @@ if ($is_direct) {
       });
     });
   })();
+</script>
+
+<!-- Load Existing Photos (Edit Mode) -->
+<script data-page-script="true">
+  function loadExistingPhotos() {
+    console.log('[loadExistingPhotos] START - Checking data...');
+    
+    if (typeof window.existingPhotos === 'undefined') {
+      console.log('[loadExistingPhotos] ❌ window.existingPhotos tidak terdefinisi');
+      return;
+    }
+
+    if (!Array.isArray(window.existingPhotos)) {
+      console.log('[loadExistingPhotos] ❌ window.existingPhotos bukan array:', typeof window.existingPhotos);
+      return;
+    }
+
+    if (window.existingPhotos.length === 0) {
+      console.log('[loadExistingPhotos] ⚠️ Array foto kosong');
+      return;
+    }
+
+    console.log('[loadExistingPhotos] ✓ Data foto valid, jumlah:', window.existingPhotos.length);
+    console.log('[loadExistingPhotos] Data:', window.existingPhotos);
+
+    const dataFoto = window.existingPhotos;
+    const baseUrl = '<?= IMAGE_URL ?>';
+    
+
+    const mapping = {
+      "360": 0,
+      "depan": 1,
+      "belakang": 2,
+      "samping": 3
+    };
+
+    const allPreviews = document.querySelectorAll('.foto-dropzone:not(.foto-tambahan) .dz-preview-img');
+    const allSubs = document.querySelectorAll('.foto-dropzone:not(.foto-tambahan) .dz-sub');
+
+    console.log('[loadExistingPhotos] Dropzone ditemukan:', allPreviews.length);
+
+    dataFoto.forEach((foto, idx) => {
+      console.log(`[loadExistingPhotos] Processing foto ${idx}:`, foto);
+      
+      const tipe = foto.tipe_foto || foto.tipe || foto.type;
+      const filePath = foto.file_path || foto.nama_file || foto.path || foto.url;
+
+      if (!tipe) {
+        console.warn(`[loadExistingPhotos] ⚠️ Foto ${idx} tidak punya tipe_foto:`, foto);
+        return;
+      }
+
+      if (!filePath) {
+        console.warn(`[loadExistingPhotos] ⚠️ Foto ${idx} tidak punya file_path:`, foto);
+        return;
+      }
+
+      console.log(`[loadExistingPhotos] → tipe: "${tipe}", path: "${filePath}"`);
+
+      if (mapping[tipe] !== undefined) {
+        // ========== FOTO UTAMA (360, depan, belakang, samping) ==========
+        const index = mapping[tipe];
+        const preview = allPreviews[index];
+        const sub = allSubs[index];
+
+        if (!preview) {
+          console.error(`[loadExistingPhotos] ❌ Preview element tidak ditemukan untuk index ${index}`);
+          return;
+        }
+
+        // Build full URL
+        let fullUrl = filePath;
+        if (!filePath.startsWith('http://') && !filePath.startsWith('https://')) {
+          const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+          const cleanPath = filePath.startsWith('/') ? filePath.slice(1) : filePath;
+          fullUrl = cleanBase + '/' + cleanPath;
+        }
+        
+        console.log(`[loadExistingPhotos] → Full URL: "${fullUrl}"`);
+
+        // ✅ PERBAIKAN: Buat img element dengan style yang sama seperti preview foto baru
+        const img = document.createElement('img');
+        img.src = fullUrl;
+        img.alt = tipe;
+        img.onerror = function() {
+          console.error('Failed to load image:', this.src);
+        };
+        
+        // Kosongkan preview dan masukkan img
+        preview.innerHTML = '';
+        preview.appendChild(img);
+        
+        // Sembunyikan subtitle
+        if (sub) {
+          sub.style.display = 'none';
+        }
+        
+        console.log(`[loadExistingPhotos] ✅ Loaded foto ${tipe} di index ${index}`);
+        
+      } else if (tipe === 'tambahan' || tipe.toLowerCase().includes('tambahan')) {
+        // ========== FOTO TAMBAHAN ==========
+        const container = document.querySelector('.foto-tambahan .dz-preview-img');
+        const sub = document.querySelector('.foto-tambahan .dz-sub');
+        
+        if (!container) {
+          console.error('[loadExistingPhotos] ❌ Container foto tambahan tidak ditemukan');
+          return;
+        }
+
+        // Build full URL
+        let fullUrl = filePath;
+        if (!filePath.startsWith('http://') && !filePath.startsWith('https://')) {
+          const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+          const cleanPath = filePath.startsWith('/') ? filePath.slice(1) : filePath;
+          fullUrl = cleanBase + '/' + cleanPath;
+        }
+        
+        // ✅ PERBAIKAN: Buat img dengan style yang sama
+        const img = document.createElement('img');
+        img.src = fullUrl;
+        img.alt = 'Foto Tambahan';
+        img.onerror = function() {
+          console.error('[loadExistingPhotos] Failed to load tambahan image:', this.src);
+        };
+        
+        container.appendChild(img);
+        
+        // Sembunyikan subtitle
+        if (sub) {
+          sub.style.display = 'none';
+        }
+        
+        console.log('[loadExistingPhotos] ✅ Loaded foto tambahan');
+      } else {
+        console.warn(`[loadExistingPhotos] ⚠️ Tipe foto tidak dikenali: "${tipe}"`);
+      }
+    });
+
+    console.log('[loadExistingPhotos] === SELESAI ===');
+  }
+
+  // Jalankan setelah semua data siap
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadExistingPhotos);
+  } else {
+    setTimeout(loadExistingPhotos, 100);
+  }
 </script>
