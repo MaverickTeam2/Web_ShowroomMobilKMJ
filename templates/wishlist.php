@@ -30,9 +30,9 @@ $jumlahFavorit = count($favorites);
 
 $statusLabelMap = [
   'available' => 'Available',
-  'reserved'  => 'Reserved',
-  'sold'      => 'Sold',
-  'shipping'  => 'Shipping',
+  'reserved' => 'Reserved',
+  'sold' => 'Sold',
+  'shipping' => 'Shipping',
   'delivered' => 'Delivered',
 ];
 
@@ -60,7 +60,7 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
   <?php include '../templates/navbar_footer/navbar.php'; ?>
   <?php
   $fullName = $_SESSION['full_name'] ?? '';
-  $email    = $_SESSION['email'] ?? '';
+  $email = $_SESSION['email'] ?? '';
   ?>
   <script>
     // Di wishlist, user pasti sudah login karena sudah dicek di PHP
@@ -78,48 +78,6 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
       <!-- SIDEBAR KIRI -->
       <?php include __DIR__ . '/partials/account_sidebar.php'; ?>
       <!-- ⬆⬆ cuma bagian ini yang diganti, yang lain sama -->
-      <aside class="col-12 col-md-3 col-lg-2 wishlist-sidebar">
-        <div class="wishlist-menu">
-
-          <div class="wishlist-section-title">Belanja</div>
-
-          <!-- Keranjang -->
-          <a href="keranjang.php"
-            class="wishlist-menu-item <?= ($activeMenu === 'cart') ? 'wishlist-menu-item--active' : '' ?>">
-            <span class="wishlist-menu-indicator"></span>
-            <i class="fa-solid fa-cart-shopping me-2"></i>
-            <span>Keranjang saya</span>
-          </a>
-
-          <!-- Favorit -->
-          <a href="wishlist.php"
-            class="wishlist-menu-item <?= ($activeMenu === 'favorite') ? 'wishlist-menu-item--active' : '' ?>">
-            <span class="wishlist-menu-indicator"></span>
-            <i class="fa-solid fa-heart me-2"></i>
-            <span>Favorit</span>
-          </a>
-
-          <hr class="wishlist-divider">
-
-          <div class="wishlist-section-title">Akun</div>
-
-          <a href="profile_setting.php" class="wishlist-menu-item">
-            <span class="wishlist-menu-indicator"></span>
-            <i class="fa-solid fa-user me-2"></i>
-            <span>Pengaturan Profil</span>
-          </a>
-
-          <hr class="wishlist-divider">
-
-          <a href="../admin/auth/logout.php" class="wishlist-menu-item wishlist-menu-item--logout">
-            <span class="wishlist-menu-indicator"></span>
-            <i class="fa-solid fa-arrow-left me-2"></i>
-            <span>Keluar</span>
-          </a>
-
-        </div>
-      </aside>
-
 
       <!-- KONTEN KANAN -->
       <section class="col-12 col-md-9 col-lg-10 wishlist-content">
@@ -136,23 +94,22 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
                 <div class="card car-card shadow-sm h-100">
                   <?php
                   $img = '../assets/img/no-image.jpg'; // default
-
+              
                   if (!empty($m['foto'])) {
                     // ambil hanya nama file dari URL yang jelek
                     $fileName = basename($m['foto']); // contoh: mobil_6925be72e11da4.72202219.jpg
-
+              
                     // susun ulang URL yang benar (samain dengan struktur folder API kamu)
                     $img = BASE_API_URL . '/images/mobil/' . $fileName;
                   }
 
-                  $status      = $m['status'] ?? 'available';
+                  $status = $m['status'] ?? 'available';
                   $statusLabel = $statusLabelMap[$status] ?? $status;
                   ?>
                   <div class="card-image position-relative">
                     <figure class="image image-wrapper mb-0">
                       <img src="<?= htmlspecialchars($img) ?>"
-                           alt="<?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil Tanpa Nama') ?>"
-                           class="img_main card-img-top">
+                        alt="<?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil Tanpa Nama') ?>" class="img_main card-img-top">
 
                       <!-- Heart merah di pojok kanan atas -->
                       <span class="icon-favorite active" data-kode-mobil="<?= htmlspecialchars($m['kode_mobil']) ?>">
@@ -163,7 +120,7 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
 
                   <div class="card-content p-3">
                     <a href="../templates/detail_mobil.php?kode=<?= urlencode($m['kode_mobil']) ?>"
-                       class="text-decoration-none mb-2 d-inline-block" style="font-size:25px;">
+                      class="text-decoration-none mb-2 d-inline-block" style="font-size:25px;">
                       <p class="title is-5 mb-1">
                         <?= htmlspecialchars($m['nama_mobil'] ?? 'Tanpa Nama') ?>
                       </p>
@@ -205,7 +162,7 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
                       <div class="dropdown-menu" role="menu">
                         <div class="dropdown-content">
                           <a href="#" class="dropdown-item btn-remove-fav"
-                             data-kode-mobil="<?= htmlspecialchars($m['kode_mobil']) ?>">
+                            data-kode-mobil="<?= htmlspecialchars($m['kode_mobil']) ?>">
                             <i class="fa-solid fa-trash"></i> Hapus dari favorit
                           </a>
                           <a href="../templates/perbandingan.php" class="dropdown-item">
