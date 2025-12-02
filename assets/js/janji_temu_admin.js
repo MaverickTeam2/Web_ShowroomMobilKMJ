@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const data = res.data || [];
 
         if (!data.length) {
-  list.innerHTML = `<div class="text-muted">Belum ada inquiry</div>`;
+  list.innerHTML = `<div class="text-muted">Belum ada janji temu</div>`;
 
         if (filter === 'all') {
           updateTabCounts(data);

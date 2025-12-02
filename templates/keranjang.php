@@ -15,9 +15,9 @@ if (!isset($_SESSION['user_id'])) {
   exit;
 }
 
-$kodeUser  = $_SESSION['user_id'] ?? null;
-$fullName  = $_SESSION['full_name'] ?? '';
-$email     = $_SESSION['email'] ?? '';
+$kodeUser = $_SESSION['user_id'] ?? null;
+$fullName = $_SESSION['full_name'] ?? '';
+$email = $_SESSION['email'] ?? '';
 $isLoggedIn = !empty($kodeUser);
 
 // aktifkan menu "cart" di sidebar
@@ -25,6 +25,10 @@ $activeMenu = 'cart';
 
 // ambil list mobil yang baru saja dilihat dari session
 $recentlyViewed = $_SESSION['recently_viewed'] ?? [];
+
+// DEBUG SEMENTARA: hitung berapa item recently_viewed
+$recentCount = is_array($recentlyViewed) ? count($recentlyViewed) : 0;
+
 
 // =======================
 // AMBIL DATA FAVORIT USER
@@ -51,6 +55,8 @@ if (!empty($kodeUser)) {
   <link rel="stylesheet" href="../assets/css/style.css" />
   <link rel="stylesheet" href="../assets/css/keranjang.css?v=<?= time(); ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/account_sidebar.css?v=<?= time(); ?>">
+  
 </head>
 
 <body>
@@ -70,47 +76,7 @@ if (!empty($kodeUser)) {
   <div class="container-fluid mt-4 wishlist-layout">
     <div class="row">
       <!-- SIDEBAR KIRI -->
-      <aside class="col-12 col-md-3 col-lg-2 wishlist-sidebar">
-        <div class="wishlist-menu">
-
-          <div class="wishlist-section-title">Belanja</div>
-
-          <!-- Keranjang -->
-          <a href="keranjang.php"
-            class="wishlist-menu-item <?= ($activeMenu === 'cart') ? 'wishlist-menu-item--active' : '' ?>">
-            <span class="wishlist-menu-indicator"></span>
-            <i class="fa-solid fa-cart-shopping me-2"></i>
-            <span>Keranjang saya</span>
-          </a>
-
-          <!-- Favorit -->
-          <a href="wishlist.php"
-            class="wishlist-menu-item <?= ($activeMenu === 'favorite') ? 'wishlist-menu-item--active' : '' ?>">
-            <span class="wishlist-menu-indicator"></span>
-            <i class="fa-solid fa-heart me-2"></i>
-            <span>Favorit</span>
-          </a>
-
-          <hr class="wishlist-divider">
-
-          <div class="wishlist-section-title">Akun</div>
-
-          <a href="profil.php" class="wishlist-menu-item">
-            <span class="wishlist-menu-indicator"></span>
-            <i class="fa-solid fa-user me-2"></i>
-            <span>Pengaturan Profil</span>
-          </a>
-
-          <hr class="wishlist-divider">
-
-          <a href="../admin/auth/logout.php" class="wishlist-menu-item wishlist-menu-item--logout">
-            <span class="wishlist-menu-indicator"></span>
-            <i class="fa-solid fa-arrow-left me-2"></i>
-            <span>Keluar</span>
-          </a>
-
-        </div>
-      </aside>
+      <?php include __DIR__ . '/partials/account_sidebar.php'; ?>
 
       <!-- KONTEN KANAN -->
       <section class="col-12 col-md-9 col-lg-10 wishlist-content">
@@ -142,22 +108,26 @@ if (!empty($kodeUser)) {
                   <?php
                   $kodeMobil = $m['kode_mobil'] ?? '';
                   $isFavorit = in_array($kodeMobil, $favoritMobil);
+
+                  // === PERBAIKAN URL FOTO ===
+                  $img = '../assets/img/no-image.jpg'; // default
+              
+                  if (!empty($m['foto'])) {
+                    $fileName = basename($m['foto']);
+
+                    //WOI INI 
+                    $img = 'http://localhost:80/API_kmj/images/mobil/' . $fileName;
+                  }
                   ?>
                   <div class="col-10 col-sm-6 col-md-4 flex-shrink-0">
                     <a href="../templates/detail_mobil.php?kode=<?= urlencode($kodeMobil); ?>"
                       class="car-card-link text-decoration-none text-reset">
                       <div class="car-card card border-0 shadow-sm h-100">
                         <div class="car-card-image-wrapper">
-                          <img
-                            src="<?= !empty($m['foto']) ? htmlspecialchars($m['foto']) : '../assets/img/no-image.jpg'; ?>"
-                            class="card-img-top"
-                            alt="<?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil'); ?>"
-                          >
-                          <button
-                            type="button"
-                            class="car-card-fav-btn icon-favorite <?= $isFavorit ? 'active' : '' ?>"
-                            data-kode-mobil="<?= htmlspecialchars($kodeMobil); ?>"
-                          >
+                          <img src="<?= htmlspecialchars($img); ?>" class="card-img-top"
+                            alt="<?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil'); ?>">
+                          <button type="button" class="car-card-fav-btn icon-favorite <?= $isFavorit ? 'active' : '' ?>"
+                            data-kode-mobil="<?= htmlspecialchars($kodeMobil); ?>">
                             <i class="fa-solid fa-heart"></i>
                           </button>
                         </div>

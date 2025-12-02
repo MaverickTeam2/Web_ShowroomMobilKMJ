@@ -20,20 +20,29 @@ if (!$api || !isset($api['success']) || !$api['success']) {
 // TOTAL MOBIL
 $jumlahMobil = count($mobil);
 
-// BAHAN BAKAR (ini boleh tetap static dulu)
-$bahanBakar = [
-  "Diesel" => 660,
-  "Electric" => 1897,
-  "Gas" => 63367,
-  "Hybrid" => 2915,
-  "Plug-In Hybrid" => 1256
+// BAHAN BAKAR
+$allFuelTypes = [
+  "Bensin" => 0,
+  "Diesel" => 0,
+  "Listrik" => 0,
+  "Hybrid" => 0,
 ];
+
+// Hitung dari data yang ada
+if (!empty($mobil)) {
+  foreach ($mobil as $car) {
+    $jenis = $car['tipe_bahan_bakar'] ?? '';
+    if (!empty($jenis) && isset($allFuelTypes[$jenis])) {
+      $allFuelTypes[$jenis]++;
+    }
+  }
+}
 
 $statusLabelMap = [
   'available' => 'Available',
-  'reserved' => 'Reserved',
-  'sold' => 'Sold',
-  'shipping' => 'Shipping',
+  'reserved'  => 'Reserved',
+  'sold'      => 'Sold',
+  'shipping'  => 'Shipping',
   'delivered' => 'Delivered',
 ];
 ?>
@@ -58,14 +67,14 @@ $statusLabelMap = [
 <body class="page-katalog">
   <!-- navbar -->
   <?php include '../templates/navbar_footer/navbar.php'; ?>
-  
+
   <?php
   // Cek user login
   $isLoggedIn = isset($_SESSION['full_name']);
-  $kodeUser = $_SESSION['user_id'] ?? ($_SESSION['kode_user'] ?? '');
-  $fullName = $_SESSION['full_name'] ?? '';
-  $email = $_SESSION['email'] ?? '';
-  
+  $kodeUser   = $_SESSION['user_id'] ?? ($_SESSION['kode_user'] ?? '');
+  $fullName   = $_SESSION['full_name'] ?? '';
+  $email      = $_SESSION['email'] ?? '';
+
   // Ambil data favorit
   $favoritMobil = [];
   if (!empty($kodeUser)) {
@@ -82,10 +91,10 @@ $statusLabelMap = [
     const CURRENT_USER = {
       kode_user: "<?= $kodeUser ?>",
       full_name: "<?= addslashes($fullName) ?>",
-      email: "<?= addslashes($email) ?>"
+      email: "<?= addslashes($email) ?>",
     };
     const favoritMobil = <?= json_encode($favoritMobil) ?>;
-    
+
     // Data mobil dari PHP
     let allMobil = <?= json_encode($mobil) ?>;
     let filteredMobil = [...allMobil];
@@ -103,7 +112,7 @@ $statusLabelMap = [
           </h5>
           <p>Tambahkan filter untuk menyimpan pencarian Anda dan dapatkan pemberitahuan saat inventaris baru tiba.</p>
           <hr>
-          
+
           <div class="accordion" id="accordionPanelsStayOpenExample">
             <!-- Item 1 - Urutkan -->
             <div class="accordion-item">
@@ -231,11 +240,16 @@ $statusLabelMap = [
               <div id="collapseFive" class="accordion-collapse collapse">
                 <div class="accordion-body">
                   <div class="fuel-filter">
-                    <?php foreach ($bahanBakar as $jenis => $jumlah): ?>
+                    <?php foreach ($allFuelTypes as $jenis => $jumlah): ?>
                       <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" value="<?= $jenis ?>" id="fuel_<?= strtolower(str_replace([' ', '-'], '_', $jenis)) ?>">
-                        <label class="form-check-label" for="fuel_<?= strtolower(str_replace([' ', '-'], '_', $jenis)) ?>">
-                          <?= $jenis ?> (<?= number_format($jumlah, 0, ',', '.') ?>)
+                        <input class="form-check-input" type="checkbox" value="<?= $jenis ?>"
+                               id="fuel_<?= strtolower(str_replace([' ', '-'], '_', $jenis)) ?>" <?= $jumlah == 0 ? 'disabled' : '' ?>>
+                        <label class="form-check-label <?= $jumlah == 0 ? 'text-muted' : '' ?>"
+                               for="fuel_<?= strtolower(str_replace([' ', '-'], '_', $jenis)) ?>">
+                          <?= $jenis ?>
+                          <span class="filter-count <?= $jumlah == 0 ? 'text-danger' : 'text-muted' ?>">
+                            (<?= number_format($jumlah, 0, ',', '.') ?>)
+                          </span>
                         </label>
                       </div>
                     <?php endforeach; ?>
@@ -244,8 +258,64 @@ $statusLabelMap = [
               </div>
             </div>
 
+            <!-- Item 6 Body Tipe -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix">
+                  Tipe Body
+                </button>
+              </h2>
+              <div id="collapseSix" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <div class="body-type-filter">
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="SUV" id="body_suv">
+                      <label class="form-check-label" for="body_suv">SUV</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="MPV" id="body_mpv">
+                      <label class="form-check-label" for="body_mpv">MPV</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="Sedan" id="body_sedan">
+                      <label class="form-check-label" for="body_sedan">Sedan</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="Sport" id="body_sport">
+                      <label class="form-check-label" for="body_sport">Sport</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 7 Sistem Penggerak -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven">
+                  Sistem Penggerak
+                </button>
+              </h2>
+              <div id="collapseSeven" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <div class="drive-system-filter">
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="FWD (Front Wheel Drive)" id="drive_fwd">
+                      <label class="form-check-label" for="drive_fwd">FWD (Front-Wheel Drive)</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="RWD (Rear Wheel Drive)" id="drive_rwd">
+                      <label class="form-check-label" for="drive_rwd">RWD (Rear-Wheel Drive)</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="AWD (All Wheel Drive)" id="drive_awd">
+                      <label class="form-check-label" for="drive_awd">AWD (All-Wheel Drive)</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
       </aside>
 
       <!-- Konten Daftar Mobil -->
@@ -264,6 +334,19 @@ $statusLabelMap = [
           </div>
         </div>
 
+        <!-- BAR PERBANDINGAN -->
+        <div id="compareToolbar" class="compare-toolbar">
+          <div class="compare-toolbar-inner">
+            <div class="compare-slot" data-slot="0">
+              <span class="compare-slot-placeholder">Pilih mobil pertama</span>
+            </div>
+            <div class="compare-slot" data-slot="1">
+              <span class="compare-slot-placeholder">Pilih mobil kedua</span>
+            </div>
+            <button id="compareGoBtn" class="btn-compare-go" disabled>Go</button>
+          </div>
+        </div>
+
         <section class="section">
           <div class="row g-4" id="mobilContainer">
             <!-- Mobil akan di-render oleh JavaScript -->
@@ -274,7 +357,7 @@ $statusLabelMap = [
     </div>
   </div>
 
-  <!-- JAVASCRIPT FILTER -->
+  <!-- JAVASCRIPT -->
   <script>
     // ============================================
     // FUNGSI HELPER
@@ -292,12 +375,30 @@ $statusLabelMap = [
       document.getElementById('totalMobil').textContent = count;
     }
 
+    // Debouncing untuk filter
+    let filterTimeout;
+    function debouncedApplyFilters() {
+      clearTimeout(filterTimeout);
+      filterTimeout = setTimeout(applyFilters, 300);
+    }
+
+    // ============================================
+    // VARIABEL GLOBAL PERBANDINGAN
+    // ============================================
+    const maxCompare = 2;
+    let selectedCars = [];
+    let compareMode = false;
+    let compareSlots;
+    let compareGoBtn;
+    let compareToolbar;
+    let compareToggle;
+
     // ============================================
     // RENDER MOBIL
     // ============================================
     function renderMobil(cars) {
       const container = document.getElementById('mobilContainer');
-      
+
       if (cars.length === 0) {
         container.innerHTML = `
           <div class="col-12 text-center text-muted py-5">
@@ -315,10 +416,14 @@ $statusLabelMap = [
         const status = m.status || 'available';
         const statusLabel = statusLabelMap[status] || status;
         const isFavorit = favoritMobil.includes(m.kode_mobil);
+        const safeName = (m.nama_mobil || 'Tanpa Nama').replace(/"/g, '&quot;');
 
         return `
           <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
-            <div class="card car-card shadow-sm h-100">
+            <div class="card car-card shadow-sm h-100"
+                 data-id="${m.kode_mobil}"
+                 data-name="${safeName}"
+                 data-img="${img}">
               <div class="card-image position-relative">
                 <figure class="image image-wrapper mb-0">
                   <img src="${img}" alt="${m.nama_mobil || 'Mobil'}" class="img_main card-img-top">
@@ -375,6 +480,7 @@ $statusLabelMap = [
 
       updateTotalCount(cars.length);
       attachFavoriteListeners();
+      attachCompareButtonListeners();
     }
 
     // ============================================
@@ -383,10 +489,10 @@ $statusLabelMap = [
     function applyFilters() {
       let result = [...allMobil];
 
-      // Filter Harga
+      // 1. FILTER HARGA
       const minPrice = parsePrice(document.getElementById('minPrice').value);
       const maxPrice = parsePrice(document.getElementById('maxPrice').value);
-      
+
       if (minPrice > 0) {
         result = result.filter(m => parsePrice(m.dp) >= minPrice);
       }
@@ -394,35 +500,86 @@ $statusLabelMap = [
         result = result.filter(m => parsePrice(m.dp) <= maxPrice);
       }
 
-      // Filter Tahun
+      // 2. FILTER TAHUN
       const fromYear = document.getElementById('fromYear').value;
       const toYear = document.getElementById('toYear').value;
-      
+
       if (fromYear) {
-        result = result.filter(m => parseInt(m.tahun_mobil) >= parseInt(fromYear));
+        result = result.filter(m => {
+          const tahun = parseInt(m.tahun_mobil);
+          return !isNaN(tahun) && tahun >= parseInt(fromYear);
+        });
       }
       if (toYear) {
-        result = result.filter(m => parseInt(m.tahun_mobil) <= parseInt(toYear));
+        result = result.filter(m => {
+          const tahun = parseInt(m.tahun_mobil);
+          return !isNaN(tahun) && tahun <= parseInt(toYear);
+        });
       }
 
-      // Filter Jarak Tempuh
+      // 3. FILTER JARAK TEMPUH
       const maxMileage = document.getElementById('maxMileage').value;
       if (maxMileage) {
-        result = result.filter(m => parseInt(m.jarak_tempuh) <= parseInt(maxMileage));
+        result = result.filter(m => {
+          const jarak = parseInt(m.jarak_tempuh);
+          return !isNaN(jarak) && jarak <= parseInt(maxMileage);
+        });
       }
 
-      // Filter Bahan Bakar
+      // 4. FILTER BAHAN BAKAR
       const selectedFuels = Array.from(document.querySelectorAll('.fuel-filter input[type="checkbox"]:checked'))
         .map(cb => cb.value);
-      
+
       if (selectedFuels.length > 0) {
-        result = result.filter(m => selectedFuels.includes(m.bahan_bakar));
+        result = result.filter(m => selectedFuels.includes(m.tipe_bahan_bakar));
       }
 
-      // Sorting
+      // 5. FILTER TIPE BODY
+      const selectedBodyTypes = Array.from(document.querySelectorAll('.body-type-filter input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
+
+      if (selectedBodyTypes.length > 0) {
+        result = result.filter(m => {
+          if (m.jenis_kendaraan) {
+            return selectedBodyTypes.includes(m.jenis_kendaraan);
+          }
+          const namaMobil = (m.nama_mobil || '').toLowerCase();
+          return selectedBodyTypes.some(bodyType => {
+            const bodyLower = bodyType.toLowerCase();
+            return namaMobil.includes(bodyLower);
+          });
+        });
+      }
+
+      // 6. FILTER SISTEM PENGGERAK
+      const selectedDriveSystems = Array.from(document.querySelectorAll('.drive-system-filter input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
+
+      if (selectedDriveSystems.length > 0) {
+        result = result.filter(m => {
+          if (m.sistem_penggerak) {
+            return selectedDriveSystems.includes(m.sistem_penggerak);
+          }
+          const driveMap = {
+            'FWD': ['FWD', 'Front Wheel Drive', 'Penggerak Depan'],
+            'RWD': ['RWD', 'Rear Wheel Drive', 'Penggerak Belakang'],
+            'AWD': ['AWD', 'All Wheel Drive', '4WD', 'Four Wheel Drive', '4x4'],
+          };
+
+          const allText = JSON.stringify(m).toLowerCase();
+          return selectedDriveSystems.some(drive => {
+            const keywords = driveMap[drive] || [drive];
+            return keywords.some(keyword =>
+              allText.includes(keyword.toLowerCase())
+            );
+          });
+        });
+      }
+
+      // SORTING
       const sortOption = document.querySelector('input[name="sortOption"]:checked').value;
-      
-      switch(sortOption) {
+
+      switch (sortOption) {
         case 'lowestPrice':
           result.sort((a, b) => parsePrice(a.dp) - parsePrice(b.dp));
           break;
@@ -432,51 +589,113 @@ $statusLabelMap = [
         case 'newestYear':
           result.sort((a, b) => parseInt(b.tahun_mobil) - parseInt(a.tahun_mobil));
           break;
+        case 'best':
+        default:
+          result.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+          break;
       }
 
       filteredMobil = result;
       renderMobil(result);
+
+      // Update display filter aktif
+      updateActiveFiltersDisplay();
+      saveFiltersToStorage();
     }
 
     // ============================================
-    // EVENT LISTENERS
+    // UPDATE FILTER AKTIF DISPLAY
     // ============================================
-    document.addEventListener('DOMContentLoaded', function() {
-      // Render awal
-      renderMobil(allMobil);
-      
-      // Sorting
-      document.querySelectorAll('input[name="sortOption"]').forEach(radio => {
-        radio.addEventListener('change', applyFilters);
-      });
+    function updateActiveFiltersDisplay() {
+      const activeFilters = [];
 
-      // Harga
-      document.getElementById('minPrice').addEventListener('change', applyFilters);
-      document.getElementById('maxPrice').addEventListener('change', applyFilters);
+      const activeCheckboxes = document.querySelectorAll(
+        '.fuel-filter input[type="checkbox"]:checked, ' +
+        '.body-type-filter input[type="checkbox"]:checked, ' +
+        '.drive-system-filter input[type="checkbox"]:checked'
+      );
 
-      // Tahun
-      document.getElementById('fromYear').addEventListener('input', applyFilters);
-      document.getElementById('toYear').addEventListener('input', applyFilters);
+      const minPrice = document.getElementById('minPrice').value;
+      const maxPrice = document.getElementById('maxPrice').value;
+      const fromYear = document.getElementById('fromYear').value;
+      const toYear = document.getElementById('toYear').value;
+      const maxMileage = document.getElementById('maxMileage').value;
 
-      // Jarak Tempuh
-      document.getElementById('maxMileage').addEventListener('change', applyFilters);
+      if (minPrice) activeFilters.push('Harga Min');
+      if (maxPrice) activeFilters.push('Harga Max');
+      if (fromYear) activeFilters.push('Tahun Dari');
+      if (toYear) activeFilters.push('Tahun Sampai');
+      if (maxMileage) activeFilters.push('Jarak Tempuh');
+      if (activeCheckboxes.length > 0) activeFilters.push(`${activeCheckboxes.length} Kategori`);
 
-      // Bahan Bakar
-      document.querySelectorAll('.fuel-filter input[type="checkbox"]').forEach(checkbox => {
-        checkbox.addEventListener('change', applyFilters);
-      });
+      const filterHeader = document.querySelector('.filter-header');
+      const oldBadge = filterHeader.querySelector('.active-filters-badge');
 
-      // Hapus Filter
-      document.querySelector('.hapus').addEventListener('click', function() {
-        document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-        document.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
-        document.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
-        document.getElementById('bestMatch').checked = true;
-        
-        filteredMobil = [...allMobil];
-        renderMobil(allMobil);
-      });
-    });
+      if (activeFilters.length > 0) {
+        const badge = oldBadge || document.createElement('span');
+        badge.className = 'badge bg-primary ms-2 active-filters-badge';
+        badge.textContent = activeFilters.length;
+
+        if (!oldBadge) {
+          filterHeader.appendChild(badge);
+        }
+      } else if (oldBadge) {
+        oldBadge.remove();
+      }
+    }
+
+    // ============================================
+    // LOCALSTORAGE FUNCTIONS
+    // ============================================
+    function saveFiltersToStorage() {
+      const filters = {
+        minPrice: document.getElementById('minPrice').value,
+        maxPrice: document.getElementById('maxPrice').value,
+        fromYear: document.getElementById('fromYear').value,
+        toYear: document.getElementById('toYear').value,
+        maxMileage: document.getElementById('maxMileage').value,
+        sortOption: document.querySelector('input[name="sortOption"]:checked').value,
+        fuels: Array.from(document.querySelectorAll('.fuel-filter input[type="checkbox"]:checked')).map(cb => cb.value),
+        bodyTypes: Array.from(document.querySelectorAll('.body-type-filter input[type="checkbox"]:checked')).map(cb => cb.value),
+        driveSystems: Array.from(document.querySelectorAll('.drive-system-filter input[type="checkbox"]:checked')).map(cb => cb.value),
+      };
+
+      localStorage.setItem('katalogFilters', JSON.stringify(filters));
+    }
+
+    function loadFiltersFromStorage() {
+      const saved = localStorage.getItem('katalogFilters');
+      if (!saved) return;
+
+      try {
+        const filters = JSON.parse(saved);
+
+        if (filters.minPrice) document.getElementById('minPrice').value = filters.minPrice;
+        if (filters.maxPrice) document.getElementById('maxPrice').value = filters.maxPrice;
+        if (filters.fromYear) document.getElementById('fromYear').value = filters.fromYear;
+        if (filters.toYear) document.getElementById('toYear').value = filters.toYear;
+        if (filters.maxMileage) document.getElementById('maxMileage').value = filters.maxMileage;
+
+        if (filters.sortOption) {
+          const sortRadio = document.querySelector(`input[name="sortOption"][value="${filters.sortOption}"]`);
+          if (sortRadio) sortRadio.checked = true;
+        }
+
+        ['fuels', 'bodyTypes', 'driveSystems'].forEach(type => {
+          if (filters[type] && Array.isArray(filters[type])) {
+            filters[type].forEach(value => {
+              const element = document.querySelector(`[value="${value}"]`);
+              if (element) element.checked = true;
+            });
+          }
+        });
+
+        setTimeout(applyFilters, 100);
+      } catch (e) {
+        console.error('Error loading filters:', e);
+        localStorage.removeItem('katalogFilters');
+      }
+    }
 
     // ============================================
     // FAVORITE LISTENERS
@@ -504,15 +723,14 @@ $statusLabelMap = [
               body: JSON.stringify({
                 kode_user: CURRENT_USER.kode_user,
                 kode_mobil: kodeMobil,
-                action: action
-              })
+                action: action,
+              }),
             });
 
             const data = await res.json();
             if (data.success) {
               icon.classList.toggle('active');
-              
-              // Update array favoritMobil
+
               if (action === 'add') {
                 favoritMobil.push(kodeMobil);
               } else {
@@ -529,6 +747,227 @@ $statusLabelMap = [
         });
       });
     }
+
+    // ============================================
+    // FUNGSI PERBANDINGAN
+    // ============================================
+    function renderCompareSlots() {
+      if (!compareSlots) return;
+
+      compareSlots.forEach((slot, index) => {
+        const car = selectedCars[index];
+        slot.innerHTML = '';
+
+        if (car) {
+          slot.classList.add('has-car');
+
+          const img = document.createElement('img');
+          img.src = car.img;
+          img.alt = car.name;
+
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'compare-remove';
+          removeBtn.textContent = '×';
+          removeBtn.addEventListener('click', () => {
+            selectedCars = selectedCars.filter(c => c.id !== car.id);
+
+            document.querySelectorAll('.btn-titik3').forEach(btn => {
+              const card = btn.closest('.car-card');
+              if (card && card.dataset.id === car.id) {
+                btn.classList.remove('compare-selected');
+              }
+            });
+
+            renderCompareSlots();
+          });
+
+          slot.appendChild(img);
+          slot.appendChild(removeBtn);
+        } else {
+          slot.classList.remove('has-car');
+          const span = document.createElement('span');
+          span.className = 'compare-slot-placeholder';
+          span.textContent = index === 0 ? 'Pilih mobil pertama' : 'Pilih mobil kedua';
+          slot.appendChild(span);
+        }
+      });
+
+      if (compareGoBtn) {
+        compareGoBtn.disabled = selectedCars.length !== 2;
+      }
+    }
+
+    function onToggleCompareChange(e) {
+      compareMode = e.target.checked;
+
+      if (compareMode) {
+        if (compareToolbar) compareToolbar.classList.add('is-active');
+      } else {
+        if (compareToolbar) compareToolbar.classList.remove('is-active');
+
+        selectedCars = [];
+        renderCompareSlots();
+        document.querySelectorAll('.btn-titik3').forEach(btn => {
+          btn.classList.remove('compare-mode', 'compare-selected');
+          const icon = btn.querySelector('i');
+          if (icon) {
+            icon.classList.remove('fa-check-circle');
+            icon.classList.add('fa-ellipsis-vertical');
+          }
+        });
+      }
+
+      // update tampilan tombol
+      document.querySelectorAll('.btn-titik3').forEach(btn => {
+        const icon = btn.querySelector('i');
+        if (!icon) return;
+
+        if (compareMode) {
+          btn.classList.add('compare-mode');
+          icon.classList.remove('fa-ellipsis-vertical');
+          icon.classList.add('fa-check-circle');
+        } else {
+          btn.classList.remove('compare-mode');
+          icon.classList.remove('fa-check-circle');
+          icon.classList.add('fa-ellipsis-vertical');
+        }
+      });
+    }
+
+    function handleCompareButtonClick(e) {
+      if (!compareMode) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const btn = e.currentTarget;
+      const card = btn.closest('.car-card');
+      if (!card) return;
+
+      const id = card.dataset.id;
+      const name = card.dataset.name;
+      const img = card.dataset.img;
+
+      const existingIndex = selectedCars.findIndex(c => c.id === id);
+
+      if (existingIndex !== -1) {
+        selectedCars.splice(existingIndex, 1);
+        btn.classList.remove('compare-selected');
+      } else {
+        if (selectedCars.length >= maxCompare) {
+          alert('Maksimal 2 mobil untuk dibandingkan');
+          return;
+        }
+        selectedCars.push({ id, name, img });
+        btn.classList.add('compare-selected');
+      }
+
+      renderCompareSlots();
+    }
+
+    function attachCompareButtonListeners() {
+      const btns = document.querySelectorAll('.btn-titik3');
+      btns.forEach(btn => {
+        btn.removeEventListener('click', handleCompareButtonClick);
+        btn.addEventListener('click', handleCompareButtonClick);
+
+        const icon = btn.querySelector('i');
+        if (!icon) return;
+
+        if (compareMode) {
+          btn.classList.add('compare-mode');
+          icon.classList.remove('fa-ellipsis-vertical');
+          icon.classList.add('fa-check-circle');
+        } else {
+          btn.classList.remove('compare-mode', 'compare-selected');
+          icon.classList.remove('fa-check-circle');
+          icon.classList.add('fa-ellipsis-vertical');
+        }
+      });
+    }
+
+    function onCompareGoClick() {
+      if (selectedCars.length !== 2) return;
+
+      const params = new URLSearchParams({
+        car1: selectedCars[0].id,
+        car2: selectedCars[1].id,
+      });
+
+      window.location.href = '../templates/perbandingan.php?' + params.toString();
+    }
+
+    // ============================================
+    // EVENT LISTENERS GLOBAL
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function () {
+      // Render awal
+      renderMobil(allMobil);
+
+      // Sorting
+      document.querySelectorAll('input[name="sortOption"]').forEach(radio => {
+        radio.addEventListener('change', applyFilters);
+      });
+
+      // Harga
+      document.getElementById('minPrice').addEventListener('change', debouncedApplyFilters);
+      document.getElementById('maxPrice').addEventListener('change', debouncedApplyFilters);
+
+      // Tahun
+      document.getElementById('fromYear').addEventListener('input', debouncedApplyFilters);
+      document.getElementById('toYear').addEventListener('input', debouncedApplyFilters);
+
+      // Jarak Tempuh
+      document.getElementById('maxMileage').addEventListener('change', debouncedApplyFilters);
+
+      // Bahan Bakar
+      document.querySelectorAll('.fuel-filter input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', debouncedApplyFilters);
+      });
+
+      // Tipe Body
+      document.querySelectorAll('.body-type-filter input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', debouncedApplyFilters);
+      });
+
+      // Sistem Penggerak
+      document.querySelectorAll('.drive-system-filter input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', debouncedApplyFilters);
+      });
+
+      // Hapus Filter
+      document.querySelector('.hapus').addEventListener('click', function () {
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+        document.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
+        document.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+        document.getElementById('bestMatch').checked = true;
+
+        filteredMobil = [...allMobil];
+        renderMobil(allMobil);
+        updateActiveFiltersDisplay();
+
+        localStorage.removeItem('katalogFilters');
+      });
+
+      // Load filter dari localStorage jika ada
+      loadFiltersFromStorage();
+
+      // Inisialisasi elemen perbandingan
+      compareToggle = document.getElementById('togglePerbandingan');
+      compareToolbar = document.getElementById('compareToolbar');
+      compareSlots = document.querySelectorAll('.compare-slot');
+      compareGoBtn = document.getElementById('compareGoBtn');
+
+      if (compareToggle && compareToolbar) {
+        compareToggle.addEventListener('change', onToggleCompareChange);
+      }
+      if (compareGoBtn) {
+        compareGoBtn.addEventListener('click', onCompareGoClick);
+      }
+
+      renderCompareSlots();
+      attachCompareButtonListeners();
+    });
   </script>
 
   <!-- footer -->
@@ -536,4 +975,5 @@ $statusLabelMap = [
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

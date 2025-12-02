@@ -70,41 +70,13 @@ function fillEditFormFromData(data) {
   const phoneEl    = document.getElementById('phone_edit');
   const emailEl    = document.getElementById('email_edit');
   const addressEl  = document.getElementById('address_edit');
-  const photoPrev  = document.getElementById('photoPreviewEdit');
 
   if (fullnameEl) fullnameEl.value = fullName;
   if (usernameEl) usernameEl.value = data.username || '';
   if (phoneEl)    phoneEl.value    = data.no_telp || '';
   if (emailEl)    emailEl.value    = data.email || '';
   if (addressEl)  addressEl.value  = data.alamat || '';
-
-  if (photoPrev) {
-    const avatar = data.avatar_url || '/images/user/profil_admin_1.png';
-    photoPrev.innerHTML = `
-      <img src="${avatar}" 
-           alt="${fullName}" 
-           class="w-100 h-100 object-fit-cover rounded-circle" />
-    `;
-  }
 }
-
-// ============= Preview foto (hanya front-end) =============
-document.addEventListener('change', (e) => {
-  const input = e.target;
-  if (!(input instanceof HTMLInputElement)) return;
-  if (input.id !== 'photo_edit') return;
-
-  const file = input.files && input.files[0];
-  const prev = document.getElementById('photoPreviewEdit');
-  if (!file || !prev) return;
-
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    prev.innerHTML =
-      `<img src="${ev.target.result}" class="w-100 h-100 object-fit-cover rounded-circle" />`;
-  };
-  reader.readAsDataURL(file);
-});
 
 // ============= Submit update (delegasi) =============
 document.addEventListener('submit', async (e) => {
@@ -179,7 +151,10 @@ document.addEventListener('submit', async (e) => {
 
   } catch (err) {
     console.error('EDIT UPDATE error:', err);
-    showEditAccountMessage(err.message || 'Terjadi kesalahan saat menyimpan perubahan.', 'danger');
+    showEditAccountMessage(
+      err.message || 'Terjadi kesalahan saat menyimpan perubahan.',
+      'danger'
+    );
   } finally {
     if (btnSubmit) {
       btnSubmit.disabled = false;
