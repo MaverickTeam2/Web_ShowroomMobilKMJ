@@ -51,8 +51,27 @@ function saveGeneralSettings() {
 }
 
 // ========================================
-// ACCOUNT SETTINGS - UPDATE FOTO PROFIL
+// ACCOUNT SETTINGS - LOAD & SAVE
 // ========================================
+function loadAccountSettings() {
+    fetch(`${API_BASE_URL}/get_account_settings.php`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Populate form fields
+                document.querySelector('input[name="fullname"]').value = data.data.full_name || '';
+                document.querySelector('input[name="username"]').value = data.data.username || '';
+                document.querySelector('input[name="phone"]').value = data.data.no_telp || '';
+                
+                // Update avatar
+                if (data.data.avatar_full_url) {
+                    document.getElementById('previewImage').src = data.data.avatar_full_url;
+                }
+            }
+        })
+        .catch(error => console.error('Error loading account settings:', error));
+}
+
 function saveAccountSettings() {
     const formData = new FormData();
     
@@ -308,12 +327,18 @@ function loadBackupInfo() {
         .then(response => response.json())
         .then(data => {
             if (data.success && data.data) {
-                const timeElements = document.querySelectorAll('.bg-light .text-secondary');
-                if (timeElements[0]) timeElements[0].textContent = data.data.backup_time_formatted;
-                if (timeElements[1]) timeElements[1].textContent = data.data.backup_size_mb + ' MB';
+                document.querySelector('.backup-time').textContent = data.data.backup_time_formatted;
+                document.querySelector('.backup-size').textContent = data.data.backup_size_mb + ' MB';
+            } else {
+                document.querySelector('.backup-time').textContent = 'Belum ada backup';
+                document.querySelector('.backup-size').textContent = '0 MB';
             }
         })
-        .catch(error => console.error('Error loading backup info:', error));
+        .catch(error => {
+            console.error('Error loading backup info:', error);
+            document.querySelector('.backup-time').textContent = 'Belum ada backup';
+            document.querySelector('.backup-size').textContent = '0 MB';
+        });
 }
 
 // ========================================
@@ -613,6 +638,7 @@ if (confirmImportBtn) {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Page loaded! API Base URL:', API_BASE_URL);
     loadGeneralSettings();
+    loadAccountSettings(); // Load account data
     loadSocialSettings();
     loadBackupInfo();
 });
