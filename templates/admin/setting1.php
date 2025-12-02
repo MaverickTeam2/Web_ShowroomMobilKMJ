@@ -1,47 +1,16 @@
 <?php
-session_start();
 
 $title = "Settings";
 include 'partials/header.php';
 include 'partials/sidebar.php';
-require_once '../../db/koneksi.php';
 
-// Ambil data general settings
-$generalSettings = [
-    'showroom_status' => 0,
-    'jual_mobil' => 0,
-    'schedule_pelanggan' => 1
-];
+// Placeholder data - akan di-load via JavaScript dari API
+$fotoProfil = "https://via.placeholder.com/150/007bff/ffffff?text=U";
 
-$query = "SELECT showroom_status, jual_mobil, schedule_pelanggan FROM showroom_general LIMIT 1";
-$result = $conn->query($query);
-if ($result && $result->num_rows > 0) {
-    $generalSettings = $result->fetch_assoc();
-}
-
-// Ambil data user untuk account settings
-$userData = [];
-if (isset($_SESSION['kode_user'])) {
-    $kode_user = $_SESSION['kode_user'];
-    $userQuery = "SELECT username, email, full_name, no_telp, avatar_url FROM users WHERE kode_user = ?";
-    $stmt = $conn->prepare($userQuery);
-    $stmt->bind_param('s', $kode_user);
-    $stmt->execute();
-    $userResult = $stmt->get_result();
-    if ($userResult->num_rows > 0) {
-        $userData = $userResult->fetch_assoc();
-    }
-}
-
-// Default foto profil - akses dari API_KMJ
-if (!empty($userData['avatar_url'])) {
-    // Foto disimpan di API_KMJ/images/user/
-    // Akses via URL: http://localhost/API_KMJ/images/user/profil_xxx.jpg
-    $fotoProfil = 'http://localhost/API_KMJ' . $userData['avatar_url'];
-} else {
-    // Jika tidak ada avatar_url, gunakan placeholder dengan initial
-    $initial = isset($userData['username']) ? strtoupper(substr($userData['username'], 0, 1)) : 'U';
-    $fotoProfil = "https://via.placeholder.com/150/007bff/ffffff?text=" . $initial;
+// Jika ada session username, buat placeholder dengan initial
+if (isset($_SESSION['username'])) {
+    $initial = strtoupper(substr($_SESSION['username'], 0, 1));
+    $fotoProfil = "https://via.placeholder.com/150/007bff/ffffff?text={$initial}";
 }
 ?>
 
@@ -120,8 +89,7 @@ if (!empty($userData['avatar_url'])) {
               <p>Manual buka atau tutup showroom online anda untuk pelanggan</p>
             </div>
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="showroomStatus" 
-                     <?php echo $generalSettings['showroom_status'] == 1 ? 'checked' : ''; ?>>
+              <input class="form-check-input" type="checkbox" id="showroomStatus">
             </div>
           </div>
 
@@ -131,8 +99,7 @@ if (!empty($userData['avatar_url'])) {
               <p>Manual buka atau tutup untuk pelanggan menjual mobil</p>
             </div>
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="sellCarStatus" 
-                     <?php echo $generalSettings['jual_mobil'] == 1 ? 'checked' : ''; ?>>
+              <input class="form-check-input" type="checkbox" id="sellCarStatus">
             </div>
           </div>
 
@@ -142,8 +109,7 @@ if (!empty($userData['avatar_url'])) {
               <p>Manual buka atau tutup untuk pelanggan membuat Schedule</p>
             </div>
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="scheduleStatus" 
-                     <?php echo $generalSettings['schedule_pelanggan'] == 1 ? 'checked' : ''; ?>>
+              <input class="form-check-input" type="checkbox" id="scheduleStatus">
             </div>
           </div>
         </div>
@@ -166,8 +132,7 @@ if (!empty($userData['avatar_url'])) {
                      src="<?php echo htmlspecialchars($fotoProfil); ?>" 
                      alt="Profile Picture" 
                      class="profile-pic" 
-                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #e0e0e0;"
-                     onerror="this.onerror=null; this.src='https://via.placeholder.com/150/007bff/ffffff?text=<?php echo urlencode(isset($userData['username']) ? strtoupper(substr($userData['username'], 0, 1)) : 'U'); ?>';">
+                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #e0e0e0;">
                 <div>
                   <button class="btn btn-outline-secondary btn-sm upload-btn" type="button"
                           onclick="document.getElementById('uploadLogo').click()">
@@ -185,7 +150,7 @@ if (!empty($userData['avatar_url'])) {
             <div class="mb-3">
               <label class="form-label fw-semibold d-block mb-2">Full Name</label>
               <input type="text" class="form-control" name="fullname" 
-                     value="<?php echo htmlspecialchars($userData['full_name'] ?? ''); ?>" 
+                     value="" 
                      placeholder="Masukkan nama lengkap">
             </div>
 
@@ -193,7 +158,7 @@ if (!empty($userData['avatar_url'])) {
             <div class="mb-3">
               <label class="form-label fw-semibold d-block mb-2">Username</label>
               <input type="text" class="form-control" name="username" 
-                     value="<?php echo htmlspecialchars($userData['username'] ?? ''); ?>" 
+                     value="" 
                      placeholder="Masukkan username">
             </div>
 
@@ -201,7 +166,7 @@ if (!empty($userData['avatar_url'])) {
             <div class="mb-4">
               <label class="form-label fw-semibold d-block mb-2">No Telephone</label>
               <input type="text" class="form-control" name="phone" 
-                     value="<?php echo htmlspecialchars($userData['no_telp'] ?? ''); ?>" 
+                     value="" 
                      placeholder="Masukkan nomor telepon">
             </div>
 
@@ -304,7 +269,7 @@ if (!empty($userData['avatar_url'])) {
               </p>
             </div>
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="autoBackup" checked>
+              <input class="form-check-input" type="checkbox" id="autoBackup">
             </div>
           </div>
 
@@ -315,7 +280,7 @@ if (!empty($userData['avatar_url'])) {
                 <i class="bx bx-time text-primary fs-4"></i>
                 <div>
                   <div class="fw-semibold">Last Backup</div>
-                  <div class="text-secondary" style="font-size: 14px;">Belum ada backup</div>
+                  <div class="text-secondary backup-time" style="font-size: 14px;">Loading...</div>
                 </div>
               </div>
             </div>
@@ -325,7 +290,7 @@ if (!empty($userData['avatar_url'])) {
                 <i class="bx bx-hdd text-primary fs-4"></i>
                 <div>
                   <div class="fw-semibold">Backup Size</div>
-                  <div class="text-secondary" style="font-size: 14px;">0 MB</div>
+                  <div class="text-secondary backup-size" style="font-size: 14px;">Loading...</div>
                 </div>
               </div>
             </div>
@@ -423,6 +388,5 @@ if (!empty($userData['avatar_url'])) {
 <script src="../../assets/js/setting_admin.js"></script>
 
 <?php 
-$conn->close();
 include 'partials/footer.php'; 
 ?>
