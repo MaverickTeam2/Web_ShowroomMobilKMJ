@@ -20,14 +20,23 @@ if (!$api || !isset($api['success']) || !$api['success']) {
 // TOTAL MOBIL
 $jumlahMobil = count($mobil);
 
-// BAHAN BAKAR (ini boleh tetap static dulu)
-$bahanBakar = [
-  "Diesel" => 660,
-  "Electric" => 1897,
-  "Gas" => 63367,
-  "Hybrid" => 2915,
-  "Plug-In Hybrid" => 1256
+// BAHAN BAKAR
+$allFuelTypes = [
+  "Bensin" => 0,
+  "Diesel" => 0,
+  "Listrik" => 0,
+  "Hybrid" => 0,
 ];
+
+// Hitung dari data yang ada
+if (!empty($mobil)) {
+  foreach ($mobil as $car) {
+    $jenis = $car['tipe_bahan_bakar'] ?? '';
+    if (!empty($jenis) && isset($allFuelTypes[$jenis])) {
+      $allFuelTypes[$jenis]++;
+    }
+  }
+}
 
 $statusLabelMap = [
   'available' => 'Available',
@@ -58,14 +67,14 @@ $statusLabelMap = [
 <body class="page-katalog">
   <!-- navbar -->
   <?php include '../templates/navbar_footer/navbar.php'; ?>
-  
+
   <?php
   // Cek user login
   $isLoggedIn = isset($_SESSION['full_name']);
   $kodeUser = $_SESSION['user_id'] ?? ($_SESSION['kode_user'] ?? '');
   $fullName = $_SESSION['full_name'] ?? '';
   $email = $_SESSION['email'] ?? '';
-  
+
   // Ambil data favorit
   $favoritMobil = [];
   if (!empty($kodeUser)) {
@@ -85,7 +94,7 @@ $statusLabelMap = [
       email: "<?= addslashes($email) ?>"
     };
     const favoritMobil = <?= json_encode($favoritMobil) ?>;
-    
+
     // Data mobil dari PHP
     let allMobil = <?= json_encode($mobil) ?>;
     let filteredMobil = [...allMobil];
@@ -103,7 +112,7 @@ $statusLabelMap = [
           </h5>
           <p>Tambahkan filter untuk menyimpan pencarian Anda dan dapatkan pemberitahuan saat inventaris baru tiba.</p>
           <hr>
-          
+
           <div class="accordion" id="accordionPanelsStayOpenExample">
             <!-- Item 1 - Urutkan -->
             <div class="accordion-item">
@@ -123,7 +132,8 @@ $statusLabelMap = [
                     <label class="form-check-label" for="lowestPrice">Harga Terendah</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sortOption" id="highestPrice" value="highestPrice">
+                    <input class="form-check-input" type="radio" name="sortOption" id="highestPrice"
+                      value="highestPrice">
                     <label class="form-check-label" for="highestPrice">Harga Tertinggi</label>
                   </div>
                   <div class="form-check">
@@ -137,7 +147,8 @@ $statusLabelMap = [
             <!-- Item 2 - Harga -->
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo">
                   Harga
                 </button>
               </h2>
@@ -172,7 +183,8 @@ $statusLabelMap = [
             <!-- Item 3 - Tahun -->
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseThree">
                   Tahun
                 </button>
               </h2>
@@ -182,14 +194,16 @@ $statusLabelMap = [
                     <label for="fromYear" class="form-label">Dari Tahun</label>
                     <input class="form-control" list="fromYearOptions" id="fromYear" placeholder="Pilih tahun...">
                     <datalist id="fromYearOptions">
-                      <?php for ($year = 2000; $year <= date("Y"); $year++) echo "<option value='$year'>"; ?>
+                      <?php for ($year = 2000; $year <= date("Y"); $year++)
+                        echo "<option value='$year'>"; ?>
                     </datalist>
                   </div>
                   <div class="mb-3">
                     <label for="toYear" class="form-label">Sampai Tahun</label>
                     <input class="form-control" list="toYearOptions" id="toYear" placeholder="Pilih tahun...">
                     <datalist id="toYearOptions">
-                      <?php for ($year = 2000; $year <= date("Y"); $year++) echo "<option value='$year'>"; ?>
+                      <?php for ($year = 2000; $year <= date("Y"); $year++)
+                        echo "<option value='$year'>"; ?>
                     </datalist>
                   </div>
                 </div>
@@ -199,7 +213,8 @@ $statusLabelMap = [
             <!-- Item 4 - Jarak Tempuh -->
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseFour">
                   Jarak Tempuh
                 </button>
               </h2>
@@ -224,18 +239,24 @@ $statusLabelMap = [
             <!-- Item 5 - Bahan Bakar -->
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseFive">
                   Jenis Bahan Bakar
                 </button>
               </h2>
               <div id="collapseFive" class="accordion-collapse collapse">
                 <div class="accordion-body">
                   <div class="fuel-filter">
-                    <?php foreach ($bahanBakar as $jenis => $jumlah): ?>
+                    <?php foreach ($allFuelTypes as $jenis => $jumlah): ?>
                       <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" value="<?= $jenis ?>" id="fuel_<?= strtolower(str_replace([' ', '-'], '_', $jenis)) ?>">
-                        <label class="form-check-label" for="fuel_<?= strtolower(str_replace([' ', '-'], '_', $jenis)) ?>">
-                          <?= $jenis ?> (<?= number_format($jumlah, 0, ',', '.') ?>)
+                        <input class="form-check-input" type="checkbox" value="<?= $jenis ?>"
+                          id="fuel_<?= strtolower(str_replace([' ', '-'], '_', $jenis)) ?>" <?= $jumlah == 0 ? 'disabled' : '' ?>>
+                        <label class="form-check-label <?= $jumlah == 0 ? 'text-muted' : '' ?>"
+                          for="fuel_<?= strtolower(str_replace([' ', '-'], '_', $jenis)) ?>">
+                          <?= $jenis ?>
+                          <span class="filter-count <?= $jumlah == 0 ? 'text-danger' : 'text-muted' ?>">
+                            (<?= number_format($jumlah, 0, ',', '.') ?>)
+                          </span>
                         </label>
                       </div>
                     <?php endforeach; ?>
@@ -244,8 +265,66 @@ $statusLabelMap = [
               </div>
             </div>
 
+            <!-- Item 6 Body Tipe -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseSix">
+                  Tipe Body
+                </button>
+              </h2>
+              <div id="collapseSix" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <div class="body-type-filter">
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="SUV" id="body_suv">
+                      <label class="form-check-label" for="body_suv">SUV</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="MPV" id="body_mpv">
+                      <label class="form-check-label" for="body_mpv">MPV</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="Sedan" id="body_sedan">
+                      <label class="form-check-label" for="body_sedan">Sedan</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="Sport" id="body_sport">
+                      <label class="form-check-label" for="body_sport">Sport</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 7 Sistem Penggerak -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseSeven">
+                  Sistem Penggerak
+                </button>
+              </h2>
+              <div id="collapseSeven" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <div class="drive-system-filter">
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="FWD (Front Wheel Drive)" id="drive_fwd">
+                      <label class="form-check-label" for="drive_fwd">FWD (Front-Wheel Drive)</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="RWD (Rear Wheel Drive)" id="drive_rwd">
+                      <label class="form-check-label" for="drive_rwd">RWD (Rear-Wheel Drive)</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" value="AWD (All Wheel Drive)" id="drive_awd">
+                      <label class="form-check-label" for="drive_awd">AWD (All-Wheel Drive)</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
       </aside>
 
       <!-- Konten Daftar Mobil -->
@@ -292,12 +371,19 @@ $statusLabelMap = [
       document.getElementById('totalMobil').textContent = count;
     }
 
+    // Debouncing untuk filter
+    let filterTimeout;
+    function debouncedApplyFilters() {
+      clearTimeout(filterTimeout);
+      filterTimeout = setTimeout(applyFilters, 300);
+    }
+
     // ============================================
     // RENDER MOBIL
     // ============================================
     function renderMobil(cars) {
       const container = document.getElementById('mobilContainer');
-      
+
       if (cars.length === 0) {
         container.innerHTML = `
           <div class="col-12 text-center text-muted py-5">
@@ -383,46 +469,107 @@ $statusLabelMap = [
     function applyFilters() {
       let result = [...allMobil];
 
-      // Filter Harga
+      console.log('Total mobil sebelum filter:', result.length);
+
+      // 1. FILTER HARGA
       const minPrice = parsePrice(document.getElementById('minPrice').value);
       const maxPrice = parsePrice(document.getElementById('maxPrice').value);
-      
+
       if (minPrice > 0) {
         result = result.filter(m => parsePrice(m.dp) >= minPrice);
+        console.log('Setelah filter minPrice:', result.length);
       }
       if (maxPrice > 0) {
         result = result.filter(m => parsePrice(m.dp) <= maxPrice);
+        console.log('Setelah filter maxPrice:', result.length);
       }
 
-      // Filter Tahun
+      // 2. FILTER TAHUN
       const fromYear = document.getElementById('fromYear').value;
       const toYear = document.getElementById('toYear').value;
-      
+
       if (fromYear) {
-        result = result.filter(m => parseInt(m.tahun_mobil) >= parseInt(fromYear));
+        result = result.filter(m => {
+          const tahun = parseInt(m.tahun_mobil);
+          return !isNaN(tahun) && tahun >= parseInt(fromYear);
+        });
+        console.log('Setelah filter fromYear:', result.length);
       }
       if (toYear) {
-        result = result.filter(m => parseInt(m.tahun_mobil) <= parseInt(toYear));
+        result = result.filter(m => {
+          const tahun = parseInt(m.tahun_mobil);
+          return !isNaN(tahun) && tahun <= parseInt(toYear);
+        });
+        console.log('Setelah filter toYear:', result.length);
       }
 
-      // Filter Jarak Tempuh
+      // 3. FILTER JARAK TEMPUH
       const maxMileage = document.getElementById('maxMileage').value;
       if (maxMileage) {
-        result = result.filter(m => parseInt(m.jarak_tempuh) <= parseInt(maxMileage));
+        result = result.filter(m => {
+          const jarak = parseInt(m.jarak_tempuh);
+          return !isNaN(jarak) && jarak <= parseInt(maxMileage);
+        });
+        console.log('Setelah filter maxMileage:', result.length);
       }
 
-      // Filter Bahan Bakar
+      // 4. FILTER BAHAN BAKAR
       const selectedFuels = Array.from(document.querySelectorAll('.fuel-filter input[type="checkbox"]:checked'))
         .map(cb => cb.value);
-      
+
       if (selectedFuels.length > 0) {
-        result = result.filter(m => selectedFuels.includes(m.bahan_bakar));
+        result = result.filter(m => selectedFuels.includes(m.tipe_bahan_bakar));
+        console.log('Setelah filter bahan bakar:', result.length);
       }
 
-      // Sorting
+      // 5. FILTER TIPE BODY
+      const selectedBodyTypes = Array.from(document.querySelectorAll('.body-type-filter input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
+
+      if (selectedBodyTypes.length > 0) {
+        result = result.filter(m => {
+          if (m.jenis_kendaraan) {
+            return selectedBodyTypes.includes(m.jenis_kendaraan);
+          }
+          const namaMobil = (m.nama_mobil || '').toLowerCase();
+          return selectedBodyTypes.some(bodyType => {
+            const bodyLower = bodyType.toLowerCase();
+            return namaMobil.includes(bodyLower);
+          });
+        });
+        console.log('Setelah filter tipe body:', result.length);
+      }
+
+      // 6. FILTER SISTEM PENGGERAK
+      const selectedDriveSystems = Array.from(document.querySelectorAll('.drive-system-filter input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
+
+      if (selectedDriveSystems.length > 0) {
+        result = result.filter(m => {
+          if (m.sistem_penggerak) {
+            return selectedDriveSystems.includes(m.sistem_penggerak);
+          }
+          const driveMap = {
+            'FWD': ['FWD', 'Front Wheel Drive', 'Penggerak Depan'],
+            'RWD': ['RWD', 'Rear Wheel Drive', 'Penggerak Belakang'],
+            'AWD': ['AWD', 'All Wheel Drive', '4WD', 'Four Wheel Drive', '4x4']
+          };
+
+          const allText = JSON.stringify(m).toLowerCase();
+          return selectedDriveSystems.some(drive => {
+            const keywords = driveMap[drive] || [drive];
+            return keywords.some(keyword =>
+              allText.includes(keyword.toLowerCase())
+            );
+          });
+        });
+        console.log('Setelah filter sistem penggerak:', result.length);
+      }
+
+      // SORTING
       const sortOption = document.querySelector('input[name="sortOption"]:checked').value;
-      
-      switch(sortOption) {
+
+      switch (sortOption) {
         case 'lowestPrice':
           result.sort((a, b) => parsePrice(a.dp) - parsePrice(b.dp));
           break;
@@ -432,50 +579,180 @@ $statusLabelMap = [
         case 'newestYear':
           result.sort((a, b) => parseInt(b.tahun_mobil) - parseInt(a.tahun_mobil));
           break;
+        case 'best':
+        default:
+          result.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+          break;
       }
 
+      console.log('Total mobil setelah semua filter:', result.length);
       filteredMobil = result;
       renderMobil(result);
+
+      // Update display filter aktif
+      updateActiveFiltersDisplay();
+      saveFiltersToStorage();
+    }
+
+    // ============================================
+    // UPDATE FILTER AKTIF DISPLAY
+    // ============================================
+    function updateActiveFiltersDisplay() {
+      const activeFilters = [];
+
+      // Hitung checkbox yang aktif
+      const activeCheckboxes = document.querySelectorAll(
+        '.fuel-filter input[type="checkbox"]:checked, ' +
+        '.body-type-filter input[type="checkbox"]:checked, ' +
+        '.drive-system-filter input[type="checkbox"]:checked'
+      );
+
+      const minPrice = document.getElementById('minPrice').value;
+      const maxPrice = document.getElementById('maxPrice').value;
+      const fromYear = document.getElementById('fromYear').value;
+      const toYear = document.getElementById('toYear').value;
+      const maxMileage = document.getElementById('maxMileage').value;
+
+      // Tambahkan ke array jika ada nilai
+      if (minPrice) activeFilters.push('Harga Min');
+      if (maxPrice) activeFilters.push('Harga Max');
+      if (fromYear) activeFilters.push('Tahun Dari');
+      if (toYear) activeFilters.push('Tahun Sampai');
+      if (maxMileage) activeFilters.push('Jarak Tempuh');
+      if (activeCheckboxes.length > 0) activeFilters.push(`${activeCheckboxes.length} Kategori`);
+
+      // Update badge
+      const filterHeader = document.querySelector('.filter-header');
+      const oldBadge = filterHeader.querySelector('.active-filters-badge');
+
+      if (activeFilters.length > 0) {
+        const badge = oldBadge || document.createElement('span');
+        badge.className = 'badge bg-primary ms-2 active-filters-badge';
+        badge.textContent = activeFilters.length;
+
+        if (!oldBadge) {
+          filterHeader.appendChild(badge);
+        }
+      } else if (oldBadge) {
+        oldBadge.remove();
+      }
+    }
+
+    // ============================================
+    // LOCALSTORAGE FUNCTIONS
+    // ============================================
+    function saveFiltersToStorage() {
+      const filters = {
+        minPrice: document.getElementById('minPrice').value,
+        maxPrice: document.getElementById('maxPrice').value,
+        fromYear: document.getElementById('fromYear').value,
+        toYear: document.getElementById('toYear').value,
+        maxMileage: document.getElementById('maxMileage').value,
+        sortOption: document.querySelector('input[name="sortOption"]:checked').value,
+        fuels: Array.from(document.querySelectorAll('.fuel-filter input[type="checkbox"]:checked')).map(cb => cb.value),
+        bodyTypes: Array.from(document.querySelectorAll('.body-type-filter input[type="checkbox"]:checked')).map(cb => cb.value),
+        driveSystems: Array.from(document.querySelectorAll('.drive-system-filter input[type="checkbox"]:checked')).map(cb => cb.value)
+      };
+
+      localStorage.setItem('katalogFilters', JSON.stringify(filters));
+    }
+
+    function loadFiltersFromStorage() {
+      const saved = localStorage.getItem('katalogFilters');
+      if (!saved) return;
+
+      try {
+        const filters = JSON.parse(saved);
+
+        // Terapkan filter sederhana
+        if (filters.minPrice) document.getElementById('minPrice').value = filters.minPrice;
+        if (filters.maxPrice) document.getElementById('maxPrice').value = filters.maxPrice;
+        if (filters.fromYear) document.getElementById('fromYear').value = filters.fromYear;
+        if (filters.toYear) document.getElementById('toYear').value = filters.toYear;
+        if (filters.maxMileage) document.getElementById('maxMileage').value = filters.maxMileage;
+
+        // Sorting
+        if (filters.sortOption) {
+          const sortRadio = document.querySelector(`input[name="sortOption"][value="${filters.sortOption}"]`);
+          if (sortRadio) sortRadio.checked = true;
+        }
+
+        // Checkboxes - hanya yang ada di HTML
+        ['fuels', 'bodyTypes', 'driveSystems'].forEach(type => {
+          if (filters[type] && Array.isArray(filters[type])) {
+            filters[type].forEach(value => {
+              const element = document.querySelector(`[value="${value}"]`);
+              if (element) element.checked = true;
+            });
+          }
+        });
+
+        // Terapkan filter setelah load
+        setTimeout(applyFilters, 100);
+
+      } catch (e) {
+        console.error('Error loading filters:', e);
+        localStorage.removeItem('katalogFilters');
+      }
     }
 
     // ============================================
     // EVENT LISTENERS
     // ============================================
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       // Render awal
       renderMobil(allMobil);
-      
+
       // Sorting
       document.querySelectorAll('input[name="sortOption"]').forEach(radio => {
         radio.addEventListener('change', applyFilters);
       });
 
       // Harga
-      document.getElementById('minPrice').addEventListener('change', applyFilters);
-      document.getElementById('maxPrice').addEventListener('change', applyFilters);
+      document.getElementById('minPrice').addEventListener('change', debouncedApplyFilters);
+      document.getElementById('maxPrice').addEventListener('change', debouncedApplyFilters);
 
       // Tahun
-      document.getElementById('fromYear').addEventListener('input', applyFilters);
-      document.getElementById('toYear').addEventListener('input', applyFilters);
+      document.getElementById('fromYear').addEventListener('input', debouncedApplyFilters);
+      document.getElementById('toYear').addEventListener('input', debouncedApplyFilters);
 
       // Jarak Tempuh
-      document.getElementById('maxMileage').addEventListener('change', applyFilters);
+      document.getElementById('maxMileage').addEventListener('change', debouncedApplyFilters);
 
       // Bahan Bakar
       document.querySelectorAll('.fuel-filter input[type="checkbox"]').forEach(checkbox => {
-        checkbox.addEventListener('change', applyFilters);
+        checkbox.addEventListener('change', debouncedApplyFilters);
+      });
+
+      // Tipe Body
+      document.querySelectorAll('.body-type-filter input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', debouncedApplyFilters);
+      });
+
+      // Sistem Penggerak
+      document.querySelectorAll('.drive-system-filter input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', debouncedApplyFilters);
       });
 
       // Hapus Filter
-      document.querySelector('.hapus').addEventListener('click', function() {
+      document.querySelector('.hapus').addEventListener('click', function () {
+        // Reset semua input
         document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
         document.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
         document.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
         document.getElementById('bestMatch').checked = true;
-        
+
+        // Reset state
         filteredMobil = [...allMobil];
         renderMobil(allMobil);
+        updateActiveFiltersDisplay();
+
+        // Hapus dari localStorage
+        localStorage.removeItem('katalogFilters');
       });
+
+      // Load filter dari localStorage jika ada
+      loadFiltersFromStorage();
     });
 
     // ============================================
@@ -511,7 +788,7 @@ $statusLabelMap = [
             const data = await res.json();
             if (data.success) {
               icon.classList.toggle('active');
-              
+
               // Update array favoritMobil
               if (action === 'add') {
                 favoritMobil.push(kodeMobil);
@@ -536,4 +813,5 @@ $statusLabelMap = [
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
