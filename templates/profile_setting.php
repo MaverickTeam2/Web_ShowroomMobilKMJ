@@ -1,5 +1,5 @@
 <?php
-// ====== PROFILE SETTING (DINAMIS) ======
+// ====== PROFILE SETTING (via API) ======
 session_start();
 
 // 1. Pastikan user sudah login
@@ -10,156 +10,133 @@ if (!isset($_SESSION['kode_user'])) {
 
 $kode_user = $_SESSION['kode_user'];
 
-// 2. Koneksi ke DB (pakai koneksi web kamu)
-require_once __DIR__ . "/../db/koneksi.php"; // pastikan file ini bener
+// 2. Load config API & client
+require_once __DIR__ . "/../db/config_api.php";
+require_once __DIR__ . "/../db/api_client.php";
 
 // Variabel untuk pesan sukses/error
 $success = "";
 $error = "";
+$delete_error = ""; // khusus error hapus akun
 
-/**
- * Helper: upload + resize avatar (512x512, square crop)
- * Return: path relatif /images/user/xxxx.png atau null kalau gagal
- */
-function handleAvatarUpload($kode_user)
+// 3. Fungsi untuk ambil data user dari API
+function fetch_user_profile($kode_user)
 {
-  if (
-    !isset($_FILES['avatar']) ||
-    $_FILES['avatar']['error'] !== UPLOAD_ERR_OK
-  ) {
-    return null; // tidak ada file yang diupload
+  $resp = api_get("user/routes/profile.php?kode_user=" . urlencode($kode_user));
+
+  if (!isset($resp['status']) || !$resp['status']) {
+    return [
+      'error' => $resp['message'] ?? 'Gagal mengambil data profil dari API.',
+      'user' => null
+    ];
   }
 
-  $fileTmp = $_FILES['avatar']['tmp_name'];
-  $fileName = $_FILES['avatar']['name'];
-
-  // Cek tipe mime (security basic)
-  $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-  $mime = mime_content_type($fileTmp);
-  if (!in_array($mime, $allowedTypes)) {
-    return null;
-  }
-
-  // Folder simpan (samakan dengan pola di DB: /images/user/...)
-  $dir = __DIR__ . "/../../API_KMJ/images/user/";
-  if (!file_exists($dir)) {
-    mkdir($dir, 0777, true);
-  }
-
-  $newFileName = "USER_" . $kode_user . "_" . time() . ".png";
-  $target = $dir . $newFileName;
-
-  // Pindah dulu
-  if (!move_uploaded_file($fileTmp, $target)) {
-    return null;
-  }
-
-  // Resize + crop ke 512x512 pakai GD
-  list($w, $h, $type) = getimagesize($target);
-
-  if ($type == IMAGETYPE_JPEG) {
-    $src = imagecreatefromjpeg($target);
-  } elseif ($type == IMAGETYPE_PNG) {
-    $src = imagecreatefrompng($target);
-  } elseif ($type == IMAGETYPE_WEBP) {
-    $src = imagecreatefromwebp($target);
-  } else {
-    return null;
-  }
-
-  $size = 512;
-  $minSide = min($w, $h);
-  $cropX = ($w - $minSide) / 2;
-  $cropY = ($h - $minSide) / 2;
-
-  $dst = imagecreatetruecolor($size, $size);
-  imagecopyresampled($dst, $src, 0, 0, $cropX, $cropY, $size, $size, $minSide, $minSide);
-  imagepng($dst, $target);
-
-  imagedestroy($src);
-  imagedestroy($dst);
-
-  // path yang disimpan di DB (relatif dari root web)
-  $avatar_url = "/API_KMJ/images/user/" . $newFileName;
-  return $avatar_url;
-}
-
-// 3. Kalau form submit → update profile
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $full_name = trim($_POST['full_name'] ?? '');
-  $no_telp = trim($_POST['no_telp'] ?? '');
-  $alamat = trim($_POST['alamat'] ?? '');
-
-  if ($full_name === "") {
-    $error = "Nama lengkap tidak boleh kosong.";
-  } else {
-    // Coba upload avatar (kalau ada)
-    $avatar_url = handleAvatarUpload($kode_user);
-
-    // Build query dinamis
-    $fields = [];
-    $params = [];
-    $types = "";
-
-    $fields[] = "full_name = ?";
-    $params[] = $full_name;
-    $types .= "s";
-
-    $fields[] = "no_telp = ?";
-    $params[] = $no_telp !== "" ? $no_telp : null;
-    $types .= "s";
-
-    $fields[] = "alamat = ?";
-    $params[] = $alamat !== "" ? $alamat : null;
-    $types .= "s";
-
-    if ($avatar_url) {
-      $fields[] = "avatar_url = ?";
-      $params[] = $avatar_url;
-      $types .= "s";
-    }
-
-    $sql = "UPDATE users SET " . implode(", ", $fields) . " WHERE kode_user = ?";
-    $params[] = $kode_user;
-    $types .= "s";
-
-    $stmt = $conn->prepare($sql);
-    if (!$stmt) {
-      $error = "Gagal prepare statement: " . $conn->error;
-    } else {
-      $stmt->bind_param($types, ...$params);
-      if ($stmt->execute()) {
-        $success = "Profil berhasil diperbarui.";
-        // Update juga nama di session
-        $_SESSION['full_name'] = $full_name;
-      } else {
-        $error = "Gagal update profile: " . $conn->error;
-      }
-      $stmt->close();
-    }
-  }
-}
-
-// 4. Ambil data user terbaru untuk ditampilkan
-$stmt = $conn->prepare("SELECT full_name, email, no_telp, alamat, avatar_url FROM users WHERE kode_user = ?");
-$stmt->bind_param("s", $kode_user);
-$stmt->execute();
-$result = $stmt->get_result();
-$user = $result->fetch_assoc();
-$stmt->close();
-
-if (!$user) {
-  // kalau aneh2 & data ga ada
-  $error = "User tidak ditemukan di database.";
-  $user = [
-    "full_name" => $_SESSION['full_name'] ?? "",
-    "email" => $_SESSION['email'] ?? "",
-    "no_telp" => "",
-    "alamat" => "",
-    "avatar_url" => ""
+  return [
+    'error' => null,
+    'user' => $resp['data'] ?? null
   ];
 }
+
+// 4. HANDLE POST: dibedakan by "action"
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $action = $_POST['action'] ?? 'update_profile';
+
+  // 4A. HAPUS AKUN
+  if ($action === 'delete_account') {
+    $password = $_POST['password'] ?? '';
+
+    if ($password === '') {
+      $delete_error = 'Password wajib diisi.';
+    } else {
+      // Panggil API hapus akun
+      $resp = api_post('user/routes/delete_account.php', [
+        'kode_user' => $kode_user,
+        'password' => $password,
+      ]);
+
+      if (!isset($resp['status']) || !$resp['status']) {
+        $delete_error = $resp['message'] ?? 'Gagal menghapus akun.';
+      } else {
+        // Sukses hapus akun → kill session dan redirect ke login
+        $_SESSION = [];
+        if (ini_get("session.use_cookies")) {
+          $params = session_get_cookie_params();
+          setcookie(
+            session_name(),
+            '',
+            time() - 42000,
+            $params["path"],
+            $params["domain"],
+            $params["secure"],
+            $params["httponly"]
+          );
+        }
+        session_destroy();
+
+        header("Location: auth/auth.php?deleted=1");
+        exit;
+      }
+    }
+  }
+
+  // 4B. UPDATE PROFILE (form utama)
+  elseif ($action === 'update_profile') {
+    $full_name = trim($_POST['full_name'] ?? '');
+    $no_telp = trim($_POST['no_telp'] ?? '');
+    $alamat = trim($_POST['alamat'] ?? '');
+
+    if ($full_name === "") {
+      $error = "Nama lengkap tidak boleh kosong.";
+    } else {
+      // Data yang dikirim ke API
+      $postData = [
+        'kode_user' => $kode_user,
+        'full_name' => $full_name,
+        'no_telp' => $no_telp,
+        'alamat' => $alamat,
+      ];
+
+      // Kalau ada file avatar, kirim dalam bentuk base64
+      if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+        $tmpPath = $_FILES['avatar']['tmp_name'];
+        $name = $_FILES['avatar']['name'];
+
+        $binary = file_get_contents($tmpPath);
+        if ($binary !== false) {
+          $postData['avatar_base64'] = base64_encode($binary);
+          $postData['avatar_name'] = $name;
+        }
+      }
+
+      // Panggil API update (pakai api_post biasa)
+      $resp = api_post("user/routes/profile.php", $postData);
+
+      if (!isset($resp['status']) || !$resp['status']) {
+        $error = $resp['message'] ?? 'Gagal mengupdate profil via API.';
+      } else {
+        $success = $resp['message'] ?? 'Profil berhasil diperbarui.';
+        // Update juga nama di session
+        $_SESSION['full_name'] = $full_name;
+      }
+    }
+  }
+}
+
+// 5. Ambil data user terbaru untuk ditampilkan
+$apiResult = fetch_user_profile($kode_user);
+if ($apiResult['error']) {
+  $error = $error ?: $apiResult['error']; // jangan timpa kalau sudah ada error lain
+}
+
+$user = $apiResult['user'] ?? [
+  "full_name" => $_SESSION['full_name'] ?? "",
+  "email" => $_SESSION['email'] ?? "",
+  "no_telp" => "",
+  "alamat" => "",
+  "avatar_url" => ""
+];
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -168,18 +145,18 @@ if (!$user) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile Setting</title>
 
-  <!-- Bulma & Bootstrap (kalau memang mau dipakai dua-duanya) -->
+  <!-- Bulma & Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- CSS custom (perbaiki path) -->
+  <!-- CSS custom -->
   <link rel="stylesheet" href="../assets/CSS/profileset.css">
   <link rel="stylesheet" href="../assets/CSS/style.css" />
 </head>
 
 <body>
-  <!-- Navbar (kalau kamu pakai navbar.php) -->
+  <!-- Navbar -->
   <?php include __DIR__ . "/navbar_footer/navbar.php"; ?>
 
   <div class="container py-4">
@@ -201,6 +178,7 @@ if (!$user) {
 
     <!-- FORM UPDATE PROFILE -->
     <form method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="update_profile">
       <!-- CARD 1: Info Pribadi -->
       <div class="card mb-4 shadow-sm">
         <div class="card-header d-flex align-items-center justify-content-between">
@@ -255,8 +233,7 @@ if (!$user) {
         </div>
       </div>
 
-
-      <!-- CARD 3: Hapus Akun (belum diimplementasi) -->
+      <!-- CARD 3: Hapus Akun (masih sama) -->
       <div class="card mt-4 shadow-sm mb-4">
         <div class="card-header d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center">
@@ -267,7 +244,6 @@ if (!$user) {
             data-bs-target="#modalDelete">
             DELETE
           </button>
-
         </div>
         <div class="card-body">
           <p class="mb-2">Ini akan menghapus secara permanen akun MyKMJ anda (fitur belum diaktifkan).</p>
@@ -283,23 +259,29 @@ if (!$user) {
   <!-- Modal Hapus Akun -->
   <div class="modal fade" id="modalDelete">
     <div class="modal-dialog">
-      <form class="modal-content" method="POST" action="delete_account.php">
+      <form class="modal-content" method="POST" action="">
+        <input type="hidden" name="action" value="delete_account">
+
         <div class="modal-header">
           <h5 class="modal-title">Hapus Akun</h5>
-          <button type="button" class="btn-close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
 
         <div class="modal-body">
           <p class="text-danger">Akun Anda akan terhapus PERMANEN!</p>
 
+          <?php if (!empty($delete_error)): ?>
+            <div class="alert alert-danger py-2">
+              <?php echo htmlspecialchars($delete_error); ?>
+            </div>
+          <?php endif; ?>
+
           <label>Masukkan Password Untuk Konfirmasi</label>
           <input type="password" name="password" class="form-control mb-3" required>
-
-          <!-- Field ini sebenarnya tidak wajib, tapi boleh -->
-          <input type="hidden" name="kode_user" value="<?php echo $kode_user; ?>">
         </div>
 
         <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
           <button type="submit" class="btn btn-danger">Hapus Sekarang</button>
         </div>
       </form>
@@ -314,9 +296,18 @@ if (!$user) {
   <script src="../assets/js/profile_setting.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
   <!-- Footer -->
   <?php include __DIR__ . "/navbar_footer/footer.php"; ?>
+
+  <?php if (!empty($delete_error)): ?>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var modal = new bootstrap.Modal(document.getElementById('modalDelete'));
+        modal.show();
+      });
+    </script>
+  <?php endif; ?>
+
 </body>
 
 </html>

@@ -1,15 +1,15 @@
 /* ================================
-   LAYOUT GLOBAL
+   LAYOUT GLOBAL WISHLIST
 =================================== */
+
 .wishlist-layout {
-  /* jangan di-flex di sini, biarkan .row bootstrap yang mengatur kolom */
+  /* Biarkan Bootstrap .row yang atur grid */
   min-height: 70vh;
 }
-wishlist-card-wrapper
 
-/* konten kanan (judul Favorite + card) */
+/* Konten kanan (judul Favorite + card) */
 .wishlist-content {
-  padding: 20px 60px 40px 70px; /* tambah padding kiri supaya agak ke kanan */
+  padding: 20px 60px 40px 70px; /* sedikit geser ke kanan */
 }
 
 .wishlist-sidebar {
@@ -22,6 +22,7 @@ wishlist-card-wrapper
 /* ================================
    SIDEBAR TITLE (Belanja / Akun)
 =================================== */
+
 .wishlist-section-title {
   font-size: 13px;
   font-weight: 600;
@@ -31,8 +32,9 @@ wishlist-card-wrapper
 }
 
 /* ================================
-   MENU ITEM
+   MENU ITEM SIDEBAR
 =================================== */
+
 .wishlist-menu-item {
   display: flex;
   align-items: center;
@@ -52,21 +54,23 @@ wishlist-card-wrapper
   font-size: 16px;
 }
 
-/* Hover efek */
+/* Hover */
 .wishlist-menu-item:hover {
   background: #f3f4f6;
 }
 
-/* Garis biru di kiri (indicator) ada di dalam html: <span class="wishlist-menu-indicator"></span> */
+/* Indicator (garis biru di kiri) ada di HTML:
+   <span class="wishlist-menu-indicator"></span> */
 .wishlist-menu-indicator {
-  /* default transparan; di-active baru dikasih warna */
+  /* default transparan, di-active baru dikasih warna */
 }
 
 /* ================================
    ACTIVE ITEM (Keranjang / Favorit)
 =================================== */
+
 .wishlist-menu-item--active {
-  color: #2563eb !important; /* text + icon biru */
+  color: #2563eb !important; /* teks + icon biru */
   font-weight: 600;
   background: #eef6ff;
 }
@@ -81,8 +85,9 @@ wishlist-card-wrapper
 }
 
 /* ================================
-   LOGOUT (Warna khusus)
+   LOGOUT (warna khusus)
 =================================== */
+
 .wishlist-menu-item--logout {
   color: #ef4444;
 }
@@ -95,50 +100,71 @@ wishlist-card-wrapper
 /* ================================
    PEMBATAS GARIS
 =================================== */
+
 .wishlist-divider {
   margin: 12px 0;
   border-color: #e5e7eb;
 }
 
 /* ================================
-   RESPONSIVE
-=================================== */
-@media (max-width: 768px) {
-  .wishlist-sidebar {
-    min-height: auto;
-    border-right: none;
-    border-bottom: 1px solid #e5e7eb;
-    margin-bottom: 15px;
-  }
-
-  .wishlist-content {
-    padding: 15px 15px 25px 15px;
-  }
-}
-/* ================================
-   FAVORITE CARD SIZING
+   FAVORITE CARD GRID
 =================================== */
 
-/* ================================
-   FAVORITE CARD SIZING (REVISI)
-=================================== */
-
-/* 3 card per baris, tapi sedikit lebih kecil */
+/* Desktop: 3 card per baris */
 .wishlist-card-wrapper {
   flex: 0 0 31%;
   max-width: 30%;
   margin-left: 15px;
 }
 
-/* Tablet: 2 per baris */
+.wishlist-card-wrapper .car-card {
+  width: 100%;
+  border-radius: 12px;
+}
+
+/* =========================================
+   RESPONSIVE GRID & SIDEBAR
+   (urut: 992 → 768 → 576 agar override rapi)
+========================================= */
+
+/* Tablet landscape & kecil (<= 992px)
+   → 2 card per baris */
 @media (max-width: 992px) {
   .wishlist-card-wrapper {
     flex: 0 0 47%;
     max-width: 47%;
+    margin-left: 10px;
   }
 }
 
-/* Mobile: 1 per baris */
+/* Tablet & small tablet (<= 768px)
+   - Sidebar jadi baris atas
+   - Padding konten diperkecil
+   - Grid tetap 2 card per baris,
+     nanti di bawah 576px jadi 1 per baris
+*/
+@media (max-width: 768px) {
+  .wishlist-sidebar {
+    min-height: auto;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 15px;
+    padding: 16px 12px;
+  }
+
+  .wishlist-content {
+    padding: 15px 15px 25px 15px;
+  }
+
+  .wishlist-card-wrapper {
+    flex: 0 0 48%;
+    max-width: 48%;
+    margin-left: 0;
+  }
+}
+
+/* Mobile (<= 576px)
+   → 1 card per baris penuh */
 @media (max-width: 576px) {
   .wishlist-card-wrapper {
     flex: 0 0 100%;
@@ -146,42 +172,54 @@ wishlist-card-wrapper
   }
 }
 
-/* Card tetap rapi */
-.wishlist-card-wrapper .car-card {
-  width: 100%;
-  border-radius: 12px;
-}
+/* ================================
+   FOOTER KHUSUS HALAMAN WISHLIST
+   (nilai sama dengan snippet global)
+=================================== */
 
-/* ==== FOOTER KHUSUS HALAMAN WISHLIST ==== */
-
-/* Biar nggak tinggi tapi struktur Bulma tetap jalan */
 .page-wishlist footer.footer {
-  display: flex; /* tetap flex */
-  flex-direction: column; /* isi ditumpuk vertikal */
-  justify-content: flex-start; /* JANGAN space-between */
-  min-height: auto; /* matikan min-height besar dari CSS global */
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
-/* Kolom-kolom (Shop, Sell, Finance, About) */
 .page-wishlist footer.footer .columns {
-  margin-bottom: 0.75rem; /* jarak kecil ke copyright */
+  margin-bottom: 0.75rem;
 }
 
-/* Copyright (teks biru) */
 .page-wishlist footer.footer .content {
-  margin-top: 0.75rem; /* kasih sedikit jarak dari kolom */
+  margin-top: 0.75rem;
 }
 
-/* Biar item di bawah judul footer lurus ke kiri dengan judulnya */
+/* List footer rapi kiri */
 .page-wishlist footer.footer ul {
   list-style: none;
-  padding-left: 0; /* hilangkan padding bawaan browser */
+  padding-left: 0;
   margin: 0;
 }
 
 .page-wishlist footer.footer ul li {
-  margin-bottom: 0.25rem; /* jarak antar item, opsional */
+  margin-bottom: 0.25rem;
 }
 
+/* RESPONSIVE FOOTER (≤ 768px) 
+   — disamakan dengan footer global */
+@media (max-width: 768px) {
+  .page-wishlist footer.footer {
+    padding-top: 1.25rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .page-wishlist footer.footer .columns {
+    margin-bottom: 0.5rem;
+  }
+
+  .page-wishlist footer.footer .content {
+    margin-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+}

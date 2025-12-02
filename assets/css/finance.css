@@ -1,30 +1,29 @@
 body {
-    font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
-
 .title {
-    font-size: 2.8rem;
-    font-weight: 700;
-    color: #001e3c;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #001e3c;
 }
 
 .image-placeholder {
-    width: 100%;
-    height: 400px;
-    background-size: auto;
-    background-repeat: no-repeat;
-    background-color: #f3f3f3;
-    border-radius: 12px;
+  width: 100%;
+  height: 400px;
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-color: #f3f3f3;
+  border-radius: 12px;
 }
 
 .card img {
-    object-fit: cover;
+  object-fit: cover;
 }
 
 .message-header {
-    justify-content: space-between;
-    cursor: pointer;
+  justify-content: space-between;
+  cursor: pointer;
 }
 
 /* ==== ACCORDION (Other resources) ==== */
@@ -105,7 +104,6 @@ body {
   border-radius: 2px;
 }
 
-
 /* Tampilan antar section */
 .tab-content {
   display: none;
@@ -117,8 +115,14 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* === Section: Cara kerja pembayaran === */
@@ -127,6 +131,7 @@ body {
   padding-bottom: 80px;
 }
 
+/* override tinggi placeholder khusus section ini */
 .image-placeholder {
   width: 100%;
   height: 250px;
@@ -135,7 +140,6 @@ body {
   background-color: #f3f3f3;
   border-radius: 12px;
 }
-
 
 .btn-outline-blue {
   display: inline-block;
@@ -192,7 +196,7 @@ body {
 
 .harga-item i {
   font-size: 1rem;
-} 
+}
 
 /* === Section: Kalkulator Pembayaran === */
 
@@ -200,13 +204,13 @@ body {
   align-items: stretch; /* bikin tinggi kolom otomatis sama */
 }
 
-
 .kalkulator-section {
   padding-top: 40px;
   padding-bottom: 60px;
 }
 
-.kalkulator-box, .summary-box {
+.kalkulator-box,
+.summary-box {
   height: 100%;
   border: 1.5px solid #ccc;
   border-radius: 18px;
@@ -258,5 +262,475 @@ body {
   cursor: not-allowed;
 }
 
+/* ======================= */
+/* FOOTER – HALAMAN FINANCE (BASE) */
+/* ======================= */
 
+.page-finance footer.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  min-height: auto;
+}
 
+.page-finance footer.footer .columns {
+  margin-bottom: 15px;
+}
+
+.page-finance footer.footer ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.page-finance footer.footer ul li {
+  margin-bottom: 5px;
+}
+
+.page-finance footer.footer .content {
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* ============================================= */
+/*       RESPONSIVE UNTUK HALAMAN FINANCE        */
+/* ============================================= */
+
+/* Tablet (<= 992px) */
+@media (max-width: 992px) {
+  /* Tab switch agak turun dan center di tablet */
+  .tab-switch {
+    justify-content: center;
+    margin-top: 24px;
+    margin-left: 0;
+  }
+
+  /* Kolom hero “Temukan dan Beli Mobilmu…”: stack */
+  .hero .columns {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  .hero .column.is-half {
+    width: 100%;
+  }
+
+  .hero .title {
+    font-size: 2rem;
+  }
+}
+
+/* Mobile (<= 768px) */
+@media (max-width: 768px) {
+  /* Gambar mobil (sport car) hilang di HP */
+  .car-img {
+    display: none !important;
+  }
+
+  /* Hero: lebih padat di HP */
+  .hero.is-fullheight-with-navbar {
+    padding: 1.5rem 1rem !important;
+  }
+
+  .hero .hero-body {
+    padding: 0;
+  }
+
+  /* Section jarak dipendekin */
+  .section {
+    padding: 2rem 1rem;
+  }
+
+  /* Chat & Beli / Konfirmasi pembelian → stack vertikal */
+  .section .columns.is-vcentered,
+  .section .columns.is-half {
+    flex-direction: column !important;
+    text-align: left;
+  }
+
+  .section .columns .column.is-half {
+    width: 100% !important;
+  }
+
+  /* Hero jual mobil (kalkulator tab) stack dan center */
+  #kalkulator .section .row.align-items-center {
+    text-align: left;
+  }
+
+  #kalkulator .section .row.align-items-center .col-md-6.text-center {
+    margin-top: 1.5rem;
+  }
+
+  /* Card langkah 1–3: kasih jarak antar section */
+  #kalkulator .section {
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+  }
+
+  /* Tab switch di HP biar muat */
+  .tab-switch {
+    gap: 16px;
+    font-size: 1rem;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 0;
+    padding-inline: 1rem;
+  }
+
+  .tab-switch a {
+    white-space: nowrap;
+  }
+}
+
+/* HP kecil (<= 480px) */
+@media (max-width: 480px) {
+  /* Judul hero & langkah diperkecil */
+  .title {
+    font-size: 1.6rem;
+  }
+
+  #kalkulator h1 {
+    font-size: 1.4rem !important;
+  }
+
+  #kalkulator h2 {
+    font-size: 1.3rem !important;
+  }
+
+  .tab-switch {
+    gap: 12px;
+    font-size: 0.95rem;
+    padding-inline: 0.5rem;
+  }
+}
+
+/* ======================================== */
+/*   HILANGKAN GAMBAR LANGKAH 2 & 3 DI HP   */
+/* ======================================== */
+@media (max-width: 768px) {
+  .step-illustration,
+  .step-img {
+    display: none !important;
+  }
+}
+
+/* ============================================= */
+/*   RESPONSIVE TAMBAHAN UNTUK HALAMAN FINANCE   */
+/* ============================================= */
+
+/* Logo leasing – atur grid-nya biar nggak kepadatan */
+@media (max-width: 1024px) {
+  .page-finance .leasingLogo {
+    flex: 0 0 25% !important;
+    max-width: 25% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-finance .leasingLogo {
+    flex: 0 0 33.333% !important;
+    max-width: 33.333% !important;
+    margin-bottom: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-finance .leasingLogo {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+}
+
+/* ---------- Layout umum section ---------- */
+@media (max-width: 1024px) {
+  /* Judul utama sedikit dikecilkan di tablet */
+  .page-finance .title {
+    font-size: 2.1rem;
+  }
+}
+
+/* MOBILE (<= 768px) */
+@media (max-width: 768px) {
+  /* Padding section biar nggak terlalu lebar di HP */
+  .page-finance .section {
+    padding: 1.75rem 1rem;
+  }
+
+  /* HERO “Dapatkan hasil pembiayaan…”: stack dan center */
+  .page-finance .section:first-of-type .columns.is-vcentered {
+    flex-direction: column-reverse;
+  }
+
+  .page-finance .section:first-of-type .columns.is-vcentered .column.is-half {
+    width: 100%;
+    text-align: left;
+  }
+
+  .page-finance .section:first-of-type .image-placeholder {
+    height: 220px;
+    margin-bottom: 1rem;
+    background-position: center;
+    background-size: contain;
+  }
+
+  /* Tab switch (How it works / Kalkulator) rapi di HP */
+  .page-finance .tab-switch {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 16px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 0;
+    padding-inline: 0.75rem;
+  }
+
+  .page-finance .tab-switch a {
+    white-space: nowrap;
+  }
+
+  /* Tips kredit: 1 card per baris di HP */
+  .page-finance .section .columns .column.is-one-third {
+    width: 100%;
+  }
+
+  .page-finance .section .columns .column.is-one-third .card {
+    height: 100%;
+  }
+
+  /* Kalkulator: form & summary ditumpuk vertikal */
+  .page-finance .kalkulator-section .columns {
+    flex-direction: column;
+  }
+
+  .page-finance .kalkulator-section .column.is-half {
+    width: 100%;
+  }
+
+  .page-finance .kalkulator-box,
+  .page-finance .summary-box {
+    margin-bottom: 1.25rem;
+  }
+
+  /* Section “Bagaimana cara kerja pembayaran di KHM” */
+  .page-finance .cara-kerja-section .row.align-items-center {
+    flex-direction: column;
+    row-gap: 1rem;
+    text-align: left;
+  }
+
+  .page-finance .cara-kerja-section .image-placeholder {
+    height: 200px;
+    margin-bottom: 0.75rem;
+    background-position: center;
+    background-size: cover;
+  }
+
+  /* Section “Belanja Mobil dengan Harga Terbaik” */
+  .page-finance .harga-terbaik-section .row.align-items-start {
+    flex-direction: column;
+    row-gap: 1rem;
+  }
+
+  .page-finance .harga-terbaik-section .col-md-6:first-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .page-finance .harga-terbaik-section .list-harga .harga-item {
+    padding: 12px 14px;
+  }
+
+  /* FAQ accordion: padding teks dipadetin */
+  .page-finance .custom-accordion .accordion-button {
+    padding-inline: 12px;
+    font-size: 0.95rem;
+  }
+
+  .page-finance .custom-accordion .accordion-body {
+    font-size: 0.9rem;
+  }
+}
+
+/* HP kecil (<= 480px) */
+@media (max-width: 480px) {
+  /* Judul utama lebih kecil lagi */
+  .page-finance .title {
+    font-size: 1.8rem;
+  }
+
+  .page-finance .container,
+  .page-finance .container-fluid {
+    padding-inline: 0.75rem;
+  }
+
+  .page-finance .section:first-of-type .image-placeholder {
+    height: 190px;
+  }
+
+  /* Tombol di kalkulator dan CTA lebih proporsional */
+  .page-finance .button,
+  .page-finance .cari-btn {
+    font-size: 0.9rem;
+    height: auto;
+    padding-inline: 1rem;
+    padding-block: 0.6rem;
+  }
+}
+
+/* ============ RESPONSIVE FOOTER (≤ 768px) ============ */
+@media (max-width: 768px) {
+  /* Kurangi padding atas–bawah footer */
+  footer.footer {
+    padding-top: 1.25rem;
+    padding-bottom: 0.75rem;
+  }
+
+  /* Kolom footer jangan terlalu renggang */
+  footer.footer .columns {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Hanya kolom pertama (logo) yang tampil di HP */
+  footer.footer .columns .column:nth-child(n + 2) {
+    display: none !important;
+  }
+
+  /* List di footer sedikit dipadetin */
+  footer.footer ul li {
+    margin-bottom: 3px;
+  }
+
+  /* Area copyright lebih tipis */
+  footer.footer .content {
+    margin-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* ============================= */
+/*   NAVBAR MOBILE (≤ 768px)     */
+/*   TANPA EDIT navbar.php       */
+/* ============================= */
+@media (max-width: 768px) {
+  nav.navbar {
+    position: relative;
+    padding-inline: 16px;
+  }
+
+  .navbar-brand {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Burger / tombol X di pojok kanan */
+  .navbar-burger {
+    margin-left: auto;
+    z-index: 60; /* di atas panel putih */
+  }
+
+  /* ===================================== */
+  /*  ❤️ + 👤 DI BAR ATAS, SEBELAH BURGER  */
+  /* ===================================== */
+
+  /* Posisikan isi .navbar-end (heart + profile) di bar atas */
+  .navbar-end .icon-only,
+  .navbar-end #accountDropdown {
+    position: absolute;
+    top: -1px;
+    z-index: 55;
+    padding: 0;
+    background: transparent;
+  }
+
+  /* Urutan: Logo | ❤️ | 👤 | ≡ */
+  .navbar-end .icon-only {
+    right: -90px; /* sesuaikan kalau perlu */
+    top: -35px;
+  }
+
+  /* Hapus tanda panah dropdown di icon profile */
+  #accountDropdown .navbar-link::after {
+    content: none !important;
+    border: 0 !important;
+    display: none !important;
+  }
+
+  .navbar-end #accountDropdown {
+    right: 40px; /* posisi icon profile */
+  }
+
+  .navbar-end .icon-only .icon i,
+  .navbar-end #accountDropdown .icon i {
+    font-size: 1.25rem;
+  }
+
+  /* Sembunyikan nama user di mobile, cuma icon 👤 aja */
+  #accountDropdown .navbar-link span:not(.icon) {
+    display: none !important;
+  }
+
+  /* ===================================== */
+  /*       PANEL PUTIH DROPDOWN MENU       */
+  /* ===================================== */
+
+  /* Override Bulma: jangan di-display:none */
+  #navbarMenu {
+    display: block !important;
+    position: absolute;
+    top: 60px;
+    left: 12px;
+    width: 235px;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    border-radius: 16px;
+  }
+
+  /* Saat panel TIDAK aktif → isi disembunyiin */
+  #navbarMenu:not(.is-active) .navbar-start,
+  #navbarMenu:not(.is-active) .store-location {
+    display: none;
+  }
+
+  /* Saat panel AKTIF → jadikan card putih */
+  #navbarMenu.is-active {
+    background: #ffffff;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+    padding: 0.9rem 1rem 1rem;
+  }
+
+  /* Store location di DALAM panel, paling atas */
+  #navbarMenu .store-location {
+    display: flex;
+    align-items: center;
+    padding-left: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  #navbarMenu .store-location .icon {
+    margin-right: 0.4rem;
+  }
+
+  #navbarMenu .store-location .store-copy small {
+    font-size: 11px;
+  }
+
+  #navbarMenu .store-location .store-copy strong {
+    font-size: 12px;
+  }
+
+  /* Menu utama: Shop / Jual Mobil / Pembiayaan / More di bawahnya */
+  #navbarMenu .navbar-start {
+    margin-top: 0.25rem;
+  }
+
+  #navbarMenu .navbar-start > .navbar-item,
+  #navbarMenu .navbar-start > .navbar-link {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

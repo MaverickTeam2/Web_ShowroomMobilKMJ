@@ -36,24 +36,28 @@
         </div>
 
         <!-- Kanan -->
-        <div class="column is-7 has-text-centered">
-          <h4 class="has-text-weight-bold">Cari Jawaban Berdasarkan Topik</h4>
-          <div class="topic-buttons">
-            <a href="../templates/general.php"><button class="button is-rounded">Umum</button></a>
-            <button class="button is-rounded">Pembelian Mobil Bekas</button>
-            <button class="button is-rounded">Proses Kredit Mobil</button>
-            <button class="button is-rounded">Pembayaran Cicilan</button>
-            <button class="button is-rounded">Pengiriman Mobil</button>
-            <button class="button is-rounded">Layanan Purna Jual</button>
-            <button class="button is-rounded">Garansi Mobil</button>
-            <button class="button is-rounded">Dokumen & Administrasi</button>
-            <button class="button is-rounded">Keamanan & Privasi</button>
-            <button class="button is-rounded">Menjual Mobil</button>
-            <button class="button is-rounded">Pembiayaan</button>
-            <button class="button is-rounded">Melihat Mobil di Showroom</button>
-            <button class="button is-rounded">Promo & Lainnya</button>
-          </div>
+        <div class="topic-buttons">
+          <a href="../templates/general.php"><button class="button is-rounded">Umum</button></a>
+          <button class="button is-rounded">Pembelian Mobil Bekas</button>
+          <button class="button is-rounded">Proses Kredit Mobil</button>
+          <button class="button is-rounded">Pembayaran Cicilan</button>
+          <button class="button is-rounded">Pengiriman Mobil</button>
+          <button class="button is-rounded">Layanan Purna Jual</button>
+          <button class="button is-rounded">Garansi Mobil</button>
+          <button class="button is-rounded">Dokumen & Administrasi</button>
+          <button class="button is-rounded">Keamanan & Privasi</button>
+          <button class="button is-rounded">Menjual Mobil</button>
+          <button class="button is-rounded">Pembiayaan</button>
+          <button class="button is-rounded">Melihat Mobil di Showroom</button>
+          <button class="button is-rounded">Promo & Lainnya</button>
         </div>
+
+        <div class="show-more-topics">
+          <button type="button" class="button is-rounded show-more-btn" id="btnShowMoreTopics">
+            Lihat lebih banyak
+          </button>
+        </div>
+
       </div>
     </div>
 
@@ -199,6 +203,50 @@
   <!-- Footer -->
   <script src="../assets/js/footer.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const buttons = document.querySelectorAll('.topic-buttons .button');
+      const showMoreBtn = document.getElementById('btnShowMoreTopics');
+
+      function applyMobileOnly() {
+        const isMobile = window.innerWidth <= 576;
+
+        if (!isMobile) {
+          // Desktop & tablet → tampilkan semua tanpa showmore
+          buttons.forEach(btn => btn.classList.remove('is-hidden-topic'));
+          showMoreBtn.style.display = 'none';
+          return;
+        }
+
+        // Mobile → apply showmore
+        showMoreBtn.style.display = 'inline-block';
+
+        buttons.forEach((btn, index) => {
+          if (index > 3) btn.classList.add('is-hidden-topic');
+        });
+
+        let expanded = false;
+
+        showMoreBtn.onclick = function () {
+          expanded = !expanded;
+
+          if (expanded) {
+            buttons.forEach(btn => btn.classList.remove('is-hidden-topic'));
+            showMoreBtn.textContent = 'Lihat lebih sedikit';
+          } else {
+            buttons.forEach((btn, index) => {
+              if (index > 2) btn.classList.add('is-hidden-topic');
+            });
+            showMoreBtn.textContent = 'Lihat lebih banyak';
+          }
+        };
+      }
+
+      applyMobileOnly();
+      window.addEventListener('resize', applyMobileOnly);
+    });
+  </script>
+
 </body>
 
 </html>

@@ -104,7 +104,7 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
 
           <div class="wishlist-section-title">Akun</div>
 
-          <a href="profil.php" class="wishlist-menu-item">
+          <a href="profile_setting.php" class="wishlist-menu-item">
             <span class="wishlist-menu-indicator"></span>
             <i class="fa-solid fa-user me-2"></i>
             <span>Pengaturan Profil</span>

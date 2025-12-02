@@ -69,7 +69,7 @@
   color: #333333;
 }
 
-/* Footer */
+/* Footer (kelas .footer dari Bulma) */
 .footer {
   padding-bottom: 0px; /* jarak antara kolom footer dan bawah layar */
 }
@@ -236,12 +236,6 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-@media (max-width: 768px) {
-  .icon-only .icon i {
-    font-size: 1.25rem;
-  }
-}
-
 .navbar .navbar-menu .navbar-start > .navbar-item,
 .navbar .navbar-menu .navbar-start > .navbar-link {
   padding-left: 0.6rem !important;
@@ -266,6 +260,7 @@
   padding-left: 30px;
   padding-right: 30px;
 }
+
 /* Biar tiap column jadi flex dan card bisa memenuhi tinggi column */
 .mobil-terbaru-columns .column {
   display: flex;
@@ -315,8 +310,178 @@
 .dot.is-active {
   background-color: #3b82f6; /* biru */
 }
-/* ============ FOOTER KHUSUS HALAMAN HOME ============ */
-.page-home footer.footer {
+
+.tab-pane-mobil.is-hidden {
+  display: none;
+}
+
+/* ====================================================== */
+/* ================ RESPONSIVE STYLING ================== */
+/* ====================================================== */
+
+/* Tablet dan layar sedang (<= 1024px) */
+@media (max-width: 1024px) {
+  /* Navbar lebih rapat di tablet */
+  .navbar,
+  .navbar .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .navbar {
+    margin-top: 4px;
+  }
+
+  /* Hero: teks & gambar jadi lebih enak di tengah */
+  .page-home .hero-body {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .page-home .hero .columns {
+    flex-direction: column-reverse; /* gambar di atas, teks di bawah */
+    text-align: center;
+  }
+
+  .page-home .hero .column.is-half {
+    width: 100%;
+  }
+
+  .page-home .hero .subtitle {
+    max-width: 480px;
+    margin-inline: auto;
+  }
+
+  /* Container kartu mobil (Terbaru/Favorit/Rekomendasi) */
+  .mobil-terbaru-columns {
+    padding: 24px;
+    border-radius: 24px;
+  }
+
+  /* Slider customer: susun jadi kolom di tablet */
+  .customer-slide {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .customer-slide .column {
+    flex: 0 0 100%;
+    max-width: 480px;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Mobile (<= 768px) */
+@media (max-width: 768px) {
+  /* Umum: section jangan terlalu lebar paddingnya di HP */
+  .section {
+    padding: 2rem 1rem;
+  }
+
+  /* Hero image agak dikecilin */
+  .car-img {
+    max-width: 320px;
+  }
+
+  /* Panel background mobil lebih ringkas */
+  .mobil-terbaru-columns {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .mobil-terbaru-columns .car-card img {
+    height: 180px; /* sedikit lebih pendek di HP */
+  }
+
+  /* Tabs mobil: jadi pill + bisa di-scroll horizontal */
+  .custom-tabs ul {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.4rem;
+    border-radius: 999px;
+    background-color: #e5e7eb;
+    overflow-x: auto;
+  }
+
+  .custom-tabs li a {
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  /* Icon navbar biar tetap enak dilihat */
+  .icon-only .icon i {
+    font-size: 1.25rem;
+  }
+
+  /* 1️⃣ HERO: gambar mobil di HP disembunyikan */
+  .car-img {
+    display: none;
+  }
+
+  /* 2️⃣ NAVBAR: rapihin & hilangkan yang nggak perlu di HP */
+
+  /* Hilangin info lokasi toko biar navbar nggak penuh */
+  .store-location {
+    display: none;
+  }
+
+  /* Biar item navbar nggak terlalu melebar */
+  .navbar-end .navbar-item {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  /* Search wrapper juga ikut disempitkan */
+  .nav-search-wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* HP kecil banget (<= 480px) */
+@media (max-width: 480px) {
+  /* Judul hero diperkecil dikit */
+  .page-home .hero .title {
+    font-size: 1.9rem;
+    line-height: 1.2;
+  }
+
+  /* Search wrapper ikut lebih rapat */
+  .nav-search-wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* Dot slider agak kecil supaya nggak penuh */
+  .dot {
+    width: 10px;
+    height: 10px;
+    margin: 0 4px;
+  }
+
+  /* Chart dashboard & card statistik: stack ke bawah di HP */
+  .chart-container {
+    flex-direction: column;
+  }
+
+  .chart-left,
+  .chart-right {
+    width: 100%;
+  }
+
+  .stat-card img {
+    max-height: 80px;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+/* =============================== */
+/*  FOOTER – GLOBAL (SEMUA HALAMAN)  */
+/* =============================== */
+
+/* Gaya dasar footer (desktop & tablet) */
+footer.footer {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -325,28 +490,180 @@
   min-height: auto;
 }
 
-/* Kolom kategori home */
-.page-home footer.footer .columns {
+/* Kolom-kolom footer */
+footer.footer .columns {
   margin-bottom: 15px;
 }
 
-/* Item di bawah judul */
-.page-home footer.footer ul {
+/* List item di bawah judul */
+footer.footer ul {
   list-style: none;
   margin: 0;
   padding-left: 0;
 }
 
-.page-home footer.footer ul li {
+footer.footer ul li {
   margin-bottom: 5px;
 }
 
-/* Jarak area copyright */
-.page-home footer.footer .content {
+/* Area copyright */
+footer.footer .content {
   margin-top: 1rem;
   padding-bottom: 1rem;
 }
-.tab-pane-mobil.is-hidden {
-  display: none;
+
+/* ============ RESPONSIVE FOOTER (≤ 768px) ============ */
+@media (max-width: 768px) {
+  /* Kurangi padding atas–bawah footer */
+  footer.footer {
+    padding-top: 1.25rem;
+    padding-bottom: 0.75rem;
+  }
+
+  /* Kolom footer jangan terlalu renggang */
+  footer.footer .columns {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Hanya kolom pertama (logo) yang tampil di HP */
+  footer.footer .columns .column:nth-child(n + 2) {
+    display: none !important;
+  }
+
+  /* List di footer sedikit dipadetin */
+  footer.footer ul li {
+    margin-bottom: 3px;
+  }
+
+  /* Area copyright lebih tipis */
+  footer.footer .content {
+    margin-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
 }
 
+/* ============================= */
+/*   NAVBAR MOBILE (≤ 768px)     */
+/*   TANPA EDIT navbar.php       */
+/* ============================= */
+@media (max-width: 768px) {
+  nav.navbar {
+    position: relative;
+    padding-inline: 16px;
+  }
+
+  .navbar-brand {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Burger / tombol X di pojok kanan */
+  .navbar-burger {
+    margin-left: auto;
+    z-index: 60; /* di atas panel putih */
+  }
+
+  /* ===================================== */
+  /*  ❤️ + 👤 DI BAR ATAS, SEBELAH BURGER  */
+  /* ===================================== */
+
+  /* Posisikan isi .navbar-end (heart + profile) di bar atas */
+  .navbar-end .icon-only,
+  .navbar-end #accountDropdown {
+    position: absolute;
+    top: -1px;
+    z-index: 55;
+    padding: 0;
+    background: transparent;
+  }
+
+  /* Urutan: Logo | ❤️ | 👤 | ≡ */
+  .navbar-end .icon-only {
+    right: -60px; /* sesuaikan kalau perlu */
+    top: -50px;
+  }
+
+  /* Hapus tanda panah dropdown di icon profile */
+  #accountDropdown .navbar-link::after {
+    content: none !important;
+    border: 0 !important;
+    display: none !important;
+  }
+
+  .navbar-end #accountDropdown {
+    right: 40px; /* posisi icon profile */
+  }
+
+  .navbar-end .icon-only .icon i,
+  .navbar-end #accountDropdown .icon i {
+    font-size: 1.25rem;
+  }
+
+  /* Sembunyikan nama user di mobile, cuma icon 👤 aja */
+  #accountDropdown .navbar-link span:not(.icon) {
+    display: none !important;
+  }
+
+  /* ===================================== */
+  /*       PANEL PUTIH DROPDOWN MENU       */
+  /* ===================================== */
+
+  /* Override Bulma: jangan di-display:none */
+  #navbarMenu {
+    display: block !important;
+    position: absolute;
+    top: 60px;
+    left: 12px;
+    width: 235px;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    border-radius: 16px;
+  }
+
+  /* Saat panel TIDAK aktif → isi disembunyiin */
+  #navbarMenu:not(.is-active) .navbar-start,
+  #navbarMenu:not(.is-active) .store-location {
+    display: none;
+  }
+
+  /* Saat panel AKTIF → jadikan card putih */
+  #navbarMenu.is-active {
+    background: #ffffff;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+    padding: 0.9rem 1rem 1rem;
+  }
+
+  /* Store location di DALAM panel, paling atas */
+  #navbarMenu .store-location {
+    display: flex;
+    align-items: center;
+    padding-left: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  #navbarMenu .store-location .icon {
+    margin-right: 0.4rem;
+  }
+
+  #navbarMenu .store-location .store-copy small {
+    font-size: 11px;
+  }
+
+  #navbarMenu .store-location .store-copy strong {
+    font-size: 12px;
+  }
+
+  /* Menu utama: Shop / Jual Mobil / Pembiayaan / More di bawahnya */
+  #navbarMenu .navbar-start {
+    margin-top: 0.25rem;
+  }
+
+  #navbarMenu .navbar-start > .navbar-item,
+  #navbarMenu .navbar-start > .navbar-link {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

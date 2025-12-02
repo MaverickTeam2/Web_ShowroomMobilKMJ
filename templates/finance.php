@@ -61,7 +61,7 @@ $faqs = [
   <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
 
-<body>
+<body class="page-finance">
 
   <!-- navbar -->
   <?php include '../templates/navbar_footer/navbar.php'; ?>
