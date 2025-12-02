@@ -110,8 +110,6 @@ $statusLabelMap = [
     console.log("IS_LOGGED_IN =", IS_LOGGED_IN, "CURRENT_USER =", CURRENT_USER);
   </script>
 
-
-
   <!-- Card Container -->
   <div class="container-fluid">
     <div class="row">
@@ -409,16 +407,36 @@ $statusLabelMap = [
             </div>
           </div>
         </div>
+
+        <!-- BAR PERBANDINGAN (pindahkan ke sini) -->
+      <div id="compareToolbar" class="compare-toolbar">
+        <div class="compare-toolbar-inner">
+          <div class="compare-slot" data-slot="0">
+            <span class="compare-slot-placeholder">Pilih mobil pertama</span>
+          </div>
+          <div class="compare-slot" data-slot="1">
+            <span class="compare-slot-placeholder">Pilih mobil kedua</span>
+          </div>
+          <button id="compareGoBtn" class="btn-compare-go" disabled>Go</button>
+        </div>
+      </div>
+
         <section class="section">
           <div class="row g-4">
             <?php if (empty($mobil)): ?>
               <div class="col-12 text-center text-muted py-5">
                 Belum ada data mobil.
               </div>
+              
             <?php else: ?>
               <?php foreach ($mobil as $m): ?>
                 <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                   <div class="card car-card shadow-sm h-100">
+                    <data-id="<?= $m['kode_mobil'] ?>"
+                    data-name="<?= htmlspecialchars($m['nama_mobil'] ?? 'Tanpa Nama') ?>"
+                    data-img="<?= $img ?>"></data-id>
+
+                    
 
                     <?php
                     // gambar: dari API (full URL) atau fallback
@@ -593,8 +611,230 @@ $statusLabelMap = [
         }
       });
     });
+
+    const compareToggle = document.getElementById('togglePerbandingan');
+const compareToolbar = document.getElementById('compareToolbar');
+
+if (compareToggle && compareToolbar) {
+  compareToggle.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      compareToolbar.classList.add('is-active');
+    } else {
+      compareToolbar.classList.remove('is-active');
+    }
+  });
+}
+
+const maxCompare = 2;
+let selectedCars = [];
+
+const compareSlots = document.querySelectorAll('.compare-slot');
+const compareGoBtn = document.getElementById('compareGoBtn');
+
+function renderCompareSlots() {
+  compareSlots.forEach((slot, index) => {
+    const car = selectedCars[index];
+    slot.innerHTML = '';
+
+    if (car) {
+      slot.classList.add('has-car');
+
+      const img = document.createElement('img');
+      img.src = car.img;
+      img.alt = car.name;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'compare-remove';
+      removeBtn.textContent = '×';
+      removeBtn.addEventListener('click', () => {
+        selectedCars = selectedCars.filter(c => c.id !== car.id);
+        renderCompareSlots();
+      });
+
+      slot.appendChild(img);
+      slot.appendChild(removeBtn);
+    } else {
+      slot.classList.remove('has-car');
+      const span = document.createElement('span');
+      span.className = 'compare-slot-placeholder';
+      span.textContent = index === 0 ? 'Pilih mobil pertama' : 'Pilih mobil kedua';
+      slot.appendChild(span);
+    }
+  });
+
+  compareGoBtn.disabled = selectedCars.length !== 2;
+}
+
+document.querySelectorAll('.btn-add-compare').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.car-card');
+    const id = card.dataset.id;
+
+    // kalau sudah kepilih, abaikan
+    if (selectedCars.find(c => c.id === id)) return;
+
+    if (selectedCars.length >= maxCompare) {
+      alert('Maksimal 2 mobil untuk dibandingkan');
+      return;
+    }
+
+    selectedCars.push({
+      id,
+      name: card.dataset.name,
+      img: card.dataset.img
+    });
+
+    renderCompareSlots();
+  });
+});
   </script>
 
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const compareToggle   = document.getElementById('togglePerbandingan');
+    const compareToolbar  = document.getElementById('compareToolbar');
+    const btnTitik3List   = document.querySelectorAll('.btn-titik3');
+
+    const maxCompare = 2;
+    let selectedCars = [];
+    let compareMode  = false;
+
+    const compareSlots = document.querySelectorAll('.compare-slot');
+    const compareGoBtn = document.getElementById('compareGoBtn');
+
+    function renderCompareSlots() {
+      compareSlots.forEach((slot, index) => {
+        const car = selectedCars[index];
+        slot.innerHTML = '';
+
+        if (car) {
+          slot.classList.add('has-car');
+
+          const img = document.createElement('img');
+          img.src = car.img;
+          img.alt = car.name;
+
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'compare-remove';
+          removeBtn.textContent = '×';
+          removeBtn.addEventListener('click', () => {
+            selectedCars = selectedCars.filter(c => c.id !== car.id);
+
+            // hilangkan highlight di button card juga
+            btnTitik3List.forEach(btn => {
+              const card = btn.closest('.car-card');
+              if (card && card.dataset.id === car.id) {
+                btn.classList.remove('compare-selected');
+              }
+            });
+
+            renderCompareSlots();
+          });
+
+          slot.appendChild(img);
+          slot.appendChild(removeBtn);
+        } else {
+          slot.classList.remove('has-car');
+          const span = document.createElement('span');
+          span.className = 'compare-slot-placeholder';
+          span.textContent = index === 0 ? 'Pilih mobil pertama' : 'Pilih mobil kedua';
+          slot.appendChild(span);
+        }
+      });
+
+      compareGoBtn.disabled = selectedCars.length !== 2;
+    }
+
+    // === Toggle Perbandingan ON/OFF ===
+    if (compareToggle && compareToolbar) {
+      compareToggle.addEventListener('change', function (e) {
+        compareMode = e.target.checked;
+
+        if (compareMode) {
+          compareToolbar.classList.add('is-active');
+        } else {
+          compareToolbar.classList.remove('is-active');
+
+          // reset semua pilihan kalau mode dimatikan
+          selectedCars = [];
+          renderCompareSlots();
+          btnTitik3List.forEach(btn => {
+            btn.classList.remove('compare-mode', 'compare-selected');
+            const icon = btn.querySelector('i');
+            if (icon) {
+              icon.classList.remove('fa-check-circle');
+              icon.classList.add('fa-ellipsis-vertical');
+            }
+          });
+        }
+
+        // ubah tampilan tombol titik3
+        btnTitik3List.forEach(btn => {
+          const icon = btn.querySelector('i');
+          if (!icon) return;
+
+          if (compareMode) {
+            btn.classList.add('compare-mode');
+            icon.classList.remove('fa-ellipsis-vertical');
+            icon.classList.add('fa-check-circle');
+          } else {
+            btn.classList.remove('compare-mode');
+            icon.classList.remove('fa-check-circle');
+            icon.classList.add('fa-ellipsis-vertical');
+          }
+        });
+      });
+    }
+
+    // === Klik tombol titik3 saat mode perbandingan ===
+    btnTitik3List.forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        if (!compareMode) return;       // kalau bukan mode perbandingan, biarkan dropdown normal
+
+        e.preventDefault();             // jangan buka dropdown
+        e.stopPropagation();
+
+        const card = btn.closest('.car-card');
+        if (!card) return;
+
+        const id   = card.dataset.id;
+        const name = card.dataset.name;
+        const img  = card.dataset.img;
+
+        const existingIndex = selectedCars.findIndex(c => c.id === id);
+
+        if (existingIndex !== -1) {
+          // sudah dipilih → unselect
+          selectedCars.splice(existingIndex, 1);
+          btn.classList.remove('compare-selected');
+        } else {
+          if (selectedCars.length >= maxCompare) {
+            alert('Maksimal 2 mobil untuk dibandingkan');
+            return;
+          }
+          selectedCars.push({ id, name, img });
+          btn.classList.add('compare-selected');
+        }
+
+        renderCompareSlots();
+      });
+    });
+
+    // === Klik Go → ke perbandingan.php ===
+    compareGoBtn.addEventListener('click', () => {
+      if (selectedCars.length !== 2) return;
+
+      const params = new URLSearchParams({
+        car1_name: selectedCars[0].name,
+        car1_img:  selectedCars[0].img,
+        car2_name: selectedCars[1].name,
+        car2_img:  selectedCars[1].img
+      });
+
+      window.location.href = '../templates/perbandingan.php?' + params.toString();
+    });
+  });
+</script>
 
 
   <!-- footer -->
@@ -602,5 +842,4 @@ $statusLabelMap = [
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>

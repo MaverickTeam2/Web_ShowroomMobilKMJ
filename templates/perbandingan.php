@@ -1,253 +1,247 @@
 <?php include '../templates/navbar_footer/navbar.php'; ?>
 
+<?php
+// ambil ID / nama mobil dari query string (nanti backend/API bisa pakai ini)
+$car1Name = isset($_GET['car1_name']) ? $_GET['car1_name'] : 'Koenigsegg Regera';
+$car2Name = isset($_GET['car2_name']) ? $_GET['car2_name'] : 'Pagani Huayra';
+$car1Img  = isset($_GET['car1_img'])  ? $_GET['car1_img']  : 'https://hips.hearstapps.com/hmg-prod/images/koenigsegg-regera-mmp-1-1591115837.jpg?crop=0.779xw:0.660xh;0.0945xw,0.230xh&resize=1200:*';
+$car2Img  = isset($_GET['car2_img'])  ? $_GET['car2_img']  : 'https://www.topgear.com/sites/default/files/cars-car/image/2016/08/rh_huayrabc-67.jpg';
+?>
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Import Bulma-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
-  <!--Import Font Awesome-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <!--import css Perbandingan-->
   <link rel="stylesheet" href="../assets/css/perbandingan.css" />
-  <!--Import Custom CSS-->
   <link rel="stylesheet" href="../assets/css/style.css" />
-
   <title>Perbandingan Mobil</title>
 </head>
-
 <body>
-  <section class="section">
-    <div class="container">
-      <div class="columns is-centered">
-        <div class="column is-half has-text-centered">
-          <h1 class="title is-4">Perbandingan Mobil</h1>
-        </div>
-      </div>
+<section class="section">
+  <div class="container">
 
-      <div class="columns is-variable is-6 is-multiline has-text-centered">
-        <div class="column is-half">
-          <div class="card" style="max-width: 480px; margin: 0 auto">
-            <div class="card-image">
-              <figure class="image" style="margin: 0">
-                <img
-                  src="https://hips.hearstapps.com/hmg-prod/images/koenigsegg-regera-mmp-1-1591115837.jpg?crop=0.779xw:0.660xh;0.0945xw,0.230xh&resize=1200:*"
-                  alt="Koenigsegg Regera" style="
-                      width: 100%;
-                      height: auto;
-                      border: none;
-                      box-shadow: none;
-                    " />
-              </figure>
-            </div>
-            <div class="card-content" style="padding-top: 1rem">
-              <p class="title is-5 mt-3">Koenigsegg Regera</p>
-              <button class="button is-info is-rounded mt-3" style="
-                    background: linear-gradient(
-                      90deg,
-                      #00c6ff 0%,
-                      #0072ff 100%
-                    );
-                    color: #fff;
-                    border: none;
-                  ">
-                Ubah
-              </button>
-            </div>
+    <!-- HEADER -->
+    <div class="columns is-vcentered mb-5">
+      <div class="column">
+        <h1 class="title is-4">Perbandingan Mobil</h1>
+        <p class="subtitle is-6">Bandingkan fitur dan spesifikasi 2 mobil sekaligus.</p>
+      </div>
+    </div>
+
+    <!-- KARTU MOBIL DI ATAS -->
+    <div class="columns is-variable is-6 is-multiline has-text-centered">
+      <div class="column is-half">
+        <div class="card compare-card">
+          <div class="card-image">
+            <figure class="image">
+              <img src="<?php echo htmlspecialchars($car1Img); ?>" alt="<?php echo htmlspecialchars($car1Name); ?>">
+            </figure>
           </div>
-        </div>
-        <div class="column is-half">
-          <div class="card" style="max-width: 480px; margin: 0 auto">
-            <div class="card-image">
-              <figure class="image" style="margin: 0">
-                <img src="https://www.topgear.com/sites/default/files/cars-car/image/2016/08/rh_huayrabc-67.jpg"
-                  alt="Pagani Huayra" style="
-                      width: 100%;
-                      height: auto;
-                      border: none;
-                      box-shadow: none;
-                    " />
-              </figure>
-            </div>
-            <div class="card-content" style="padding-top: 1rem">
-              <p class="title is-5 mt-3">Pagani Huayra</p>
-              <button class="button is-danger is-rounded mt-3" style="
-                    background: linear-gradient(
-                      90deg,
-                      #ff512f 0%,
-                      #dd2476 100%
-                    );
-                    color: #fff;
-                    border: none;
-                  ">
-                Ubah
-              </button>
-            </div>
+          <div class="card-content">
+            <p class="title is-5"><?php echo htmlspecialchars($car1Name); ?></p>
+            <button class="button is-info is-rounded is-small">Ubah</button>
           </div>
         </div>
       </div>
-
-      <div class="has-text-centered mt-5">
-        <button class="button is-link is-rounded" id="comparePhotosBtn">
-          Bandingkan Foto
-        </button>
+      <div class="column is-half">
+        <div class="card compare-card">
+          <div class="card-image">
+            <figure class="image">
+              <img src="<?php echo htmlspecialchars($car2Img); ?>" alt="<?php echo htmlspecialchars($car2Name); ?>">
+            </figure>
+          </div>
+          <div class="card-content">
+            <p class="title is-5"><?php echo htmlspecialchars($car2Name); ?></p>
+            <button class="button is-danger is-rounded is-small">Ubah</button>
+          </div>
+        </div>
       </div>
+    </div>
 
-      <div class="tabs is-centered is-boxed mt-5" id="comparisonTabs">
-        <ul>
-          <li><a href="#highlight">Highlight</a></li>
-          <li><a href="#kesamaan">Kesamaan</a></li>
-          <li><a href="#perbedaan">Perbedaan</a></li>
-          <li><a href="#spesifikasi">Spesifikasi</a></li>
-        </ul>
-      </div>
+    <!-- TAB -->
+    <div class="tabs is-centered is-boxed mt-5" id="comparisonTabs">
+      <ul>
+        <li class="is-active" data-tab="highlight"><a>Highlight</a></li>
+        <li data-tab="kesamaan"><a>Kesamaan</a></li>
+        <li data-tab="perbedaan"><a>Perbedaan</a></li>
+        <li data-tab="spesifikasi"><a>Spesifikasi</a></li>
+      </ul>
+    </div>
 
-      <!-- Highlight -->
-      <h2 class="title is-5 mt-6" id="highlight">Highlight</h2>
-
-      <h3 class="subtitle is-6">Wishlist</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>10 disukai</td>
-          <td>14 disukai</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Harga</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>Rp 6.089.000 × 60</td>
-          <td>Rp 6.089.000 × 60</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Jarak Tempuh</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>N/A</td>
-          <td>N/A</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Kendaraan Sebelumnya</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>Kendaraan sewa</td>
-          <td>Tidak ada</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Warna</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>Putih, Silver</td>
-          <td>Hitam, Merah</td>
-        </tr>
-      </table>
-
-      <!-- Kesamaan -->
-      <h2 class="title is-5 mt-6" id="kesamaan">Kesamaan</h2>
-      <h3 class="subtitle is-6">ABS</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>✔ Ya</td>
-          <td>✔ Ya</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Bluetooth</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>✔ Ya</td>
-          <td>✔ Ya</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Rear Camera</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>✔ Ya</td>
-          <td>✔ Ya</td>
-        </tr>
-      </table>
-
-      <!-- Perbedaan -->
-      <h2 class="title is-5 mt-6" id="perbedaan">Perbedaan</h2>
-      <h3 class="subtitle is-6">Power Window</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>✗ Tidak</td>
-          <td>✔ Ya</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Power Mirror</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>✗ Tidak</td>
-          <td>✔ Ya</td>
-        </tr>
-      </table>
-
-      <!-- Spesifikasi -->
-      <h2 class="title is-5 mt-6" id="spesifikasi">Spesifikasi</h2>
-      <h3 class="subtitle is-6">Body</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>Extended Cab</td>
-          <td>Sedan</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Transmisi</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>Automatic</td>
-          <td>Automatic</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Mesin</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>2.5 Liter</td>
-          <td>2.0 Liter</td>
-        </tr>
-      </table>
-
-      <h3 class="subtitle is-6">Bahan Bakar</h3>
-      <table class="table is-bordered">
-        <tr>
-          <td>Bensin</td>
-          <td>Bensin</td>
-        </tr>
+    <!-- ===== HIGHLIGHT ===== -->
+    <div class="comparison-section" id="tab-highlight">
+      <h2 class="title is-5 mt-4">Highlight</h2>
+      <table class="table is-bordered is-fullwidth">
+        <thead>
+          <tr>
+            <th></th>
+            <th><?php echo htmlspecialchars($car1Name); ?></th>
+            <th><?php echo htmlspecialchars($car2Name); ?></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Wishlist</th>
+            <td>10 disukai</td>
+            <td>14 disukai</td>
+          </tr>
+          <tr>
+            <th>Harga</th>
+            <td>Rp 6.089.000 × 60</td>
+            <td>Rp 6.089.000 × 60</td>
+          </tr>
+          <tr>
+            <th>Jarak Tempuh</th>
+            <td>N/A</td>
+            <td>N/A</td>
+          </tr>
+          <tr>
+            <th>Kendaraan Sebelumnya</th>
+            <td>Kendaraan sewa</td>
+            <td>Tidak ada</td>
+          </tr>
+          <tr>
+            <th>Warna</th>
+            <td>Putih, Silver</td>
+            <td>Hitam, Merah</td>
+          </tr>
+        </tbody>
       </table>
     </div>
-  </section>
-  <div style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        opacity: 85%;
-      ">
-    <button id="backToTop" class="button is-link is-small" style="
-          position: fixed;
-          bottom: 30px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: none;
-          z-index: 1000;
-        ">
-      Back to Top
-    </button>
+
+    <!-- ===== KESAMAAN ===== -->
+        <!-- ===== KESAMAAN ===== -->
+    <div class="comparison-section is-hidden" id="tab-kesamaan">
+      <h2 class="title is-5 mt-4">Kesamaan</h2>
+
+      <div class="compare-feature-group">
+
+        <!-- ABS -->
+        <div class="compare-feature-row">
+          <div class="compare-feature-name">ABS Brakes</div>
+          <div class="compare-feature-values">
+            <div class="compare-feature-box">
+              <span class="compare-feature-check">✓</span>
+              <span>Yes</span>
+            </div>
+            <div class="compare-feature-box">
+              <span class="compare-feature-check">✓</span>
+              <span>Yes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AM/FM Stereo -->
+        <div class="compare-feature-row">
+          <div class="compare-feature-name">AM/FM Stereo</div>
+          <div class="compare-feature-values">
+            <div class="compare-feature-box">
+              <span class="compare-feature-check">✓</span>
+              <span>Yes</span>
+            </div>
+            <div class="compare-feature-box">
+              <span class="compare-feature-check">✓</span>
+              <span>Yes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Air Conditioning -->
+        <div class="compare-feature-row">
+          <div class="compare-feature-name">Air Conditioning</div>
+          <div class="compare-feature-values">
+            <div class="compare-feature-box">
+              <span class="compare-feature-check">✓</span>
+              <span>Yes</span>
+            </div>
+            <div class="compare-feature-box">
+              <span class="compare-feature-check">✓</span>
+              <span>Yes</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ===== PERBEDAAN ===== -->
+    <div class="comparison-section is-hidden" id="tab-perbedaan">
+      <h2 class="title is-5 mt-4">Perbedaan</h2>
+      <table class="table is-bordered is-fullwidth">
+        <thead>
+          <tr>
+            <th>Fitur</th>
+            <th><?php echo htmlspecialchars($car1Name); ?></th>
+            <th><?php echo htmlspecialchars($car2Name); ?></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Power Window</th>
+            <td>✗ Tidak</td>
+            <td>✔ Ya</td>
+          </tr>
+          <tr>
+            <th>Power Mirror</th>
+            <td>✗ Tidak</td>
+            <td>✔ Ya</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ===== SPESIFIKASI ===== -->
+    <div class="comparison-section is-hidden" id="tab-spesifikasi">
+      <h2 class="title is-5 mt-4">Spesifikasi</h2>
+      <table class="table is-bordered is-fullwidth">
+        <thead>
+          <tr>
+            <th>Detail</th>
+            <th><?php echo htmlspecialchars($car1Name); ?></th>
+            <th><?php echo htmlspecialchars($car2Name); ?></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Body</th>
+            <td>Extended Cab</td>
+            <td>Sedan</td>
+          </tr>
+          <tr>
+            <th>Transmisi</th>
+            <td>Automatic</td>
+            <td>Automatic</td>
+          </tr>
+          <tr>
+            <th>Mesin</th>
+            <td>2.5 Liter</td>
+            <td>2.0 Liter</td>
+          </tr>
+          <tr>
+            <th>Bahan Bakar</th>
+            <td>Bensin</td>
+            <td>Bensin</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>
-  <!--Import perbandingan JS-->
-  <script src="../assets/js/perbandingan.js"></script>
+</section>
 
-  <!--Import Footer-->
-  <script src="../assets/js/footer.js"></script>
+<!-- Tombol back to top -->
+<div style="display:flex;justify-content:center;align-items:center;opacity:85%;">
+  <button id="backToTop" class="button is-link is-small"
+          style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:none;z-index:1000;">
+    Back to Top
+  </button>
+</div>
+
+<script src="../assets/js/perbandingan.js"></script>
+<script src="../assets/js/footer.js"></script>
 </body>
-
 </html>

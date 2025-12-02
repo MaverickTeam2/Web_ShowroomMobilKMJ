@@ -1,17 +1,59 @@
-body {
-        background-color: #fafafa;
-      }
-      table {
-        table-layout: fixed;
-        width: 100%;
-      }
-      td,
-      th {
-        word-wrap: break-word;
-        white-space: normal;
-        text-align: center !important;
-      }
-      h3.subtitle {
-        margin-top: 2rem;
-        font-weight: 600;
-      }
+/* ===== blok fitur kaya CarMax (row abu + 2 box putih) ===== */
+
+.compare-feature-group {
+  margin-top: 1.25rem;
+}
+
+/* Satu baris fitur */
+.compare-feature-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 1.1fr) 1fr 1fr; /* label + 2 kolom mobil */
+  gap: 1rem;
+  background: #f5f7fb;          /* abu2 muda seperti screenshot */
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Nama fitur di kiri */
+.compare-feature-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Box putih per mobil */
+.compare-feature-box {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  font-size: 0.9rem;
+}
+
+/* ikon centang / silang */
+.compare-feature-check {
+  margin-right: 0.5rem;
+  font-weight: 700;
+  color: #1db954;
+}
+
+.compare-feature-cross {
+  margin-right: 0.5rem;
+  font-weight: 700;
+  color: #e64545;
+}
+
+.compare-feature-box--no {
+  border: 1px solid #ffe1e1;
+}
+
+/* mobile: kolom ditumpuk */
+@media (max-width: 768px) {
+  .compare-feature-row {
+    grid-template-columns: 1fr;
+  }
+}
