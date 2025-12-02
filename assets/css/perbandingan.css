@@ -1,59 +1,235 @@
-/* ===== blok fitur kaya CarMax (row abu + 2 box putih) ===== */
+.section.compare-section {
+  padding-top: 1.25rem; 
+  padding-bottom: 3rem;             /* tambahan: biar bagian bawah nggak terlalu mepet */
+  background: #f3f4f6;              /* background halaman bukan putih */
+}
+
+/* ===== HEADER STICKY + INFO MOBIL ===== */
+
+.compare-header-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 6px 12px rgba(15, 23, 42, 0.06);
+}
+
+.compare-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.75rem 0.35rem;
+}
+
+.compare-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.compare-back-link i {
+  font-size: 0.9rem;
+}
+
+.compare-back-link:hover {
+  color: #1d4ed8;
+}
+
+.compare-header-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* wrapper info 2 mobil */
+.compare-info-wrapper {
+  padding: 0.5rem 1.75rem 1.25rem;
+}
+
+.compare-info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.compare-info-col {
+  background: #e5edff;
+  border-radius: 20px;
+  padding: 1.5rem 1.75rem 1.4rem;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.12);
+}
+
+.compare-info-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.compare-info-sub {
+  margin: 0 0 1.1rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.compare-info-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.btn-compare-primary {
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.4rem;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+}
+
+.btn-compare-primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-compare-outline {
+  border-radius: 999px;
+  padding: 0.56rem 1.4rem;
+  border: 1px solid #cbd5f5;
+  background: #ffffff;
+  color: #1f2933;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+/* ===== FOTO MOBIL (DUA KOLOM) ===== */
+
+.compare-photo-row {
+  margin: 1.8rem 0 2.2rem;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.18);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.compare-photo-col img {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===== TABS ===== */
+
+.compare-tabs {
+  margin-bottom: 1.5rem;
+}
+
+/* ===== SECTION TITLE ===== */
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* ===== BLOK FITUR (SEMUA TAB) ===== */
 
 .compare-feature-group {
-  margin-top: 1.25rem;
+  margin-top: 0.5rem;
 }
 
-/* Satu baris fitur */
-.compare-feature-row {
+/* JARAK ANTAR SECTION: Highlight / Kesamaan / Perbedaan / Spesifikasi */
+.comparison-section {
+  margin-top: 2.5rem;
+}
+
+/* === ROW COMPARE BARU: judul di atas, 2 kartu di bawah (semua tab) === */
+#tab-highlight .compare-feature-row,
+#tab-kesamaan .compare-feature-row,
+#tab-perbedaan .compare-feature-row,
+#tab-spesifikasi .compare-feature-row {
   display: grid;
-  grid-template-columns: minmax(160px, 1.1fr) 1fr 1fr; /* label + 2 kolom mobil */
-  gap: 1rem;
-  background: #f5f7fb;          /* abu2 muda seperti screenshot */
-  border-radius: 12px;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.75rem;
+  grid-template-columns: 1fr 1fr;   /* dua kolom kartu */
+  grid-template-rows: auto auto;    /* baris 1: label, baris 2: kartu */
+  gap: 0.75rem 1rem;
+  background: #f5f7fb;              /* abu-abu muda seperti contoh */
+  border-radius: 16px;
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.25rem;           /* jarak antar row */
 }
 
-/* Nama fitur di kiri */
-.compare-feature-name {
+/* label fitur di atas, melintang 2 kolom */
+#tab-highlight .compare-feature-name,
+#tab-kesamaan .compare-feature-name,
+#tab-perbedaan .compare-feature-name,
+#tab-spesifikasi .compare-feature-name {
+  grid-column: 1 / span 2;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   display: flex;
   align-items: center;
+  margin-bottom: 0.1rem;
 }
 
-/* Box putih per mobil */
-.compare-feature-box {
+/* dua box putih di bawah (semua tab) */
+#tab-highlight .compare-feature-box,
+#tab-kesamaan .compare-feature-box,
+#tab-perbedaan .compare-feature-box,
+#tab-spesifikasi .compare-feature-box {
   background: #ffffff;
-  border-radius: 10px;
-  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
   display: flex;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-  font-size: 0.9rem;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  font-size: 0.92rem;
 }
 
 /* ikon centang / silang */
 .compare-feature-check {
   margin-right: 0.5rem;
   font-weight: 700;
-  color: #1db954;
+  color: #16a34a;
 }
 
 .compare-feature-cross {
   margin-right: 0.5rem;
   font-weight: 700;
-  color: #e64545;
+  color: #e11d48;
 }
 
-.compare-feature-box--no {
-  border: 1px solid #ffe1e1;
-}
-
-/* mobile: kolom ditumpuk */
-@media (max-width: 768px) {
-  .compare-feature-row {
+/* responsive */
+@media (max-width: 900px) {
+  .compare-info-row {
     grid-template-columns: 1fr;
+  }
+
+  .compare-photo-row {
+    grid-template-columns: 1fr;
+  }
+
+  #tab-highlight .compare-feature-row,
+  #tab-kesamaan .compare-feature-row,
+  #tab-perbedaan .compare-feature-row,
+  #tab-spesifikasi .compare-feature-row {
+    grid-template-columns: 1fr;     /* kartu ditumpuk di bawah label */
+    grid-template-rows: auto;       /* label lalu kartu-kartu */
+  }
+
+  #tab-highlight .compare-feature-name,
+  #tab-kesamaan .compare-feature-name,
+  #tab-perbedaan .compare-feature-name,
+  #tab-spesifikasi .compare-feature-name {
+    grid-column: 1 / span 1;        /* supaya nggak “maksa” 2 kolom di mobile */
   }
 }

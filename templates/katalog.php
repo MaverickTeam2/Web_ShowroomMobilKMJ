@@ -264,158 +264,22 @@ $statusLabelMap = [
           </div>
         </div>
 
-<<<<<<< HEAD
-        <!-- BAR PERBANDINGAN (pindahkan ke sini) -->
-      <div id="compareToolbar" class="compare-toolbar">
-        <div class="compare-toolbar-inner">
-          <div class="compare-slot" data-slot="0">
-            <span class="compare-slot-placeholder">Pilih mobil pertama</span>
+        <!-- BAR PERBANDINGAN -->
+        <div id="compareToolbar" class="compare-toolbar">
+          <div class="compare-toolbar-inner">
+            <div class="compare-slot" data-slot="0">
+              <span class="compare-slot-placeholder">Pilih mobil pertama</span>
+            </div>
+            <div class="compare-slot" data-slot="1">
+              <span class="compare-slot-placeholder">Pilih mobil kedua</span>
+            </div>
+            <button id="compareGoBtn" class="btn-compare-go" disabled>Go</button>
           </div>
-          <div class="compare-slot" data-slot="1">
-            <span class="compare-slot-placeholder">Pilih mobil kedua</span>
-          </div>
-          <button id="compareGoBtn" class="btn-compare-go" disabled>Go</button>
         </div>
-      </div>
 
-        <section class="section">
-          <div class="row g-4">
-            <?php if (empty($mobil)): ?>
-              <div class="col-12 text-center text-muted py-5">
-                Belum ada data mobil.
-              </div>
-              
-            <?php else: ?>
-              <?php foreach ($mobil as $m): ?>
-                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
-                  <div class="card car-card shadow-sm h-100">
-                    <data-id="<?= $m['kode_mobil'] ?>"
-                    data-name="<?= htmlspecialchars($m['nama_mobil'] ?? 'Tanpa Nama') ?>"
-                    data-img="<?= $img ?>"></data-id>
-
-                    
-
-                    <?php
-                    // gambar: dari API (full URL) atau fallback
-                    $img = !empty($m['foto'])
-                      ? $m['foto']
-                      : '../assets/img/no-image.jpg';
-
-                    // STATUS per mobil
-                    $status = $m['status'] ?? 'available';
-                    $statusLabel = $statusLabelMap[$status] ?? $status;
-                    ?>
-                    <div class="card-image position-relative">
-                      <figure class="image image-wrapper mb-0">
-                        <img src="<?= $img ?>" alt="<?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil Tanpa Nama') ?>"
-                          class="img_main card-img-top">
-
-                        <!-- STATUS di dalam gambar, pojok kiri atas -->
-                        <span class="status-badge <?= htmlspecialchars($status) ?>">
-                          <?= htmlspecialchars($statusLabel); ?>
-                        </span>
-
-                        <!-- Favorite, pojok kanan atas -->
-                        <?php
-                        // cek apakah mobil ini ada di daftar favorit user
-                        $isFavorit = in_array($m['kode_mobil'], $favoritMobil ?? []);
-                        ?>
-                        <span class="icon-favorite <?= $isFavorit ? 'active' : '' ?>"
-                          data-kode-mobil="<?= htmlspecialchars($m['kode_mobil']) ?>">
-                          <i class="fa-solid fa-heart"></i>
-                        </span>
-
-                      </figure>
-                    </div>
-
-                    <div class="card-content p-3">
-
-                      <!-- NAMA MOBIL -->
-                      <a href="../templates/detail_mobil.php?kode=<?= urlencode($m['kode_mobil']) ?>"
-                        class="text-decoration-none mb-2 d-inline-block" style="font-size:25px;">
-                        <p class="title is-5 mb-1">
-                          <?= htmlspecialchars($m['nama_mobil'] ?? 'Tanpa Nama') ?>
-                        </p>
-                      </a>
-
-                      <!-- ANGSURAN x TENOR -->
-                      <p class="ansguran mb-1" style="font-size:25px; font-weight:700; color:#111827; margin-bottom:4px;">
-                        Rp <?= number_format($m['angsuran'] ?? 0, 0, ',', '.') ?>
-                        <span style="font-weight:600;">
-                          x <?= htmlspecialchars($m['tenor'] ?? '-') ?>
-                        </span>
-                      </p>
-
-                      <p class="uang_dp mb-2" style="font-size:20px; font-weight:600; color:#111827; margin-bottom:6px;">
-                        Dp Rp <?= number_format($m['dp'] ?? 0, 0, ',', '.') ?>
-                      </p>
-
-
-                      <hr class="my-2">
-
-                      <!-- KM & TAHUN -->
-                      <div class="info d-flex align-items-center gap-2">
-                        <img src="../assets/img/kecepatan.jpg" alt="" style="width:30px;height:30px;">
-                        <span style="font-size: 20px">
-                          <?= number_format($m['jarak_tempuh'] ?? 0, 0, ',', '.'); ?> Km
-                        </span>
-
-                        <img src="../assets/img/kalender.jpg" alt="" class="ms-3" style="width:40px;height:40px;">
-                        <span style="font-size: 20px">
-                          <?= htmlspecialchars($m['tahun_mobil'] ?? '-'); ?>
-                        </span>
-                      </div>
-
-                      <!-- TITIK 3 DROPDOWN -->
-                      <div class="titik3 dropdown is-right is-hoverable mt-2">
-                        <div class="dropdown-trigger">
-                          <button class="button is-white btn-titik3" aria-haspopup="true" aria-controls="dropdown-menu">
-                            <span class="icon is-small">
-                              <i class="fa-solid fa-ellipsis-vertical"></i>
-                            </span>
-                          </button>
-                        </div>
-                        <div class="dropdown-menu" role="menu">
-                          <div class="dropdown-content">
-                            <a href="#" class="dropdown-item">
-                              <i class="fa-solid fa-trash"></i> Hapus dari favorit
-                            </a>
-                            <a href="../templates/perbandingan.php" class="dropdown-item">
-                              <i class="fa-solid fa-shuffle me-2"></i> Bandingkan
-                            </a>
-                            <a href="#" class="dropdown-item">
-                              <i class="fa-solid fa-share me-2"></i> Bagikan
-                            </a>
-
-                            <?php
-                            $nomor_wa = "6281234567890";
-                            $pesan = urlencode("Halo, apakah mobil " . ($m['nama_mobil'] ?? '') . " masih tersedia?");
-                            ?>
-                            <a href="https://wa.me/<?= $nomor_wa ?>?text=<?= $pesan ?>" target="_blank"
-                              class="dropdown-item">
-                              <i class="fa-brands fa-whatsapp me-2"></i> Hubungi Penjual
-                            </a>
-
-                            <a href="../templates/detail_mobil.php?kode=<?= urlencode($m['kode_mobil']) ?>" class="dropdown-item">
-                              <i class="fa-solid fa-car me-2"></i> Fitur &amp; Spesifikasi
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div> <!-- /.card-content -->
-                  </div> <!-- /.card -->
-                </div> <!-- /.col -->
-              <?php endforeach; ?>
-
-
-
-            <?php endif; ?>
-=======
         <section class="section">
           <div class="row g-4" id="mobilContainer">
             <!-- Mobil akan di-render oleh JavaScript -->
->>>>>>> 6da68bc69a029e3dd402f5d6f5a4bb38b7194ecf
           </div>
         </section>
       </main>
@@ -467,7 +331,10 @@ $statusLabelMap = [
 
         return `
           <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
-            <div class="card car-card shadow-sm h-100">
+            <div class="card car-card shadow-sm h-100"
+                 data-id="${m.kode_mobil}"
+                 data-name="${(m.nama_mobil || 'Tanpa Nama').replace(/"/g, '&quot;')}"
+                 data-img="${img}">
               <div class="card-image position-relative">
                 <figure class="image image-wrapper mb-0">
                   <img src="${img}" alt="${m.nama_mobil || 'Mobil'}" class="img_main card-img-top">
@@ -627,83 +494,60 @@ $statusLabelMap = [
       });
     });
 
-    const compareToggle = document.getElementById('togglePerbandingan');
-    const compareToolbar = document.getElementById('compareToolbar');
+    // ============================================
+    // FAVORITE LISTENERS
+    // ============================================
+    function attachFavoriteListeners() {
+      document.querySelectorAll('.icon-favorite').forEach(icon => {
+        icon.addEventListener('click', async () => {
+          const kodeMobil = icon.dataset.kodeMobil;
 
-if (compareToggle && compareToolbar) {
-  compareToggle.addEventListener('change', (e) => {
-    if (e.target.checked) {
-      compareToolbar.classList.add('is-active');
-    } else {
-      compareToolbar.classList.remove('is-active');
-    }
-  });
-}
+          if (!IS_LOGGED_IN) {
+            const go = confirm('Kamu harus login dulu untuk menambahkan ke favorit. Pergi ke halaman login?');
+            if (go) {
+              window.location.href = '/web_showroommobilKMJ/templates/auth/auth.php?redirect=' + encodeURIComponent(window.location.pathname);
+            }
+            return;
+          }
 
-const maxCompare = 2;
-let selectedCars = [];
+          const isActive = icon.classList.contains('active');
+          const action = isActive ? 'remove' : 'add';
 
-const compareSlots = document.querySelectorAll('.compare-slot');
-const compareGoBtn = document.getElementById('compareGoBtn');
+          try {
+            const res = await fetch(BASE_API_URL + '/user/routes/favorites.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                kode_user: CURRENT_USER.kode_user,
+                kode_mobil: kodeMobil,
+                action: action
+              })
+            });
 
-function renderCompareSlots() {
-  compareSlots.forEach((slot, index) => {
-    const car = selectedCars[index];
-    slot.innerHTML = '';
-
-    if (car) {
-      slot.classList.add('has-car');
-
-      const img = document.createElement('img');
-      img.src = car.img;
-      img.alt = car.name;
-
-      const removeBtn = document.createElement('button');
-      removeBtn.className = 'compare-remove';
-      removeBtn.textContent = '×';
-      removeBtn.addEventListener('click', () => {
-        selectedCars = selectedCars.filter(c => c.id !== car.id);
-        renderCompareSlots();
+            const data = await res.json();
+            if (data.success) {
+              icon.classList.toggle('active');
+              
+              // Update array favoritMobil
+              if (action === 'add') {
+                favoritMobil.push(kodeMobil);
+              } else {
+                const index = favoritMobil.indexOf(kodeMobil);
+                if (index > -1) favoritMobil.splice(index, 1);
+              }
+            } else {
+              alert(data.message || 'Gagal mengubah data favorite');
+            }
+          } catch (err) {
+            console.error(err);
+            alert('Terjadi kesalahan koneksi ke server.');
+          }
+        });
       });
-
-      slot.appendChild(img);
-      slot.appendChild(removeBtn);
-    } else {
-      slot.classList.remove('has-car');
-      const span = document.createElement('span');
-      span.className = 'compare-slot-placeholder';
-      span.textContent = index === 0 ? 'Pilih mobil pertama' : 'Pilih mobil kedua';
-      slot.appendChild(span);
     }
-  });
-
-  compareGoBtn.disabled = selectedCars.length !== 2;
-}
-
-document.querySelectorAll('.btn-add-compare').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const card = btn.closest('.car-card');
-    const id = card.dataset.id;
-
-    // kalau sudah kepilih, abaikan
-    if (selectedCars.find(c => c.id === id)) return;
-
-    if (selectedCars.length >= maxCompare) {
-      alert('Maksimal 2 mobil untuk dibandingkan');
-      return;
-    }
-
-    selectedCars.push({
-      id,
-      name: card.dataset.name,
-      img: card.dataset.img
-    });
-
-    renderCompareSlots();
-  });
-});
   </script>
 
+  <!-- SCRIPT PERBANDINGAN -->
   <script>
   document.addEventListener('DOMContentLoaded', function () {
     const compareToggle   = document.getElementById('togglePerbandingan');
@@ -736,7 +580,7 @@ document.querySelectorAll('.btn-add-compare').forEach(btn => {
             selectedCars = selectedCars.filter(c => c.id !== car.id);
 
             // hilangkan highlight di button card juga
-            btnTitik3List.forEach(btn => {
+            document.querySelectorAll('.btn-titik3').forEach(btn => {
               const card = btn.closest('.car-card');
               if (card && card.dataset.id === car.id) {
                 btn.classList.remove('compare-selected');
@@ -773,7 +617,7 @@ document.querySelectorAll('.btn-add-compare').forEach(btn => {
           // reset semua pilihan kalau mode dimatikan
           selectedCars = [];
           renderCompareSlots();
-          btnTitik3List.forEach(btn => {
+          document.querySelectorAll('.btn-titik3').forEach(btn => {
             btn.classList.remove('compare-mode', 'compare-selected');
             const icon = btn.querySelector('i');
             if (icon) {
@@ -784,7 +628,7 @@ document.querySelectorAll('.btn-add-compare').forEach(btn => {
         }
 
         // ubah tampilan tombol titik3
-        btnTitik3List.forEach(btn => {
+        document.querySelectorAll('.btn-titik3').forEach(btn => {
           const icon = btn.querySelector('i');
           if (!icon) return;
 
@@ -802,7 +646,7 @@ document.querySelectorAll('.btn-add-compare').forEach(btn => {
     }
 
     // === Klik tombol titik3 saat mode perbandingan ===
-    btnTitik3List.forEach(btn => {
+    document.querySelectorAll('.btn-titik3').forEach(btn => {
       btn.addEventListener('click', function (e) {
         if (!compareMode) return;       // kalau bukan mode perbandingan, biarkan dropdown normal
 
@@ -836,21 +680,21 @@ document.querySelectorAll('.btn-add-compare').forEach(btn => {
     });
 
     // === Klik Go → ke perbandingan.php ===
+        // === Klik Go → ke perbandingan.php ===
     compareGoBtn.addEventListener('click', () => {
       if (selectedCars.length !== 2) return;
 
+      // CUMA kirim kode mobil, tanpa URL gambar / nama
       const params = new URLSearchParams({
-        car1_name: selectedCars[0].name,
-        car1_img:  selectedCars[0].img,
-        car2_name: selectedCars[1].name,
-        car2_img:  selectedCars[1].img
+        car1: selectedCars[0].id,
+        car2: selectedCars[1].id,
       });
 
       window.location.href = '../templates/perbandingan.php?' + params.toString();
     });
-  });
-</script>
 
+  });
+  </script>
 
   <!-- footer -->
   <script src="../assets/js/footer.js"></script>
