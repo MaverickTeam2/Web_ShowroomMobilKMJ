@@ -14,21 +14,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const circle = item.querySelector(".step-circle");
 
       if (idx < step) {
-        // step sudah lewat
         item.classList.add("done");
         item.classList.remove("active");
         circle.classList.add("step-circle--done");
         circle.classList.remove("step-circle--active");
         circle.innerHTML = '<i class="fa-solid fa-check"></i>';
       } else if (idx == step) {
-        // step aktif
         item.classList.add("active");
         item.classList.remove("done");
         circle.classList.add("step-circle--active");
         circle.classList.remove("step-circle--done");
         circle.innerHTML = `<span>${idx}</span>`;
       } else {
-        // step belum
         item.classList.remove("active", "done");
         circle.classList.remove("step-circle--active", "step-circle--done");
         circle.innerHTML = `<span>${idx}</span>`;
@@ -101,18 +98,65 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       input.addEventListener("change", updateGroup);
-      // initial state
-      updateGroup();
+      updateGroup(); // initial
     });
 
-  // submit form (sementara cuma alert)
+  // === SUBMIT FORM: KIRIM KE API ===
   const form = document.getElementById("appointmentForm");
+
   if (form) {
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      alert(
-        "Untuk sekarang ini masih UI saja. Nanti bagian ini tinggal disambungkan ke API penyimpanan janji temu."
-      );
+
+      if (!IS_LOGGED_IN || !CURRENT_USER || !CURRENT_USER.kode_user) {
+        alert("Kamu harus login untuk membuat janji temu.");
+        return;
+      }
+
+      const formData = new FormData(form);
+
+      const payload = {
+        // backend bisa ambil dari session, tapi sekalian kirim juga
+        kode_user: CURRENT_USER.kode_user,
+        kode_mobil: form.dataset.kodeMobil || formData.get("kode_mobil"),
+
+        // pastikan name radio di HTML: name="uji_beli" dan name="jenis_janji"
+        uji_beli: parseInt(formData.get("uji_beli") || "0", 10),
+        jenis_janji: parseInt(formData.get("jenis_janji") || "0", 10),
+
+        tanggal: formData.get("tanggal") || "",
+        waktu: formData.get("waktu") || "",
+        no_telp: formData.get("no_telp") || "",
+        note: formData.get("note") || null,
+      };
+
+      if (!payload.kode_mobil || !payload.tanggal || !payload.waktu || !payload.no_telp) {
+        alert("Kode mobil, tanggal, waktu, dan nomor telepon wajib diisi.");
+        return;
+      }
+
+      try {
+        const res = await fetch(BASE_API_URL + "/user/routes/inquire.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+
+        if (data.code === 200) {
+          // sukses simpan janji temu
+          alert("Janji temu berhasil dibuat. ID: " + (data.data?.id_inquire ?? "-"));
+          // TODO: kalau mau, redirect ke halaman riwayat janji temu:
+          // window.location.href = "keranjang.php"; // atau halaman lain
+        } else {
+          alert(data.message || "Gagal membuat janji temu.");
+          console.error("API error:", data);
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Terjadi kesalahan koneksi ke server.");
+      }
     });
   }
 
