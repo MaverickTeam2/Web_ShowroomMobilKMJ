@@ -339,15 +339,11 @@ $statusLabelMap = [
             </div>
 
             <!-- Item 7 Sistem Penggerak -->
-            <!-- Item 7 Sistem Penggerak -->
             <div class="accordion-item">
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#collapseSeven">
                   Sistem Penggerak
-                  <span class="badge bg-primary ms-2" id="driveSystemBadge">
-                    <?= array_sum($allDriveSystems) ?> mobil
-                  </span>
                 </button>
               </h2>
               <div id="collapseSeven" class="accordion-collapse collapse">
