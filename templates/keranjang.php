@@ -244,8 +244,6 @@ if (!empty($kodeUser)) {
                     break;
                 }
 
-
-
                 $tanggal = $j['tanggal'] ?? '';
                 $waktu = $j['waktu'] ?? '';
 

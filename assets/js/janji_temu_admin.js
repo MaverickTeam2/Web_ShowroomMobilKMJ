@@ -134,7 +134,7 @@ function createCard(row) {
     <div class="inquire-card-body">
       <p><span class="meta-label">Email:</span> ${row.email_user || '-'}</p>
       <p><span class="meta-label">Phone:</span> ${row.no_telp || '-'}</p>
-      <p><span class="meta-label">Vehicle:</span> ${row.nama_mobil || row.kode_mobil || '-'}</p>
+      <p><span class="meta-label">Mobil:</span> ${row.nama_mobil || '-'}</p>
 
       <div class="inquire-message">
         ${row.note || '-'}
@@ -162,7 +162,7 @@ function createCard(row) {
   const btnMarkClosed = wrapper.querySelector('.btn-mark-closed');
   if (btnMarkClosed) {
     btnMarkClosed.addEventListener('click', () => {
-      updateStatus(row.id_inquire, 'closed');
+      updateStatus(row.id_inquire, 'responded');
     });
   }
 
