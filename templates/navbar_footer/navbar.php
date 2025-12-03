@@ -3,6 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
 ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="index.php">
@@ -71,8 +72,20 @@ if (session_status() === PHP_SESSION_NONE) {
 
         <div class="navbar-dropdown is-right">
           <?php if (isset($_SESSION['kode_user'])): ?>
-            <a class="navbar-item" href="profile_setting.php">Profile</a>
-            <a class="navbar-item" href="auth/logout.php">Logout</a>
+            <a class="navbar-item" href="profile_setting.php">
+              <i class="fa-solid fa-user"></i>&nbsp; Profile
+            </a>
+            <a class="navbar-item" href="keranjang.php">
+              <i class="fa-solid fa-cart-shopping"></i>&nbsp; Keranjang Saya
+            </a>
+            <a class="navbar-item" href="profile_setting.php">
+              <i class="fa-solid fa-user"></i>&nbsp; Profile
+            </a>
+
+            <a class="navbar-item" href="auth/logout.php" style="color: red;">
+              <i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout
+            </a>
+
           <?php else: ?>
             <a class="navbar-item" href="auth/auth.php">Login</a>
           <?php endif; ?>

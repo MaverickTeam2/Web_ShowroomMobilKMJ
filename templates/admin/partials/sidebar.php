@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 ?>
 
 <section id="sidebar">
@@ -21,15 +21,15 @@ session_start();
         <span>Manajemen Mobil</span>
       </a>
     </li>
-    <li><a href="inquire.php"><i class='bx bxs-message-dots'></i><span class="text">Inquire</span></a></li>
+    <li><a href="janji_temu.php"><i class='bx bxs-message-dots'></i><span class="text">Janji Temu</span></a></li>
     <li><a href="report.php"><i class='bx bxs-bar-chart-alt-2'></i><span class="text">Report</span></a></li>
-    <?php if (!empty($_SESSION['role']) && $_SESSION['role'] === "owner"): ?>
-      <li>
+    <li>
         <a href="manajemen_account.php">
           <i class='bx bxs-user'></i>
           <span class="text">Manajemen Akun</span>
         </a>
       </li>
+    <?php if (!empty($_SESSION['role']) && $_SESSION['role'] === "owner"): ?>
     <?php endif; ?>
   </ul>
 

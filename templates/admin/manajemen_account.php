@@ -11,12 +11,12 @@ $currentUserRoleRaw = 'guest';
 
 // 1) Coba beberapa kemungkinan umum
 if (isset($_SESSION['role'])) {
-    $currentUserRoleRaw = $_SESSION['role'];
+  $currentUserRoleRaw = $_SESSION['role'];
 } elseif (isset($_SESSION['user']['role'])) {
-    $currentUserRoleRaw = $_SESSION['user']['role'];
+  $currentUserRoleRaw = $_SESSION['user']['role'];
 } elseif (isset($_SESSION['data_login']['role'])) {
-    // contoh lain kalau kamu simpan di sini
-    $currentUserRoleRaw = $_SESSION['data_login']['role'];
+  // contoh lain kalau kamu simpan di sini
+  $currentUserRoleRaw = $_SESSION['data_login']['role'];
 }
 
 // 2) Normalisasi ke lowercase
@@ -47,29 +47,25 @@ $isOwner = ($currentUserRole === 'owner');
       </div>
 
       <!-- Tambah Akun: hanya owner yang boleh klik -->
-      <button
-        type="button"
-        id="btnAddAccount"
-      class="btn btn-primary d-flex align-items-center gap-2 <?= !$isOwner ? 'btn-disabled' : '' ?>"
-      data-page="<?= $isOwner ? 'add_account.php' : '' ?>"
-      <?= !$isOwner ? 'disabled' : '' ?>
-    >
+      <button type="button" id="btnAddAccount" class="btn btn-primary d-flex align-items-center gap-2"
+        data-page="add_account.php">
         <i class='bx bx-plus' style="font-size:1.1rem;"></i>
         Tambah Akun
       </button>
+
     </div>
 
     <!-- Card container utk list akun -->
-       <div class="card border-0 shadow-sm mt-4">
-  <div class="card-body">
-    <p class="text-muted mb-4">Edit dan tambah akun di halaman ini</p>
+    <div class="card border-0 shadow-sm mt-4">
+      <div class="card-body">
+        <p class="text-muted mb-4">Edit dan tambah akun di halaman ini</p>
 
-    <!-- kontainer untuk list akun, diisi via JS -->
-    <div class="row g-4" id="account-list">
-      <!-- akan diisi manajemen_account.js -> loadAccounts() -->
+        <!-- kontainer untuk list akun, diisi via JS -->
+        <div class="row g-4" id="account-list">
+          <!-- akan diisi manajemen_account.js -> loadAccounts() -->
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
 
     <p class="text-muted text-center my-4">© 2024 Showroom Mobil KMJ</p>

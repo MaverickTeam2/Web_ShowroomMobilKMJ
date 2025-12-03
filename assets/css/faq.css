@@ -103,3 +103,232 @@ a.button.is-custom2 .icon i {
     margin: 0 auto;
   }
 }
+/* =============================== */
+/*  FOOTER – SAMAKAN DENGAN style.css  */
+/* =============================== */
+
+/* Gaya dasar footer (desktop & tablet) */
+footer.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  min-height: auto;
+}
+
+/* Kolom-kolom footer */
+footer.footer .columns {
+  margin-bottom: 15px;
+}
+
+/* List item di bawah judul */
+footer.footer ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+footer.footer ul li {
+  margin-bottom: 5px;
+}
+
+/* Area copyright */
+footer.footer .content {
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* ============ RESPONSIVE (≤ 768px) ============ */
+@media (max-width: 768px) {
+  /* Kurangi padding atas–bawah footer */
+  footer.footer {
+    padding-top: 1.25rem;
+    padding-bottom: 0.75rem;
+  }
+
+  /* Kolom footer jangan terlalu renggang */
+  footer.footer .columns {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Hanya kolom pertama (logo) yang tampil.
+     Kolom ke-2 dst (Shop, Kategori, Sell, Finance, About, dll) disembunyikan */
+  footer.footer .columns .column:nth-child(n + 2) {
+    display: none !important;
+  }
+
+  /* List di footer sedikit dipadetin */
+  footer.footer ul li {
+    margin-bottom: 3px;
+  }
+
+  /* Area copyright lebih tipis */
+  footer.footer .content {
+    margin-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+}
+/* Default: semua tombol terlihat, showmore hilang */
+.topic-buttons .is-hidden-topic {
+  display: none;
+}
+
+.show-more-topics {
+  display: none; /* default: disembunyikan */
+}
+
+/* ========= HP (≤576px) ========= */
+@media (max-width: 576px) {
+  /* Aktifkan tombol showmore */
+  .show-more-topics {
+    display: block;
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  /* Sembunyikan tombol-tombol di luar 4 pertama */
+  .topic-buttons .is-hidden-topic {
+    display: none;
+  }
+}
+/* Tombol "Lihat lebih banyak" */
+.show-more-topics .show-more-btn {
+  background-color: #2563eb; /* biru */
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Hover efek dikit */
+.show-more-topics .show-more-btn:hover {
+  background-color: #1d4ed8;
+  color: #ffffff;
+}
+/* ============================= */
+/*   NAVBAR MOBILE (≤ 768px)     */
+/*   TANPA EDIT navbar.php       */
+/* ============================= */
+@media (max-width: 768px) {
+  nav.navbar {
+    position: relative;
+    padding-inline: 16px;
+  }
+
+  .navbar-brand {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Burger / tombol X di pojok kanan */
+  .navbar-burger {
+    margin-left: auto;
+    z-index: 60; /* di atas panel putih */
+  }
+
+  /* ===================================== */
+  /*  ❤️ + 👤 DI BAR ATAS, SEBELAH BURGER  */
+  /* ===================================== */
+
+  /* Posisikan isi .navbar-end (heart + profile) di bar atas */
+  .navbar-end .icon-only,
+  .navbar-end #accountDropdown {
+    position: absolute;
+    top: -1px; /* nilai tengah2, harusnya sejajar garis 2 */
+    z-index: 55;
+    padding: 0;
+    background: transparent;
+  }
+
+  /* urutan: Logo | ❤️ | 👤 | ≡ */
+  .navbar-end .icon-only {
+    right: -30px; /* ❤️ */
+    top: -45px;
+  }
+  /* Hapus tanda panah dropdown di icon profile */
+  #accountDropdown .navbar-link::after {
+    content: none !important;
+    border: 0 !important;
+    display: none !important;
+  }
+
+  .navbar-end #accountDropdown {
+    right: 40px; /* 👤 */
+  }
+
+  .navbar-end .icon-only .icon i,
+  .navbar-end #accountDropdown .icon i {
+    font-size: 1.25rem;
+  }
+
+  /* Sembunyikan nama user di mobile, cuma icon 👤 aja */
+  #accountDropdown .navbar-link span:not(.icon) {
+    display: none !important;
+  }
+
+  /* ===================================== */
+  /*       PANEL PUTIH DROPDOWN MENU       */
+  /* ===================================== */
+
+  /* Override Bulma: jangan di-display:none */
+  #navbarMenu {
+    display: block !important;
+    position: absolute;
+    top: 60px; /* jarak dari bar atas */
+    left: 12px;
+    width: 235px;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    border-radius: 16px;
+  }
+
+  /* Saat panel TIDAK aktif → isi disembunyiin
+     (tapi ❤️ & 👤 tetap kelihatan karena sudah absolute) */
+  #navbarMenu:not(.is-active) .navbar-start,
+  #navbarMenu:not(.is-active) .store-location {
+    display: none;
+  }
+
+  /* Saat panel AKTIF → jadikan card putih */
+  #navbarMenu.is-active {
+    background: #ffffff;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+    padding: 0.9rem 1rem 1rem;
+  }
+
+  /* Store location di DALAM panel, paling atas */
+  #navbarMenu .store-location {
+    display: flex;
+    align-items: center;
+    padding-left: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  #navbarMenu .store-location .icon {
+    margin-right: 0.4rem;
+  }
+
+  #navbarMenu .store-location .store-copy small {
+    font-size: 11px;
+  }
+
+  #navbarMenu .store-location .store-copy strong {
+    font-size: 12px;
+  }
+
+  /* Menu utama: Shop / Jual Mobil / Pembiayaan / More di bawahnya */
+  #navbarMenu .navbar-start {
+    margin-top: 0.25rem;
+  }
+
+  #navbarMenu .navbar-start > .navbar-item,
+  #navbarMenu .navbar-start > .navbar-link {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

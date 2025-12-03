@@ -22,18 +22,6 @@ $kodeUser = $_GET['kode_user'] ?? '';
         <input type="hidden" id="edit_kode_user" value="<?= htmlspecialchars($kodeUser) ?>">
 
         <form id="formEditAccount" enctype="multipart/form-data">
-            <!-- Foto Profil -->
-            <div class="d-flex justify-content-center mb-5">
-                <label for="photo_edit" class="cursor-pointer">
-                    <div id="photoPreviewEdit"
-                         class="rounded-circle border border-2 border-dashed border-secondary-subtle d-flex flex-column align-items-center justify-content-center bg-light overflow-hidden"
-                         style="width: 150px; height: 150px;">
-                        <!-- Akan diganti JS -->
-                        <i class="fas fa-user text-secondary mb-2" style="font-size: 32px;"></i>
-                    </div>
-                    <input type="file" id="photo_edit" name="photo_edit" accept="image/*" class="d-none">
-                </label>
-            </div>
 
             <!-- Input Data (mirip add_account) -->
             <div class="row g-4 px-5">

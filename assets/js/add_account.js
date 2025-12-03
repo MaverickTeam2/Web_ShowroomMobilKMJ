@@ -2,7 +2,6 @@ console.log('add_account.js LOADED');
 
 const API_CREATE_ACCOUNT = `${BASE_API_URL}/admin/create_manage_acc.php`;
 
-
 // helper pesan
 function showAddAccountMessage(text, type) {
   const msgBox = document.getElementById('addAccountMessage');
@@ -21,24 +20,6 @@ function showAddAccountMessage(text, type) {
   msgBox.innerHTML = `<div class="${cls}" role="alert">${text}</div>`;
 }
 
-// ========== PREVIEW FOTO (delegasi) ==========
-document.addEventListener('change', (e) => {
-  const input = e.target;
-  if (!(input instanceof HTMLInputElement)) return;
-  if (input.id !== 'photo') return;
-
-  const file = input.files && input.files[0];
-  const preview = document.getElementById('photoPreview');
-  if (!file || !preview) return;
-
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    preview.innerHTML =
-      `<img src="${ev.target.result}" class="w-100 h-100 object-fit-cover rounded-circle" />`;
-  };
-  reader.readAsDataURL(file);
-});
-
 // ========== SUBMIT FORM (delegasi) ==========
 document.addEventListener('submit', async (e) => {
   const form = e.target;
@@ -47,8 +28,7 @@ document.addEventListener('submit', async (e) => {
 
   console.log('SUBMIT KE TANGKAP add_account.js', e.target);
 
-
-  e.preventDefault(); // << ini yang mencegah GET ?photo=...
+  e.preventDefault(); // cegah submit default
 
   const fullnameEl = document.getElementById('fullname');
   const usernameEl = document.getElementById('username');
@@ -56,7 +36,6 @@ document.addEventListener('submit', async (e) => {
   const phoneEl    = document.getElementById('phone');
   const emailEl    = document.getElementById('email');
   const addressEl  = document.getElementById('address');
-  const photoInput = document.getElementById('photo');
   const btnSubmit  = document.getElementById('btnSubmitAdd');
 
   const full_name = fullnameEl.value.trim();
@@ -73,10 +52,14 @@ document.addEventListener('submit', async (e) => {
 
   if (typeof BASE_API_URL === 'undefined') {
     console.error('BASE_API_URL belum didefinisikan');
-    showAddAccountMessage('Konfigurasi API belum benar (BASE_API_URL tidak ditemukan).', 'danger');
+    showAddAccountMessage(
+      'Konfigurasi API belum benar (BASE_API_URL tidak ditemukan).',
+      'danger'
+    );
     return;
   }
 
+  // kirim sebagai FormData karena register/create_manage_acc awalnya pakai itu
   const fd = new FormData();
   fd.append('full_name', full_name);
   fd.append('username', username);
@@ -86,13 +69,7 @@ document.addEventListener('submit', async (e) => {
   fd.append('alamat', alamat);
   fd.append('role', 'admin');
   fd.append('provider_type', 'local');
-
-  if (photoInput && photoInput.files[0]) {
-    // **nama field HARUS "avatar_file"** sesuai register.php
-    fd.append('avatar_file', photoInput.files[0]);
-  }else{
-    fd.append('avatar_file', '');
-  }
+  // TIDAK ada avatar_file -> backend akan pakai avatar default
 
   if (btnSubmit) {
     btnSubmit.disabled = true;
@@ -110,11 +87,10 @@ document.addEventListener('submit', async (e) => {
     console.log('REGISTER raw:', raw);
 
     const code = json.kode ?? json.code;
-if (!res.ok || (code !== 200 && code !== 201)) {
-  const msg = json.message || `Gagal menambah akun (status ${res.status}).`;
-  throw new Error(msg);
-}
-
+    if (!res.ok || (code !== 200 && code !== 201)) {
+      const msg = json.message || `Gagal menambah akun (status ${res.status}).`;
+      throw new Error(msg);
+    }
 
     showAddAccountMessage('Akun admin berhasil dibuat.', 'success');
 
@@ -128,7 +104,10 @@ if (!res.ok || (code !== 200 && code !== 201)) {
 
   } catch (err) {
     console.error('REGISTER error:', err);
-    showAddAccountMessage(err.message || 'Terjadi kesalahan saat menyimpan akun.', 'danger');
+    showAddAccountMessage(
+      err.message || 'Terjadi kesalahan saat menyimpan akun.',
+      'danger'
+    );
   } finally {
     if (btnSubmit) {
       btnSubmit.disabled = false;

@@ -61,55 +61,55 @@ function initMobilForm() {
 
     // ✅ CEK: User sudah login atau belum
     // ✅ CEK: User sudah login atau belum
-let kodeUser = null;
+    let kodeUser = null;
 
-// 1) Pakai variabel global dari PHP (diisi di manajemen_mobil.php / tambah_stok_mobil.php)
-if (typeof window !== "undefined" && window.KMJ_KODE_USER) {
-  kodeUser = window.KMJ_KODE_USER;
-}
+    // 1) Pakai variabel global dari PHP (diisi di manajemen_mobil.php / tambah_stok_mobil.php)
+    if (typeof window !== "undefined" && window.KMJ_KODE_USER) {
+      kodeUser = window.KMJ_KODE_USER;
+    }
 
-// ❌ JANGAN fallback ke storage lagi di kasus ini
-// (supaya nggak ketarik US001 dari localStorage lama)
+    // ❌ JANGAN fallback ke storage lagi di kasus ini
+    // (supaya nggak ketarik US001 dari localStorage lama)
 
-// kalau tetap kosong → anggap belum login
-if (!kodeUser) {
-  alert("⚠️ Session login tidak ditemukan. Silakan login ulang.");
-  console.error("❌ [mobil.js] kode_user tidak ditemukan (KMJ_KODE_USER kosong)");
-  window.location.href = "../../auth/auth.php"; // atau login.php, sesuaikan
-  return;
-}
+    // kalau tetap kosong → anggap belum login
+    if (!kodeUser) {
+      alert("⚠️ Session login tidak ditemukan. Silakan login ulang.");
+      console.error("❌ [mobil.js] kode_user tidak ditemukan (KMJ_KODE_USER kosong)");
+      window.location.href = "../../auth/auth.php"; // atau login.php, sesuaikan
+      return;
+    }
 
-console.log("✅ [mobil.js] kode_user ditemukan dari PHP:", kodeUser);
+    console.log("✅ [mobil.js] kode_user ditemukan dari PHP:", kodeUser);
 
 
     // kalau sudah lolos validasi, baru lanjut submit
     isSubmitting = true;
 
     const formData = new FormData(this);
-    
+
     // ✅ TAMBAHKAN kode_user ke FormData
     formData.append('kode_user', kodeUser);
     console.log("📦 [mobil.js] kode_user ditambahkan ke FormData:", kodeUser);
 
     // ✅ ========== HANDLER FOTO TAMBAHAN (WEB) ==========
     const fotoTambahanInput = document.querySelector('input[name="foto_tambahan[]"]');
-    
+
     if (fotoTambahanInput && fotoTambahanInput.files.length > 0) {
       console.log("📸 [mobil.js] Foto tambahan detected:", fotoTambahanInput.files.length);
-      
+
       // Hapus entry lama foto_tambahan[] (karena backend tidak support array)
       formData.delete('foto_tambahan[]');
-      
+
       const files = Array.from(fotoTambahanInput.files);
       const maxFiles = 6; // Maksimal 6 foto tambahan
-      
+
       // Batasi hanya 6 foto
       const filesToUpload = files.slice(0, maxFiles);
-      
+
       if (files.length > maxFiles) {
         alert(`⚠️ Maksimal ${maxFiles} foto tambahan. Hanya ${maxFiles} foto pertama yang akan diupload.`);
       }
-      
+
       // Convert ke format slot (sama seperti Android)
       // foto_tambahan_slot_0, foto_tambahan_slot_1, dst
       filesToUpload.forEach((file, index) => {
@@ -117,12 +117,12 @@ console.log("✅ [mobil.js] kode_user ditemukan dari PHP:", kodeUser);
         console.log(`✅ [mobil.js] Added foto_tambahan_slot_${index}:`, file.name);
       });
     } else {
-      console.log("ℹ️ [mobil.js] No foto tambahan uploaded");
+      console.log("ℹ[mobil.js] No foto tambahan uploaded");
     }
     // ✅ ========== END HANDLER FOTO TAMBAHAN ==========
 
     // Debug: lihat apa saja yang dikirim
-    console.log("📤 [mobil.js] Data siap dikirim:");
+    console.log("[mobil.js] Data siap dikirim:");
     for (let pair of formData.entries()) {
       if (pair[1] instanceof File) {
         console.log(`  ${pair[0]}: [FILE] ${pair[1].name}`);
@@ -133,11 +133,20 @@ console.log("✅ [mobil.js] kode_user ditemukan dari PHP:", kodeUser);
 
     try {
       const url = `${BASE_API_URL}/admin/mobil_tambah.php`;
-      console.log("📡 [mobil.js] Mengirim ke URL:", url);
+
+      Swal.fire({
+        title: "Uploading...",
+        text: "Mohon tunggu",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
 
       const response = await fetch(url, {
         method: "POST",
-        body: formData, // ✅ PERBAIKAN: Supaya session cookie terkirim
+        body: formData,
+        credentials: "include",
       });
 
       console.log("📡 [mobil.js] HTTP status:", response.status);
@@ -161,7 +170,7 @@ console.log("✅ [mobil.js] kode_user ditemukan dari PHP:", kodeUser);
 
       if (result.success) {
         console.log("✅ [mobil.js] Sukses, pindah ke manajemen_mobil.php");
-        
+
         // Cek apakah ada loadPage function (untuk SPA)
         if (typeof loadPage === 'function') {
           loadPage('manajemen_mobil.php');
@@ -319,7 +328,7 @@ if (window.existingMobilFoto) {
 
     const preview = dz.querySelector(".dz-preview-img");
     const subtext = dz.querySelector(".dz-sub");
-    
+
     if (subtext) subtext.style.display = "none";
 
     // Jika foto tambahan (multiple), buat grid

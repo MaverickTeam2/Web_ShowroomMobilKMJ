@@ -6,7 +6,7 @@ require_once '../../include/header.php';
 require_once '../../db/config_api.php'; // kalau belum dipakai, tetap boleh
 ?>
 
-<link rel="stylesheet" href="../../assets/css/admin/inquire.css?v=1">
+<link rel="stylesheet" href="../../assets/css/admin/janji_temu.css?v=1">
 
 
 <section id="content">
@@ -23,7 +23,7 @@ require_once '../../db/config_api.php'; // kalau belum dipakai, tetap boleh
         <ul class="breadcrumb mb-0">
           <li><a href="index.php">Dashboard</a></li>
           <li><i class='bx bx-chevron-right'></i></li>
-          <li><a class="active" href="#">Inquire</a></li>
+          <li><a class="active" href="#">Janji temu</a></li>
         </ul>
       </div>
     </div>
@@ -36,7 +36,7 @@ require_once '../../db/config_api.php'; // kalau belum dipakai, tetap boleh
       <button class="inquire-tab" data-filter="closed">Closed (3)</button>
     </div>
 
-       <!-- LIST CARD INQUIRE (DIISI VIA JS) -->
+    <!-- LIST CARD INQUIRE (DIISI VIA JS) -->
     <div class="inquire-list"></div>
 
   </main>
@@ -44,5 +44,4 @@ require_once '../../db/config_api.php'; // kalau belum dipakai, tetap boleh
 
 <?php include 'partials/footer.php'; ?>
 
-<script src="../../assets/js/inquire.js?v=3"></script>
-
+<script src="../../assets/js/janji_temu_admin.js?v=3"></script>

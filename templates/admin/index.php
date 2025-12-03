@@ -23,7 +23,6 @@ if ($stats && isset($stats['code']) && $stats['code'] == 200 && isset($stats['da
   $total_penjualan = $stats['data']['total_transaksi_bulan_ini'] ?? 0;
 }
 
-// ========== 2. Ambil recent activity (lebih banyak untuk modal) ==========
 // ========== 2. Ambil recent activity (kecil untuk card) ==========
 $allowed_filters = ['all', 'mobil', 'transaksi'];
 $filter = isset($_GET['filter']) && in_array($_GET['filter'], $allowed_filters)
@@ -195,18 +194,6 @@ if ($chart_api && isset($chart_api['code']) && $chart_api['code'] == 200 && isse
 
     <!-- Chart Section -->
     <div class="chart-container d-flex flex-wrap gap-4 mt-4">
-      <div class="chart-left flex-fill">
-        <h3>Total clicks: <span><?= array_sum($clicks) ?></span></h3>
-        <canvas id="lineChart"></canvas>
-        <div class="time-filter mt-2">
-          <button>1d</button>
-          <button class="active">1w</button>
-          <button>1m</button>
-          <button>6m</button>
-          <button>1y</button>
-        </div>
-      </div>
-
       <div class="chart-right flex-fill">
         <h3>Merk mobil</h3>
         <canvas id="barChart"></canvas>
@@ -224,27 +211,6 @@ if ($chart_api && isset($chart_api['code']) && $chart_api['code'] == 200 && isse
 <script>
   document.addEventListener("DOMContentLoaded", () => {
 
-    // LINE CHART
-    const lineCanvas = document.getElementById('lineChart');
-    if (lineCanvas) {
-      const ctxLine = lineCanvas.getContext('2d');
-      new Chart(ctxLine, {
-        type: 'line',
-        data: {
-          labels: <?= json_encode($days) ?>,
-          datasets: [{
-            label: 'Clicks',
-            data: <?= json_encode($clicks) ?>,
-            borderColor: '#007bff',
-            fill: false,
-            tension: 0.3
-          }]
-        },
-        options: { responsive: true, scales: { y: { beginAtZero: true } } }
-      });
-    } else {
-      console.error("Canvas lineChart tidak ditemukan!");
-    }
 
     // BAR CHART
     const barCanvas = document.getElementById('barChart');

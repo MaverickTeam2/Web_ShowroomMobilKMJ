@@ -332,92 +332,101 @@ if (!$api['success']) {
 </section>
 
 <script>
-  // fungsi umum untuk load halaman ke #main-content
   async function loadInnerPage(page) {
-    const main = document.getElementById("main-content");
+  const main = document.getElementById("main-content");
 
-    try {
-      const response = await fetch(page, { cache: "no-store" });
-      if (!response.ok) throw new Error("Gagal memuat halaman");
-      const html = await response.text();
+  try {
+    const response = await fetch(page, { cache: "no-store" });
+    if (!response.ok) throw new Error("Gagal memuat halaman");
+    const html = await response.text();
 
-      // Pakai <div>, bukan <html>
-      const temp = document.createElement("div");
-      temp.innerHTML = html;
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
 
-      // 1) inject CSS dari halaman target
-      const head = document.head;
-      const existingHrefs = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
-        .map(l => new URL(l.href, location.href).href);
+    // 1) inject CSS
+    const head = document.head;
+    const existingHrefs = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+      .map(l => new URL(l.href, location.href).href);
 
-      temp.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-        const href = link.getAttribute('href');
-        if (!href) return;
-        const abs = new URL(href, location.href).href;
-        if (!existingHrefs.includes(abs)) {
-          const el = document.createElement('link');
-          el.rel = 'stylesheet';
-          el.href = href;
-          head.appendChild(el);
-        }
-      });
-
-      // 2) script eksternal
-      const existingSrcs = Array.from(document.scripts)
-        .filter(s => s.src).map(s => new URL(s.src, location.href).href);
-
-      const scriptsToRun = [];
-      temp.querySelectorAll('script[src]').forEach(s => {
-        const src = s.getAttribute('src');
-        const abs = new URL(src, location.href).href;
-        if (!existingSrcs.includes(abs)) {
-          scriptsToRun.push({ src });
-        }
-      });
-
-      // 3) script inline dengan data-page-script="true"
-      const inlineScripts = temp.querySelectorAll('script[data-page-script="true"]');
-
-      // 4) masukkan konten ke #main-content
-      const fetchedMain = temp.querySelector("#main-content");
-      const inner = fetchedMain ? fetchedMain.innerHTML : temp.innerHTML; // ⬅️ ini yang penting
-      main.innerHTML = inner;
-
-      if (typeof window.initMobilForm === 'function') {
-        window.initMobilForm();
+    temp.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+      const abs = new URL(href, location.href).href;
+      if (!existingHrefs.includes(abs)) {
+        const el = document.createElement('link');
+        el.rel = 'stylesheet';
+        el.href = href;
+        head.appendChild(el);
       }
+    });
 
-      // 3a) Jalankan dulu semua script inline (data-page-script)
-      inlineScripts.forEach(old => {
+    // 2) Masukkan konten ke #main-content DULU
+    const fetchedMain = temp.querySelector("#main-content");
+    const inner = fetchedMain ? fetchedMain.innerHTML : temp.innerHTML;
+    main.innerHTML = inner;
+
+    // 3) Jalankan script inline PHP DULU (untuk set window.existingPhotos)
+    const phpScripts = temp.querySelectorAll('script:not([src]):not([data-page-script="true"])');
+    phpScripts.forEach(old => {
+         if (old.textContent.includes("BASE_API_URL")) return;
+      const el = document.createElement('script');
+      el.textContent = old.textContent;
+      document.body.appendChild(el);
+    });
+
+    // 4) Tunggu sebentar supaya data PHP ter-inject
+    await new Promise(resolve => setTimeout(resolve, 50));
+
+    // 5) Jalankan script page (data-page-script="true")
+    const pageScripts = temp.querySelectorAll('script[data-page-script="true"]');
+    pageScripts.forEach(old => {
+         if (old.textContent.includes("BASE_API_URL")) return;
+      const el = document.createElement('script');
+      el.textContent = old.textContent;
+      document.body.appendChild(el);
+    });
+
+    // 6) Load script eksternal
+    const existingSrcs = Array.from(document.scripts)
+      .filter(s => s.src).map(s => new URL(s.src, location.href).href);
+
+    const scriptsToRun = [];
+    temp.querySelectorAll('script[src]').forEach(s => {
+      const src = s.getAttribute('src');
+      const abs = new URL(src, location.href).href;
+      if (!existingSrcs.includes(abs)) {
+        scriptsToRun.push({ src });
+      }
+    });
+
+    for (const s of scriptsToRun) {
+      await new Promise((res, rej) => {
         const el = document.createElement('script');
-        el.textContent = old.textContent;
+        el.src = s.src;
+        el.onload = res;
+        el.onerror = rej;
         document.body.appendChild(el);
       });
-
-      // 3b) Baru load script eksternal (mobil.js, dll)
-      for (const s of scriptsToRun) {
-        await new Promise((res, rej) => {
-          const el = document.createElement('script');
-          el.src = s.src;
-          el.onload = res;
-          el.onerror = rej;
-          document.body.appendChild(el);
-        });
-      }
-
-      window.history.pushState({}, '', page);
-
-      if (typeof window.initBreadcrumbFromActiveLink === 'function') window.initBreadcrumbFromActiveLink(html);
-      if (typeof window.initTheme === 'function') window.initTheme();
-      if (typeof window.initSidebarState === 'function') window.initSidebarState();
-      if (typeof window.initSidebarDropdowns === 'function') window.initSidebarDropdowns();
-      if (typeof window.wireUI === 'function') window.wireUI();
-
-    } catch (err) {
-      console.error(err);
-      main.innerHTML = `<div class='alert alert-danger text-center mt-5'>${err.message}</div>`;
     }
+
+    // 7) Init functions
+    if (typeof window.initMobilForm === 'function') {
+      window.initMobilForm();
+    }
+
+    window.history.pushState({}, '', page);
+
+    if (typeof window.initBreadcrumbFromActiveLink === 'function') window.initBreadcrumbFromActiveLink(html);
+    if (typeof window.initTheme === 'function') window.initTheme();
+    if (typeof window.initSidebarState === 'function') window.initSidebarState();
+    if (typeof window.initSidebarDropdowns === 'function') window.initSidebarDropdowns();
+    if (typeof window.wireUI === 'function') window.wireUI();
+
+  } catch (err) {
+    console.error(err);
+    main.innerHTML = `<div class='alert alert-danger text-center mt-5'>${err.message}</div>`;
   }
+}
 
   // handle tombol Tambah Mobil (id: btn-tambah-mobil)
   document.addEventListener("DOMContentLoaded", function () {

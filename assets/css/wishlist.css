@@ -1,0 +1,66 @@
+/* ================================
+   FAVORITE CARD SIZING
+=================================== */
+
+/* 3 card per baris, tapi sedikit lebih kecil */
+.wishlist-card-wrapper {
+  flex: 0 0 31%;
+  max-width: 30%;
+  margin-left: 15px;
+}
+
+/* Tablet: 2 per baris */
+@media (max-width: 992px) {
+  .wishlist-card-wrapper {
+    flex: 0 0 47%;
+    max-width: 47%;
+  }
+}
+
+/* Mobile: 1 per baris */
+@media (max-width: 576px) {
+  .wishlist-card-wrapper {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+/* Card tetap rapi */
+.wishlist-card-wrapper .car-card {
+  width: 100%;
+  border-radius: 12px;
+}
+
+/* ================================
+   FOOTER KHUSUS HALAMAN WISHLIST
+=================================== */
+
+.page-wishlist footer.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: auto;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+/* Kolom-kolom (Shop, Sell, Finance, About) */
+.page-wishlist footer.footer .columns {
+  margin-bottom: 0.75rem;
+}
+
+/* Copyright (teks biru) */
+.page-wishlist footer.footer .content {
+  margin-top: 0.75rem;
+}
+
+/* Biar item di bawah judul footer lurus ke kiri dengan judulnya */
+.page-wishlist footer.footer ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.page-wishlist footer.footer ul li {
+  margin-bottom: 0.25rem;
+}

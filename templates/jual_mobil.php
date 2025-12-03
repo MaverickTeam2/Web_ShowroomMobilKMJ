@@ -55,12 +55,12 @@ $faqs = [
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-  <link rel="stylesheet" href="../assets/css/finance.css">
+  <link rel="stylesheet" href="../assets/css/finance.css?v=<?= time(); ?>">
   <!--Import Custom CSS-->
   <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
 
-<body>
+<body class="page-finance">
 
   <!-- navbar -->
   <?php include '../templates/navbar_footer/navbar.php'; ?>
@@ -92,7 +92,8 @@ $faqs = [
             <!-- Kolom gambar -->
             <div class="column is-half">
               <figure class="image is-4by2">
-                <img src="../assets/img/sport car.png" alt="Gambar Mobil" />
+                <img src="../assets/img/sport car.png" alt="Gambar Mobil" class="car-img" />
+
               </figure>
             </div>
           </div>
@@ -214,7 +215,9 @@ $faqs = [
             </p>
           </div>
           <div class="col-md-6 text-center">
-            <img src="../assets/img/sport car.png" alt="Jual Mobil Online" class="img-fluid rounded-4 shadow-sm">
+            <img src="../assets/img/sport car.png" alt="Jual Mobil Online"
+              class="img-fluid rounded-4 shadow-sm car-img">
+
           </div>
         </div>
       </div>
@@ -231,7 +234,7 @@ $faqs = [
             <div class="card border-0 shadow-lg rounded-4 overflow-hidden h-100">
               <div class="position-relative" style="background: linear-gradient(135deg,#0f172a,#1d4ed8);">
 
-                <img src="../assets/img/sport car.png" class="img-fluid w-100"
+                <img src="../assets/img/sport car.png" class="img-fluid w-100 car-img"
                   style="opacity:.9; mix-blend-mode:screen;" alt="Hubungi Kami">
 
                 <!-- Chat Bubble -->
@@ -286,10 +289,8 @@ $faqs = [
         </div>
       </div>
     </section>
-
-
     <!-- ================== LANGKAH 2 ================== -->
-    <section class="section py-5">
+    <section class="section py-5 step-block">
       <div class="container">
         <div class="row align-items-center g-4">
 
@@ -310,8 +311,9 @@ $faqs = [
           </div>
 
           <!-- Gambar kanan -->
-          <div class="col-lg-6 order-lg-2 order-1 text-center">
-            <img src="../assets/img/jual_mobil-1.avif" class="img-fluid rounded-4 shadow-sm w-100" alt="Chat & Konsultasi">
+          <div class="col-lg-6 order-lg-2 order-1 text-center text-lg-end step-illustration">
+            <img src="../assets/img/jual_mobil-1.avif" class="img-fluid rounded-4 shadow-sm step-img"
+              alt="Chat & Konsultasi">
           </div>
 
         </div>
@@ -320,13 +322,14 @@ $faqs = [
 
 
     <!-- ================== LANGKAH 3 ================== -->
-    <section class="section py-5">
+    <section class="section py-5 step-block">
       <div class="container">
         <div class="row align-items-center g-4">
 
           <!-- Gambar kiri -->
-          <div class="col-lg-6 order-lg-1 order-1 text-center">
-            <img src="../assets/img/jual_mobil-2.avif" class="img-fluid rounded-4 shadow-sm w-100" alt="Inspeksi & Deal">
+          <div class="col-lg-6 order-lg-1 order-1 text-center text-lg-start step-illustration">
+            <img src="../assets/img/jual_mobil-2.avif" class="img-fluid rounded-4 shadow-sm step-img"
+              alt="Inspeksi & Deal">
           </div>
 
           <!-- Teks kanan -->
@@ -347,6 +350,7 @@ $faqs = [
         </div>
       </div>
     </section>
+
 
 
   </div>

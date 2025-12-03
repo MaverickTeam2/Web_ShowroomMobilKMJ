@@ -66,11 +66,11 @@ if (isset($_SESSION['username'])) {
               <i class='bx bx-link'></i> Kontak & Sosial
             </a>
           </li>
-          <!-- <li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" id="tab-backup" data-bs-toggle="pill" href="#backup" role="tab">
               <i class='bx bx-hdd'></i> Backup & Restore
             </a>
-          </li> -->
+          </li>
         </ul>
       </div>
 

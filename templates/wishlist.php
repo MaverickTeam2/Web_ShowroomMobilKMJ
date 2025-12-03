@@ -28,7 +28,6 @@ if (!$api || !isset($api['success']) || !$api['success']) {
 
 $jumlahFavorit = count($favorites);
 
-
 $statusLabelMap = [
   'available' => 'Available',
   'reserved' => 'Reserved',
@@ -36,6 +35,8 @@ $statusLabelMap = [
   'shipping' => 'Shipping',
   'delivered' => 'Delivered',
 ];
+
+// ⬅️ ini penting buat nandain menu aktif di sidebar
 $activeMenu = 'favorite'; // halaman ini = Favorit
 ?>
 
@@ -50,10 +51,7 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css" />
   <link rel="stylesheet" href="../assets/css/katalog2.css?v=<?= time(); ?>">
-  <!-- ⬇⬇ TAMBAHKAN BARIS INI -->
-  <link rel="stylesheet" href="../assets/css/wishlist_sidebar.css?v=<?= time(); ?>">
-  <link rel="stylesheet" href="../assets/css/wishlist_sidebar.css?v=<?= time(); ?>">
-  <!-- ⬆⬆ -->
+  <link rel="stylesheet" href="../assets/css/account_sidebar.css?v=<?= time(); ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 
@@ -75,52 +73,11 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
     };
   </script>
 
-
   <div class="container-fluid mt-4 wishlist-layout">
     <div class="row">
       <!-- SIDEBAR KIRI -->
-      <aside class="col-12 col-md-3 col-lg-2 wishlist-sidebar">
-        <div class="wishlist-menu">
-
-          <div class="wishlist-section-title">Belanja</div>
-
-          <!-- Keranjang -->
-          <a href="keranjang.php"
-            class="wishlist-menu-item <?= ($activeMenu === 'cart') ? 'wishlist-menu-item--active' : '' ?>">
-            <span class="wishlist-menu-indicator"></span>
-            <i class="fa-solid fa-cart-shopping me-2"></i>
-            <span>Keranjang saya</span>
-          </a>
-
-          <!-- Favorit -->
-          <a href="wishlist.php"
-            class="wishlist-menu-item <?= ($activeMenu === 'favorite') ? 'wishlist-menu-item--active' : '' ?>">
-            <span class="wishlist-menu-indicator"></span>
-            <i class="fa-solid fa-heart me-2"></i>
-            <span>Favorit</span>
-          </a>
-
-          <hr class="wishlist-divider">
-
-          <div class="wishlist-section-title">Akun</div>
-
-          <a href="profil.php" class="wishlist-menu-item">
-            <span class="wishlist-menu-indicator"></span>
-            <i class="fa-solid fa-user me-2"></i>
-            <span>Pengaturan Profil</span>
-          </a>
-
-          <hr class="wishlist-divider">
-
-          <a href="../admin/auth/logout.php" class="wishlist-menu-item wishlist-menu-item--logout">
-            <span class="wishlist-menu-indicator"></span>
-            <i class="fa-solid fa-arrow-left me-2"></i>
-            <span>Keluar</span>
-          </a>
-
-        </div>
-      </aside>
-
+      <?php include __DIR__ . '/partials/account_sidebar.php'; ?>
+      <!-- ⬆⬆ cuma bagian ini yang diganti, yang lain sama -->
 
       <!-- KONTEN KANAN -->
       <section class="col-12 col-md-9 col-lg-10 wishlist-content">
@@ -154,7 +111,6 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
                       <img src="<?= htmlspecialchars($img) ?>"
                         alt="<?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil Tanpa Nama') ?>" class="img_main card-img-top">
 
-                      <!-- Di wishlist biasanya nggak ada badge status, jadi bisa dihapus / dibiarkan -->
                       <!-- Heart merah di pojok kanan atas -->
                       <span class="icon-favorite active" data-kode-mobil="<?= htmlspecialchars($m['kode_mobil']) ?>">
                         <i class="fa-solid fa-heart"></i>
@@ -229,7 +185,6 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
     </div>
   </div>
 
-
   <script>
     document.querySelectorAll('.icon-favorite').forEach(icon => {
       icon.addEventListener('click', async () => {
@@ -241,7 +196,6 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
           if (go) {
             const currentUrl = window.location.pathname + window.location.search;
 
-            // ==== PERBAIKAN DISINI ====
             window.location.href =
               '/web_showroommobilKMJ/templates/auth/auth.php?redirect=' +
               encodeURIComponent(currentUrl);
@@ -277,7 +231,6 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
       });
     });
   </script>
-
 
   <script src="../assets/js/footer.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
