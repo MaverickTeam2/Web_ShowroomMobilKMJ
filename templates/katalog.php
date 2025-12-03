@@ -17,6 +17,47 @@ if (!$api || !isset($api['success']) || !$api['success']) {
   $mobil = $api['data'] ?? [];
 }
 
+// SISTEM PENGGERAK - SESUAI DATA DATABASE
+$allDriveSystems = [
+  "FWD" => 0,
+  "RWD" => 0,
+  "AWD" => 0,
+  "4WD" => 0,
+];
+
+// Hitung dari data yang ada - LOGIKA SEDERHANA
+if (!empty($mobil)) {
+  foreach ($mobil as $car) {
+    $drive = trim($car['sistem_penggerak'] ?? '');
+
+    if (empty($drive)) {
+      continue;
+    }
+
+    // DEBUG: Tampilkan data untuk memastikan
+    // echo "DEBUG: {$car['nama_mobil']} -> '{$drive}'<br>";
+
+    // LOGIKA SEDERHANA: Cari kata kunci
+    $driveUpper = strtoupper($drive);
+
+    if (strpos($driveUpper, 'FWD') !== false) {
+      $allDriveSystems['FWD']++;
+    }
+
+    if (strpos($driveUpper, 'RWD') !== false) {
+      $allDriveSystems['RWD']++;
+    }
+
+    if (strpos($driveUpper, 'AWD') !== false) {
+      $allDriveSystems['AWD']++;
+    }
+
+    if (strpos($driveUpper, '4WD') !== false) {
+      $allDriveSystems['4WD']++;
+    }
+  }
+}
+
 // TOTAL MOBIL
 $jumlahMobil = count($mobil);
 
@@ -40,9 +81,9 @@ if (!empty($mobil)) {
 
 $statusLabelMap = [
   'available' => 'Available',
-  'reserved'  => 'Reserved',
-  'sold'      => 'Sold',
-  'shipping'  => 'Shipping',
+  'reserved' => 'Reserved',
+  'sold' => 'Sold',
+  'shipping' => 'Shipping',
   'delivered' => 'Delivered',
 ];
 ?>
@@ -71,9 +112,9 @@ $statusLabelMap = [
   <?php
   // Cek user login
   $isLoggedIn = isset($_SESSION['full_name']);
-  $kodeUser   = $_SESSION['user_id'] ?? ($_SESSION['kode_user'] ?? '');
-  $fullName   = $_SESSION['full_name'] ?? '';
-  $email      = $_SESSION['email'] ?? '';
+  $kodeUser = $_SESSION['user_id'] ?? ($_SESSION['kode_user'] ?? '');
+  $fullName = $_SESSION['full_name'] ?? '';
+  $email = $_SESSION['email'] ?? '';
 
   // Ambil data favorit
   $favoritMobil = [];
@@ -132,7 +173,8 @@ $statusLabelMap = [
                     <label class="form-check-label" for="lowestPrice">Harga Terendah</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sortOption" id="highestPrice" value="highestPrice">
+                    <input class="form-check-input" type="radio" name="sortOption" id="highestPrice"
+                      value="highestPrice">
                     <label class="form-check-label" for="highestPrice">Harga Tertinggi</label>
                   </div>
                   <div class="form-check">
@@ -146,7 +188,8 @@ $statusLabelMap = [
             <!-- Item 2 - Harga -->
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo">
                   Harga
                 </button>
               </h2>
@@ -181,7 +224,8 @@ $statusLabelMap = [
             <!-- Item 3 - Tahun -->
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseThree">
                   Tahun
                 </button>
               </h2>
@@ -191,14 +235,16 @@ $statusLabelMap = [
                     <label for="fromYear" class="form-label">Dari Tahun</label>
                     <input class="form-control" list="fromYearOptions" id="fromYear" placeholder="Pilih tahun...">
                     <datalist id="fromYearOptions">
-                      <?php for ($year = 2000; $year <= date("Y"); $year++) echo "<option value='$year'>"; ?>
+                      <?php for ($year = 2000; $year <= date("Y"); $year++)
+                        echo "<option value='$year'>"; ?>
                     </datalist>
                   </div>
                   <div class="mb-3">
                     <label for="toYear" class="form-label">Sampai Tahun</label>
                     <input class="form-control" list="toYearOptions" id="toYear" placeholder="Pilih tahun...">
                     <datalist id="toYearOptions">
-                      <?php for ($year = 2000; $year <= date("Y"); $year++) echo "<option value='$year'>"; ?>
+                      <?php for ($year = 2000; $year <= date("Y"); $year++)
+                        echo "<option value='$year'>"; ?>
                     </datalist>
                   </div>
                 </div>
@@ -208,7 +254,8 @@ $statusLabelMap = [
             <!-- Item 4 - Jarak Tempuh -->
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseFour">
                   Jarak Tempuh
                 </button>
               </h2>
@@ -233,7 +280,8 @@ $statusLabelMap = [
             <!-- Item 5 - Bahan Bakar -->
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseFive">
                   Jenis Bahan Bakar
                 </button>
               </h2>
@@ -243,9 +291,9 @@ $statusLabelMap = [
                     <?php foreach ($allFuelTypes as $jenis => $jumlah): ?>
                       <div class="form-check mb-2">
                         <input class="form-check-input" type="checkbox" value="<?= $jenis ?>"
-                               id="fuel_<?= strtolower(str_replace([' ', '-'], '_', $jenis)) ?>" <?= $jumlah == 0 ? 'disabled' : '' ?>>
+                          id="fuel_<?= strtolower(str_replace([' ', '-'], '_', $jenis)) ?>" <?= $jumlah == 0 ? 'disabled' : '' ?>>
                         <label class="form-check-label <?= $jumlah == 0 ? 'text-muted' : '' ?>"
-                               for="fuel_<?= strtolower(str_replace([' ', '-'], '_', $jenis)) ?>">
+                          for="fuel_<?= strtolower(str_replace([' ', '-'], '_', $jenis)) ?>">
                           <?= $jenis ?>
                           <span class="filter-count <?= $jumlah == 0 ? 'text-danger' : 'text-muted' ?>">
                             (<?= number_format($jumlah, 0, ',', '.') ?>)
@@ -261,7 +309,8 @@ $statusLabelMap = [
             <!-- Item 6 Body Tipe -->
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseSix">
                   Tipe Body
                 </button>
               </h2>
@@ -290,32 +339,49 @@ $statusLabelMap = [
             </div>
 
             <!-- Item 7 Sistem Penggerak -->
+            <!-- Item 7 Sistem Penggerak -->
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseSeven">
                   Sistem Penggerak
+                  <span class="badge bg-primary ms-2" id="driveSystemBadge">
+                    <?= array_sum($allDriveSystems) ?> mobil
+                  </span>
                 </button>
               </h2>
               <div id="collapseSeven" class="accordion-collapse collapse">
                 <div class="accordion-body">
                   <div class="drive-system-filter">
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" value="FWD (Front Wheel Drive)" id="drive_fwd">
-                      <label class="form-check-label" for="drive_fwd">FWD (Front-Wheel Drive)</label>
-                    </div>
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" value="RWD (Rear Wheel Drive)" id="drive_rwd">
-                      <label class="form-check-label" for="drive_rwd">RWD (Rear-Wheel Drive)</label>
-                    </div>
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" value="AWD (All Wheel Drive)" id="drive_awd">
-                      <label class="form-check-label" for="drive_awd">AWD (All-Wheel Drive)</label>
-                    </div>
+                    <?php
+                    // Urutkan berdasarkan yang terbanyak
+                    arsort($allDriveSystems);
+                    foreach ($allDriveSystems as $driveType => $count):
+                      ?>
+                      <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" value="<?= $driveType ?>"
+                          id="drive_<?= strtolower($driveType) ?>" <?= $count == 0 ? 'disabled' : '' ?>>
+                        <label class="form-check-label <?= $count == 0 ? 'text-muted' : '' ?>"
+                          for="drive_<?= strtolower($driveType) ?>">
+                          <?= $driveType ?>
+                          <span class="filter-count <?= $count == 0 ? 'text-danger' : 'text-muted' ?>">
+                            (<?= number_format($count, 0, ',', '.') ?>)
+                          </span>
+                        </label>
+                      </div>
+                    <?php endforeach; ?>
                   </div>
+
+                  <!-- Debug info -->
+                  <!-- <div class="mt-3 small text-muted">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Data dari database: FWD(1), RWD(1), AWD(2), 4WD(1)
+                  </div> -->
                 </div>
               </div>
             </div>
           </div>
+        </div>
       </aside>
 
       <!-- Konten Daftar Mobil -->
@@ -552,28 +618,32 @@ $statusLabelMap = [
       }
 
       // 6. FILTER SISTEM PENGGERAK
-      const selectedDriveSystems = Array.from(document.querySelectorAll('.drive-system-filter input[type="checkbox"]:checked'))
-        .map(cb => cb.value);
+      // 6. FILTER SISTEM PENGGERAK - VERSI SEDERHANA
+      const selectedDriveSystems = Array.from(
+        document.querySelectorAll('.drive-system-filter input[type="checkbox"]:checked')
+      ).map(cb => cb.value);
 
       if (selectedDriveSystems.length > 0) {
         result = result.filter(m => {
-          if (m.sistem_penggerak) {
-            return selectedDriveSystems.includes(m.sistem_penggerak);
-          }
-          const driveMap = {
-            'FWD': ['FWD', 'Front Wheel Drive', 'Penggerak Depan'],
-            'RWD': ['RWD', 'Rear Wheel Drive', 'Penggerak Belakang'],
-            'AWD': ['AWD', 'All Wheel Drive', '4WD', 'Four Wheel Drive', '4x4'],
-          };
+          const driveValue = (m.sistem_penggerak || '').toString().toUpperCase().trim();
 
-          const allText = JSON.stringify(m).toLowerCase();
-          return selectedDriveSystems.some(drive => {
-            const keywords = driveMap[drive] || [drive];
-            return keywords.some(keyword =>
-              allText.includes(keyword.toLowerCase())
-            );
+          // DEBUG
+          console.log(`Checking ${m.nama_mobil}: "${driveValue}"`);
+
+          if (!driveValue) {
+            return false; // Skip jika kosong
+          }
+
+          // Cek apakah driveValue mengandung salah satu sistem yang dipilih
+          return selectedDriveSystems.some(selectedDrive => {
+            const selectedUpper = selectedDrive.toUpperCase();
+
+            // Pencarian sederhana: apakah mengandung kata kunci?
+            return driveValue.includes(selectedUpper);
           });
         });
+
+        console.log(`Filtered by ${selectedDriveSystems.join(', ')}: ${result.length} results`);
       }
 
       // SORTING
