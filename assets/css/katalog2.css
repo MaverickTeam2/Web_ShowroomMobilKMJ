@@ -42,9 +42,9 @@
 /* ===== bar perbandingan di katalog ===== */
 .compare-toolbar {
   display: none;
-  max-width: 920px;
+  max-width: 905px;
   padding: 1rem 1rem;
-  background: #e4ebff;
+  background: #dfe1e6;
   border-radius: 12px;
   margin: 0.5rem 0 0.5rem 0; /* kiri 0 supaya nempel kiri */
   box-shadow: 0 3px 14px rgba(0,0,0,0.04);
@@ -63,7 +63,7 @@
 
 /* slot gambar mobil */
 .compare-slot {
-  width: 110px;
+  width: 100px;
   height: 70px;
   border-radius: 14px;
   border: 2px dashed #b6b6b6;
@@ -107,14 +107,9 @@
   border-radius: 999px;
   padding: 0.55rem 1.8rem;
   font-weight: 600;
-  background: #ffea00;
+  background: #ffcc00;
   box-shadow: 0 4px 10px rgba(0,0,0,0.18);
   cursor: pointer;
-}
-
-.btn-compare-go:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 /* tombol titik 3 saat mode perbandingan */
