@@ -185,53 +185,7 @@ $activeMenu = 'favorite'; // halaman ini = Favorit
     </div>
   </div>
 
-  <script>
-    document.querySelectorAll('.icon-favorite').forEach(icon => {
-      icon.addEventListener('click', async () => {
-        const kodeMobil = icon.dataset.kodeMobil;
-
-        // 1. CEK LOGIN
-        if (!IS_LOGGED_IN) {
-          const go = confirm('Kamu harus login untuk menambahkan ke favorit. Pergi ke halaman login?');
-          if (go) {
-            const currentUrl = window.location.pathname + window.location.search;
-
-            window.location.href =
-              '/web_showroommobilKMJ/templates/auth/auth.php?redirect=' +
-              encodeURIComponent(currentUrl);
-          }
-          return;
-        }
-
-        // 2. ADD / REMOVE FAVORITE
-        const isActive = icon.classList.contains('active');
-        const action = isActive ? 'remove' : 'add';
-
-        try {
-          const res = await fetch(BASE_API_URL + '/user/routes/favorites.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              kode_user: CURRENT_USER.kode_user,
-              kode_mobil: kodeMobil,
-              action: action
-            })
-          });
-
-          const data = await res.json();
-          if (data.success) {
-            icon.classList.toggle('active');
-          } else {
-            alert(data.message || 'Gagal mengubah data favorit');
-          }
-        } catch (err) {
-          console.error(err);
-          alert('Terjadi kesalahan server.');
-        }
-      });
-    });
-  </script>
-
+  <script src="../assets/js/favorite_toggle.js?v=<?= time(); ?>"></script>
   <script src="../assets/js/footer.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

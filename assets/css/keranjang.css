@@ -109,8 +109,12 @@
 }
 
 .section-header {
-  margin-top: 4px;
+  padding-right: 0;
 }
+.section-header a.section-link {
+  margin-left: auto; /* tetap kanan */
+}
+
 
 .section-title {
   font-size: 18px;
@@ -360,6 +364,39 @@
 .appointment-detail-modal .badge {
   font-size: 0.75rem;
   padding: 0.4rem 0.8rem;
+}
+
+/* ====== FAVORITE ICON (HEART) DI KERANJANG ====== */
+.car-card-image-wrapper {
+  position: relative;
+}
+
+.car-card-fav-btn.icon-favorite {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.12);
+  padding: 0;
+}
+
+/* warna default (belum difavoritkan) */
+.car-card-fav-btn.icon-favorite i {
+  font-size: 16px;
+  color: #9ca3af; /* abu-abu */
+}
+
+/* kalau sudah favorit (class .active) → jadi merah */
+.car-card-fav-btn.icon-favorite.active i {
+  color: #e11d48; /* merah pink-ish */
 }
 
 

@@ -97,8 +97,8 @@ if (!empty($kodeUser)) {
         <div class="row g-4 align-items-stretch">
 
           <!-- KIRI: Mobil yang baru saja dilihat -->
-          <div class="col-12 col-lg-8">
-            <div class="section-header d-flex justify-content-between align-items-center mb-3">
+          <div class="col-12">
+            <div class="section-header d-flex align-items-center mb-3">
               <h4 class="section-title mb-0">Mobil yang baru saja kamu lihat</h4>
               <a href="../templates/katalog.php" class="section-link">Lihat semua mobil</a>
             </div>
@@ -115,7 +115,7 @@ if (!empty($kodeUser)) {
                   $isFavorit = in_array($kodeMobil, $favoritMobil);
 
                   // === PERBAIKAN URL FOTO ===
-                  $img = '../assets/img/no-image.jpg'; // default
+                  $img = '../assets/img/no-image.jpg'; 
               
                   if (!empty($m['foto'])) {
                     $fileName = basename($m['foto']);
@@ -125,86 +125,54 @@ if (!empty($kodeUser)) {
                   }
                   ?>
                   <div class="col-10 col-sm-6 col-md-4 flex-shrink-0">
-                    <a href="../templates/detail_mobil.php?kode=<?= urlencode($kodeMobil); ?>"
-                      class="car-card-link text-decoration-none text-reset">
-                      <div class="car-card card border-0 shadow-sm h-100">
-                        <div class="car-card-image-wrapper">
+                    <div class="car-card card border-0 shadow-sm h-100">
+                      <div class="car-card-image-wrapper">
+                        <button type="button" class="car-card-fav-btn icon-favorite <?= $isFavorit ? 'active' : '' ?>"
+                          data-kode-mobil="<?= htmlspecialchars($kodeMobil); ?>">
+                          <i class="fa-solid fa-heart"></i>
+                        </button>
+                        <a href="../templates/detail_mobil.php?kode=<?= urlencode($kodeMobil); ?>"
+                          class="car-card-link text-decoration-none text-reset d-block">
                           <img src="<?= htmlspecialchars($img); ?>" class="card-img-top"
                             alt="<?= htmlspecialchars($m['nama_mobil'] ?? 'Mobil'); ?>">
-                          <button type="button" class="car-card-fav-btn icon-favorite <?= $isFavorit ? 'active' : '' ?>"
-                            data-kode-mobil="<?= htmlspecialchars($kodeMobil); ?>">
-                            <i class="fa-solid fa-heart"></i>
-                          </button>
-                        </div>
+                        </a>
+                      </div>
 
-                        <div class="card-body">
-                          <h6 class="car-card-title mb-1">
-                            <?= htmlspecialchars($m['nama_mobil'] ?? 'Tanpa nama'); ?>
-                          </h6>
+                      <div class="card-body">
+                        <h6 class="car-card-title mb-1">
+                          <?= htmlspecialchars($m['nama_mobil'] ?? 'Tanpa nama'); ?>
+                        </h6>
 
-                          <p class="car-card-price mb-1">
-                            Rp <?= number_format($m['angsuran'] ?? 0, 0, ',', '.'); ?>
-                            <span class="text-muted">
-                              x <?= htmlspecialchars($m['tenor'] ?? '-'); ?>
-                            </span>
-                          </p>
+                        <p class="car-card-price mb-1">
+                          Rp <?= number_format($m['angsuran'] ?? 0, 0, ',', '.'); ?>
+                          <span class="text-muted">
+                            x <?= htmlspecialchars($m['tenor'] ?? '-'); ?>
+                          </span>
+                        </p>
 
-                          <p class="car-card-subtext mb-2">
-                            DP Rp <?= number_format($m['dp'] ?? 0, 0, ',', '.'); ?>
-                          </p>
+                        <p class="car-card-subtext mb-2">
+                          DP Rp <?= number_format($m['dp'] ?? 0, 0, ',', '.'); ?>
+                        </p>
 
-                          <div class="d-flex justify-content-between car-card-meta">
-                            <span>
-                              <i class="fa-regular fa-clock me-1"></i>
-                              <?= number_format($m['jarak_tempuh'] ?? 0, 0, ',', '.'); ?> km
-                            </span>
-                            <span>
-                              <i class="fa-regular fa-calendar me-1"></i>
-                              <?= htmlspecialchars($m['tahun_mobil'] ?? '-'); ?>
-                            </span>
-                          </div>
+                        <div class="d-flex justify-content-between car-card-meta">
+                          <span>
+                            <i class="fa-regular fa-clock me-1"></i>
+                            <?= number_format($m['jarak_tempuh'] ?? 0, 0, ',', '.'); ?> km
+                          </span>
+                          <span>
+                            <i class="fa-regular fa-calendar me-1"></i>
+                            <?= htmlspecialchars($m['tahun_mobil'] ?? '-'); ?>
+                          </span>
                         </div>
                       </div>
-                    </a>
+                    </div>
                   </div>
                 <?php endforeach; ?>
               </div>
             <?php endif; ?>
           </div>
-
-          <!-- KANAN: panel mulai belanja -->
-          <div class="col-12 col-lg-4">
-            <div class="card border-0 shadow-sm h-100 start-panel">
-              <div class="card-body d-flex flex-column">
-                <h5 class="start-panel-title mb-2">Mulai belanja mobil online</h5>
-                <p class="start-panel-text mb-3">
-                  Cari mobil yang kamu suka dan atur anggaran untuk menemukan cicilan yang pas buat kamu.
-                </p>
-
-                <div class="d-flex flex-column gap-2 mb-3">
-                  <a href="#" class="start-panel-link">
-                    <i class="fa-solid fa-car-on me-2"></i>
-                    Dapatkan penawaran tukar tambah
-                  </a>
-                  <a href="#" class="start-panel-link">
-                    <i class="fa-solid fa-file-invoice-dollar me-2"></i>
-                    Ajukan pre-approval kredit
-                  </a>
-                  <a href="../templates/katalog.php" class="start-panel-link">
-                    <i class="fa-solid fa-magnifying-glass me-2"></i>
-                    Lihat semua mobil
-                  </a>
-                </div>
-
-                <button class="btn btn-warning mt-auto fw-semibold start-panel-cta">
-                  Mulai mencari mobil
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <!-- SECTION JANJI TEMU -->
         <!-- SECTION JANJI TEMU -->
         <div class="mt-5">
           <div class="section-header mb-3 d-flex justify-content-between align-items-center">
@@ -415,61 +383,10 @@ if (!empty($kodeUser)) {
     });
   </script>
 
-
-  <!-- SCRIPT FAVORITE UNTUK HALAMAN KERANJANG -->
-  <script>
-    document.querySelectorAll('.icon-favorite').forEach(icon => {
-      icon.addEventListener('click', async (event) => {
-        // jangan buka link detail saat klik heart
-        event.stopPropagation();
-        event.preventDefault();
-
-        const kodeMobil = icon.dataset.kodeMobil;
-
-        // cek login (harusnya selalu true, tapi jaga-jaga)
-        if (!IS_LOGGED_IN) {
-          const go = confirm('Kamu harus login untuk menambahkan ke favorit. Pergi ke halaman login?');
-          if (go) {
-            const currentUrl = window.location.pathname + window.location.search;
-            window.location.href =
-              '/web_showroommobilKMJ/templates/auth/auth.php?redirect=' +
-              encodeURIComponent(currentUrl);
-          }
-          return;
-        }
-
-        const isActive = icon.classList.contains('active');
-        const action = isActive ? 'remove' : 'add';
-
-        try {
-          const res = await fetch(BASE_API_URL + '/user/routes/favorites.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              kode_user: CURRENT_USER.kode_user,
-              kode_mobil: kodeMobil,
-              action: action
-            })
-          });
-
-          const data = await res.json();
-          if (data.success) {
-            icon.classList.toggle('active');
-          } else {
-            alert(data.message || 'Gagal mengubah data favorit');
-          }
-        } catch (err) {
-          console.error(err);
-          alert('Terjadi kesalahan server.');
-        }
-      });
-    });
-  </script>
-
-
-
+  <script src="../assets/js/favorite_toggle.js?v=<?= time(); ?>"></script>
   <script src="../assets/js/footer.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>
