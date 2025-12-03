@@ -34,6 +34,7 @@ require_once '../../db/config_api.php'; // kalau belum dipakai, tetap boleh
       <button class="inquire-tab" data-filter="pending">Pending (0)</button>
       <button class="inquire-tab" data-filter="responded">Responded (1)</button>
       <button class="inquire-tab" data-filter="closed">Closed (3)</button>
+      <button class="inquire-tab" data-filter="canceled">Canceled (0)</button>
     </div>
 
     <!-- LIST CARD INQUIRE (DIISI VIA JS) -->

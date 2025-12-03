@@ -98,6 +98,12 @@
   color: #4b5563;
 }
 
+.badge-canceled {
+  background: #fee2e2; /* merah muda */
+  color: #b91c1c;      /* merah tua */
+}
+
+
 /* Body card */
 .inquire-card-body p {
   font-size: 13px;

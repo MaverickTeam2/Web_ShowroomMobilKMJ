@@ -223,17 +223,23 @@ if (!empty($kodeUser)) {
                 $status = $j['status'] ?? 'pending';
 
                 $statusLabel = 'Menunggu';
-                $statusClass = 'appointment-status-active'; 
-            
+                $statusClass = 'appointment-status-active';
+
                 if ($status === 'pending') {
                   $statusLabel = 'Menunggu';
                   $statusClass = 'appointment-status-active';
+
                 } elseif ($status === 'responded') {
-                  $statusLabel = 'Selesai';            
+                  $statusLabel = 'Selesai'; // misal: admin sudah kontak
                   $statusClass = 'appointment-status-done';
+
+                } elseif ($status === 'closed') {
+                  $statusLabel = 'Selesai';  // <-- hasil dari "Mark as Closed"
+                  $statusClass = 'appointment-status-done';
+
                 } elseif ($status === 'canceled') {
-                  $statusLabel = 'Selesai';
-                  $statusClass = 'appointment-status-done';
+                  $statusLabel = 'Dibatalkan';  // hasil dari tombol X
+                  $statusClass = 'appointment-status-cancelled';
                 }
 
                 $tanggal = $j['tanggal'] ?? '';
@@ -262,13 +268,22 @@ if (!empty($kodeUser)) {
                         <?= htmlspecialchars($tanggal); ?> pukul <?= htmlspecialchars($waktu); ?>
                       </p>
                       <div class="d-flex flex-wrap gap-3">
-                        <a href="#" class="appointment-link">
+                        <a href="#" class="appointment-link appointment-detail-btn"
+                          data-mobil="<?= htmlspecialchars($j['nama_mobil'] ?? ('Mobil ' . ($j['kode_mobil'] ?? ''))) ?>"
+                          data-tanggal="<?= htmlspecialchars($tanggal); ?>" data-waktu="<?= htmlspecialchars($waktu); ?>"
+                          data-status="<?= htmlspecialchars($statusLabel); ?>"
+                          data-status-class="<?= htmlspecialchars($statusClass); ?>"
+                          data-showroom="<?= htmlspecialchars($j['lokasi_showroom'] ?? 'Showroom KMJ'); ?>"
+                          data-telp="<?= htmlspecialchars($j['no_telp'] ?? '-'); ?>"
+                          data-note="<?= htmlspecialchars($j['note'] ?? '-'); ?>">
                           <i class="fa-regular fa-file-lines me-1"></i> Lihat detail
                         </a>
-                        <a href="#" class="appointment-link">
+
+                        <a href="https://maps.app.goo.gl/qGcSdiQD9ELbNJwv7" class="appointment-link">
                           <i class="fa-solid fa-location-dot me-1"></i> Petunjuk arah
                         </a>
                       </div>
+
                     </div>
                   </div>
                 </div>
@@ -279,6 +294,126 @@ if (!empty($kodeUser)) {
       </section>
     </div>
   </div>
+
+  <!-- Modal detail janji temu -->
+  <div class="modal fade" id="appointmentDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content appointment-detail-modal">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title">Kamu sudah siap, <?= htmlspecialchars($_SESSION['full_name'] ?? 'Customer'); ?> 🎉
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="d-flex flex-column flex-md-row gap-3 align-items-start">
+            <div class="flex-grow-1">
+              <p class="mb-1 text-muted small">Mobil</p>
+              <h5 class="mb-2" id="detailModalCar"></h5>
+              <p class="mb-0 fw-semibold" id="detailModalDatetime"></p>
+              <p class="mb-0 text-muted small" id="detailModalShowroom"></p>
+            </div>
+
+            <div class="text-md-end mt-3 mt-md-0">
+              <span class="badge rounded-pill" id="detailModalStatusBadge"></span>
+              <p class="mb-0 mt-2 small text-muted">
+                No. telepon: <span id="detailModalTelp"></span>
+              </p>
+            </div>
+          </div>
+
+          <hr>
+
+          <p class="mb-1 fw-semibold">Catatan kamu</p>
+          <p class="mb-0" id="detailModalNote"></p>
+        </div>
+
+        <div class="modal-footer border-0 pt-0">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+            Oke, mengerti
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Khusus modal detail janji temu */
+    #appointmentDetailModal .modal-dialog {
+      max-width: 520px !important;
+      /* Biar nggak melebar */
+      width: 100%;
+      margin: 2.5rem auto;
+      /* Tengah secara horizontal */
+    }
+
+    #appointmentDetailModal .modal-content {
+      border-radius: 24px;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #appointmentDetailModal .modal-body {
+      padding: 24px 28px 20px;
+    }
+
+    #appointmentDetailModal .modal-footer {
+      padding: 16px 24px 22px;
+      border-top: 0;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* Biar headernya nggak terlalu tinggi */
+    #appointmentDetailModal .modal-header {
+      border-bottom: 0;
+      padding: 20px 24px 8px;
+    }
+  </style>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const modalEl = document.getElementById('appointmentDetailModal');
+      if (!modalEl || typeof bootstrap === 'undefined') return;
+
+      const modal = new bootstrap.Modal(modalEl);
+
+      document.querySelectorAll('.appointment-detail-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          const d = this.dataset;
+
+          // Isi konten modal
+          document.getElementById('detailModalCar').textContent = d.mobil || '-';
+
+          const dtText =
+            (d.tanggal && d.waktu)
+              ? `${d.tanggal} pukul ${d.waktu}`
+              : (d.tanggal || '');
+          document.getElementById('detailModalDatetime').textContent = dtText;
+
+          document.getElementById('detailModalShowroom').textContent =
+            d.showroom || '';
+
+          document.getElementById('detailModalTelp').textContent =
+            d.telp || '-';
+
+          document.getElementById('detailModalNote').textContent =
+            (d.note && d.note.trim() !== '')
+              ? d.note
+              : 'Tidak ada catatan tambahan.';
+
+          const badge = document.getElementById('detailModalStatusBadge');
+          badge.textContent = d.status || '';
+          badge.className = 'badge rounded-pill ' + (d.statusClass || '');
+
+          modal.show();
+        });
+      });
+    });
+  </script>
 
 
   <!-- SCRIPT FAVORITE UNTUK HALAMAN KERANJANG -->
@@ -330,6 +465,8 @@ if (!empty($kodeUser)) {
       });
     });
   </script>
+
+
 
   <script src="../assets/js/footer.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

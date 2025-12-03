@@ -296,9 +296,70 @@
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* supaya button love tetap jadi cursor pointer, bukan ikut "tangan" link */
+/* buat favorite */
 .car-card-fav-btn {
   cursor: pointer;
+}
+
+/* ini buat modal detail janji temu */
+.appointment-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none; /* nanti ditoggle JS */
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.appointment-modal-backdrop.is-open {
+  display: flex;
+}
+
+.appointment-modal {
+  background: #fff;
+  width: 100%;
+  max-width: 480px;       /* <<< modal KECIL */
+  padding: 24px;
+  border-radius: 18px;    /* bentuk card */
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  position: relative;
+  animation: fadeUp .25s ease-out;
+}
+
+/* Animasi CarMax feel */
+@keyframes fadeUp {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.appointment-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #666;
+}
+
+.appointment-detail-modal {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.appointment-detail-modal .modal-body {
+  padding-top: 0.75rem;
+}
+
+.appointment-detail-modal .modal-title {
+  font-weight: 600;
+}
+
+.appointment-detail-modal .badge {
+  font-size: 0.75rem;
+  padding: 0.4rem 0.8rem;
 }
 
 

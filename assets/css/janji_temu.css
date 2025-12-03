@@ -153,11 +153,6 @@
   color: #6b7280;
 }
 
-/* panel tiap step */
-.appointment-step-panel {
-  /* di-hide pakai .d-none dari bootstrap lewat JS */
-}
-
 /* ============================
    CHOICE CARD (opsi radio)
 ============================ */
