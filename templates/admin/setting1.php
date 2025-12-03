@@ -7,11 +7,6 @@ include 'partials/sidebar.php';
 // Placeholder data - akan di-load via JavaScript dari API
 $fotoProfil = "https://via.placeholder.com/150/007bff/ffffff?text=U";
 
-// Jika ada session username, buat placeholder dengan initial
-if (isset($_SESSION['username'])) {
-    $initial = strtoupper(substr($_SESSION['username'], 0, 1));
-    $fotoProfil = "https://via.placeholder.com/150/007bff/ffffff?text={$initial}";
-}
 ?>
 
 <!-- CSS khusus halaman ini -->
