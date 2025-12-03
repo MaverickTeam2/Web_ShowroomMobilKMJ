@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const car1PhotoEl = document.getElementById('car1-photo');
   const car2PhotoEl = document.getElementById('car2-photo');
 
+  // tombol aksi di header (pakai data-car dari HTML)
+  const btnReservasi1 = document.querySelector('.compare-info-col[data-car="1"] .btn-compare-primary');
+  const btnReservasi2 = document.querySelector('.compare-info-col[data-car="2"] .btn-compare-primary');
+  const btnDetail1    = document.querySelector('.compare-info-col[data-car="1"] .btn-compare-outline');
+  const btnDetail2    = document.querySelector('.compare-info-col[data-car="2"] .btn-compare-outline');
+
   const tabsContainer = document.getElementById('comparisonTabs');
   const tabItems = tabsContainer ? tabsContainer.querySelectorAll('li[data-tab]') : [];
   const sections = Array.from(document.querySelectorAll('.comparison-section'));
@@ -129,6 +135,31 @@ document.addEventListener('DOMContentLoaded', () => {
       const similarities = features.similarities || [];
       const differences = features.differences || [];
 
+            // kode mobil dari API
+      const kode1 = car1.kode_mobil || '';
+      const kode2 = car2.kode_mobil || '';
+
+      // >>> SESUAIKAN nama file tujuan di sini kalau beda <<<
+      const goToReservasi = (kode) => {
+        if (!kode) return;
+        // janji_temu.php baca $_GET['kode']
+        window.location.href = `janji_temu.php?kode=${encodeURIComponent(kode)}`;
+      };
+
+      const goToDetail = (kode) => {
+        if (!kode) return;
+        // detail_mobil.php baca $_GET['kode']
+        window.location.href = `detail_mobil.php?kode=${encodeURIComponent(kode)}`;
+      };
+
+
+      // pasang event click ke 4 tombol
+      if (btnReservasi1) btnReservasi1.onclick = () => goToReservasi(kode1);
+      if (btnReservasi2) btnReservasi2.onclick = () => goToReservasi(kode2);
+      if (btnDetail1)    btnDetail1.onclick    = () => goToDetail(kode1);
+      if (btnDetail2)    btnDetail2.onclick    = () => goToDetail(kode2);
+
+
       // ----- header + foto -----
       if (car1TitleEl) car1TitleEl.textContent = safeValue(car1.nama_mobil || 'Mobil 1');
       if (car2TitleEl) car2TitleEl.textContent = safeValue(car2.nama_mobil || 'Mobil 2');
@@ -144,11 +175,17 @@ document.addEventListener('DOMContentLoaded', () => {
         car2SubtitleEl.textContent = `${tipe2} • ${tahun2}`;
       }
 
-      if (car1PhotoEl && car1.foto_depan) {
-        car1PhotoEl.src = car1.foto_depan;
+      // Placeholder default (bikin 1 file di folder assets/img)
+      const PLACEHOLDER_IMG = '../assets/img/car-placeholder.jpeg';
+
+      if (car1PhotoEl) {
+        car1PhotoEl.src = car1.foto_depan || PLACEHOLDER_IMG;
+        car1PhotoEl.alt = car1.nama_mobil || 'Foto mobil 1';
       }
-      if (car2PhotoEl && car2.foto_depan) {
-        car2PhotoEl.src = car2.foto_depan;
+
+      if (car2PhotoEl) {
+        car2PhotoEl.src = car2.foto_depan || PLACEHOLDER_IMG;
+        car2PhotoEl.alt = car2.nama_mobil || 'Foto mobil 2';
       }
 
       // ----- HIGHLIGHT (row fixed) -----

@@ -9,8 +9,8 @@ if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
 
-// cek login
 if (!isset($_SESSION['user_id'])) {
+  // redirect ke halaman login kalau belum login
   header('Location: ../admin/auth/auth.php?redirect=' . urlencode($_SERVER['REQUEST_URI']));
   exit;
 }
@@ -30,19 +30,19 @@ if (!$api || !isset($api['success']) || !$api['success']) {
 }
 
 $mobil = $api['mobil'] ?? null;
-$foto  = $api['foto'] ?? [];
+$foto = $api['foto'] ?? [];
 
 if (!$mobil) {
   die("Data mobil tidak ditemukan.");
 }
 
 // olah data
-$namaMobil   = $mobil['nama_mobil'] ?? 'Mobil Tanpa Nama';
-$tahunMobil  = $mobil['tahun_mobil'] ?? '';
+$namaMobil = $mobil['nama_mobil'] ?? 'Mobil Tanpa Nama';
+$tahunMobil = $mobil['tahun_mobil'] ?? '';
 $jarakTempuh = $mobil['jarak_tempuh'] ?? 0;
-$angsuran    = $mobil['angsuran'] ?? 0;
-$tenor       = $mobil['tenor'] ?? 0;
-$dp          = $mobil['uang_muka'] ?? 0;
+$angsuran = $mobil['angsuran'] ?? 0;
+$tenor = $mobil['tenor'] ?? 0;
+$dp = $mobil['uang_muka'] ?? 0;
 $lokasiShowroom = $mobil['lokasi_showroom'] ?? 'Showroom utama KMJ';
 
 // foto utama
@@ -141,7 +141,8 @@ $fotoUtama = $images[0];
                     Pilihan yang bagus! Begini cara membuatnya menjadi milik Anda
                   </h2>
                   <p class="appointment-subheading mb-4">
-                    Pilih cara yang paling cocok untuk kamu. Kamu bisa uji coba dulu atau langsung mulai proses beli online.
+                    Pilih cara yang paling cocok untuk kamu. Kamu bisa uji coba dulu atau langsung mulai proses beli
+                    online.
                   </p>
 
                   <label class="choice-card">
@@ -175,8 +176,8 @@ $fotoUtama = $images[0];
                   </label>
 
                   <div class="appointment-footer d-flex justify-content-between align-items-center mt-4">
-                    <a href="detail_mobil.php?kode=<?= urlencode($kode) ?>"
-                       class="appointment-link-back">&larr; Kembali ke detail mobil</a>
+                    <a href="detail_mobil.php?kode=<?= urlencode($kode) ?>" class="appointment-link-back">&larr; Kembali
+                      ke detail mobil</a>
                     <button type="button" class="btn btn-primary appointment-btn-next" data-target-step="2">
                       Lanjutkan
                     </button>
@@ -240,8 +241,8 @@ $fotoUtama = $images[0];
                   </div>
 
                   <div class="appointment-footer d-flex justify-content-between align-items-center mt-4">
-                    <button type="button" class="appointment-link-back btn btn-link p-0"
-                            data-target-step="1">&larr; Kembali</button>
+                    <button type="button" class="appointment-link-back btn btn-link p-0" data-target-step="1">&larr;
+                      Kembali</button>
                     <button type="button" class="btn btn-primary appointment-btn-next" data-target-step="3">
                       Lanjutkan
                     </button>
@@ -304,17 +305,17 @@ $fotoUtama = $images[0];
 
                   <div class="mb-3">
                     <label class="form-label appointment-label">Konfirmasi nomor telepon *</label>
-                    <input type="tel" name="telepon" class="form-control appointment-input" required>
+                    <input type="tel" id="no_telp" name="telepon" class="form-control appointment-input" required>
                   </div>
 
                   <div class="mb-3">
                     <label class="form-label appointment-label">Catatan (opsional)</label>
-                    <textarea name="catatan" rows="3" class="form-control appointment-input"></textarea>
+                    <textarea id="note" name="catatan" rows="3" class="form-control appointment-input"></textarea>
                   </div>
 
                   <div class="appointment-footer d-flex justify-content-between align-items-center mt-4">
-                    <button type="button" class="appointment-link-back btn btn-link p-0"
-                            data-target-step="2">&larr; Kembali</button>
+                    <button type="button" class="appointment-link-back btn btn-link p-0" data-target-step="2">&larr;
+                      Kembali</button>
                     <button type="submit" class="btn btn-primary">
                       Lanjutkan
                     </button>
@@ -335,7 +336,12 @@ $fotoUtama = $images[0];
     </div>
   </main>
 
-    <script src="../assets/js/janji_temu.js?v=<?= time(); ?>"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const CURRENT_KODE_MOBIL = "<?= htmlspecialchars($kode) ?>";
+    const CURRENT_NAMA_MOBIL = "<?= htmlspecialchars($namaMobil) ?>";
+  </script>
+  <script src="../assets/js/janji_temu.js?v=<?= time(); ?>"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

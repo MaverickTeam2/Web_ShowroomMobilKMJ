@@ -10,29 +10,22 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Kalau belum login → paksa ke login
-if (!isset($_SESSION['user_id'])) {
-  header('Location: ../admin/auth/auth.php?redirect=' . urlencode($_SERVER['REQUEST_URI']));
+if (!isset($_SESSION['kode_user'])) {
+  header('Location: auth/auth.php?redirect=' . urlencode($_SERVER['REQUEST_URI']));
   exit;
 }
 
-$kodeUser = $_SESSION['user_id'] ?? null;
+$kodeUser = $_SESSION['kode_user'] ?? ($_SESSION['user_id'] ?? null);
 $fullName = $_SESSION['full_name'] ?? '';
 $email = $_SESSION['email'] ?? '';
 $isLoggedIn = !empty($kodeUser);
 
-// aktifkan menu "cart" di sidebar
 $activeMenu = 'cart';
 
 // ambil list mobil yang baru saja dilihat dari session
 $recentlyViewed = $_SESSION['recently_viewed'] ?? [];
 
-// DEBUG SEMENTARA: hitung berapa item recently_viewed
-$recentCount = is_array($recentlyViewed) ? count($recentlyViewed) : 0;
-
-
-// =======================
 // AMBIL DATA FAVORIT USER
-// =======================
 $favoritMobil = [];
 
 if (!empty($kodeUser)) {
@@ -42,6 +35,18 @@ if (!empty($kodeUser)) {
     $favoritMobil = array_column($favApi['data'] ?? [], 'kode_mobil'); // ['MOB001', ...]
   }
 }
+
+// AMBIL DATA JANJI TEMU USER
+$janjiTemu = [];
+
+if (!empty($kodeUser)) {
+  $inquireApi = api_get('user/routes/inquire_list.php?kode_user=' . urlencode($kodeUser));
+
+  if ($inquireApi && isset($inquireApi['success']) && $inquireApi['success']) {
+    $janjiTemu = $inquireApi['data'] ?? [];
+  }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="id" data-theme="light">
@@ -56,7 +61,7 @@ if (!empty($kodeUser)) {
   <link rel="stylesheet" href="../assets/css/keranjang.css?v=<?= time(); ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="../assets/css/account_sidebar.css?v=<?= time(); ?>">
-  
+
 </head>
 
 <body>
@@ -200,70 +205,92 @@ if (!empty($kodeUser)) {
         </div>
 
         <!-- SECTION JANJI TEMU -->
+        <!-- SECTION JANJI TEMU -->
         <div class="mt-5">
           <div class="section-header mb-3 d-flex justify-content-between align-items-center">
             <h4 class="section-title mb-0">Janji temu anda</h4>
             <a href="#" class="section-link">Lihat semua janji temu</a>
           </div>
 
-          <div class="row g-3">
+          <?php if (empty($janjiTemu)): ?>
+            <p class="text-muted" style="font-size: 14px;">
+              Belum ada janji temu yang terjadwal.
+            </p>
+          <?php else: ?>
+            <div class="row g-3">
+              <?php foreach ($janjiTemu as $j): ?>
+                <?php
+                $status = $j['status'] ?? 'pending';
 
-            <!-- Appointment 1 (contoh dummy) -->
-            <div class="col-12 col-lg-6">
-              <div class="card border-0 shadow-sm appointment-card h-100">
-                <div class="card-body">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="appointment-title mb-0">Uji coba mobil di KMJ Kaliwates</h6>
-                    <span class="badge rounded-pill appointment-status appointment-status-cancelled">
-                      Dibatalkan
-                    </span>
-                  </div>
-                  <p class="appointment-date mb-2">
-                    Rabu, 3 Desember pukul 17.00
-                  </p>
-                  <div class="d-flex flex-wrap gap-3">
-                    <a href="#" class="appointment-link">
-                      <i class="fa-regular fa-file-lines me-1"></i> Lihat detail
-                    </a>
-                    <a href="#" class="appointment-link">
-                      <i class="fa-solid fa-location-dot me-1"></i> Petunjuk arah
-                    </a>
+                // default
+                $statusLabel = 'Menunggu';
+                $statusClass = 'appointment-status-active'; // atau bikin class khusus 'pending'
+            
+                switch ($status) {
+                  case 'pending':
+                    $statusLabel = 'Menunggu';
+                    $statusClass = 'appointment-status-active'; // atau 'appointment-status-pending'
+                    break;
+
+                  case 'responded':
+                    // ini kalau admin sudah merespon
+                    $statusLabel = 'Selesai'; // atau 'Sudah ditanggapi'
+                    $statusClass = 'appointment-status-active'; // badge hijau
+                    break;
+
+                  case 'canceled': // << harus sama persis dengan enum di DB
+                    $statusLabel = 'Dibatalkan';
+                    $statusClass = 'appointment-status-cancelled';
+                    break;
+                }
+
+
+
+                $tanggal = $j['tanggal'] ?? '';
+                $waktu = $j['waktu'] ?? '';
+
+                // kalau waktu bentuk "13:00:00" ambil 5 karakter pertama
+                if (strlen($waktu) >= 5) {
+                  $waktu = substr($waktu, 0, 5);
+                }
+                ?>
+                <div class="col-12 col-lg-6">
+                  <div class="card border-0 shadow-sm appointment-card h-100">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <?php
+                        $namaMobilJanji = $j['nama_mobil'] ?? ($j['kode_mobil'] ?? '');
+                        ?>
+                        <h6 class="appointment-title mb-0">
+                          Janji temu mobil <?= htmlspecialchars($namaMobilJanji); ?>
+                        </h6>
+
+                        <span class="badge rounded-pill appointment-status <?= $statusClass ?>">
+                          <?= htmlspecialchars($statusLabel); ?>
+                        </span>
+                      </div>
+                      <p class="appointment-date mb-2">
+                        <?= htmlspecialchars($tanggal); ?> pukul <?= htmlspecialchars($waktu); ?>
+                      </p>
+                      <div class="d-flex flex-wrap gap-3">
+                        <a href="#" class="appointment-link">
+                          <i class="fa-regular fa-file-lines me-1"></i> Lihat detail
+                        </a>
+                        <a href="#" class="appointment-link">
+                          <i class="fa-solid fa-location-dot me-1"></i> Petunjuk arah
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              <?php endforeach; ?>
             </div>
-
-            <!-- Appointment 2 (contoh dummy) -->
-            <div class="col-12 col-lg-6">
-              <div class="card border-0 shadow-sm appointment-card h-100">
-                <div class="card-body">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="appointment-title mb-0">Kunjungan showroom KMJ Kaliwates</h6>
-                    <span class="badge rounded-pill appointment-status appointment-status-active">
-                      Terjadwal
-                    </span>
-                  </div>
-                  <p class="appointment-date mb-2">
-                    Selasa, 2 Desember pukul 10.30
-                  </p>
-                  <div class="d-flex flex-wrap gap-3">
-                    <a href="#" class="appointment-link">
-                      <i class="fa-solid fa-pen-to-square me-1"></i> Atur janji temu
-                    </a>
-                    <a href="#" class="appointment-link">
-                      <i class="fa-solid fa-location-dot me-1"></i> Petunjuk arah
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
+          <?php endif; ?>
         </div>
-
       </section>
     </div>
   </div>
+
 
   <!-- SCRIPT FAVORITE UNTUK HALAMAN KERANJANG -->
   <script>

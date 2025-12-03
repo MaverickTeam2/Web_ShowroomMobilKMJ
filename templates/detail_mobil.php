@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$kode = $_GET['kode'] ?? '';
+$kode = $_GET['kode'] ?? ($_GET['kode_mobil'] ?? '');
 
 if (!$kode) {
   die("Kode mobil tidak dikirim.");

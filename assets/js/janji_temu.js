@@ -3,12 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const stepItems = document.querySelectorAll(".appointment-step-item");
 
   function showStep(step) {
-    // tampil/hidden panel
     stepPanels.forEach((p) => {
       p.classList.toggle("d-none", p.dataset.step !== String(step));
     });
 
-    // update stepper kiri
     stepItems.forEach((item) => {
       const idx = item.dataset.stepIndex;
       const circle = item.querySelector(".step-circle");
@@ -33,12 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // tombol NEXT
+  // NEXT
   document.querySelectorAll(".appointment-btn-next").forEach((btn) => {
     btn.addEventListener("click", () => {
       const target = btn.dataset.targetStep;
 
-      // sebelum masuk step 3, isi ringkasan tanggal & waktu
+      // sebelum ke step 3: isi ringkasan tanggal & jam
       if (target === "3") {
         const tglInput = document.getElementById("tanggal");
         const jamInput = document.getElementById("waktu");
@@ -72,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // tombol BACK (yang pakai data-target-step)
+  // BACK (link yang punya data-target-step)
   document
     .querySelectorAll(".appointment-link-back[data-target-step]")
     .forEach((btn) => {
@@ -82,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-  // efek pilihan card (radio → .choice-card--active)
+  // Efek pilih card (radio)
   document
     .querySelectorAll(".choice-card input[type='radio']")
     .forEach((input) => {
@@ -98,68 +96,104 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       input.addEventListener("change", updateGroup);
-      updateGroup(); // initial
+      updateGroup();
     });
 
-  // === SUBMIT FORM: KIRIM KE API ===
-  const form = document.getElementById("appointmentForm");
+  // SUBMIT FORM -> PANGGIL API
+  // SUBMIT FORM -> PANGGIL API
+const form = document.getElementById("appointmentForm");
+if (form) {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  if (form) {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+    // ambil value dari form
+    const caraRadio = document.querySelector(
+      "input[name='tipe_cara']:checked"
+    );
+    const janjiRadio = document.querySelector(
+      "input[name='tipe_janji']:checked"
+    );
 
-      if (!IS_LOGGED_IN || !CURRENT_USER || !CURRENT_USER.kode_user) {
-        alert("Kamu harus login untuk membuat janji temu.");
+    // kamu bisa mapping lebih rapi, tapi sementara kita kasih default angka
+    const uji_beli = caraRadio && caraRadio.value === "buy_online" ? 2 : 1;
+    const jenis_janji =
+      janjiRadio && janjiRadio.value === "all_cars" ? 2 : 1;
+
+    const tanggal = document.getElementById("tanggal")?.value || "";
+    const waktu = document.getElementById("waktu")?.value || "";
+    const no_telp = document.getElementById("no_telp")?.value || "";
+    const note = document.getElementById("note")?.value || "";
+
+    if (!tanggal || !waktu || !no_telp) {
+      alert("Tanggal, waktu, dan nomor telepon wajib diisi.");
+      return;
+    }
+
+    try {
+      const res = await fetch(BASE_API_URL + "/user/routes/inquire.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kode_mobil: CURRENT_KODE_MOBIL,
+          uji_beli,
+          jenis_janji,
+          tanggal,
+          waktu,
+          no_telp,
+          note,
+        }),
+      });
+
+      // kalau API kirim 401 -> user belum login → redirect ke login
+      if (res.status === 401) {
+        const currentUrl = window.location.pathname + window.location.search;
+        window.location.href =
+          "/web_showroommobilKMJ/templates/auth/auth.php?redirect=" +
+          encodeURIComponent(currentUrl);
         return;
       }
 
-      const formData = new FormData(form);
+      const data = await res.json();
 
-      const payload = {
-        // backend bisa ambil dari session, tapi sekalian kirim juga
-        kode_user: CURRENT_USER.kode_user,
-        kode_mobil: form.dataset.kodeMobil || formData.get("kode_mobil"),
+      if (data.code === 200) {
+        const id = data.data?.id_inquire || data.id_inquire || "-";
+        const wa =
+          data.whatsapp ||
+          data.data?.whatsapp ||
+          data.contact?.whatsapp ||
+          "";
 
-        // pastikan name radio di HTML: name="uji_beli" dan name="jenis_janji"
-        uji_beli: parseInt(formData.get("uji_beli") || "0", 10),
-        jenis_janji: parseInt(formData.get("jenis_janji") || "0", 10),
+        // buka WhatsApp di tab baru kalau nomornya ada
+        if (wa) {
+          const pesan =
+            "Halo KMJ, saya baru saja membuat janji temu (ID: " +
+            id +
+            ") untuk mobil " +
+            CURRENT_NAMA_MOBIL +
+            ".";
+          const waUrl =
+            "https://wa.me/" +
+            encodeURIComponent(wa) +
+            "?text=" +
+            encodeURIComponent(pesan);
 
-        tanggal: formData.get("tanggal") || "",
-        waktu: formData.get("waktu") || "",
-        no_telp: formData.get("no_telp") || "",
-        note: formData.get("note") || null,
-      };
-
-      if (!payload.kode_mobil || !payload.tanggal || !payload.waktu || !payload.no_telp) {
-        alert("Kode mobil, tanggal, waktu, dan nomor telepon wajib diisi.");
-        return;
-      }
-
-      try {
-        const res = await fetch(BASE_API_URL + "/user/routes/inquire.php", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-
-        const data = await res.json();
-
-        if (data.code === 200) {
-          // sukses simpan janji temu
-          alert("Janji temu berhasil dibuat. ID: " + (data.data?.id_inquire ?? "-"));
-          // TODO: kalau mau, redirect ke halaman riwayat janji temu:
-          // window.location.href = "keranjang.php"; // atau halaman lain
-        } else {
-          alert(data.message || "Gagal membuat janji temu.");
-          console.error("API error:", data);
+          window.open(waUrl, "_blank");
         }
-      } catch (err) {
-        console.error(err);
-        alert("Terjadi kesalahan koneksi ke server.");
-      }
-    });
-  }
 
-  // tampilkan step 1 di awal
+        // lalu redirect tab sekarang ke keranjang
+        window.location.href =
+          "/web_showroommobilKMJ/templates/keranjang.php";
+      } else {
+        alert(data.message || "Gagal membuat janji temu.");
+        console.error(data);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Terjadi kesalahan koneksi ke server.");
+    }
+  });
+}
+
+  // awal: tampilkan step 1
   showStep(1);
 });
