@@ -162,7 +162,7 @@ function createCard(row) {
   const btnMarkClosed = wrapper.querySelector('.btn-mark-closed');
   if (btnMarkClosed) {
     btnMarkClosed.addEventListener('click', () => {
-      updateStatus(row.id_inquire, 'responded');
+      updateStatus(row.id_inquire, 'canceled');  // kirim status ke API
     });
   }
 

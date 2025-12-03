@@ -222,32 +222,23 @@ if (!empty($kodeUser)) {
                 <?php
                 $status = $j['status'] ?? 'pending';
 
-                // default
                 $statusLabel = 'Menunggu';
-                $statusClass = 'appointment-status-active'; // atau bikin class khusus 'pending'
+                $statusClass = 'appointment-status-active'; 
             
-                switch ($status) {
-                  case 'pending':
-                    $statusLabel = 'Menunggu';
-                    $statusClass = 'appointment-status-active'; // atau 'appointment-status-pending'
-                    break;
-
-                  case 'responded':
-                    // ini kalau admin sudah merespon
-                    $statusLabel = 'Selesai'; // atau 'Sudah ditanggapi'
-                    $statusClass = 'appointment-status-active'; // badge hijau
-                    break;
-
-                  case 'canceled': // << harus sama persis dengan enum di DB
-                    $statusLabel = 'Dibatalkan';
-                    $statusClass = 'appointment-status-cancelled';
-                    break;
+                if ($status === 'pending') {
+                  $statusLabel = 'Menunggu';
+                  $statusClass = 'appointment-status-active';
+                } elseif ($status === 'responded') {
+                  $statusLabel = 'Selesai';            
+                  $statusClass = 'appointment-status-done';
+                } elseif ($status === 'canceled') {
+                  $statusLabel = 'Selesai';
+                  $statusClass = 'appointment-status-done';
                 }
 
                 $tanggal = $j['tanggal'] ?? '';
                 $waktu = $j['waktu'] ?? '';
 
-                // kalau waktu bentuk "13:00:00" ambil 5 karakter pertama
                 if (strlen($waktu) >= 5) {
                   $waktu = substr($waktu, 0, 5);
                 }
