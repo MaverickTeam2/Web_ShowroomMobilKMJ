@@ -35,10 +35,10 @@ if (isset($_SESSION['username'])) {
           <li><a class="active" id="breadcrumb-current" href="#">General</a></li>
         </ul>
       </div>
-      <a href="#" class="btn btn-primary">
-        <i class='bx bxs-cloud-download'></i>
-        <span class="text">Save Changes</span>
-      </a>
+      <button type="button" class="btn btn-primary shadow-sm" style="border: 2px solid #0056b3;" >
+        <i class='bx bxs-save'></i>
+        <span class="text ms-1">Save Changes</span>
+      </button>
     </div>
 
     <!-- ===================== KONTEN SETTINGS ===================== -->
