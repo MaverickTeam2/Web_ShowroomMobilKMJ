@@ -7,11 +7,6 @@ include 'partials/sidebar.php';
 // Placeholder data - akan di-load via JavaScript dari API
 $fotoProfil = "https://via.placeholder.com/150/007bff/ffffff?text=U";
 
-// Jika ada session username, buat placeholder dengan initial
-if (isset($_SESSION['username'])) {
-    $initial = strtoupper(substr($_SESSION['username'], 0, 1));
-    $fotoProfil = "https://via.placeholder.com/150/007bff/ffffff?text={$initial}";
-}
 ?>
 
 <!-- CSS khusus halaman ini -->
@@ -35,10 +30,10 @@ if (isset($_SESSION['username'])) {
           <li><a class="active" id="breadcrumb-current" href="#">General</a></li>
         </ul>
       </div>
-      <a href="#" class="btn btn-primary">
-        <i class='bx bxs-cloud-download'></i>
-        <span class="text">Save Changes</span>
-      </a>
+      <button type="button" class="btn btn-primary shadow-sm" style="border: 2px solid #0056b3;" >
+        <i class='bx bxs-save'></i>
+        <span class="text ms-1">Save Changes</span>
+      </button>
     </div>
 
     <!-- ===================== KONTEN SETTINGS ===================== -->
@@ -66,11 +61,11 @@ if (isset($_SESSION['username'])) {
               <i class='bx bx-link'></i> Kontak & Sosial
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" id="tab-backup" data-bs-toggle="pill" href="#backup" role="tab">
               <i class='bx bx-hdd'></i> Backup & Restore
             </a>
-          </li>
+          </li> -->
         </ul>
       </div>
 
