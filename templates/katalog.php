@@ -166,7 +166,7 @@ $statusLabelMap = [
                 <div class="accordion-body">
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="sortOption" id="bestMatch" value="best" checked>
-                    <label class="form-check-label" for="bestMatch">Terbaik</label>
+                    <label class="form-check-label" for="bestMatch">Terbaru</label>
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="sortOption" id="lowestPrice" value="lowestPrice">
@@ -500,12 +500,11 @@ $statusLabelMap = [
                    class="text-decoration-none mb-2 d-inline-block" style="font-size:25px;">
                   <p class="title is-5 mb-1">${m.nama_mobil || 'Tanpa Nama'}</p>
                 </a>
-                <p class="ansguran mb-1" style="font-size:25px; font-weight:700; color:#111827;">
-                  Rp ${formatNumber(m.angsuran || 0)}
-                  <span style="font-weight:600;">x ${m.tenor || '-'}</span>
+                <p class="harga-mobil mb-1" style="font-size:25px; font-weight:700; color:#111827;">
+                  Rp ${formatNumber(m.full_prize || 0)}
                 </p>
-                <p class="uang_dp mb-2" style="font-size:20px; font-weight:600; color:#111827;">
-                  Dp Rp ${formatNumber(m.dp || 0)}
+                <p class="angsuran-info mb-2" style="font-size:16px; font-weight:500; color:#6B7280;">
+                  Angsuran: Rp ${formatNumber(m.angsuran || 0)} x ${m.tenor || '-'}
                 </p>
                 <hr class="my-2">
                 <div class="info d-flex align-items-center gap-2">
@@ -556,10 +555,10 @@ $statusLabelMap = [
       const maxPrice = parsePrice(document.getElementById('maxPrice').value);
 
       if (minPrice > 0) {
-        result = result.filter(m => parsePrice(m.dp) >= minPrice);
+        result = result.filter(m => parsePrice(m.full_prize) >= minPrice);
       }
       if (maxPrice > 0) {
-        result = result.filter(m => parsePrice(m.dp) <= maxPrice);
+        result = result.filter(m => parsePrice(m.full_prize) <= maxPrice);
       }
 
       // 2. FILTER TAHUN
@@ -647,10 +646,10 @@ $statusLabelMap = [
 
       switch (sortOption) {
         case 'lowestPrice':
-          result.sort((a, b) => parsePrice(a.dp) - parsePrice(b.dp));
+          result.sort((a, b) => parsePrice(a.full_prize) - parsePrice(b.full_prize));
           break;
         case 'highestPrice':
-          result.sort((a, b) => parsePrice(b.dp) - parsePrice(a.dp));
+          result.sort((a, b) => parsePrice(b.full_prize) - parsePrice(a.full_prize));
           break;
         case 'newestYear':
           result.sort((a, b) => parseInt(b.tahun_mobil) - parseInt(a.tahun_mobil));
